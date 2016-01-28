@@ -55,6 +55,9 @@ p(tslist,"ts2")
 
 
 # build a ggplot2 alternative.... 
+# ggfortify seems like promising package
+# we can either use it our take parts of the code: 
+# https://cran.r-project.org/web/packages/ggfortify/vignettes/plot_ts.html
 
 
 
