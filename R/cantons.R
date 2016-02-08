@@ -4,30 +4,30 @@
 #' @export
 cantons <- function(full=F){
   if(full){
-    c("Argau",
+    c("Aargau",
       "Appenzell Ausserrhoden",
       "Appenzell Innerrhoden",
-      "Basel-Landschaft",
+      "Basel-Land",
       "Basel-Stadt",
       "Bern",
       "Fribourg",
-      "Geneva",
+      "Genf",
       "Glarus",
       "Graubünden",
       "Jura",
       "Luzern",
-      "Neuchatel",
+      "Neuenburg",
       "Nidwalden",
       "Obwalden",
       "Schaffhausen",
       "Schwyz",
       "Solothurn",
-      "St.Gallen",
+      "St. Gallen",
       "Thurgau",
-      "Ticino",
+      "Tessin",
       "Uri",
-      "Valais",
-      "Vaud",
+      "Wallis",
+      "Waadt",
       "Zug",
       "Zürich"
     )
@@ -61,3 +61,5 @@ cantons <- function(full=F){
   }
   
 }
+
+
