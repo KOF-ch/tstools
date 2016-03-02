@@ -35,8 +35,15 @@ tsplot.ts <- function(series,...,
 
 #' @rdname tsplot
 #' @export
-tsplot.list <- function(series,sel=NULL,theme = NULL, ygrid_dynamic = F,
-                        ygrid_factor = 5){
+tsplot.list <- function(series,sel=NULL,
+                        theme = NULL,
+                        plot.title = NULL,
+                        plot.subtitle,
+                        ygrid_dynamic = F,
+                        ygrid_factor = 5,
+                        yaxis_factor = 20,
+                        quarter_ticks = T,
+                        ...){
   
   # use an ETH / KOF default theme if no other theme is specified
   if(is.null(theme)){
@@ -48,6 +55,7 @@ tsplot.list <- function(series,sel=NULL,theme = NULL, ygrid_dynamic = F,
     kof_theme$yaxs <- 'i'  
     kof_theme$xaxt <- 'n'  
     kof_theme$yaxt <- 'n'  
+    kof_theme$lwd <- 1.5
     kof_theme$title_adj <- 0
     kof_theme$title_line <- 3.75
     kof_theme$grid_color <- "#00000022"
@@ -95,22 +103,47 @@ tsplot.list <- function(series,sel=NULL,theme = NULL, ygrid_dynamic = F,
   max_value_nm <- names(max_value)[which.max(max_value)]
   max_value_value <- max_value[which.max(max_value)]
   
+  ts_time <- unique(unlist(lapply(series,function(x) time(x))))
   
-  plot(series[[1]],main="test",
+  
+  # Define Plot ###############
+  plot(series[[1]],
        xlim = c(min_date_value,max_date_value),
        ylim = c(min_value_value*1.1,max_value_value*1.1),
        col = theme$line_colors[[1]],
-       lwd = 1.5,
+       lwd = theme$lwd,
        xlab = theme$xlab,
        ylab = theme$ylab,
        xaxs = theme$xaxs,
        yaxs = theme$yaxs,
        xaxt = theme$xaxt,
-       yaxt = theme$yaxt
-  )
+       yaxt = theme$yaxt,
+       ...)
   
-  # add horizontal grid lines
+  # axis and ticks defintion
+  if(quarter_ticks){
+    ext_qtr <- ts_time[abs(ts_time * 4 - floor(ts_time * 4)) < 0.001]
+    ext_label <- ifelse(ext_qtr - floor(ext_qtr) == 0.5, as.character(floor(ext_qtr)), NA)
+    # x-axis
+    axis(1, at = ext_qtr, labels = ext_label,
+         tcl = -0.5, cex.axis = 1, padj = 0.25)
+    axis(1, at = min_date_value:max_date_value, tcl = -0.75,
+         lwd.ticks = 2, labels = FALSE) # thick tick marks
+    
+  } else{
+    axis(1, at = min_date_value:max_date_value,
+         tcl = -0.5, cex.axis = 1, padj = 0.25)
+  }
   
+  # y-axis
+  yaxis_main_ticks <- round(seq((min(min_value_value)*1.04),
+                          (max(max_value_value)*1.04),
+                          yaxis_factor))
+  
+  axis(2, at = yaxis_main_ticks,
+       tcl = -0.5, cex.axis = 1, padj = 0.25)
+  
+  # horizontal grid lines ######
   if(ygrid_dynamic){
     ygrid <- seq(min_value_value,max_value_value,
                  (max_value_value - min_value_value)/ygrid_factor)
@@ -119,6 +152,7 @@ tsplot.list <- function(series,sel=NULL,theme = NULL, ygrid_dynamic = F,
     for (hl in theme$ygrid)  abline(h = hl, col = theme$grid_color)
   }
   
+  # add multiple series to the plot #####
   if(length(series) > 1){
     for (i in 2:length(series)){
       lines(series[[i]],
@@ -127,6 +161,18 @@ tsplot.list <- function(series,sel=NULL,theme = NULL, ygrid_dynamic = F,
     }
   }
   
+  # Add Title to plot #####
+  # title
+  if(!is.null(plot.title)){
+    title(main = plot.title, adj = 0, line = 1.5, cex.main = 1.5)  
+  }
+  
+  # subtitle
+  if(!is.null(plot.subtitle)){
+    mtext(plot.subtitle, adj = 0, line = .3, cex = 1)  
+  }
 }
+
+
 
 
