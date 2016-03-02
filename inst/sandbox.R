@@ -1,3 +1,64 @@
+# Todo: 
+# finish axes and ticks of tsplot
+# finish tsplot2y
+# create pdf storage... 
+# look at aspect ratio... 
+# check title stuff... 
+
+# random series
+ts1 <- ts(rnorm(70,sd = 5),start=c(2010,1),freq=12)
+# quarterly
+ts2 <- ts(rnorm(40,40,sd = 5),start=c(2010,1),freq=4)
+tslist <- list(ts1 = ts1,ts2 = ts2)
+ts3 <- ts(rnorm(100,60,sd = 2),start=c(1990,1),freq=4)
+source("R/tsplot.R")
+
+# plot from a list
+tsplot(tslist,c("ts1"),yaxis_factor = 20,ygrid_dynamic = T)
+
+# select single series from a list 
+
+# plot from multple
+tsplot(ts1,ts2,ts3)
+
+# use arguments title
+tsplot(ts1,ts2,plot.title = "Testplot",
+       plot.subtitle = "some subtitle")
+
+# use dynamic grids depending on values
+tsplot(ts1,ts2,plot.title = "Testplot",
+       plot.subtitle = "some subtitle",
+       ygrid_dynamic = T)
+
+# specify y-axis F
+tsplot(ts1,ts2,plot.title = "Testplot",
+       plot.subtitle = "some subtitle",
+       ygrid_dynamic = F,yaxis_factor = 20)
+
+
+# adjust theme
+# read out the default them, which is essentially a list:
+my_theme <- tsplot(ts1,ts2,plot.title = "Testplot",
+                   plot.subtitle = "some subtitle",
+                   ygrid_dynamic = F,yaxis_factor = 20,theme_out = T)
+
+my_theme$ygrid <- seq(-10,70,10)
+
+tsplot(ts1,ts2,plot.title = "Testplot",
+       plot.subtitle = "some subtitle",
+       ygrid_dynamic = F,yaxis_factor = 20,
+       theme = my_theme)
+
+
+
+
+
+
+
+#########################################################
+######################## DEPRECATED SANDBOX STUFF #######
+#########################################################
+
 # Define some ETH colors, put that in dataset later on 
 ETH8 <- "#007a92" # KOF blau
 ETH5 <- "#91056a"
@@ -6,16 +67,43 @@ ETH8_60 <- "#66b0c2"
 ETH5_60 <- "#cc67a7"
 ETH7_50 <- "#e19794"
 
-eth_survey_palette <- c("#a8322d", "#91056a", "#007a92",
-                        "#66b0c2","#cc67a7","#e19794")
-names(eth_survey_palette) <- c("ETH7","ETH5","ETH8",
-                               "ETH8_60","ETH5_60","ETH7_60")
+# define some kof defaults:
+plot(ts1,xlab = NA, ylab = NA,xaxs = 'i', yaxs = 'i', xaxt = 'n', yaxt = 'n')
+
+kof_theme <- list()
+kof_theme$ygrid <- seq(-60, 60, 30)
+kof_theme$xlab <- NA
+kof_theme$ylab <- NA
+kof_theme$xaxs <- 'i'
+kof_theme$yaxs <- 'i'  
+kof_theme$xaxt <- 'n'  
+kof_theme$yaxt <- 'n'  
+kof_theme$title_adj <- 0
+kof_theme$title_line <- 3.75
+kof_theme$grid_color <- "#00000022"
+kof_theme$line_colors <- c(ETH7 = "#a8322d",
+                           ETH5 = "#91056a",
+                           ETH8 = "#007a92",
+                           ETH8_60 = "#66b0c2",
+                           ETH5_60 = "#cc67a7",
+                           ETH7_50 = "#e19794")
+
+kof_theme$line_colors[["ETH7"]]
+
+
+
+eth_survey_palette <- c(ETH7 = "#a8322d",
+                        ETH5 = "#91056a",
+                        ETH8 = "#007a92",
+                        ETH8_60 = "#66b0c2",
+                        ETH5_60 = "#cc67a7",
+                        ETH7_50 = "#e19794")
 
 # generate some example time series 
 # monthly 2010
-ts1 <- ts(rnorm(60,sd = 5)+1:60,start=c(2010,1),freq=12)
+ts1 <- ts(rnorm(70,sd = 5),start=c(2010,1),freq=12)
 # quarterly
-ts2 <- ts(rnorm(20,sd = 5)-1:20,start=c(2010,1),freq=4)
+ts2 <- ts(rnorm(20,40,sd = 5)-1:20,start=c(2010,1),freq=4)
 tslist <- list(ts1 = ts1,ts2 = ts2)
 
 # color check
@@ -23,35 +111,91 @@ plot(ts1,col=eth_survey_palette[1],lwd= 3)
 lines(ts2,col=eth_survey_palette[3],lwd= 3)
 
 
+# the deep end note is mad useful w.r.t ... arguments
+# http://www.burns-stat.com/the-three-dots-construct-in-r/
 
-# some cheap methods to handle time series 
-# and a list of time series... 
-tsplot <- function(series,...) UseMethod("p")
+source("R/tsplot.R")
 
-tsplot.ts <- function(series,...){
-  li <- list(...)
-  if(!all(unlist(lapply(li,is.ts))))
-     stop("all optional objects need to be time series.")
-  li
+
+tsplot(ts1,ts2,ygrid_dynamic = T)
+
+
+
+
+
+
+
+
+tplot <- function(ts){
   
+  ts_time <- time(ts1)
+  first_year <- min(floor(ts_time))
+  last_year <- max(ceiling(ts_time))
+  x_grid <- first_year:last_year
+  y_grid <- seq(-60, 60, 30)
+  a4_asp <- (210 / 2) / (275 / 4)  
+  
+  
+  ext_qtr <- ts_time[abs(ts_time * 4 - floor(ts_time * 4)) < 0.001]
+  ext_label <- ifelse(ext_qtr - floor(ext_qtr) == 0.5, as.character(floor(ext_qtr)), NA)
+  
+  plot(ts1, col = 'darkorange', lwd = 1, xlab = NA, ylab = NA, 
+       xaxs = 'i', yaxs = 'i', xaxt = 'n', yaxt = 'n', ylim = c(-60, 60))
+  title(main = 'Larger title font size', adj = 0, line = 3.75, cex.main = cex_title)
+  mtext('Larger non-italic font', adj = 0, line = 1.5, cex = cex_title)
+  
+  for (hl in y_grid) abline(h = hl,col="#00000022")
   
   
 }
 
-tsplot.list <- function(series,...){
-  sel <- unlist(list(...))
-  if(!all(unlist(lapply(series,is.ts))))
-    stop("all elements of the list need to be objects of class ts.")
-  # select the entire series if there is no particular selection
-  if(!is.null(sel)){
-    series[sel]  
-  } else {
-    series
-  }
+
+tplot(ts1)
+
+
+tslist
+
+
+
+
+ext_qtr <- ext_time[abs(ext_time * 4 - floor(ext_time * 4)) < 0.001]
+ext_label <- ifelse(ext_qtr - floor(ext_qtr) == 0.5, as.character(floor(ext_qtr)), NA)
+
+x_grid <- first_year:last_year
+y_grid <- seq(-60, 60, 30)
+
+a4_asp <- (210 / 2) / (275 / 4)  # width -> 210 cm; height -> 297 - 22 mm (based on A4)
+
+makeImage <- function() {
+  
+  lwd_ts <- 4; lwd_trend <- 8
+  cex_label <- 1.75; cex_title <- 2
+  
+  pdf('ts_charts/ts_chart.pdf', height = 7, width = a4_asp * 7) # 7 is default, but any other number would do probably
+  
+  par(mar = c(6, 3, 5, 0.5), mgp = c(1.5, 0.2, 0))
+  
+  plot(ext_turnover_zero, col = 'darkorange', lwd = lwd_ts, xlab = NA, ylab = NA, 
+       xaxs = 'i', yaxs = 'i', xaxt = 'n', yaxt = 'n', ylim = c(-60, 60))
+  title(main = 'Larger title font size', adj = 0, line = 3.75, cex.main = 1)
+  mtext('Larger non-italic font', adj = 0, line = .3, cex = 1)
+  
+  lines(ext_trend_zero, lwd = lwd_trend)
+  legend(2010, -67, legend = c('Turnover', 'Trend'), box.col = NA, 
+         lty = c(1, 1), lwd = c(lwd_ts, lwd_trend), 
+         cex = cex_label, col = c('darkorange', 'black'), xpd = TRUE)
+  
+  axis(1, at = ext_qtr, labels = ext_label, tcl = 0.5, cex.axis = cex_label, padj = 0.25)
+  # axis(1, at = x_grid, lwd.ticks = 2, labels = FALSE) # thick tick marks
+  
+  axis(2, at = y_grid, lwd.ticks = 1, tcl = 0.5, las = 1, cex.axis = cex_label)
+  
+  for (y in 2010:2015) abline(v = y)
+  for (hl in y_grid) abline(h = hl)
+  
+  
+  dev.off()
 }
-
-
-p(tslist,"ts2")
 
 
 # build a ggplot2 alternative.... 

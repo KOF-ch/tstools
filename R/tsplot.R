@@ -9,15 +9,27 @@
 #' TRUE.
 #' 
 #' @export
-tsplot <- function(series,...,theme = kof_theme,ygrid_dynamic,ygrid_factor) UseMethod("tsplot")
+tsplot <- function(series,...,
+                   theme = NULL,
+                   plot.title = NULL,
+                   plot.subtitle = NULL,
+                   ygrid_dynamic,
+                   ygrid_factor,
+                   yaxis_factor,
+                   theme_out) UseMethod("tsplot")
 
 
 #' @rdname tsplot
 #' @export
 tsplot.ts <- function(series,...,
-                      theme=NULL,
-                      ygrid_dynamic=F,
-                      ygrid_factor = 5){
+                      theme = NULL,
+                      ygrid_dynamic = F,
+                      plot.title = NULL,
+                      plot.subtitle = NULL,
+                      ygrid_factor = 5,
+                      yaxis_factor = 20,
+                      quarter_ticks = T,
+                      theme_out = F){
   
   li <- list(...)
   
@@ -29,7 +41,11 @@ tsplot.ts <- function(series,...,
   
   # basically pass it all on to the list method of tsplot
   tsplot(tl,theme = theme, ygrid_dynamic = ygrid_dynamic,
-         ygrid_factor = ygrid_factor)  
+         ygrid_factor = ygrid_factor,
+         yaxis_factor = yaxis_factor,
+         plot.title = plot.title,
+         plot.subtitle = plot.subtitle,
+         theme_out = theme_out)  
   
 }
 
@@ -38,14 +54,15 @@ tsplot.ts <- function(series,...,
 tsplot.list <- function(series,sel=NULL,
                         theme = NULL,
                         plot.title = NULL,
-                        plot.subtitle,
+                        plot.subtitle = NULL,
                         ygrid_dynamic = F,
                         ygrid_factor = 5,
                         yaxis_factor = 20,
                         quarter_ticks = T,
+                        theme_out = F,
                         ...){
   
-  # use an ETH / KOF default theme if no other theme is specified
+  # definition of a default theme
   if(is.null(theme)){
     kof_theme <- list()
     kof_theme$ygrid <- seq(-60, 60, 30)
@@ -57,7 +74,10 @@ tsplot.list <- function(series,sel=NULL,
     kof_theme$yaxt <- 'n'  
     kof_theme$lwd <- 1.5
     kof_theme$title_adj <- 0
-    kof_theme$title_line <- 3.75
+    kof_theme$title_line <- 1.5
+    kof_theme$subtitle_line <- .3
+    kof_theme$title_cex.main <- 1
+    kof_theme$subtitle_cex.main <- 1
     kof_theme$grid_color <- "#00000022"
     kof_theme$line_colors <- c(ETH7 = "#a8322d",
                                ETH5 = "#91056a",
@@ -136,22 +156,24 @@ tsplot.list <- function(series,sel=NULL,
   }
   
   # y-axis
-  yaxis_main_ticks <- round(seq((min(min_value_value)*1.04),
-                          (max(max_value_value)*1.04),
-                          yaxis_factor))
   
-  axis(2, at = yaxis_main_ticks,
-       tcl = -0.5, cex.axis = 1, padj = 0.25)
   
   # horizontal grid lines ######
   if(ygrid_dynamic){
     ygrid <- seq(min_value_value,max_value_value,
                  (max_value_value - min_value_value)/ygrid_factor)
     for (hl in ygrid)  abline(h = hl, col = theme$grid_color)
+    yaxis_main_ticks <- round(seq((min(min_value_value)*1.04),
+                                  (max(max_value_value)*1.04),
+                                  yaxis_factor))
   } else {
     for (hl in theme$ygrid)  abline(h = hl, col = theme$grid_color)
+    yaxis_main_ticks <- theme$ygrid
   }
   
+  axis(2, at = yaxis_main_ticks,
+       tcl = -0.5, cex.axis = 1, padj = 0.25)
+
   # add multiple series to the plot #####
   if(length(series) > 1){
     for (i in 2:length(series)){
@@ -164,13 +186,20 @@ tsplot.list <- function(series,sel=NULL,
   # Add Title to plot #####
   # title
   if(!is.null(plot.title)){
-    title(main = plot.title, adj = 0, line = 1.5, cex.main = 1.5)  
+    title(main = plot.title, adj = theme$title_adj,
+          line = theme$title_line,
+          cex.main = theme$title_cex.main)  
   }
   
   # subtitle
   if(!is.null(plot.subtitle)){
-    mtext(plot.subtitle, adj = 0, line = .3, cex = 1)  
+    mtext(plot.subtitle, adj = theme$title_adj,
+          line = theme$subtitle_line,
+          cex = theme$subtitle_cex)  
   }
+  
+  if(theme_out) theme
+  
 }
 
 
