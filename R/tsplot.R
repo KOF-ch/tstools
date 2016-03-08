@@ -160,7 +160,7 @@ tsplot.list <- function(series,sel=NULL,
       # x-axis
       axis(1, at = ext_qtr, labels = ext_label,
            tcl = -0.5, cex.axis = 1, padj = 0.25)
-      axis(1, at = date_range, tcl = -0.75,
+      axis(1, at = date_range[1]:date_range[2], tcl = -0.75,
            lwd.ticks = 2, labels = FALSE) # thick tick marks
       
     } else{

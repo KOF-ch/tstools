@@ -31,12 +31,17 @@ tsplot2y <- function(x,y,theme = NULL,plot.title = NULL,plot.subtitle = NULL,
  
   # left theme will be KOF theme... 
   # right theme needs to be defined here
-
+  full_li <- c(list(x),list(y))
+  ll <- length(full_li)
+  x_axis_range <- range(unlist(unique(lapply(full_li,time))))
+  
   
   
   tsplot(x,theme = theme)
   par(new=TRUE)
   tsplot(y,theme = theme,print_x_axis = F)
+  
+  x_axis_range
 
   # get min max dates from series
   # tl <- list(x,y)
