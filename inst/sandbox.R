@@ -18,6 +18,8 @@ tsplot(tslist,c("ts1"),yaxis_factor = 20,ygrid_dynamic = T)
 
 # select single series from a list 
 
+tsplot(tslist)
+
 # plot from multple
 tsplot(ts1,ts2,ts3)
 
@@ -38,17 +40,19 @@ tsplot(ts1,ts2,plot.title = "Testplot",
 
 # adjust theme
 # read out the default them, which is essentially a list:
-my_theme <- tsplot(ts1,ts2,plot.title = "Testplot",
+my_theme_1 <- tsplot(ts1,ts2,plot.title = "Testplot",
                    plot.subtitle = "some subtitle",
                    ygrid_dynamic = F,yaxis_factor = 20,theme_out = T)
 
-my_theme$ygrid <- seq(-10,70,10)
+my_theme_1$ygrid <- seq(-10,70,10)
 
 tsplot(ts1,ts2,plot.title = "Testplot",
        plot.subtitle = "some subtitle",
        ygrid_dynamic = F,yaxis_factor = 20,
        theme = my_theme)
 
+
+abline(h=0,col="red",lwd=3)
 
 
 

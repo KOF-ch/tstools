@@ -28,24 +28,33 @@ tsplot2y <- function(x,y,theme = NULL,plot.title = NULL,plot.subtitle = NULL,
                                ETH7_50 = "#e19794")
     theme <- kof_theme
   }
+ 
+  # left theme will be KOF theme... 
+  # right theme needs to be defined here
+
   
-  # get min max dates from series
-  tl <- list(x,y)
-  min_date <- min(unlist(lapply(tl,function(x) min(time(x)))))
-  max_date <- max(unlist(lapply(tl,function(x) max(time(x)))))
   
-  
-  # plot x time series
-  plot(x, xlab = theme$xlab, ylab = theme$ylab, xaxt = theme$xaxt,
-       col = theme$line_colors[1],lwd = theme$lwd,
-       xlim = c(min_date,max_date),
-       ...)
+  tsplot(x,theme = theme)
   par(new=TRUE)
-  plot(y,xlab = theme$xlab, ylab = theme$ylab, xaxt = theme$xaxt,
-       yaxt = theme$yaxt,
-       col = theme$line_colors[2], lwd = theme$lwd,
-       ...)
-  axis(4)
+  tsplot(y,theme = theme,print_x_axis = F)
+
+  # get min max dates from series
+  # tl <- list(x,y)
+  # min_date <- min(unlist(lapply(tl,function(x) min(time(x)))))
+  # max_date <- max(unlist(lapply(tl,function(x) max(time(x)))))
+  # 
+  # 
+  # # plot x time series
+  # plot(x, xlab = theme$xlab, ylab = theme$ylab, xaxt = theme$xaxt,
+  #      col = theme$line_colors[1],lwd = theme$lwd,
+  #      xlim = c(min_date,max_date),
+  #      ...)
+  # par(new=TRUE)
+  # plot(y,xlab = theme$xlab, ylab = theme$ylab, xaxt = theme$xaxt,
+  #      yaxt = theme$yaxt,
+  #      col = theme$line_colors[2], lwd = theme$lwd,
+  #      ...)
+  # axis(4)
 }
 
 

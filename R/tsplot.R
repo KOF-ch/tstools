@@ -16,7 +16,8 @@ tsplot <- function(series,...,
                    ygrid_dynamic,
                    ygrid_factor,
                    yaxis_factor,
-                   theme_out) UseMethod("tsplot")
+                   theme_out,
+                   print_x_axis) UseMethod("tsplot")
 
 
 #' @rdname tsplot
@@ -29,7 +30,8 @@ tsplot.ts <- function(series,...,
                       ygrid_factor = 5,
                       yaxis_factor = 20,
                       quarter_ticks = T,
-                      theme_out = F){
+                      theme_out = F,
+                      print_x_axis = T){
   
   li <- list(...)
   
@@ -45,7 +47,8 @@ tsplot.ts <- function(series,...,
          yaxis_factor = yaxis_factor,
          plot.title = plot.title,
          plot.subtitle = plot.subtitle,
-         theme_out = theme_out)  
+         theme_out = theme_out,
+         print_x_axis = print_x_axis)  
   
 }
 
@@ -60,6 +63,7 @@ tsplot.list <- function(series,sel=NULL,
                         yaxis_factor = 20,
                         quarter_ticks = T,
                         theme_out = F,
+                        print_x_axis = T,
                         ...){
   
   # definition of a default theme
@@ -103,33 +107,38 @@ tsplot.list <- function(series,sel=NULL,
                               Don't use this theme / template in case
                               you need more, just use basic plotting
                               and build such a plot on your own.")
+
+  ts_time <- unique(unlist(lapply(series,time)))
+  date_range <- range(ts_time)
+  value_range <- range(unlist(series))
   
-  # get the window:
-  # min date
-  min_date <- unlist(lapply(series,function(x) min(time(x))))
-  min_date_nm <- names(min_date)[which.min(min_date)]
-  min_date_value <- min_date[which.min(min_date)]
-  # min values
-  min_value <- unlist(lapply(series,function(x) min(x,na.rm = T)))
-  min_value_nm <- names(min_value)[which.min(min_value)]
-  min_value_value <- min_value[which.min(min_value)]
-  
-  # max dates
-  max_date <- unlist(lapply(series,function(x) max(time(x))))
-  max_date_nm <- names(max_date)[which.max(max_date)]
-  max_date_value <- max_date[which.max(max_date)]
-  # min values
-  max_value <- unlist(lapply(series,function(x) max(x,na.rm = T)))
-  max_value_nm <- names(max_value)[which.max(max_value)]
-  max_value_value <- max_value[which.max(max_value)]
-  
-  ts_time <- unique(unlist(lapply(series,function(x) time(x))))
+    
+  # # get the window:
+  # # min date
+  # min_date <- unlist(lapply(series,function(x) min(time(x))))
+  # min_date_nm <- names(min_date)[which.min(min_date)]
+  # min_date_value <- min_date[which.min(min_date)]
+  # # min values
+  # min_value <- unlist(lapply(series,function(x) min(x,na.rm = T)))
+  # min_value_nm <- names(min_value)[which.min(min_value)]
+  # min_value_value <- min_value[which.min(min_value)]
+  # 
+  # # max dates
+  # max_date <- unlist(lapply(series,function(x) max(time(x))))
+  # max_date_nm <- names(max_date)[which.max(max_date)]
+  # max_date_value <- max_date[which.max(max_date)]
+  # # min values
+  # max_value <- unlist(lapply(series,function(x) max(x,na.rm = T)))
+  # max_value_nm <- names(max_value)[which.max(max_value)]
+  # max_value_value <- max_value[which.max(max_value)]
+  # 
+  # ts_time <- unique(unlist(lapply(series,function(x) time(x))))
   
   
   # Define Plot ###############
   plot(series[[1]],
-       xlim = c(min_date_value,max_date_value),
-       ylim = c(min_value_value*1.1,max_value_value*1.1),
+       xlim = date_range,
+       ylim = value_range*1.04,
        col = theme$line_colors[[1]],
        lwd = theme$lwd,
        xlab = theme$xlab,
@@ -140,31 +149,37 @@ tsplot.list <- function(series,sel=NULL,
        yaxt = theme$yaxt,
        ...)
   
-  # axis and ticks defintion
-  if(quarter_ticks){
-    ext_qtr <- ts_time[abs(ts_time * 4 - floor(ts_time * 4)) < 0.001]
-    ext_label <- ifelse(ext_qtr - floor(ext_qtr) == 0.5, as.character(floor(ext_qtr)), NA)
-    # x-axis
-    axis(1, at = ext_qtr, labels = ext_label,
-         tcl = -0.5, cex.axis = 1, padj = 0.25)
-    axis(1, at = min_date_value:max_date_value, tcl = -0.75,
-         lwd.ticks = 2, labels = FALSE) # thick tick marks
-    
-  } else{
-    axis(1, at = min_date_value:max_date_value,
-         tcl = -0.5, cex.axis = 1, padj = 0.25)
+  # this param is always true in stand alone plots, 
+  # might be useful if multiple tsplots are plotted 
+  # top of each other
+  if(print_x_axis){
+    # axis and ticks defintion
+    if(quarter_ticks){
+      ext_qtr <- ts_time[abs(ts_time * 4 - floor(ts_time * 4)) < 0.001]
+      ext_label <- ifelse(ext_qtr - floor(ext_qtr) == 0.5, as.character(floor(ext_qtr)), NA)
+      # x-axis
+      axis(1, at = ext_qtr, labels = ext_label,
+           tcl = -0.5, cex.axis = 1, padj = 0.25)
+      axis(1, at = date_range, tcl = -0.75,
+           lwd.ticks = 2, labels = FALSE) # thick tick marks
+      
+    } else{
+      axis(1, at = min_date_value:max_date_value,
+           tcl = -0.5, cex.axis = 1, padj = 0.25)
+    }
   }
   
+  
+  
   # y-axis
-  
-  
+
   # horizontal grid lines ######
   if(ygrid_dynamic){
-    ygrid <- seq(min_value_value,max_value_value,
-                 (max_value_value - min_value_value)/ygrid_factor)
+    ygrid <- seq(value_range[1],value_range[2],
+                 (value_range[2] - value_range[1])/ygrid_factor)
     for (hl in ygrid)  abline(h = hl, col = theme$grid_color)
-    yaxis_main_ticks <- round(seq((min(min_value_value)*1.04),
-                                  (max(max_value_value)*1.04),
+    yaxis_main_ticks <- round(seq(value_range[1]*1.04,
+                                  value_range[2]*1.04,
                                   yaxis_factor))
   } else {
     for (hl in theme$ygrid)  abline(h = hl, col = theme$grid_color)
