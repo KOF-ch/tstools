@@ -1,8 +1,8 @@
 tsplot2y <- function(x,y,theme = NULL,plot.title = NULL,plot.subtitle = NULL,
-                     theme_out = F,...){
+                     theme_out = F,pmar = c(5,4,4,5)+.1,...){
   # set margin a little different
   # to free space for another y-axis
-  par(mar=c(5,4,4,5)+.1)
+  par(mar = pmar)
   
   if(is.null(theme)){
     kof_theme <- list()
@@ -28,41 +28,24 @@ tsplot2y <- function(x,y,theme = NULL,plot.title = NULL,plot.subtitle = NULL,
                                ETH7_50 = "#e19794")
     theme <- kof_theme
   }
- 
+  
   # left theme will be KOF theme... 
-  # right theme needs to be defined here
+  # but the x-axis will be manipulated to total range of all plots
   full_li <- c(list(x),list(y))
   ll <- length(full_li)
   x_axis_range <- range(unlist(unique(lapply(full_li,time))))
+  theme_left <- theme
+  theme_left$xlim <- x_axis_range
   
   
-  
-  tsplot(x,theme = theme)
+  tsplot(x,theme = theme_left, manual_date_range = x_axis_range)
   par(new=TRUE)
   tsplot(y,theme = theme,print_x_axis = F)
-  
-  x_axis_range
 
-  # get min max dates from series
-  # tl <- list(x,y)
-  # min_date <- min(unlist(lapply(tl,function(x) min(time(x)))))
-  # max_date <- max(unlist(lapply(tl,function(x) max(time(x)))))
-  # 
-  # 
-  # # plot x time series
-  # plot(x, xlab = theme$xlab, ylab = theme$ylab, xaxt = theme$xaxt,
-  #      col = theme$line_colors[1],lwd = theme$lwd,
-  #      xlim = c(min_date,max_date),
-  #      ...)
-  # par(new=TRUE)
-  # plot(y,xlab = theme$xlab, ylab = theme$ylab, xaxt = theme$xaxt,
-  #      yaxt = theme$yaxt,
-  #      col = theme$line_colors[2], lwd = theme$lwd,
-  #      ...)
-  # axis(4)
 }
 
-
+undebug(tsplot2y)
+debug(tsplot.list)
 tsplot2y(ts1,ts2)
 
 x1 <- 1:5
@@ -88,3 +71,26 @@ plot(ts1)
 par(new=TRUE)
 plot(ts2,type="b",col="blue",yaxt="n",xlab="",ylab="")
 axis(4)
+
+
+
+# get min max dates from series
+# tl <- list(x,y)
+# min_date <- min(unlist(lapply(tl,function(x) min(time(x)))))
+# max_date <- max(unlist(lapply(tl,function(x) max(time(x)))))
+# 
+# 
+# # plot x time series
+# plot(x, xlab = theme$xlab, ylab = theme$ylab, xaxt = theme$xaxt,
+#      col = theme$line_colors[1],lwd = theme$lwd,
+#      xlim = c(min_date,max_date),
+#      ...)
+# par(new=TRUE)
+# plot(y,xlab = theme$xlab, ylab = theme$ylab, xaxt = theme$xaxt,
+#      yaxt = theme$yaxt,
+#      col = theme$line_colors[2], lwd = theme$lwd,
+#      ...)
+# axis(4)
+
+
+

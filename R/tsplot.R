@@ -17,7 +17,10 @@ tsplot <- function(series,...,
                    ygrid_factor,
                    yaxis_factor,
                    theme_out,
-                   print_x_axis) UseMethod("tsplot")
+                   print_x_axis,
+                   highlight_window = NULL,
+                   manual_date_range = NULL,
+                   manual_value_range = NULL) UseMethod("tsplot")
 
 
 #' @rdname tsplot
@@ -31,7 +34,10 @@ tsplot.ts <- function(series,...,
                       yaxis_factor = 20,
                       quarter_ticks = T,
                       theme_out = F,
-                      print_x_axis = T){
+                      print_x_axis = T,
+                      highlight_window = NULL,
+                      manual_date_range = NULL,
+                      manual_value_range = NULL){
   
   li <- list(...)
   
@@ -48,7 +54,10 @@ tsplot.ts <- function(series,...,
          plot.title = plot.title,
          plot.subtitle = plot.subtitle,
          theme_out = theme_out,
-         print_x_axis = print_x_axis)  
+         print_x_axis = print_x_axis,
+         highlight_window = highlight_window,
+         manual_date_range = manual_date_range,
+         manual_value_range = manual_value_range)  
   
 }
 
@@ -64,11 +73,34 @@ tsplot.list <- function(series,sel=NULL,
                         quarter_ticks = T,
                         theme_out = F,
                         print_x_axis = T,
+                        highlight_window = NULL,
+                        manual_date_range = NULL,
+                        manual_value_range = NULL,
                         ...){
+  # some sanity checks
+  if(!all(unlist(lapply(series,is.ts))))
+    stop("all elements of the list need to be objects of class ts.")
+  
+  # select the entire series if there is no particular selection
+  if(!is.null(sel)){
+    series <- series[sel]  
+  }
+  # don't have default colors for more than 6 lines
+  if(length(series) > 6) stop("This convenience plot function does not
+                              support more than 6 series in one plot.
+                              Don't use this theme / template in case
+                              you need more, just use basic plotting
+                              and build such a plot on your own.")
+
+  ts_time <- unique(unlist(lapply(series,time)))
+  date_range <- range(ts_time)
+  value_range <- range(unlist(series))
+  
   
   # definition of a default theme
   if(is.null(theme)){
     kof_theme <- list()
+    kof_theme$xlim <- date_range
     kof_theme$ygrid <- seq(-60, 60, 30)
     kof_theme$xlab <- NA
     kof_theme$ylab <- NA
@@ -89,55 +121,29 @@ tsplot.list <- function(series,sel=NULL,
                                ETH8_60 = "#66b0c2",
                                ETH5_60 = "#cc67a7",
                                ETH7_50 = "#e19794")
+    kof_theme$highlight_window_color <- "#91056a22"
     theme <- kof_theme
   }
   
   
-  # some sanity checks
-  if(!all(unlist(lapply(series,is.ts))))
-    stop("all elements of the list need to be objects of class ts.")
-  
-  # select the entire series if there is no particular selection
-  if(!is.null(sel)){
-    series <- series[sel]  
-  }
-  # don't have default colors for more than 6 lines
-  if(length(series) > 6) stop("This convenience plot function does not
-                              support more than 6 series in one plot.
-                              Don't use this theme / template in case
-                              you need more, just use basic plotting
-                              and build such a plot on your own.")
 
-  ts_time <- unique(unlist(lapply(series,time)))
-  date_range <- range(ts_time)
-  value_range <- range(unlist(series))
+  # manual ranges are important for 2 axis plot 
+  # convenience functions... 
+  if(!is.null(manual_date_range)){
+     theme$xlim = manual_date_range
+     ts_time <- seq(from = manual_date_range[1],
+                    to = manual_date_range[2],by = .25)
+     date_range <- manual_date_range
+  }
   
+  if(!is.null(manual_value_range)){
     
-  # # get the window:
-  # # min date
-  # min_date <- unlist(lapply(series,function(x) min(time(x))))
-  # min_date_nm <- names(min_date)[which.min(min_date)]
-  # min_date_value <- min_date[which.min(min_date)]
-  # # min values
-  # min_value <- unlist(lapply(series,function(x) min(x,na.rm = T)))
-  # min_value_nm <- names(min_value)[which.min(min_value)]
-  # min_value_value <- min_value[which.min(min_value)]
-  # 
-  # # max dates
-  # max_date <- unlist(lapply(series,function(x) max(time(x))))
-  # max_date_nm <- names(max_date)[which.max(max_date)]
-  # max_date_value <- max_date[which.max(max_date)]
-  # # min values
-  # max_value <- unlist(lapply(series,function(x) max(x,na.rm = T)))
-  # max_value_nm <- names(max_value)[which.max(max_value)]
-  # max_value_value <- max_value[which.max(max_value)]
-  # 
-  # ts_time <- unique(unlist(lapply(series,function(x) time(x))))
+  }
   
   
   # Define Plot ###############
   plot(series[[1]],
-       xlim = date_range,
+       xlim = theme$xlim,
        ylim = value_range*1.04,
        col = theme$line_colors[[1]],
        lwd = theme$lwd,
@@ -148,7 +154,18 @@ tsplot.list <- function(series,sel=NULL,
        xaxt = theme$xaxt,
        yaxt = theme$yaxt,
        ...)
+ 
+  if(!is.null(highlight_window)){
+    rect(highlight_window[1],
+         value_range[1]*2,
+         highlight_window[2],
+         value_range[2]*2,
+         col=theme$highlight_window_color,
+         border=NA)
+    
+  } 
   
+   
   # this param is always true in stand alone plots, 
   # might be useful if multiple tsplots are plotted 
   # top of each other

@@ -18,6 +18,7 @@ tsplot(tslist,c("ts1"),yaxis_factor = 20,ygrid_dynamic = T)
 
 # select single series from a list 
 
+debug(tsplot.list)
 tsplot(tslist)
 
 # plot from multple
