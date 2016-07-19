@@ -1,3 +1,5 @@
+#' Basic Times Series Plot Method
+#'
 #' @param series object of class ts, or list of time series series.
 #' @param ... objects of class ts
 #' @param theme list holding extra style arguments to be passed to plot.
@@ -18,6 +20,7 @@ tsplot <- function(series,...,
                    yaxis_factor,
                    theme_out,
                    print_x_axis,
+                   print_y_axis = T,
                    highlight_window = NULL,
                    manual_date_range = NULL,
                    manual_value_range = NULL) UseMethod("tsplot")
@@ -35,6 +38,7 @@ tsplot.ts <- function(series,...,
                       quarter_ticks = T,
                       theme_out = F,
                       print_x_axis = T,
+                      print_y_axis = T,
                       highlight_window = NULL,
                       manual_date_range = NULL,
                       manual_value_range = NULL){
@@ -55,6 +59,7 @@ tsplot.ts <- function(series,...,
          plot.subtitle = plot.subtitle,
          theme_out = theme_out,
          print_x_axis = print_x_axis,
+         print_y_axis = print_y_axis,
          highlight_window = highlight_window,
          manual_date_range = manual_date_range,
          manual_value_range = manual_value_range)  
@@ -73,6 +78,7 @@ tsplot.list <- function(series,sel=NULL,
                         quarter_ticks = T,
                         theme_out = F,
                         print_x_axis = T,
+                        print_y_axis = T,
                         highlight_window = NULL,
                         manual_date_range = NULL,
                         manual_value_range = NULL,
@@ -93,36 +99,16 @@ tsplot.list <- function(series,sel=NULL,
                               and build such a plot on your own.")
 
   ts_time <- unique(unlist(lapply(series,time)))
+  # floating problems when comparing stuff, set it to 
+  # 5 digits ... 
+  ts_time <- round(ts_time,digits = 5)
   date_range <- range(ts_time)
   value_range <- range(unlist(series))
   
   
   # definition of a default theme
   if(is.null(theme)){
-    kof_theme <- list()
-    kof_theme$xlim <- date_range
-    kof_theme$ygrid <- seq(-60, 60, 30)
-    kof_theme$xlab <- NA
-    kof_theme$ylab <- NA
-    kof_theme$xaxs <- 'i'
-    kof_theme$yaxs <- 'i'  
-    kof_theme$xaxt <- 'n'  
-    kof_theme$yaxt <- 'n'  
-    kof_theme$lwd <- 1.5
-    kof_theme$title_adj <- 0
-    kof_theme$title_line <- 1.5
-    kof_theme$subtitle_line <- .3
-    kof_theme$title_cex.main <- 1
-    kof_theme$subtitle_cex.main <- 1
-    kof_theme$grid_color <- "#00000022"
-    kof_theme$line_colors <- c(ETH7 = "#a8322d",
-                               ETH5 = "#91056a",
-                               ETH8 = "#007a92",
-                               ETH8_60 = "#66b0c2",
-                               ETH5_60 = "#cc67a7",
-                               ETH7_50 = "#e19794")
-    kof_theme$highlight_window_color <- "#91056a22"
-    theme <- kof_theme
+    theme <- initDefaultTheme(date_range)
   }
   
   
@@ -137,7 +123,7 @@ tsplot.list <- function(series,sel=NULL,
   }
   
   if(!is.null(manual_value_range)){
-    
+    value_range <- manual_value_range 
   }
   
   
@@ -189,7 +175,7 @@ tsplot.list <- function(series,sel=NULL,
   
   
   # y-axis
-
+  
   # horizontal grid lines ######
   if(ygrid_dynamic){
     ygrid <- seq(value_range[1],value_range[2],
@@ -202,11 +188,16 @@ tsplot.list <- function(series,sel=NULL,
     for (hl in theme$ygrid)  abline(h = hl, col = theme$grid_color)
     yaxis_main_ticks <- theme$ygrid
   }
+ 
+  if(print_y_axis){
+    axis(2, at = yaxis_main_ticks,
+         tcl = -0.5, cex.axis = 1, padj = 0.25)  
+  } 
   
-  axis(2, at = yaxis_main_ticks,
-       tcl = -0.5, cex.axis = 1, padj = 0.25)
-
-  # add multiple series to the plot #####
+  
+  
+  
+    # add multiple series to the plot #####
   if(length(series) > 1){
     for (i in 2:length(series)){
       lines(series[[i]],

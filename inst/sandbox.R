@@ -5,6 +5,9 @@
 # look at aspect ratio... 
 # check title stuff... 
 
+
+
+
 # random series
 ts1 <- ts(rnorm(70,sd = 5),start=c(2010,1),freq=12)
 # quarterly
@@ -12,6 +15,8 @@ ts2 <- ts(rnorm(40,40,sd = 5),start=c(2010,1),freq=4)
 tslist <- list(ts1 = ts1,ts2 = ts2)
 ts3 <- ts(rnorm(100,60,sd = 2),start=c(1990,1),freq=4)
 source("R/tsplot.R")
+source("R/init_default_theme.R")
+
 
 # plot from a list
 tsplot(tslist,c("ts1"),yaxis_factor = 20,ygrid_dynamic = T)
@@ -43,14 +48,16 @@ tsplot(ts1,ts2,plot.title = "Testplot",
 # read out the default them, which is essentially a list:
 my_theme_1 <- tsplot(ts1,ts2,plot.title = "Testplot",
                    plot.subtitle = "some subtitle",
-                   ygrid_dynamic = F,yaxis_factor = 20,theme_out = T)
+                   ygrid_dynamic = F,
+                   yaxis_factor = 20,
+                   theme_out = T)
 
 my_theme_1$ygrid <- seq(-10,70,10)
 
 tsplot(ts1,ts2,plot.title = "Testplot",
        plot.subtitle = "some subtitle",
-       ygrid_dynamic = F,yaxis_factor = 20,
-       theme = my_theme)
+       ygrid_dynamic = F,yaxis_factor = 40,
+       theme = my_theme_1)
 
 
 abline(h=0,col="red",lwd=3)

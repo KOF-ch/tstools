@@ -1,13 +1,18 @@
-Package: timeseriesdb
+Package: tstools
 Type: Package
 Version: 0.2.1
 Title: Time series toolkit
-Description: Convenience functions to handle time series data juggling and plotting. 
+Description: Convenience functions to handle time series data juggling and
+    plotting.
 Author: "Matthias Bannert <bannert@kof.ethz.ch> [aut, cre]"
 Depends:
-    R (>= 3.0.0), ggplot2
-Imports: xts, zoo
+    R (>= 3.0.0),
+    ggplot2
+Imports:
+    xts,
+    zoo
 Date: 2016-01-01
 License: GPL-2
 LazyData: true
 Maintainer: 'Matthias Bannert' <bannert@kof.ethz.ch>
+RoxygenNote: 5.0.1
