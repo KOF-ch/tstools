@@ -103,7 +103,7 @@ tsplot.list <- function(series,sel=NULL,
   # 5 digits ... 
   ts_time <- round(ts_time,digits = 5)
   date_range <- range(ts_time)
-  value_range <- range(unlist(series))
+  value_range <- range(unlist(series),na.rm=T)
   
   
   # definition of a default theme
