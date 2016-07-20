@@ -21,6 +21,7 @@ tsplot <- function(series,...,
                    theme_out,
                    print_x_axis,
                    print_y_axis = T,
+                   fillUpPeriod = F,
                    highlight_window = NULL,
                    manual_date_range = NULL,
                    manual_value_range = NULL) UseMethod("tsplot")
@@ -39,6 +40,7 @@ tsplot.ts <- function(series,...,
                       theme_out = F,
                       print_x_axis = T,
                       print_y_axis = T,
+                      fillUpPeriod = F,
                       highlight_window = NULL,
                       manual_date_range = NULL,
                       manual_value_range = NULL){
@@ -60,6 +62,7 @@ tsplot.ts <- function(series,...,
          theme_out = theme_out,
          print_x_axis = print_x_axis,
          print_y_axis = print_y_axis,
+         fillUpPeriod = fillUpPeriod,
          highlight_window = highlight_window,
          manual_date_range = manual_date_range,
          manual_value_range = manual_value_range)  
@@ -79,6 +82,7 @@ tsplot.list <- function(series,sel=NULL,
                         theme_out = F,
                         print_x_axis = T,
                         print_y_axis = T,
+                        fillUpPeriod = F,
                         highlight_window = NULL,
                         manual_date_range = NULL,
                         manual_value_range = NULL,
@@ -98,6 +102,11 @@ tsplot.list <- function(series,sel=NULL,
                               you need more, just use basic plotting
                               and build such a plot on your own.")
 
+  
+  if(fillUpPeriod){
+    series <- lapply(series,fillUpYearWithNAs)
+  }
+  
   ts_time <- unique(unlist(lapply(series,time)))
   # floating problems when comparing stuff, set it to 
   # 5 digits ... 
@@ -132,7 +141,8 @@ tsplot.list <- function(series,sel=NULL,
        xlim = theme$xlim,
        ylim = value_range*1.04,
        col = theme$line_colors[[1]],
-       lwd = theme$lwd,
+       lwd = theme$lwd[1],
+       lty = theme$lty[1],
        xlab = theme$xlab,
        ylab = theme$ylab,
        xaxs = theme$xaxs,
@@ -202,7 +212,13 @@ tsplot.list <- function(series,sel=NULL,
     for (i in 2:length(series)){
       lines(series[[i]],
             col=theme$line_colors[[i]],
-            lwd = 1.5)
+            lwd = ifelse(length(theme$lwd) > 1,
+                         theme$lwd[i],
+                         theme$lwd),
+            lty = ifelse(length(theme$lty) > 1,
+                         theme$lty[i],
+                         theme$lty)
+            )
     }
   }
   

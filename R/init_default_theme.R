@@ -15,6 +15,7 @@ initDefaultTheme <- function(date_range = NULL){
   kof_theme$xaxt <- 'n'  
   kof_theme$yaxt <- 'n'  
   kof_theme$lwd <- 1.5
+  kof_theme$lty <- 1
   kof_theme$title_adj <- 0
   kof_theme$title_line <- 1.5
   kof_theme$subtitle_line <- .3
