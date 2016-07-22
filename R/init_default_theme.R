@@ -5,30 +5,102 @@
 #' a nice starting point. 
 #' @export
 initDefaultTheme <- function(date_range = NULL){
-  kof_theme <- list()
-  kof_theme$xlim <- date_range
-  kof_theme$ygrid <- seq(-60, 60, 30)
-  kof_theme$xlab <- NA
-  kof_theme$ylab <- NA
-  kof_theme$xaxs <- 'i'
-  kof_theme$yaxs <- 'i'  
-  kof_theme$xaxt <- 'n'  
-  kof_theme$yaxt <- 'n'  
-  kof_theme$lwd <- 1.5
-  kof_theme$lty <- 1
-  kof_theme$title_adj <- 0
-  kof_theme$title_line <- 1.5
-  kof_theme$subtitle_line <- .3
-  kof_theme$title_cex.main <- 1
-  kof_theme$subtitle_cex.main <- 1
-  kof_theme$grid_color <- "#00000022"
-  kof_theme$line_colors <- c(ETH7 = "#a8322d",
+  theme <- list()
+  theme$xlim <- date_range
+  theme$ygrid <- seq(-60, 60, 30)
+  theme$xlab <- NA
+  theme$ylab <- NA
+  theme$lty <- 1
+  # axis
+  theme$xaxs <- 'i'
+  theme$yaxs <- 'i'  
+  theme$xaxt <- 'n'  
+  theme$yaxt <- 'n'  
+  theme$lwd <- 1.5
+  theme$tcl_1 <- -0.5
+  theme$tcl_2 <- -0.5
+  theme$padj_1 <- .25 # how far are the labels away from ticks
+  theme$padj_2 <- .25
+  # titles
+  theme$title_adj <- 0
+  theme$title_line <- 1.5
+  theme$subtitle_line <- .3
+  theme$title_cex.main <- 1
+  theme$subtitle_cex.main <- 1
+  theme$lwd_ticks_1 <- 1.5
+  theme$lwd_ticks_2 <- 1
+  # colors
+  theme$grid_color <- "#00000022"
+  theme$line_colors <- c(ETH7 = "#a8322d",
+                         ETH5 = "#91056a",
+                         ETH8 = "#007a92",
+                         ETH8_60 = "#66b0c2",
+                         ETH5_60 = "#cc67a7",
+                         ETH7_50 = "#e19794")
+  theme$highlight_window_color <- "#91056a22"
+  # margin
+  # bottom,left,top,right
+  theme$par <- c(5, 4, 4, 2) + 0.1 # R default
+  #theme$height <- NULL
+  #theme$width <- NULL
+  theme$pointsize <- 10
+  theme
+}
+
+
+initPrintTheme <- function(date_range = NULL){
+  theme <- list()
+  theme$xlim <- date_range
+  theme$ygrid <- seq(-60, 60, 30)
+  theme$xlab <- NA
+  theme$ylab <- NA
+  theme$lty <- 1
+  # axis
+  theme$xaxs <- 'i'
+  theme$yaxs <- 'i'  
+  theme$xaxt <- 'n'  
+  theme$yaxt <- 'n'  
+  theme$lwd <- 2
+  theme$tcl_1 <- -0.5
+  theme$tcl_2 <- -1
+  theme$padj_1 <- .25 # how far are the labels away from ticks
+  theme$padj_2 <- .25
+  theme$cex.axis_1 <- .8
+  theme$cex.axis_2 <- .8
+  theme$axis_las_1 <- 1
+  theme$axis_las_2 <- 2
+  theme$yaxis_tick <- FALSE
+  theme$yaxis_labels <- TRUE
+  theme$ygrid_lwd <- 1
+  theme$ygrid_lty <- 1
+  # titles
+  theme$title_adj <- 0
+  theme$title_line <- 1.5
+  theme$subtitle_line <- .3
+  theme$title_cex.main <- 1
+  theme$subtitle_cex.main <- 1
+  theme$lwd_ticks_1 <- 1
+  theme$lwd_ticks_2 <- 1
+  # colors
+  theme$ygrid_color <- "#00000022"
+  theme$line_colors <- c(ETH7 = "#a8322d",
                              ETH5 = "#91056a",
                              ETH8 = "#007a92",
                              ETH8_60 = "#66b0c2",
                              ETH5_60 = "#cc67a7",
                              ETH7_50 = "#e19794")
-  kof_theme$highlight_window_color <- "#91056a22"
-  theme <- kof_theme
+  theme$highlight_window_color <- "#91056a22"
+  # margin
+  # bottom,left,top,right
+  theme$par <- c(5.3,3.6,3,.45)
+  theme$height <- 2
+  theme$width <- 3.34
+  theme$pointsize <- 7.5
+  # legend
+  theme$lgnd_offset <- 14
+  theme$lgnd_cex_label <- .8
+  theme$lgnd_xpd <- TRUE
   theme
 }
+
+

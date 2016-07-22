@@ -7,21 +7,29 @@
 \title{Basic Times Series Plot Method}
 \usage{
 tsplot(series, ..., theme = NULL, plot.title = NULL, plot.subtitle = NULL,
-  ygrid_dynamic, ygrid_factor, yaxis_factor, theme_out, print_x_axis,
-  print_y_axis = T, highlight_window = NULL, manual_date_range = NULL,
+  write_pdf = F, pdf_width = 4.41, pdf_height = 3.94,
+  legend_offset = 17, par_mar = c(6, 3, 5.5, 0.5), par_mgp = c(13, 0.2,
+  0), fname = NULL, ygrid_dynamic, ygrid_factor, yaxis_factor, theme_out,
+  print_x_axis, print_y_axis = T, fillUpPeriod = F,
+  highlight_window = NULL, manual_date_range = NULL,
   manual_value_range = NULL)
 
 \method{tsplot}{ts}(series, ..., theme = NULL, ygrid_dynamic = F,
-  plot.title = NULL, plot.subtitle = NULL, ygrid_factor = 5,
-  yaxis_factor = 20, quarter_ticks = T, theme_out = F, print_x_axis = T,
-  print_y_axis = T, highlight_window = NULL, manual_date_range = NULL,
+  plot.title = NULL, plot.subtitle = NULL, write_pdf = F,
+  pdf_width = 4.41, pdf_height = 3.94, legend_offset = 17,
+  par_mar = c(6, 3, 5.5, 0.5), par_mgp = c(13, 0.2, 0), fname = NULL,
+  ygrid_factor = 5, yaxis_factor = 20, quarter_ticks = T, theme_out = F,
+  print_x_axis = T, print_y_axis = T, fillUpPeriod = F,
+  highlight_window = NULL, manual_date_range = NULL,
   manual_value_range = NULL)
 
 \method{tsplot}{list}(series, sel = NULL, theme = NULL, plot.title = NULL,
-  plot.subtitle = NULL, ygrid_dynamic = F, ygrid_factor = 5,
+  plot.subtitle = NULL, write_pdf = F, pdf_width = 4.41,
+  pdf_height = 3.94, fname = NULL, legend_offset = 17, par_mar = c(6, 3,
+  5.5, 0.5), par_mgp = c(13, 0.2, 0), ygrid_dynamic = F, ygrid_factor = 5,
   yaxis_factor = 20, quarter_ticks = T, theme_out = F, print_x_axis = T,
-  print_y_axis = T, highlight_window = NULL, manual_date_range = NULL,
-  manual_value_range = NULL, ...)
+  print_y_axis = T, fillUpPeriod = F, highlight_window = NULL,
+  manual_date_range = NULL, manual_value_range = NULL, ...)
 }
 \arguments{
 \item{series}{object of class ts, or list of time series series.}

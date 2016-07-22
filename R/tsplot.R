@@ -15,7 +15,13 @@ tsplot <- function(series,...,
                    theme = NULL,
                    plot.title = NULL,
                    plot.subtitle = NULL,
-                   ygrid_dynamic,
+                   lgnd = NULL,
+                   write_pdf = F,
+                   crop_pdf = F,
+                   legend_offset = 17,
+                   cex_label = 0.65,
+                   fname = NULL,
+                   ygrid = T,
                    ygrid_factor,
                    yaxis_factor,
                    theme_out,
@@ -24,16 +30,23 @@ tsplot <- function(series,...,
                    fillUpPeriod = F,
                    highlight_window = NULL,
                    manual_date_range = NULL,
-                   manual_value_range = NULL) UseMethod("tsplot")
+                   manual_value_range = NULL,
+                   auto_name = NULL) UseMethod("tsplot")
 
 
 #' @rdname tsplot
 #' @export
 tsplot.ts <- function(series,...,
                       theme = NULL,
-                      ygrid_dynamic = F,
                       plot.title = NULL,
                       plot.subtitle = NULL,
+                      lgnd = NULL,
+                      write_pdf = F,
+                      crop_pdf = F,
+                      legend_offset = 17,
+                      cex_label = 0.65,
+                      fname = NULL,
+                      ygrid = T,
                       ygrid_factor = 5,
                       yaxis_factor = 20,
                       quarter_ticks = T,
@@ -43,9 +56,14 @@ tsplot.ts <- function(series,...,
                       fillUpPeriod = F,
                       highlight_window = NULL,
                       manual_date_range = NULL,
-                      manual_value_range = NULL){
+                      manual_value_range = NULL,
+                      auto_name = NULL){
   
   li <- list(...)
+  
+  # get the name of the first time series for 
+  # file naming if no file name is specified.
+  auto_nm <- deparse(substitute(series))
   
   # list of time series
   tl <- c(list(series),li)
@@ -54,18 +72,26 @@ tsplot.ts <- function(series,...,
     stop("all list elements must be of class ts!")
   
   # basically pass it all on to the list method of tsplot
-  tsplot(tl,theme = theme, ygrid_dynamic = ygrid_dynamic,
+  tsplot(tl,theme = theme, 
          ygrid_factor = ygrid_factor,
          yaxis_factor = yaxis_factor,
          plot.title = plot.title,
          plot.subtitle = plot.subtitle,
+         lgnd = lgnd,
+         write_pdf = write_pdf,
+         crop_pdf = crop_pdf,
+         legend_offset = legend_offset,
+         cex_label = cex_label,
+         fname = fname,
          theme_out = theme_out,
+         ygrid = ygrid,
          print_x_axis = print_x_axis,
          print_y_axis = print_y_axis,
          fillUpPeriod = fillUpPeriod,
          highlight_window = highlight_window,
          manual_date_range = manual_date_range,
-         manual_value_range = manual_value_range)  
+         manual_value_range = manual_value_range,
+         auto_name = auto_nm)  
   
 }
 
@@ -75,7 +101,13 @@ tsplot.list <- function(series,sel=NULL,
                         theme = NULL,
                         plot.title = NULL,
                         plot.subtitle = NULL,
-                        ygrid_dynamic = F,
+                        lgnd = NULL,
+                        write_pdf = F,
+                        crop_pdf = F,
+                        fname = NULL,
+                        legend_offset = 17,
+                        cex_label = 0.65,
+                        ygrid = T,
                         ygrid_factor = 5,
                         yaxis_factor = 20,
                         quarter_ticks = T,
@@ -86,6 +118,7 @@ tsplot.list <- function(series,sel=NULL,
                         highlight_window = NULL,
                         manual_date_range = NULL,
                         manual_value_range = NULL,
+                        auto_name = NULL,
                         ...){
   # some sanity checks
   if(!all(unlist(lapply(series,is.ts))))
@@ -113,7 +146,9 @@ tsplot.list <- function(series,sel=NULL,
   ts_time <- round(ts_time,digits = 5)
   date_range <- range(ts_time)
   value_range <- range(unlist(series),na.rm=T)
-  
+  value_range <- trunc(value_range)
+  value_range <- c((floor(value_range[1]/10)-1)*10,
+                   (ceiling(value_range[2]/10)+1)*10)
   
   # definition of a default theme
   if(is.null(theme)){
@@ -136,13 +171,33 @@ tsplot.list <- function(series,sel=NULL,
   }
   
   
+  if(write_pdf){
+    if(is.null(fname)){
+      fname <- auto_name
+      pdf(paste0(fname,".pdf"),
+          pointsize = theme$pointsize,
+          height = theme$height,
+          width = theme$width) # 7 is default, but any other number would do probably  
+    } else {
+      if(!is.character(fname)) stop("file name needs to be a character without file extension.")
+      pdf(paste0(fname,".pdf"),
+          pointsize = theme$pointsize,
+          height = theme$height,
+          width = theme$width) # 7 is default, but any other number would do probably  
+    }  
+  }
+  
+  # bottom,left,top,right
+  par(mar = theme$par)
+  
   # Define Plot ###############
   plot(series[[1]],
        xlim = theme$xlim,
-       ylim = value_range*1.04,
+       ylim = value_range,
        col = theme$line_colors[[1]],
        lwd = theme$lwd[1],
        lty = theme$lty[1],
+       # a4_asp = (210 / 2) / (275 / 4),
        xlab = theme$xlab,
        ylab = theme$ylab,
        xaxs = theme$xaxs,
@@ -172,36 +227,59 @@ tsplot.list <- function(series,sel=NULL,
       ext_label <- ifelse(ext_qtr - floor(ext_qtr) == 0.5, as.character(floor(ext_qtr)), NA)
       # x-axis
       axis(1, at = ext_qtr, labels = ext_label,
-           tcl = -0.5, cex.axis = 1, padj = 0.25)
-      axis(1, at = date_range[1]:date_range[2], tcl = -0.75,
-           lwd.ticks = 2, labels = FALSE) # thick tick marks
+           tcl = theme$tcl_1, cex.axis = theme$cex.axis_1, padj = theme$padj_1)
+      axis(1, at = date_range[1]:date_range[2],
+           tcl = theme$tcl_2,
+           lwd.ticks = theme$lwd_ticks_1, labels = FALSE) # thick tick marks
       
     } else{
       axis(1, at = min_date_value:max_date_value,
-           tcl = -0.5, cex.axis = 1, padj = 0.25)
+           tcl = theme$tcl_1,
+           cex.axis = theme$cex.axis_1,
+           padj = theme$padj_1)
     }
   }
   
   
   
-  # y-axis
   
   # horizontal grid lines ######
-  if(ygrid_dynamic){
-    ygrid <- seq(value_range[1],value_range[2],
-                 (value_range[2] - value_range[1])/ygrid_factor)
-    for (hl in ygrid)  abline(h = hl, col = theme$grid_color)
-    yaxis_main_ticks <- round(seq(value_range[1]*1.04,
-                                  value_range[2]*1.04,
-                                  yaxis_factor))
-  } else {
-    for (hl in theme$ygrid)  abline(h = hl, col = theme$grid_color)
-    yaxis_main_ticks <- theme$ygrid
-  }
- 
+  # this is an excellent thread to improve the entire grid thing here... 
+  # http://stackoverflow.com/questions/8081931/grid-line-consistent-with-ticks-on-axis
+  # make sure to also the check the links in the thread...
+  # if(ygrid_dynamic){
+  #   ygrid <- seq(value_range[1],value_range[2],
+  #                (value_range[2] - value_range[1])/ygrid_factor)
+  #   for (hl in ygrid)  abline(h = hl, col = theme$grid_color)
+  #   yaxis_main_ticks <- round(seq(value_range[1]*1.04,
+  #                                 value_range[2]*1.04,
+  #                                 yaxis_factor))
+  # } else {
+  #   for (hl in theme$ygrid)  abline(h = hl, col = theme$grid_color)
+  #   yaxis_main_ticks <- theme$ygrid
+  # }
+  
+  
+  
+  # y-axis
+  
+  
   if(print_y_axis){
-    axis(2, at = yaxis_main_ticks,
-         tcl = -0.5, cex.axis = 1, padj = 0.25)  
+    stps <- sum(abs(value_range))/ygrid_factor
+    ygrid_labels <- seq(from = value_range[1],
+                       to = value_range[2],
+                       by = stps)
+    ygrid_lines <- ygrid_labels[-c(1,length(ygrid_labels))]
+    axis(2, at = ygrid_labels,
+         tcl = theme$tcl_1,
+         cex.axis = theme$cex.axis_2,
+         padj = theme$padj_2,
+         las = theme$axis_las_2,
+         labels = theme$yaxis_labels,
+         tick = theme$yaxis_tick)
+    if(ygrid){
+      for (hl in ygrid_lines)  abline(h = hl, col = theme$ygrid_color)
+    }
   } 
   
   
@@ -238,6 +316,27 @@ tsplot.list <- function(series,sel=NULL,
   }
   
   if(theme_out) theme
+  
+  if(!is.null(lgnd)){
+    legend(date_range[1],
+           value_range[1]-theme$lgnd_offset,
+           legend = lgnd,
+           box.col = NA, 
+           lty = theme$lty,
+           lwd = theme$lwd,
+           cex = theme$lgnd_cex_label,
+           col = theme$line_colors,
+           xpd = theme$lgnd_xpd)
+    
+  }
+  
+  if(write_pdf) dev.off()
+  if(crop_pdf & write_pdf) {
+    if(Sys.which("pdfcrop") == "") cat("pdfcrop is not installed. To use this option, install pdfcrop if your on a 'Nix OS. If you're on Windows you're out of luck (anyway).") else {
+      run_this <- sprintf("pdfcrop %s %s",paste0(fname,".pdf"),paste0(fname,".pdf"))
+      system(run_this)
+    }
+  }
   
 }
 
