@@ -29,8 +29,11 @@ initDefaultTheme <- function(date_range = NULL){
   theme$subtitle_cex.main <- 1
   theme$lwd_ticks_1 <- 1.5
   theme$lwd_ticks_2 <- 1
+  # ygrid
+  theme$ygrid_lwd <- 1
+  theme$ygrid_lty <- 1
+  theme$ygrid_color <- "#00000022"
   # colors
-  theme$grid_color <- "#00000022"
   theme$line_colors <- c(ETH7 = "#a8322d",
                          ETH5 = "#91056a",
                          ETH8 = "#007a92",
@@ -44,6 +47,10 @@ initDefaultTheme <- function(date_range = NULL){
   #theme$height <- NULL
   #theme$width <- NULL
   theme$pointsize <- 10
+  # legend
+  theme$lgnd_offset <- 14
+  theme$lgnd_cex_label <- .8
+  theme$lgnd_xpd <- TRUE
   theme
 }
 
@@ -71,8 +78,10 @@ initPrintTheme <- function(date_range = NULL){
   theme$axis_las_2 <- 2
   theme$yaxis_tick <- FALSE
   theme$yaxis_labels <- TRUE
+  # ygrid
   theme$ygrid_lwd <- 1
   theme$ygrid_lty <- 1
+  theme$ygrid_color <- "#00000022"
   # titles
   theme$title_adj <- 0
   theme$title_line <- 1.5
@@ -81,8 +90,7 @@ initPrintTheme <- function(date_range = NULL){
   theme$subtitle_cex.main <- 1
   theme$lwd_ticks_1 <- 1
   theme$lwd_ticks_2 <- 1
-  # colors
-  theme$ygrid_color <- "#00000022"
+  # line colors
   theme$line_colors <- c(ETH7 = "#a8322d",
                              ETH5 = "#91056a",
                              ETH8 = "#007a92",
