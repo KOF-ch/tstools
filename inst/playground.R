@@ -33,12 +33,13 @@ p_t <- initPrintTheme()
 
 undebug(tsplot2y)
 undebug(tsplot)
-tsplot(b_ts,theme = p_t,fillUpPeriod = T,ygrid_factor = 4)
+tsplot(b_ts,theme = p_t,fillUpPeriod = T,
+       ygrid_factor = 4)
 
 
-
-
-tsplot2y(b_ts)
+tsplot2y(b_ts,
+         r_ts,
+         r_manual_y_range = c(-6,6))
 
 
 dev.off()
@@ -46,7 +47,7 @@ dev.off()
 plot(ts5)
 
 
-tsplot(ts4)
+tsplot(r_ts,manual_value_range = c(-6,6))
 
 
 

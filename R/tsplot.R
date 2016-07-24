@@ -27,6 +27,7 @@ tsplot <- function(series,...,
                    theme_out,
                    print_x_axis,
                    print_y_axis = T,
+                   print_y_right = F,
                    fillUpPeriod = F,
                    highlight_window = NULL,
                    manual_date_range = NULL,
@@ -53,6 +54,7 @@ tsplot.ts <- function(series,...,
                       theme_out = F,
                       print_x_axis = T,
                       print_y_axis = T,
+                      print_y_right = F,
                       fillUpPeriod = F,
                       highlight_window = NULL,
                       manual_date_range = NULL,
@@ -87,6 +89,7 @@ tsplot.ts <- function(series,...,
          ygrid = ygrid,
          print_x_axis = print_x_axis,
          print_y_axis = print_y_axis,
+         print_y_right = print_y_right,
          fillUpPeriod = fillUpPeriod,
          highlight_window = highlight_window,
          manual_date_range = manual_date_range,
@@ -114,6 +117,7 @@ tsplot.list <- function(series,sel=NULL,
                         theme_out = F,
                         print_x_axis = T,
                         print_y_axis = T,
+                        print_y_right = F,
                         fillUpPeriod = F,
                         highlight_window = NULL,
                         manual_date_range = NULL,
@@ -239,31 +243,7 @@ tsplot.list <- function(series,sel=NULL,
            padj = theme$padj_1)
     }
   }
-  
-  
-  
-  
-  # horizontal grid lines ######
-  # this is an excellent thread to improve the entire grid thing here... 
-  # http://stackoverflow.com/questions/8081931/grid-line-consistent-with-ticks-on-axis
-  # make sure to also the check the links in the thread...
-  # if(ygrid_dynamic){
-  #   ygrid <- seq(value_range[1],value_range[2],
-  #                (value_range[2] - value_range[1])/ygrid_factor)
-  #   for (hl in ygrid)  abline(h = hl, col = theme$grid_color)
-  #   yaxis_main_ticks <- round(seq(value_range[1]*1.04,
-  #                                 value_range[2]*1.04,
-  #                                 yaxis_factor))
-  # } else {
-  #   for (hl in theme$ygrid)  abline(h = hl, col = theme$grid_color)
-  #   yaxis_main_ticks <- theme$ygrid
-  # }
-  
-  
-  
   # y-axis
-  
-  
   if(print_y_axis){
     #stps <- sum(abs(value_range))/ygrid_factor
     stps <- abs(value_range[1] -
@@ -272,7 +252,8 @@ tsplot.list <- function(series,sel=NULL,
                        to = value_range[2],
                        by = stps)
     ygrid_lines <- ygrid_labels[-c(1,length(ygrid_labels))]
-    axis(2, at = ygrid_labels,
+    axis(ifelse(print_y_right,4,2),
+         at = ygrid_labels,
          tcl = theme$tcl_1,
          cex.axis = theme$cex.axis_2,
          padj = theme$padj_2,

@@ -24,10 +24,24 @@ tsplot2y <- function(x,y,theme_2y = NULL,
                      plot.title = NULL,
                      plot.subtitle = NULL,
                      theme_out = F,
+                     ygrid_factor = 4,
+                     l_manual_y_range = NULL,
+                     r_manual_y_range = NULL,
                      ...){
+  # sanity checks
+  if(!(is.ts(x) | is.list(x))){
+    stop("x has to be a time series or a list of time series")
+  }
   
-  # set margin a little different
-  # to free space for another y-axis
+  if(!(is.ts(y) | is.list(y))){
+    stop("y has to be a time series or a list of time series")
+  }
+  
+  
+  if(is.ts(x)) x <- list(x)
+  if(is.ts(y)) y <- list(y)
+  
+  
   
   if(is.null(theme)){
     theme_2y <- initPrint2YTheme()
@@ -43,9 +57,25 @@ tsplot2y <- function(x,y,theme_2y = NULL,
   theme_left <- theme_2y
   theme_left$line_colors <- theme_left$line_colors[1:lx]
   
-  tsplot(x,theme = theme_left)
-  # left theme will be KOF theme... 
-  # but the x-axis will be manipulated to total range of all plots
+  tsplot(x,theme = theme_left,
+         ygrid_factor = ygrid_factor,
+         manual_value_range = l_manual_y_range)
+  
+  # right Y axis plot
+  ly <- length(y)
+  theme_right <- theme_2y
+  theme_left$line_colors <- 
+    theme_left$line_colors[-c(1:lx)]
+  
+  par(new=T)
+  tsplot(y,theme = theme_right,
+         ygrid_factor = ygrid_factor,
+         print_y_axis = T,
+         print_y_right = T,
+         manual_value_range = r_manual_y_range)
+  
+  
+
   
 }
 
