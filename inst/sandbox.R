@@ -6,20 +6,23 @@
 # check title stuff... 
 
 
-
-
 # random series
 ts1 <- ts(rnorm(70,sd = 5),start=c(2010,1),freq=12)
 # quarterly
 ts2 <- ts(rnorm(40,40,sd = 5),start=c(2010,1),freq=4)
 tslist <- list(ts1 = ts1,ts2 = ts2)
 ts3 <- ts(rnorm(100,60,sd = 2),start=c(1990,1),freq=4)
-source("R/tsplot.R")
-source("R/init_default_theme.R")
+
+library(tstools)
 
 
 # plot from a list
-tsplot(tslist,c("ts1"),yaxis_factor = 20,ygrid_dynamic = T)
+tsplot(ts1,ts2,)
+tsplot.list
+
+
+
+
 
 # select single series from a list 
 
@@ -61,6 +64,32 @@ tsplot(ts1,ts2,plot.title = "Testplot",
 
 
 abline(h=0,col="red",lwd=3)
+
+
+
+
+tf1 <- function(series){
+#  nm <- as.character(substitute(series))
+  nm <- deparse(substitute(series))
+  nm
+}
+
+
+tf1(ts1)
+
+
+tf <- function(...){
+  li <- list(...)
+  li_one <- lapply(li,"[",1)
+  li_two <- lapply(li,"[",-1)
+  li_two
+}
+  
+tf(a = c(2,3,5,6) , b = c(2,1,4,423) )
+
+
+
+
 
 
 

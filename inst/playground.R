@@ -1,9 +1,46 @@
+
 # get more realistic series for the 2 axis case
-ts4 <- ts(rnorm(100,sd = 8)+1:100,start=c(1990,1),frequency = 4)
+ts4 <- ts(rnorm(100,sd = 8)+1:100,
+          start=c(1990,1),
+          frequency = 4)
 ts5 <- (ts4/lag(ts4, k=-4))-1
 
-pdf()
+ts4
+ts6 <- lag(ts4)/ts4
+
+debug(tsplot2y)
 tsplot2y(ts4,ts5)
+
+
+# I think we need a check here to check 
+# whether time series are numeric... throw an 
+# exception if not!!
+library(openxlsx)
+baro <- read.xlsx("~/Downloads/kof_data_export_1469353651.xlsx")
+baro <- na.omit(baro)
+baro$kofbarometer <- as.numeric(baro$kofbarometer)
+baro$kofbarometer_ref <- as.numeric(baro$kofbarometer_ref)
+
+
+b_ts <- ts(baro$kofbarometer,start=c(1991,1),
+              frequency = 12)
+r_ts <- ts(baro$kofbarometer_ref,start=c(1991,1),
+              frequency = 12)
+
+
+
+p_t <- initPrintTheme()
+
+undebug(tsplot2y)
+undebug(tsplot)
+tsplot(b_ts,theme = p_t,fillUpPeriod = T,ygrid_factor = 4)
+
+
+
+
+tsplot2y(b_ts)
+
+
 dev.off()
 
 plot(ts5)

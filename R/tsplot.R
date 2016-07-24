@@ -265,7 +265,9 @@ tsplot.list <- function(series,sel=NULL,
   
   
   if(print_y_axis){
-    stps <- sum(abs(value_range))/ygrid_factor
+    #stps <- sum(abs(value_range))/ygrid_factor
+    stps <- abs(value_range[1] -
+                  value_range[2])/ygrid_factor
     ygrid_labels <- seq(from = value_range[1],
                        to = value_range[2],
                        by = stps)
