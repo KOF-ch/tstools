@@ -20,14 +20,15 @@
 #' @param plot.subtitle character
 #' @param theme list 
 #' @param ... list of additional adhoc plot options.
-tsplot2y <- function(x,y,theme_2y = NULL,
+tsplot2y <- function(x,y,...,
+                     theme_2y = NULL,
                      plot.title = NULL,
                      plot.subtitle = NULL,
+                     highlight_window = NULL,
                      theme_out = F,
                      ygrid_factor = 4,
                      l_manual_y_range = NULL,
-                     r_manual_y_range = NULL,
-                     ...){
+                     r_manual_y_range = NULL){
   # sanity checks
   if(!(is.ts(x) | is.list(x))){
     stop("x has to be a time series or a list of time series")
@@ -37,15 +38,18 @@ tsplot2y <- function(x,y,theme_2y = NULL,
     stop("y has to be a time series or a list of time series")
   }
   
-  
+  # lists can be handled by the 
+  # flexible tsplot.list method
+  # hence we turn all single series into 
+  # a list of time series with one element
   if(is.ts(x)) x <- list(x)
   if(is.ts(y)) y <- list(y)
-  
-  
-  
-  if(is.null(theme)){
+
+  if(is.null(theme_2y)){
     theme_2y <- initPrint2YTheme()
   }
+  
+  
   
   # information for both plots
   #par(mar = theme_2y$par)
@@ -55,28 +59,45 @@ tsplot2y <- function(x,y,theme_2y = NULL,
   # determine length to say how many colors are needed
   lx <- length(x)
   theme_left <- theme_2y
-  theme_left$line_colors <- theme_left$line_colors[1:lx]
+  theme_left$line_colors <- 
+    theme_left$line_colors[1:lx]
+  theme_left$lty <- theme_left$lty[1:lx]
+  theme_left$lwd <- theme_left$lwd[1:lx]
   
   tsplot(x,theme = theme_left,
          ygrid_factor = ygrid_factor,
+         highlight_window = highlight_window,
          manual_value_range = l_manual_y_range)
   
   # right Y axis plot
   ly <- length(y)
   theme_right <- theme_2y
-  theme_left$line_colors <- 
-    theme_left$line_colors[-c(1:lx)]
+  # get what's left, make sure to not use 
+  # a color, lty or lwd twice unless there's 
+  # only a single value
+  theme_right$line_colors <- 
+    theme_2y$line_colors[-c(1:lx)]
+  
+  if(length(theme_2y$lty) == 1) 
+    theme_right$lty <- theme_2y$lty
+  else
+    theme_right$lty <- theme_2y$lty[-c(1:lx)]
+  
+  if(length(theme_2y$lwd) == 1) 
+    theme_right$lwd <- theme_2y$lwd
+  else
+    theme_right$lwd <- theme_2y$lwd[-c(1:lx)]
+
   
   par(new=T)
-  tsplot(y,theme = theme_right,
+  tsplot(y,
+         plot.title = plot.title,
+         plot.subtitle = plot.subtitle,
+         theme = theme_right,
          ygrid_factor = ygrid_factor,
          print_y_axis = T,
          print_y_right = T,
          manual_value_range = r_manual_y_range)
-  
-  
-
-  
 }
 
 

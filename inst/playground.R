@@ -29,17 +29,35 @@ r_ts <- ts(baro$kofbarometer_ref,start=c(1991,1),
 
 
 
-p_t <- initPrintTheme()
+p_t <- initPrint2YTheme()
+p_t$lwd <- 3
+p_t$lty <- c(1,1,3)
+
+
 
 undebug(tsplot2y)
 undebug(tsplot)
-tsplot(b_ts,theme = p_t,fillUpPeriod = T,
+
+tsplot(b_ts,theme = p_t,
+       highlight_window = c(2012,2015),
        ygrid_factor = 4)
 
 
-tsplot2y(b_ts,
-         r_ts,
-         r_manual_y_range = c(-6,6))
+
+# next... check colors, lwd and lty!!!
+# got colors, lwd and lty now...
+# get highlight box going now... 
+
+w_b_ts <- window(b_ts,start=c(2005))
+w_r_ts <- window(r_ts,start=c(2005))
+
+# 0.7304398 oct 2011
+# 83.12832
+tsplot2y(w_b_ts,
+         w_r_ts,
+         r_manual_y_range = c(-6,6),
+         highlight_window = c(2009,2015),
+         theme_2y = p_t)
 
 
 dev.off()

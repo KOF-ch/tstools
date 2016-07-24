@@ -28,7 +28,6 @@ tsplot <- function(series,...,
                    print_x_axis,
                    print_y_axis = T,
                    print_y_right = F,
-                   fillUpPeriod = F,
                    highlight_window = NULL,
                    manual_date_range = NULL,
                    manual_value_range = NULL,
@@ -55,7 +54,6 @@ tsplot.ts <- function(series,...,
                       print_x_axis = T,
                       print_y_axis = T,
                       print_y_right = F,
-                      fillUpPeriod = F,
                       highlight_window = NULL,
                       manual_date_range = NULL,
                       manual_value_range = NULL,
@@ -90,7 +88,6 @@ tsplot.ts <- function(series,...,
          print_x_axis = print_x_axis,
          print_y_axis = print_y_axis,
          print_y_right = print_y_right,
-         fillUpPeriod = fillUpPeriod,
          highlight_window = highlight_window,
          manual_date_range = manual_date_range,
          manual_value_range = manual_value_range,
@@ -118,7 +115,6 @@ tsplot.list <- function(series,sel=NULL,
                         print_x_axis = T,
                         print_y_axis = T,
                         print_y_right = F,
-                        fillUpPeriod = F,
                         highlight_window = NULL,
                         manual_date_range = NULL,
                         manual_value_range = NULL,
@@ -140,7 +136,7 @@ tsplot.list <- function(series,sel=NULL,
                               and build such a plot on your own.")
 
   
-  if(fillUpPeriod){
+  if(theme$fillUpPeriod){
     series <- lapply(series,fillUpYearWithNAs)
   }
   
@@ -212,9 +208,9 @@ tsplot.list <- function(series,sel=NULL,
  
   if(!is.null(highlight_window)){
     rect(highlight_window[1],
-         value_range[1]*2,
+         value_range[1],
          highlight_window[2],
-         value_range[2]*2,
+         value_range[2],
          col=theme$highlight_window_color,
          border=NA)
     
