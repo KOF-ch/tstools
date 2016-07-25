@@ -166,7 +166,8 @@ initPrint2YTheme <- function(date_range = NULL){
   # legend
   theme$lgnd_offset <- 14
   theme$lgnd_cex_label <- .8
-  theme$lgnd_xpd <- TRUE
+  # allows legends outside plot area
+  theme$lgnd_xpd <- TRUE 
   theme$fillUpPeriod <- TRUE
   theme
 }

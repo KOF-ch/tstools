@@ -27,12 +27,13 @@ b_ts <- ts(baro$kofbarometer,start=c(1991,1),
 r_ts <- ts(baro$kofbarometer_ref,start=c(1991,1),
               frequency = 12)
 
-
+library(devtools)
+load_all("../tstools/")
 
 p_t <- initPrint2YTheme()
 p_t$lwd <- 3
 p_t$lty <- c(1,1,3)
-
+p_t$lgnd_offset <- 6
 
 
 undebug(tsplot2y)
@@ -53,11 +54,17 @@ w_r_ts <- window(r_ts,start=c(2005))
 
 # 0.7304398 oct 2011
 # 83.12832
+# next up add pdf functionality 
+# to tsplot2y !!!!!
+# also add legend !!
 tsplot2y(w_b_ts,
          w_r_ts,
          r_manual_y_range = c(-6,6),
-         highlight_window = c(2009,2015),
-         theme_2y = p_t)
+         highlight_window = c(2013,2015),
+         theme_2y = p_t,
+         plot.title = "KOF Barometer",
+         plot.subtitle = "Swiss GDP Growth",
+         lgnd = c("Baro","GDP"))
 
 
 dev.off()
@@ -117,5 +124,8 @@ axis(4)
 #      ...)
 # axis(4)
 
-
+plot(rnorm(100))
+par(new=T,xpd=T)
+plot(rnorm(10))
+legend(1,-3,legend = c("a","b"))
 

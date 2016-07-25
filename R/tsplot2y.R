@@ -24,6 +24,7 @@ tsplot2y <- function(x,y,...,
                      theme_2y = NULL,
                      plot.title = NULL,
                      plot.subtitle = NULL,
+                     lgnd = NULL,
                      highlight_window = NULL,
                      theme_out = F,
                      ygrid_factor = 4,
@@ -69,6 +70,10 @@ tsplot2y <- function(x,y,...,
          highlight_window = highlight_window,
          manual_value_range = l_manual_y_range)
   
+  
+  
+  
+  
   # right Y axis plot
   ly <- length(y)
   theme_right <- theme_2y
@@ -90,6 +95,7 @@ tsplot2y <- function(x,y,...,
 
   
   par(new=T)
+  
   tsplot(y,
          plot.title = plot.title,
          plot.subtitle = plot.subtitle,
@@ -98,6 +104,30 @@ tsplot2y <- function(x,y,...,
          print_y_axis = T,
          print_y_right = T,
          manual_value_range = r_manual_y_range)
+  
+  # legend position
+  ts_time <- unique(unlist(lapply(x,time)))
+  # floating problems when comparing stuff, set it to 
+  # 5 digits ... 
+  ts_time <- round(ts_time,digits = 5)
+  date_range <- range(ts_time)
+  value_range <- trunc(range(unlist(y),na.rm=T))
+  
+  if(!is.null(lgnd)){
+    # http://stackoverflow.com/questions/3932038/plot-a-legend-outside-of-the-plotting-area-in-base-graphics
+    legend("bottomleft",
+           inset=c(0,-0.35),
+           legend = lgnd,
+           y.intersp = 1.6,
+           xpd = theme_2y$lgnd_offset,
+           box.col = NA, 
+           lty = theme_2y$lty,
+           lwd = theme_2y$lwd,
+           cex = theme_2y$lgnd_cex_label,
+           col = theme_2y$line_colors)
+  }
+  
+  
 }
 
 
