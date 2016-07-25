@@ -188,7 +188,7 @@ tsplot.list <- function(series,sel=NULL,
   }
   
   # bottom,left,top,right
-  par(mar = theme$par)
+  par(mar = theme$mar)
   
   # Define Plot ###############
   plot(series[[1]],
@@ -305,6 +305,7 @@ tsplot.list <- function(series,sel=NULL,
            lwd = theme$lwd,
            cex = theme$lgnd_cex_label,
            col = theme$line_colors,
+           bty = theme$lgnd_bty, 
            xpd = theme$lgnd_xpd)
     
   }

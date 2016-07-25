@@ -7,29 +7,27 @@
 \title{Basic Times Series Plot Method}
 \usage{
 tsplot(series, ..., theme = NULL, plot.title = NULL, plot.subtitle = NULL,
-  write_pdf = F, pdf_width = 4.41, pdf_height = 3.94,
-  legend_offset = 17, par_mar = c(6, 3, 5.5, 0.5), par_mgp = c(13, 0.2,
-  0), fname = NULL, ygrid_dynamic, ygrid_factor, yaxis_factor, theme_out,
-  print_x_axis, print_y_axis = T, fillUpPeriod = F,
-  highlight_window = NULL, manual_date_range = NULL,
-  manual_value_range = NULL)
+  lgnd = NULL, write_pdf = F, crop_pdf = F, legend_offset = 17,
+  cex_label = 0.65, fname = NULL, ygrid = T, ygrid_factor = 4,
+  yaxis_factor, theme_out, print_x_axis, print_y_axis = T,
+  print_y_right = F, highlight_window = NULL, manual_date_range = NULL,
+  manual_value_range = NULL, auto_name = NULL)
 
-\method{tsplot}{ts}(series, ..., theme = NULL, ygrid_dynamic = F,
-  plot.title = NULL, plot.subtitle = NULL, write_pdf = F,
-  pdf_width = 4.41, pdf_height = 3.94, legend_offset = 17,
-  par_mar = c(6, 3, 5.5, 0.5), par_mgp = c(13, 0.2, 0), fname = NULL,
-  ygrid_factor = 5, yaxis_factor = 20, quarter_ticks = T, theme_out = F,
-  print_x_axis = T, print_y_axis = T, fillUpPeriod = F,
+\method{tsplot}{ts}(series, ..., theme = NULL, plot.title = NULL,
+  plot.subtitle = NULL, lgnd = NULL, write_pdf = F, crop_pdf = F,
+  legend_offset = 17, cex_label = 0.65, fname = NULL, ygrid = T,
+  ygrid_factor = 4, yaxis_factor = 20, quarter_ticks = T, theme_out = F,
+  print_x_axis = T, print_y_axis = T, print_y_right = F,
   highlight_window = NULL, manual_date_range = NULL,
-  manual_value_range = NULL)
+  manual_value_range = NULL, auto_name = NULL)
 
 \method{tsplot}{list}(series, sel = NULL, theme = NULL, plot.title = NULL,
-  plot.subtitle = NULL, write_pdf = F, pdf_width = 4.41,
-  pdf_height = 3.94, fname = NULL, legend_offset = 17, par_mar = c(6, 3,
-  5.5, 0.5), par_mgp = c(13, 0.2, 0), ygrid_dynamic = F, ygrid_factor = 5,
-  yaxis_factor = 20, quarter_ticks = T, theme_out = F, print_x_axis = T,
-  print_y_axis = T, fillUpPeriod = F, highlight_window = NULL,
-  manual_date_range = NULL, manual_value_range = NULL, ...)
+  plot.subtitle = NULL, lgnd = NULL, write_pdf = F, crop_pdf = F,
+  fname = NULL, legend_offset = 17, cex_label = 0.65, ygrid = T,
+  ygrid_factor = 5, yaxis_factor = 20, quarter_ticks = T, theme_out = F,
+  print_x_axis = T, print_y_axis = T, print_y_right = F,
+  highlight_window = NULL, manual_date_range = NULL,
+  manual_value_range = NULL, auto_name = NULL, ...)
 }
 \arguments{
 \item{series}{object of class ts, or list of time series series.}
@@ -38,13 +36,13 @@ tsplot(series, ..., theme = NULL, plot.title = NULL, plot.subtitle = NULL,
 
 \item{theme}{list holding extra style arguments to be passed to plot.}
 
-\item{ygrid_dynamic}{logical, defaults to FALSE. Should ygrids be dynamic?
-If not, the ygrid configuration of the theme is used.}
-
 \item{ygrid_factor}{numeric, defaults to 5. Factor by which the difference 
 between the maximum and the minimum y value should be divided. This parameter
 determines the number of horizontal grid lines when dynamic ygrid_dynamic is 
 TRUE.}
+
+\item{ygrid_dynamic}{logical, defaults to FALSE. Should ygrids be dynamic?
+If not, the ygrid configuration of the theme is used.}
 }
 \description{
 Basic Times Series Plot Method

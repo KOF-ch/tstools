@@ -48,14 +48,17 @@ initDefaultTheme <- function(date_range = NULL){
   #theme$width <- NULL
   theme$pointsize <- 10
   # legend
-  theme$lgnd_offset <- 14
+  # legend
   theme$lgnd_cex_label <- .8
+  theme$lgnd_bty <- "n"
+  theme$lgnd_vertical_spacing <- 1.6
+  theme$lgnd_inset <- c(0,0)
   theme$lgnd_xpd <- TRUE
   theme$fillUpPeriod <- TRUE
   theme
 }
 
-
+#' @export
 initPrintTheme <- function(date_range = NULL){
   theme <- list()
   theme$xlim <- date_range
@@ -106,14 +109,16 @@ initPrintTheme <- function(date_range = NULL){
   theme$width <- 3.34
   theme$pointsize <- 7.5
   # legend
-  theme$lgnd_offset <- 14
+  theme$lgnd_vertical_spacing <- 1.6
   theme$lgnd_cex_label <- .8
+  theme$lgnd_bty <- "n"
+  theme$lgnd_inset <- c(0,0)
   theme$lgnd_xpd <- TRUE
   theme$fillUpPeriod <- TRUE
   theme
 }
 
-
+#' @export
 initPrint2YTheme <- function(date_range = NULL){
   theme <- list()
   theme$xlim <- date_range
@@ -164,8 +169,10 @@ initPrint2YTheme <- function(date_range = NULL){
   theme$width <- 3.34
   theme$pointsize <- 7.5
   # legend
-  theme$lgnd_offset <- 14
   theme$lgnd_cex_label <- .8
+  theme$lgnd_bty <- "n"
+  theme$lgnd_vertical_spacing <- 1.6
+  theme$lgnd_inset <- c(0,0)
   # allows legends outside plot area
   theme$lgnd_xpd <- TRUE 
   theme$fillUpPeriod <- TRUE

@@ -25,6 +25,9 @@ tsplot2y <- function(x,y,...,
                      plot.title = NULL,
                      plot.subtitle = NULL,
                      lgnd = NULL,
+                     write_pdf = F,
+                     crop_pdf = F,
+                     fname = NULL,
                      highlight_window = NULL,
                      theme_out = F,
                      ygrid_factor = 4,
@@ -64,6 +67,24 @@ tsplot2y <- function(x,y,...,
     theme_left$line_colors[1:lx]
   theme_left$lty <- theme_left$lty[1:lx]
   theme_left$lwd <- theme_left$lwd[1:lx]
+  
+  
+  if(write_pdf){
+    if(is.null(fname)){
+      fname <- auto_nm <- deparse(substitute(x))
+      pdf(paste0(fname,".pdf"),
+          pointsize = theme_2y$pointsize,
+          height = theme_2y$height,
+          width = theme_2y$width) # 7 is default, but any other number would do probably  
+    } else {
+      if(!is.character(fname)) stop("file name needs to be a character without file extension.")
+      pdf(paste0(fname,".pdf"),
+          pointsize = theme_2y$pointsize,
+          height = theme_2y$height,
+          width = theme_2y$width) # 7 is default, but any other number would do probably  
+    }  
+  }
+  
   
   tsplot(x,theme = theme_left,
          ygrid_factor = ygrid_factor,
@@ -116,16 +137,26 @@ tsplot2y <- function(x,y,...,
   if(!is.null(lgnd)){
     # http://stackoverflow.com/questions/3932038/plot-a-legend-outside-of-the-plotting-area-in-base-graphics
     legend("bottomleft",
-           inset=c(0,-0.35),
+           inset = theme_2y$lgnd_inset,
            legend = lgnd,
-           y.intersp = 1.6,
-           xpd = theme_2y$lgnd_offset,
+           y.intersp = theme_2y$lgnd_vertical_spacing,
+           xpd = theme_2y$lgnd_xpd,
            box.col = NA, 
            lty = theme_2y$lty,
+           bty = theme_2y$lgnd_bty,
            lwd = theme_2y$lwd,
            cex = theme_2y$lgnd_cex_label,
            col = theme_2y$line_colors)
   }
+  
+  if(write_pdf) dev.off()
+  if(crop_pdf & write_pdf) {
+    if(Sys.which("pdfcrop") == "") cat("pdfcrop is not installed. To use this option, install pdfcrop if your on a 'Nix OS. If you're on Windows you're out of luck (anyway).") else {
+      run_this <- sprintf("pdfcrop %s %s",paste0(fname,".pdf"),paste0(fname,".pdf"))
+      system(run_this)
+    }
+  }
+  
   
   
 }
