@@ -20,6 +20,7 @@
 #' @param plot.subtitle character
 #' @param theme list 
 #' @param ... list of additional adhoc plot options.
+#' @export
 tsplot2y <- function(x,y,...,
                      theme_2y = NULL,
                      plot.title = NULL,

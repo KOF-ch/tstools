@@ -27,16 +27,18 @@ b_ts <- ts(baro$kofbarometer,start=c(1991,1),
 r_ts <- ts(baro$kofbarometer_ref,start=c(1991,1),
               frequency = 12)
 
+tsplot(b_ts,theme = p_t)
+
 library(devtools)
 load_all("../tstools/")
 
 library(tstools)
 
 p_t <- initPrint2YTheme()
-p_t$lwd <- 3
-p_t$lty <- c(1,1,3)
+p_t$lwd <- 2
+p_t$lty <- c(1,3)
 p_t$lgnd_inset <- c(0,0)
-
+p_t$fillUpPeriod <- T
 
 undebug(tsplot2y)
 undebug(tsplot)
@@ -45,13 +47,13 @@ undebug(tsplot)
 # got colors, lwd and lty now...
 # get highlight box going now... 
 
-w_b_ts <- window(b_ts,start=c(2005))
+w_b_ts <- window(b_ts,start=c(2005),end=c(2014))
 w_r_ts <- window(r_ts,start=c(2005))
 
 tsplot(w_b_ts,theme = p_t,
-       ygrid_factor = 4,highlight_window = c(2010,2015))
+       ygrid_factor = 4,highlight_window = c(2010,2015.25))
 
-
+abline(v=2014,col="red")
 
 # 0.7304398 oct 2011
 # 83.12832
@@ -65,8 +67,10 @@ tsplot2y(w_b_ts,
          theme_2y = p_t,
          plot.title = "KOF Barometer",
          plot.subtitle = "Swiss GDP Growth",
-         lgnd = c("Baro","GDP"),write_pdf = F)
+         lgnd = c("Baro","GDP"),write_pdf = T,fname = "test",crop_pdf = T)
 
+
+abline(v=2014,col="red")
 
 dev.off()
 

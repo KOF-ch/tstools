@@ -18,7 +18,6 @@ tsplot <- function(series,...,
                    lgnd = NULL,
                    write_pdf = F,
                    crop_pdf = F,
-                   legend_offset = 17,
                    cex_label = 0.65,
                    fname = NULL,
                    ygrid = T,
@@ -43,7 +42,6 @@ tsplot.ts <- function(series,...,
                       lgnd = NULL,
                       write_pdf = F,
                       crop_pdf = F,
-                      legend_offset = 17,
                       cex_label = 0.65,
                       fname = NULL,
                       ygrid = T,
@@ -80,7 +78,6 @@ tsplot.ts <- function(series,...,
          lgnd = lgnd,
          write_pdf = write_pdf,
          crop_pdf = crop_pdf,
-         legend_offset = legend_offset,
          cex_label = cex_label,
          fname = fname,
          theme_out = theme_out,
@@ -105,7 +102,6 @@ tsplot.list <- function(series,sel=NULL,
                         write_pdf = F,
                         crop_pdf = F,
                         fname = NULL,
-                        legend_offset = 17,
                         cex_label = 0.65,
                         ygrid = T,
                         ygrid_factor = 5,
@@ -128,6 +124,13 @@ tsplot.list <- function(series,sel=NULL,
   if(!is.null(sel)){
     series <- series[sel]  
   }
+  
+  # definition of a default theme
+  
+  if(is.null(theme)){
+    theme <- initDefaultTheme()
+  }
+  
   # don't have default colors for more than 6 lines
   if(length(series) > 6) stop("This convenience plot function does not
                               support more than 6 series in one plot.
@@ -150,10 +153,7 @@ tsplot.list <- function(series,sel=NULL,
   value_range <- c((floor(value_range[1]/10)-1)*10,
                    (ceiling(value_range[2]/10)+1)*10)
   
-  # definition of a default theme
-  if(is.null(theme)){
-    theme <- initDefaultTheme(date_range)
-  }
+  
   
   
 
@@ -297,8 +297,8 @@ tsplot.list <- function(series,sel=NULL,
   if(theme_out) theme
   
   if(!is.null(lgnd)){
-    legend(date_range[1],
-           value_range[1]-theme$lgnd_offset,
+    legend("bottomleft",
+           inset = theme$lgnd_inset,
            legend = lgnd,
            box.col = NA, 
            lty = theme$lty,

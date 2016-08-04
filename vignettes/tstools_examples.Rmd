@@ -1,8 +1,20 @@
 ---
-title: "Put the title of your vignette here"
+title: "tstools"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Put the title of your vignette here}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
+
+# About tstools
+This packages bundles a set of utilities to juggle and process time series. Why yet another time series package? I realized that economists have some idiosyncratic needs and often a strong fondness of a specific type of graph or outlet that they refuse to give up. Often this fondness is so strong that they use an expensive piece of software just because of a single feature.
+Or as one of the open source community's biggest gurus, Dirk Eddelbuettel, put it: ``It's your itch - it's your project.``
+For example, *tstools* tries to facilitate the creation of time series plots with two ordinates (Y-axes). Further, *tstools* exports lists of time series into spreadsheet formats, such as .csv or .xlsx.
+
+# Graphs
+
+
+# Computation
+
+# Export Data
