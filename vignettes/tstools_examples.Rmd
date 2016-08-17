@@ -2,19 +2,105 @@
 title: "tstools"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Put the title of your vignette here}
+  %\VignetteIndexEntry{tstools}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
 # About tstools
-This packages bundles a set of utilities to juggle and process time series. Why yet another time series package? I realized that economists have some idiosyncratic needs and often a strong fondness of a specific type of graph or outlet that they refuse to give up. Often this fondness is so strong that they use an expensive piece of software just because of a single feature.
-Or as one of the open source community's biggest gurus, Dirk Eddelbuettel, put it: ``It's your itch - it's your project.``
-For example, *tstools* tries to facilitate the creation of time series plots with two ordinates (Y-axes). Further, *tstools* exports lists of time series into spreadsheet formats, such as .csv or .xlsx.
+This package bundles a set of utilities to juggle and process time series. Why yet another time series package? First of all, it's not another package to do time series analysis in the sense od ACF functions or ARIMA models. It's rather about processing data. So, who might benefit from the package?
+
+As one of the open source community's biggest gurus, Dirk Eddelbuettel, put it: ``It's your itch - it's your project.`` Consequently, this package aims at the missing links between R and (macro)economists (So that itch of mine was, not wanting to hear suggestions about using Excel for stuff that was to complicated in R.) Macroeconomists seem to have some idiosyncratic needs and a strong fondness of a specific type of graph or outlet that they refuse to give up. For example, plots with two ordinates (Y-axes) are such a need. While a significant part of the R community argues how flawed the entire double axes approach is, showing indices and growth rates in the same plot is something (macro)economists frequently do to express themselves and to compare their indicators. So mighty R can't do it in reasonably comfortable fashion (while other pieces of software do)? *tstools* tries to provide a simple interface for time series data juggling and visualization tasks. 
+
 
 # Graphs
+The most basic time series plot is a line chart. **tstools** uses base R to plot 
+line charts and plots are thus easily extensible. Base R plots look rather technical and raw, so **tstools** tries to set a ton of useful defaults to make time series plots look nicer from the start. 
+
+## Basic usage
+**tstools'** workhorse plot function is *tsplot*. It offers methods for objects of class ts and lists. In addition to *tsplot*, *tsplot2y* enables the user to plots with two Y-axes.
+
+### Single time series
+```{r,fig.width = 7}
+library(tstools)
+data(KOF)
+tsplot(KOF$barometer)
+```
+
+### Multiple time series
+```{r}
+ts1 <- ts(rnorm(100),start=c(1990,1),freq=12)
+ts2 <- ts(rnorm(100,10),start=c(1990,1),freq=12)
+
+tslist <- list()
+tslist$ts1 <- ts1
+tslist$ts2 <- ts2
+```
+Either plot single time series separated by commas:
+```{r,fig.width = 7}
+tsplot(ts1,ts2)
+```
+or a list of time series:
+```{r,fig.width = 7}
+tsplot(tslist)
+```
+
+## Themes
+Balancing out a ton of defaults to create nifty plots is one of **tstools** contributions. Yet, you might want to tweak single parameters. **tstools** organizes many plotting features in lists called themes. There 3 functions that init default themes. 
+
+```{r}
+default_1 <- initDefaultTheme()
+print_1 <- initPrintTheme()
+print_2y <- initPrint2YTheme()
+names(default_1)
+```
+
+All lists contain many parameters that can be overwritten separately. For example, you can change the line type and simply pass the adjusted theme to the plot function.
+Note that you can use a vector for line specific properties if you got multiple series. If you use a scalar, the property is set to this value for all lines.
+
+```{r,fig.width = 7}
+default_1$lty <- c(1,2)
+tsplot(tslist,theme = default_1)
+```
+
+## Plots with 2 Y-axes
+If you want to draw two time series with different scales into the same plot, you can either create two facets of the same plot or normalize your time series. Both are common and clean approaches. However, sometimes you want to draw it to the very same plot without re-scaling. E.g., growth rates loose their intuitive interpretation when being rescaled. Macroeconomists love growth rates and they loves indices. The following example shows the KOF Barometer, a monthly business cycle indicator for Switzerland, and its reference series, the Swiss GDP growth rate.
+
+```{r,fig.width = 7}
+data(KOF)
+tsplot2y(KOF$barometer,KOF$ch_gdp_grwth)
+```
+
+*tsplot2y* works similarily to *tsplot* and basically implements the same configuration approach as *tsplot*. You can also add a title and a subtitle. Note that tsplot only accepts two arguments x and y which can either be time series or lists of time series. It is not possible the add multiple series by lining them up separated by commas. Series passed through the x argument relate to the left Y-axis, series passed through the y argument relate to the right y-axis.
+
+```{r,fig.width = 7}
+print_2y <- initPrint2YTheme()
+print_2y$lty <- c(1,3)
+tsplot2y(KOF$barometer,KOF$ch_gdp_grwth,
+         plot.title = "KOF Barometer",
+         plot.subtitle = "Swiss GDP growth",
+         lgnd = c("KOF Barometer","GDP growth rate")
+        )
+
+```
+
+## Write plots to .pdf
+*tstools* can also help to automate creation of .pdf files from your plots. Both plotting functions described above provide flags for pdf output and crop features. File names can also be given with the *fname* parameter. Note that the crop parameter relies on pdfcrop by Heiko Oberdiek and is only available on Unix Systems when pdfcrop is installed.
 
 
-# Computation
+```{r,eval=FALSE}
+# NOT RUN
+print_2y <- initPrint2YTheme()
+print_2y$lty <- c(1,3)
+print_2y$inset <- c(0,-0.35)
+tsplot2y(KOF$barometer,KOF$ch_gdp_grwth,
+         plot.title = "KOF Barometer",
+         plot.subtitle = "Swiss GDP growth",
+         lgnd = c("KOF Barometer","GDP growth rate"),
+         fname = "my_file_name",
+         write_pdf = T,
+         crop_pdf = T
+        )
 
-# Export Data
+```
+

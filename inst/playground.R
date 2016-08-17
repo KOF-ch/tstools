@@ -69,6 +69,14 @@ tsplot2y(w_b_ts,
          plot.subtitle = "Swiss GDP Growth",
          lgnd = c("Baro","GDP"),write_pdf = T,fname = "test",crop_pdf = T)
 
+tsplot(w_b_ts,
+         highlight_window = c(2013,2015),
+         plot.title = "KOF Barometer",
+         plot.subtitle = "Swiss GDP Growth",
+         lgnd = c("Baro"),write_pdf = T,fname = "test",crop_pdf = T)
+
+
+
 
 abline(v=2014,col="red")
 

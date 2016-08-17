@@ -3,31 +3,38 @@
 \name{tsplot}
 \alias{tsplot}
 \alias{tsplot.list}
+\alias{tsplot.mts}
 \alias{tsplot.ts}
 \title{Basic Times Series Plot Method}
 \usage{
 tsplot(series, ..., theme = NULL, plot.title = NULL, plot.subtitle = NULL,
-  lgnd = NULL, write_pdf = F, crop_pdf = F, legend_offset = 17,
-  cex_label = 0.65, fname = NULL, ygrid = T, ygrid_factor = 4,
-  yaxis_factor, theme_out, print_x_axis, print_y_axis = T,
-  print_y_right = F, highlight_window = NULL, manual_date_range = NULL,
+  lgnd = NULL, write_pdf = F, crop_pdf = F, cex_label = 0.65,
+  fname = NULL, ygrid = T, ygrid_factor = 4, yaxis_factor, theme_out,
+  print_x_axis, print_y_axis = T, print_y_right = F,
+  highlight_window = NULL, manual_date_range = NULL,
   manual_value_range = NULL, auto_name = NULL)
 
 \method{tsplot}{ts}(series, ..., theme = NULL, plot.title = NULL,
   plot.subtitle = NULL, lgnd = NULL, write_pdf = F, crop_pdf = F,
-  legend_offset = 17, cex_label = 0.65, fname = NULL, ygrid = T,
-  ygrid_factor = 4, yaxis_factor = 20, quarter_ticks = T, theme_out = F,
-  print_x_axis = T, print_y_axis = T, print_y_right = F,
-  highlight_window = NULL, manual_date_range = NULL,
-  manual_value_range = NULL, auto_name = NULL)
+  cex_label = 0.65, fname = NULL, ygrid = T, ygrid_factor = 4,
+  yaxis_factor = 20, quarter_ticks = T, theme_out = F, print_x_axis = T,
+  print_y_axis = T, print_y_right = F, highlight_window = NULL,
+  manual_date_range = NULL, manual_value_range = NULL, auto_name = NULL)
+
+\method{tsplot}{mts}(series, ..., theme = NULL, plot.title = NULL,
+  plot.subtitle = NULL, lgnd = NULL, write_pdf = F, crop_pdf = F,
+  cex_label = 0.65, fname = NULL, ygrid = T, ygrid_factor = 4,
+  yaxis_factor = 20, quarter_ticks = T, theme_out = F, print_x_axis = T,
+  print_y_axis = T, print_y_right = F, highlight_window = NULL,
+  manual_date_range = NULL, manual_value_range = NULL, auto_name = NULL)
 
 \method{tsplot}{list}(series, sel = NULL, theme = NULL, plot.title = NULL,
   plot.subtitle = NULL, lgnd = NULL, write_pdf = F, crop_pdf = F,
-  fname = NULL, legend_offset = 17, cex_label = 0.65, ygrid = T,
-  ygrid_factor = 5, yaxis_factor = 20, quarter_ticks = T, theme_out = F,
-  print_x_axis = T, print_y_axis = T, print_y_right = F,
-  highlight_window = NULL, manual_date_range = NULL,
-  manual_value_range = NULL, auto_name = NULL, ...)
+  fname = NULL, cex_label = 0.65, ygrid = T, ygrid_factor = 5,
+  yaxis_factor = 20, quarter_ticks = T, theme_out = F, print_x_axis = T,
+  print_y_axis = T, print_y_right = F, highlight_window = NULL,
+  manual_date_range = NULL, manual_value_range = NULL, auto_name = NULL,
+  ...)
 }
 \arguments{
 \item{series}{object of class ts, or list of time series series.}

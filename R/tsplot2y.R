@@ -72,7 +72,7 @@ tsplot2y <- function(x,y,...,
   
   if(write_pdf){
     if(is.null(fname)){
-      fname <- auto_nm <- deparse(substitute(x))
+      fname <- "plot2y"
       pdf(paste0(fname,".pdf"),
           pointsize = theme_2y$pointsize,
           height = theme_2y$height,

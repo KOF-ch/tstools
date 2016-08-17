@@ -17,7 +17,10 @@ library(tstools)
 
 
 # plot from a list
-tsplot(ts1,ts2,)
+debug(tsplot)
+tsplot(ts1,ts2)
+
+
 tsplot.list
 
 

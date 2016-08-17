@@ -92,6 +92,67 @@ tsplot.ts <- function(series,...,
   
 }
 
+
+#' @rdname tsplot
+#' @export
+tsplot.mts <- function(series,...,
+                      theme = NULL,
+                      plot.title = NULL,
+                      plot.subtitle = NULL,
+                      lgnd = NULL,
+                      write_pdf = F,
+                      crop_pdf = F,
+                      cex_label = 0.65,
+                      fname = NULL,
+                      ygrid = T,
+                      ygrid_factor = 4,
+                      yaxis_factor = 20,
+                      quarter_ticks = T,
+                      theme_out = F,
+                      print_x_axis = T,
+                      print_y_axis = T,
+                      print_y_right = F,
+                      highlight_window = NULL,
+                      manual_date_range = NULL,
+                      manual_value_range = NULL,
+                      auto_name = NULL){
+  
+  li <- list(...)
+  
+  # get the name of the first time series for 
+  # file naming if no file name is specified.
+  auto_nm <- deparse(substitute(series))
+  
+  # list of time series
+  tl <- c(list(series),li)
+  
+  if(!all(unlist(lapply(li,is.ts)))) 
+    stop("all list elements must be of class ts!")
+  
+  # basically pass it all on to the list method of tsplot
+  tsplot(tl,theme = theme, 
+         ygrid_factor = ygrid_factor,
+         yaxis_factor = yaxis_factor,
+         plot.title = plot.title,
+         plot.subtitle = plot.subtitle,
+         lgnd = lgnd,
+         write_pdf = write_pdf,
+         crop_pdf = crop_pdf,
+         cex_label = cex_label,
+         fname = fname,
+         theme_out = theme_out,
+         ygrid = ygrid,
+         print_x_axis = print_x_axis,
+         print_y_axis = print_y_axis,
+         print_y_right = print_y_right,
+         highlight_window = highlight_window,
+         manual_date_range = manual_date_range,
+         manual_value_range = manual_value_range,
+         auto_name = auto_nm)  
+  
+}
+
+
 #' @rdname tsplot
 #' @export
 tsplot.list <- function(series,sel=NULL,
