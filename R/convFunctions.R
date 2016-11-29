@@ -97,63 +97,6 @@ tsidx <- function(x, byear, bperiod = NULL){
 
 
 
-
-ds2ts <- function(dskeys, wrn = TRUE){
-  # Get Datastream Time Series
-  
-  # DS Credentials
-  cred <- list(username = "DS:XETH002",
-               password = "PARIS964")
-  
-  # Download series from Datastream
-  out <- ds(cred, requests = paste0(dskeys,"~-50Y~:3Y~M"))["Data",]
-  
-  # Remove empty entries from list
-  entries <- which(sapply(out, function(x) prod(dim(x))) == 0)
-  
-  # Generate a warning message if certain time series could not be retrieved and wrn = TRUE
-  if(length(entries) > 0 & wrn == TRUE) warning(paste("The following series could not be retrieved:",paste(dskeys[entries],collapse = ", ")))
-  
-  # Remove empty entries from out-list and the vector of keys
-  if(length(entries) > 0){
-    dskeys <- dskeys[-entries]
-    out <- out[-entries]
-    names(out) <- names(dskeys)
-  }
-  
-  
-  # Transform data to list of time series
-  ts_list <- lapply(out, function(x) {
-    
-    if(as.character(x$FREQUENCY[1]) == "M"){
-      
-      as.ts(zoo(x = x[,5][which(!is.na(x[,5]))], order.by = as.yearmon(x$DATE[which(!is.na(x[,5]))])))
-      
-    } else if(as.character(x$FREQUENCY[1]) == "Q"){
-      
-      as.ts(zoo(x = x[,5][which(!is.na(x[,5]))], order.by = as.yearqtr(x$DATE[which(!is.na(x[,5]))])))
-      
-    } else if(as.character(x$FREQUENCY[1]) == "Y"){
-      
-      ts(data = x[,5][which(!is.na(x[,5]))], start = as.numeric(format(x$DATE[which(!is.na(x[,5]))], "%Y"))[1], frequency = 1)
-      
-    } else {
-      
-      zoo(x = x[,5][which(!is.na(x[,5]))], order.by = x$DATE[which(!is.na(x[,5]))])
-      
-    }
-    
-  })
-  
-  
-  # Give the time series appropriate names
-  if(is.null(names(dskeys))){names(ts_list) <- dskeys} else {names(ts_list) <- names(dskeys)}
-  
-  return(ts_list)
-  
-}
-
-
 searchdb <- function(x, schema){
   
   sql <- paste0("SELECT ts_key FROM ",schema,".timeseries_main WHERE ts_key ~ '",x,"'")
