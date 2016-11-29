@@ -24,7 +24,7 @@ line charts and plots are thus easily extensible. Base R plots look rather techn
 ```{r,fig.width = 7}
 library(tstools)
 data(KOF)
-tsplot(KOF$barometer)
+tsplot(KOF$kofbarometer)
 ```
 
 ### Multiple time series
@@ -68,7 +68,7 @@ If you want to draw two time series with different scales into the same plot, yo
 
 ```{r,fig.width = 7}
 data(KOF)
-tsplot2y(KOF$barometer,KOF$ch_gdp_grwth)
+tsplot2y(KOF$kofbarometer,KOF$reference)
 ```
 
 *tsplot2y* works similarily to *tsplot* and basically implements the same configuration approach as *tsplot*. You can also add a title and a subtitle. Note that tsplot only accepts two arguments x and y which can either be time series or lists of time series. It is not possible the add multiple series by lining them up separated by commas. Series passed through the x argument relate to the left Y-axis, series passed through the y argument relate to the right y-axis.
@@ -76,7 +76,7 @@ tsplot2y(KOF$barometer,KOF$ch_gdp_grwth)
 ```{r,fig.width = 7}
 print_2y <- initPrint2YTheme()
 print_2y$lty <- c(1,3)
-tsplot2y(KOF$barometer,KOF$ch_gdp_grwth,
+tsplot2y(KOF$kofbarometer,KOF$reference,
          plot.title = "KOF Barometer",
          plot.subtitle = "Swiss GDP growth",
          lgnd = c("KOF Barometer","GDP growth rate")

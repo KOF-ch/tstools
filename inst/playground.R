@@ -1,4 +1,7 @@
 
+
+
+
 # get more realistic series for the 2 axis case
 ts4 <- ts(rnorm(100,sd = 8)+1:100,
           start=c(1990,1),
@@ -15,18 +18,6 @@ tsplot2y(ts4,ts5)
 # I think we need a check here to check 
 # whether time series are numeric... throw an 
 # exception if not!!
-library(openxlsx)
-baro <- read.xlsx("~/Downloads/kof_data_export_1469353651.xlsx")
-baro <- na.omit(baro)
-baro$kofbarometer <- as.numeric(baro$kofbarometer)
-baro$kofbarometer_ref <- as.numeric(baro$kofbarometer_ref)
-
-
-b_ts <- ts(baro$kofbarometer,start=c(1991,1),
-              frequency = 12)
-r_ts <- ts(baro$kofbarometer_ref,start=c(1991,1),
-              frequency = 12)
-
 tsplot(b_ts,theme = p_t)
 
 library(devtools)
@@ -141,4 +132,12 @@ plot(rnorm(100))
 par(new=T,xpd=T)
 plot(rnorm(10))
 legend(1,-3,legend = c("a","b"))
+
+library(kofbts)
+con <- kofDbConnect()
+
+readTimeSeries("kofbarometer",con,schema="pblc_timeseries")
+debug(readTimeSeries)
+readTimeSeries("kofbarometer_ref",con,schema="pblc_timeseries")
+
 

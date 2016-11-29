@@ -1,6 +1,6 @@
 Package: tstools
 Type: Package
-Version: 0.2.1
+Version: 0.2.2
 Title: Time series toolkit
 Description: Convenience functions to handle time series data juggling and
     plotting.

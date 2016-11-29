@@ -6,12 +6,12 @@
 \title{KOF Barometer - Swiss Business Cycle Indicator}
 \format{A list of two time series of class ts
 \describe{
-  \item{barometer}{KOF Barometer Indicator}
-  \item{ch_gdp_grwth}{Swiss GDP growth}
+  \item{kofbarometer}{KOF Barometer Indicator}
+  \item{reference}{Reference series to KOF Barometer, change in Swiss GDP compared to previous month}
   ...
 }}
 \source{
-\url{http://kof.ethz.ch/}
+\url{https://www.kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-economic-barometer.html}
 }
 \usage{
 KOF
