@@ -11,6 +11,8 @@
 #' ts_object <- ts(matrix(rnorm(48),nrow=24),start=c(2008,1), frequency=12)
 #' kplot(ts_object)
 #' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich 
+#' @import ggplot2 
+#' @importFrom zoo autoplot.zoo
 #' @export
 kplot <- function(x, ylab = NULL, title = NULL){
   
@@ -34,6 +36,8 @@ kplot <- function(x, ylab = NULL, title = NULL){
 #' ts_object <- ts(matrix(rnorm(48),nrow=24),start=c(2008,1), frequency=12)
 #' kbar_stacked(ts_object)
 #' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich 
+#' @import ggplot2
+#' @importFrom zoo fortify.zoo
 #' @export
 kbar_stacked <- function(x, ylab = NULL, title = NULL){
   
@@ -64,6 +68,7 @@ kbar_stacked <- function(x, ylab = NULL, title = NULL){
 #' ts_object <- ts(matrix(rnorm(48),nrow=24),start=c(2008,1), frequency=12)
 #' kbar_grouped(ts_object)
 #' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich 
+#' @import ggplot2
 #' @export
 kbar_grouped <- function(x, ylab = NULL, title = NULL){
   
@@ -87,7 +92,8 @@ kbar_grouped <- function(x, ylab = NULL, title = NULL){
 #' @examples 
 #' ts_object <- ts(matrix(rnorm(48),nrow=24),start=c(2008,1), frequency=12)
 #' karea(ts_object) 
-#' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich 
+#' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich
+#' @import ggplot2 
 #' @export
 karea <- function(x, ylab = NULL, title = NULL){
   
