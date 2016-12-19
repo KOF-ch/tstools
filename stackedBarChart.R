@@ -31,7 +31,7 @@ plot(c.vect[,2], ylim=c(-3,3), axes=F)
 # Add supplementary y-axis on right side of the plot
 axis(side=4, ylim=c(-3,3))
 
-# Construct x-axis
+# Construct x-axis of time series
 time.seq<-seq(from=as.Date("2004/1/1"), by="1 months", length.out=36)
 # For every month a tick is drawn
 axis(side=1, labels = time.seq, at=seq(from=2004, by=1/12, length.out=36))
