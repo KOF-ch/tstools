@@ -34,7 +34,9 @@ axis(side=4, ylim=c(-3,3))
 # Construct x-axis
 time.seq<-seq(from=as.Date("2004/1/1"), by="1 months", length.out=36)
 # For every month a tick is drawn
-axis(side=1, labels = time.seq, at=seq(from=2004, by=1/12, length.out=36)) 
+axis(side=1, labels = time.seq, at=seq(from=2004, by=1/12, length.out=36))
+# Add x-axis at y=0 (y-axis on right side)
+abline(h=0)
 # Add box around the plot
 box() 
 
