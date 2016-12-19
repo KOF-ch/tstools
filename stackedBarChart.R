@@ -1,11 +1,10 @@
 # 19122016
-# Sent to Matthias on 19122016
 # Example of a stacked bar chart, with negative and positive values
 c.vect<-cbind(50+rnorm(36), rnorm(36), -20+rnorm(36), 100+rnorm(36))
 # Make it a time series object
 c.vect<-ts(c.vect,frequency=12,start=c(2004,1))
 
-# The bars with negative values are drawn below the x-axis.
+# The bars with negative values are drawn below the x-axis
 # http://stackoverflow.com/questions/27948446/about-barplot-for-data-with-negative-values
 c.vect1<-c.vect
 c.vect2<-c.vect
@@ -29,7 +28,7 @@ axis(side=2, ylim=c(c.min, c.max))
 par(new=T)
 # Add a line to the stacked bar chart
 plot(c.vect[,2], ylim=c(-3,3), axes=F)
-# Add supplementary y-axis on right side
+# Add supplementary y-axis on right side of the plot
 axis(side=4, ylim=c(-3,3))
 
 # Construct x-axis
