@@ -9,7 +9,9 @@ Depends:
     R (>= 3.0.0)
 Imports:
     xts,
-    zoo
+    zoo,
+    ggplot2 (>= 2.2.0),
+    tempdisagg
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr    
 Date: 2016-01-01
