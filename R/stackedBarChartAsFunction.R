@@ -4,15 +4,12 @@
 #' @param vect matrix
 #' @param vect_ts object of class time series
 #' @examples
-#' vect<-cbind(50+rnorm(36), rnorm(36), -20+rnorm(36), 100+rnorm(36))
-#' Make it a time series object
-#' vect_ts<-ts(vect,frequency=12,start=c(2004,1))
-#' Draw stacked bar chart
+#' vect <- cbind(50+rnorm(36), rnorm(36), -20+rnorm(36), 100+rnorm(36))
+#' vect_ts <- ts(vect, frequency=12, start=c(2004,1))
 #' stackedBarChartsWithNegValues(vect_ts)
-#' Add line plot
 #' addLinePlot(vect_ts[,2])
 #' @export
-stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T) {
+stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T, theme=NULL) {
   
   # If time series object contains positive and negative values,
   # split into positive and negative part in the plot.
@@ -20,36 +17,36 @@ stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T) {
   
   if(sum(c_vect < 0) > 0){
     
-    c_vect1<-c_vect
-    c_vect2<-c_vect
+    c_vect1 <- c_vect
+    c_vect2 <- c_vect
     # Split into parts with positive respectively negative values
-    c_vect1[c_vect<0]<-0
-    c_vect2[c_vect>0]<-0
+    c_vect1[c_vect < 0] <- 0
+    c_vect2[c_vect > 0] <- 0
     # Vectors are transposed
-    c_transposed_vect1<-t(c_vect1)
-    c_transposed_vect2<-t(c_vect2)
+    c_transposed_vect1 <- t(c_vect1)
+    c_transposed_vect2 <- t(c_vect2)
     # Find the range of the stacked bar charts 
-    c_max<-round(max(colSums(c_transposed_vect1)))
-    c_min<-round(min(colSums(c_transposed_vect2)))
+    c_max <- round(max(colSums(c_transposed_vect1)))
+    c_min <- round(min(colSums(c_transposed_vect2)))
     
     # Colors need adjustment for ETHZ
     # Plot positive bars
-    c_barplot1<-barplot(c_transposed_vect1, ylim=c(c_min, c_max), axes=F, col=c("red","green","blue","violet"))
+    c_barplot1 <- barplot(c_transposed_vect1, ylim=c(c_min, c_max), axes=F, col=c("red","green","blue","violet"))
     # Add negative bars
-    c_barplot2<-barplot(c_transposed_vect2, ylim=c(c_min, c_max), axes=F, col=c("red","green","blue","violet"), add=T)
+    c_barplot2 <- barplot(c_transposed_vect2, ylim=c(c_min, c_max), axes=F, col=c("red","green","blue","violet"), add=T)
     # Add y-axis on left side
     axis(side=2, ylim=c(c_min, c_max))
     # Add x-axis of time series; for every month a tick
-    time_seq<-seq(from=as.Date(paste(start(c_vect)[1],start(c_vect)[2],1,sep="."), format="%Y.%m.%d"), by=paste(12/frequency(c_vect), "months", sep=" "), length.out=dim(c_vect)[1])
+    time_seq <- seq(from=as.Date(paste(start(c_vect)[1], start(c_vect)[2],1,sep="."), format="%Y.%m.%d"), by=paste(12/frequency(c_vect), "months", sep=" "), length.out=dim(c_vect)[1])
     axis(side=1, labels = time_seq, at=c_barplot1)
     
-    # Add box around the plot and title
+    # Add box around the plot
     box() 
 
     # Add the column sum as line plot to the barplot
     if(show_sums_as_line==T) {
       
-      c_vect_col_sums<-colSums(t(c_vect))
+      c_vect_col_sums <- colSums(t(c_vect))
       lines(x=c_barplot1, y=c_vect_col_sums)
       
     }
@@ -57,12 +54,12 @@ stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T) {
   } 
   
 }
-# Add a line plot to the stacked bar chart
+#' Add a line plot to the stacked bar chart
 addLinePlot <- function(c_vect){
  
   par(new=T)
-  c_min<-min(c_vect)
-  c_max<-max(c_vect)
+  c_min <- min(c_vect)
+  c_max <- max(c_vect)
   plot(c_vect, ylim=c(c_min,c_max), axes=F)
   # Add supplementary y-axis on right side
   axis(side=4, ylim=c(c_min,c_max)) 
