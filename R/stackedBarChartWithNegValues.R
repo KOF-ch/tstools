@@ -27,8 +27,7 @@ stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T, theme=NUL
     c_transposed_vect1 <- t(c_vect1)
     c_transposed_vect2 <- t(c_vect2)
     # Find the range of the stacked bar charts 
-    c_max <- round(max(colSums(c_transposed_vect1)))
-    c_min <- round(min(colSums(c_transposed_vect2)))
+    c_value_range <- c(floor(min(colSums(c_transposed_vect2))), ceiling(max(colSums(c_transposed_vect1))))
     
     # Initialise default theme with predefined colors for KOF
     if(is.null(theme)){
@@ -36,11 +35,11 @@ stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T, theme=NUL
     }
     
     # Plot positive bars
-    c_barplot1 <- barplot(c_transposed_vect1, ylim=c(c_min, c_max), axes=F, col=theme_1$line_colors)
+    c_barplot1 <- barplot(c_transposed_vect1, ylim=c_value_range, axes=F, col=theme_1$line_colors)
     # Add negative bars
-    c_barplot2 <- barplot(c_transposed_vect2, ylim=c(c_min, c_max), axes=F, col=theme_1$line_colors, add=T)
+    c_barplot2 <- barplot(c_transposed_vect2, ylim=c_value_range, axes=F, col=theme_1$line_colors, add=T)
     # Add y-axis on left side
-    axis(side=2, ylim=c(c_min, c_max))
+    axis(side=2, ylim=c_value_range)
     # Add x-axis of time series; for every month a tick
     time_seq <- seq(from=as.Date(paste(start(c_vect)[1], start(c_vect)[2],1,sep="."), format="%Y.%m.%d"), by=paste(12/frequency(c_vect), "months", sep=" "), length.out=dim(c_vect)[1])
     axis(side=1, labels = time_seq, at=c_barplot1)
@@ -63,11 +62,10 @@ stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T, theme=NUL
 addLinePlot <- function(c_vect){
  
   par(new=T)
-  c_min <- min(c_vect)
-  c_max <- max(c_vect)
-  plot(c_vect, ylim=c(c_min,c_max), axes=F)
+  c_value_range <- range(c_vect)
+  plot(c_vect, ylim=c_value_range, axes=F)
   # Add supplementary y-axis on right side
-  axis(side=4, ylim=c(c_min,c_max)) 
+  axis(side=4, ylim=c_value_range) 
   # Add x-axis at y=0 (with respect to y-axis on right side)
   abline(h=0)
   
