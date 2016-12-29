@@ -1,10 +1,11 @@
-#' 22122016
+#' 29122016
 #' Stacked bar charts with positive and negative values and supplementary line plots
 #'
 #' @param vect matrix
 #' @param vect_ts object of class time series
 #' @examples
-#' vect <- cbind(50+rnorm(36), rnorm(36), -20+rnorm(36), 100+rnorm(36))
+#' library(tstools)
+#' vect <- cbind(50+rnorm(36), rnorm(36)+c(-2,2), -20+rnorm(36), 100+rnorm(36))
 #' vect_ts <- ts(vect, frequency=12, start=c(2004,1))
 #' stackedBarChartsWithNegValues(vect_ts)
 #' addLinePlot(vect_ts[,2])
@@ -29,11 +30,15 @@ stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T, theme=NUL
     c_max <- round(max(colSums(c_transposed_vect1)))
     c_min <- round(min(colSums(c_transposed_vect2)))
     
-    # Colors need adjustment for ETHZ
+    # Initialise default theme with predefined colors for KOF
+    if(is.null(theme)){
+      theme_1 <- initDefaultTheme()
+    }
+    
     # Plot positive bars
-    c_barplot1 <- barplot(c_transposed_vect1, ylim=c(c_min, c_max), axes=F, col=c("red","green","blue","violet"))
+    c_barplot1 <- barplot(c_transposed_vect1, ylim=c(c_min, c_max), axes=F, col=theme_1$line_colors)
     # Add negative bars
-    c_barplot2 <- barplot(c_transposed_vect2, ylim=c(c_min, c_max), axes=F, col=c("red","green","blue","violet"), add=T)
+    c_barplot2 <- barplot(c_transposed_vect2, ylim=c(c_min, c_max), axes=F, col=theme_1$line_colors, add=T)
     # Add y-axis on left side
     axis(side=2, ylim=c(c_min, c_max))
     # Add x-axis of time series; for every month a tick
