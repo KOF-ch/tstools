@@ -4,7 +4,6 @@
 #' @param vect matrix
 #' @param vect_ts object of class time series
 #' @examples
-#' library(tstools)
 #' vect <- cbind(50+rnorm(36), rnorm(36)+c(-2,2), -20+rnorm(36), 100+rnorm(36))
 #' vect_ts <- ts(vect, frequency=12, start=c(2004,1))
 #' stackedBarChartsWithNegValues(vect_ts)
@@ -48,7 +47,7 @@ stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T, theme=NUL
     box() 
 
     # Add the column sum as line plot to the barplot
-    if(show_sums_as_line==T) {
+    if(show_sums_as_lineT) {
       
       c_vect_col_sums <- colSums(t(c_vect))
       lines(x=c_barplot1, y=c_vect_col_sums)

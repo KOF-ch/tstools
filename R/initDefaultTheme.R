@@ -2,7 +2,49 @@
 #' 
 #' Create a list containing with the default theme information. 
 #' In case you want to define a custom definition the output of this function is 
-#' a nice starting point. 
+#' a nice starting point. This function returns a list containing defaults for
+#' the following plot parameters: 
+#' \describe{
+#' \item{xlim}{range of the date column}
+#' \item{ygrid}{vector of horizontal grid lines}
+#' \item{xlab}{}
+#' \item{ylab}{}
+#' \item{lty}{vector of line types}
+#' \item{xaxs}{}
+#' \item{yaxs}{}
+#' \item{xaxt}{}
+#' \item{yaxt}{}
+#' \item{tcl_1}{}
+#' \item{tcl_2}{}
+#' \item{padj_1}{how far are the labels away from ticks}
+#' \item{padj_2}{how far are the labels away from ticks}
+
+#' \item{title_adj}{}
+#' \item{title_line}{}
+#' \item{subtitle_line}{}
+#' \item{title_cex.main}{}
+#' \item{subtitle_cex.main}{}
+#' \item{lwd_ticks_1}{}
+#' \item{lwd_ticks_2}{}
+
+#' \item{ygrid_lwd}{}
+#' \item{ygrid_lty}{}
+#' \item{ygrid_color}{}
+
+#' \item{line_colors}{Default colors of the KOF Swiss Economic Institute.}
+#' \item{highlight_window_color}{Background color a highlight window.}
+#' \item{par}{bottom,left,top,right margins}
+#' \item{$height}{}
+#' \item{$width}{}
+#' \item{pointsize}{}
+#' \item{lgnd_cex_label}{}
+#' \item{lgnd_bty}{}
+#' \item{lgnd_vertical_spacing}{}
+#' \item{lgnd_inset}{}
+#' \item{lgnd_xpd}{}
+#' \item{fillUpPeriod}{}
+#' }
+#' @param date_range character defaults to NULL
 #' @export
 initDefaultTheme <- function(date_range = NULL){
   theme <- list()
@@ -34,11 +76,11 @@ initDefaultTheme <- function(date_range = NULL){
   theme$ygrid_lty <- 1
   theme$ygrid_color <- "#00000022"
   # colors
-  theme$line_colors <- c(ETH7 = "#a8322d",
-                         ETH5 = "#91056a",
-                         ETH8 = "#007a92",
-                         ETH8_60 = "#66b0c2",
+  theme$line_colors <- c(ETH8 = "#007a92",
+                         ETH7 = "#a8322d",
                          ETH5_60 = "#cc67a7",
+                         ETH5 = "#91056a",
+                         ETH8_60 = "#66b0c2",
                          ETH7_50 = "#e19794")
   theme$highlight_window_color <- "#91056a22"
   # margin
@@ -95,12 +137,12 @@ initPrintTheme <- function(date_range = NULL){
   theme$lwd_ticks_1 <- 1
   theme$lwd_ticks_2 <- 1
   # line colors
-  theme$line_colors <- c(ETH7 = "#a8322d",
-                             ETH5 = "#91056a",
-                             ETH8 = "#007a92",
-                             ETH8_60 = "#66b0c2",
-                             ETH5_60 = "#cc67a7",
-                             ETH7_50 = "#e19794")
+  theme$line_colors <- c(ETH8 = "#007a92",
+                         ETH7 = "#a8322d",
+                         ETH5_60 = "#cc67a7",
+                         ETH5 = "#91056a",
+                         ETH8_60 = "#66b0c2",
+                         ETH7_50 = "#e19794")
   theme$highlight_window_color <- "#91056a22"
   # margin
   # bottom,left,top,right
@@ -155,11 +197,11 @@ initPrint2YTheme <- function(date_range = NULL){
   theme$lwd_ticks_1 <- 1
   theme$lwd_ticks_2 <- 1
   # line colors
-  theme$line_colors <- c(ETH7 = "#a8322d",
-                         ETH5 = "#91056a",
-                         ETH8 = "#007a92",
-                         ETH8_60 = "#66b0c2",
+  theme$line_colors <- c(ETH8 = "#007a92",
+                         ETH7 = "#a8322d",
                          ETH5_60 = "#cc67a7",
+                         ETH5 = "#91056a",
+                         ETH8_60 = "#66b0c2",
                          ETH7_50 = "#e19794")
   theme$highlight_window_color <- "#91056a22"
   # margin
