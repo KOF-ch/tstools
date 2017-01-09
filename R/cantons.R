@@ -13,7 +13,7 @@ cantons <- function(full=F){
       "Fribourg",
       "Genf",
       "Glarus",
-      "Graubünden",
+      "Graub\u00fcnden",
       "Jura",
       "Luzern",
       "Neuenburg",
@@ -29,7 +29,7 @@ cantons <- function(full=F){
       "Wallis",
       "Waadt",
       "Zug",
-      "Zürich"
+      "Z\u00fcrich"
     )
   } else {
     c("AG",

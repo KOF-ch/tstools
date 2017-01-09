@@ -20,7 +20,6 @@ create_dummy <- function(end_basic,
                          basic_value = 0,
                          dummy_value = 1,
                          freq = 4){
-  library(timeseriesdb)
   basic <- ts(basic_value,start_basic,
               end_basic,frequency = freq)
   if(is.null(dummy_end)){
