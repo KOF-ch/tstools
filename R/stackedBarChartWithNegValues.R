@@ -47,7 +47,7 @@ stackedBarChartsWithNegValues <- function(c_vect, show_sums_as_line=T, theme=NUL
     box() 
 
     # Add the column sum as line plot to the barplot
-    if(show_sums_as_lineT) {
+    if(show_sums_as_line==T) {
       
       c_vect_col_sums <- colSums(t(c_vect))
       lines(x=c_barplot1, y=c_vect_col_sums)
@@ -65,7 +65,5 @@ addLinePlot <- function(c_vect){
   plot(c_vect, ylim=c_value_range, axes=F)
   # Add supplementary y-axis on right side
   axis(side=4, ylim=c_value_range) 
-  # Add x-axis at y=0 (with respect to y-axis on right side)
-  abline(h=0)
   
 }
