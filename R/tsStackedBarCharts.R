@@ -36,11 +36,7 @@ sum(tsmat < 0) > 0
 value_range
 neg <- tsmat < 0
 
-tli <- list()
-tli$ts1 <- ts(rnorm(30,-1,10),start=c(2000,1),frequency = 4)
-tli$ts2 <- ts(rnorm(30,10,40),start=c(2000,1),frequency = 4)
 
-tsStackedBarChart(tli)
 
 
 xx <- initDefaultTheme()
@@ -49,9 +45,26 @@ KOF$reference
 tsStackedBarChart(KOF)
 debug(tsStackedBarChart)
 
+tli <- list()
+tli$ts1 <- ts(rnorm(30,-1,10),start=c(2000,1),frequency = 4)
+tli$ts2 <- ts(rnorm(30,10,40),start=c(2000,1),frequency = 4)
+
+
+tm <- tsStackedBarChart(tli)
+
 #'@author Caroline Siegenthaler, Matthias Bannert
 #'@export
-tsStackedBarChart <- function(li, show_sums_as_line = T, theme = NULL){
+tsStackedBarChart <- function(li, show_sums_as_line = T,
+                              theme = NULL,
+                              print_x_axis = T,
+                              quarter_ticks = T,
+                              print_y_axis = T,
+                              print_y_right = F,
+                              ygrid = T,
+                              ygrid_factor = 5,
+                              yaxis_factor = 20,
+                              manual_value_range = NULL,
+                              manual_date_range = NULL){
     if(is.null(theme)){
     theme <- initDefaultTheme()
   }
@@ -65,28 +78,72 @@ tsStackedBarChart <- function(li, show_sums_as_line = T, theme = NULL){
   
   # matrix works well with pos / neg checks.
   tsmat <- do.call("cbind",li)
-  
-  # Axes range
-#  ts_time <- round(ts_time,digits = 5)
- # date_range <- range(ts_time)
-  value_range <- c(floor(min(tsmat)), ceiling(max(tsmat)))
-  # add a little cushion
-  value_range <- value_range + diff(value_range)*.05*c(-1,1)
-  
-  
-  # bottom,left,top,right
+  # bottom, left, top, right margins defined via theme.
   par(mar = theme$mar)
+  
+  ts_time <- unique(unlist(lapply(series,time)))
+  # floating problems when comparing stuff, set it to 
+  # 5 digits ... 
+  ts_time <- round(ts_time,digits = 5)
+  date_range <- range(ts_time)
+  
+  if(!is.null(manual_date_range)){
+    theme$xlim = manual_date_range
+    ts_time <- seq(from = manual_date_range[1],
+                   to = manual_date_range[2],by = .25)
+    date_range <- manual_date_range
+  }
+  
 
   if(sum(tsmat < 0) > 0){
     neg_0 <- tsmat
     pos_0 <- tsmat
     neg_0[tsmat < 0] <- 0
     pos_0[!tsmat < 0] <- 0
+    value_range <- c(floor(min(rowSums(pos_0))),
+                     ceiling(max(rowSums(neg_0))))
+    value_range <- round(((value_range/10)+c(-1,1))*10)
     
-    barplot(t(neg_0), ylim = value_range, axes = T, col = theme$line_colors)
-    barplot(t(pos_0), ylim = value_range, axes = F, col = theme$line_colors,add=T)
+    if(!is.null(manual_value_range)) value_range <-
+      manual_value_range
 
+    barplot(t(neg_0),
+            ylim = value_range,
+            axes = F,
+            col = theme$line_colors)
+    barplot(t(pos_0),
+            ylim = value_range,
+            axes = F,
+            col = theme$line_colors,
+            add=T)
+    
+    if(print_y_axis) .doYAxisWithHorizontalGrids(theme,
+                                                 value_range,
+                                                 ygrid_factor = ygrid_factor)
+    
+    if(print_x_axis){
+      # axis and ticks defintion
+      if(quarter_ticks){
+        ext_qtr <- ts_time[abs(ts_time * 4 - floor(ts_time * 4)) < 0.001]
+        ext_label <- ifelse(ext_qtr - floor(ext_qtr) == 0.5, as.character(floor(ext_qtr)), NA)
+        # x-axis
+        axis(1, at = ext_qtr, labels = ext_label,
+             tcl = theme$tcl_1, cex.axis = theme$cex.axis_1, padj = theme$padj_1)
+        axis(1, at = date_range[1]:date_range[2],
+             tcl = theme$tcl_2,
+             lwd.ticks = theme$lwd_ticks_1, labels = FALSE) # thick tick marks
+        
+      } else{
+        axis(1, at = min_date_value:max_date_value,
+             tcl = theme$tcl_1,
+             cex.axis = theme$cex.axis_1,
+             padj = theme$padj_1)
+      }
+    }
+    
   }
+}
+  
   # 
   # # If time series object contains positive and negative values,
   # # split into positive and negative part in the plot.
@@ -133,4 +190,4 @@ tsStackedBarChart <- function(li, show_sums_as_line = T, theme = NULL){
   #   
   # } 
   
-}
+
