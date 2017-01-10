@@ -11,19 +11,25 @@
 #' @param LC_TIME_LOCALE character time locale that differs from the standard locale. e.g. en_US.UTF-8. Defaults to NULL and uses the standard locale then. 
 #' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010. In combination with LC\_TIME\_Locale various international date formats can be produced. 
 #' @importFrom reshape2 dcast
+#' @importFrom xts as.xts
+#' @importFrom openxlsx write.xlsx
+#' @importFrom zoo as.yearmon
 #' @examples 
 #' tslist <- list()
 #' tslist$ts1 <- ts(rnorm(50),start = c(1990,1),frequency = 12)
 #' Sys.getlocale() # gets all locale categories
 #' Sys.getlocale("LC_TIME") # gets the time category only
-#' exportTsList(tslist,LC_TIME_LOCALE = "de_DE.UTF-8",date_format="%Y %b")
+#' # Not Run
+#' # exportTsList(tslist,LC_TIME_LOCALE = "de_DE.UTF-8",date_format="%Y %b")
 #' # returns .csv file with a 2010-Mai style dates. 
-#' exportTsList(tslist)
+#' # Not Run
+#' # exportTsList(tslist)
 #' # returns 2010-05 style dates
 #' # Quarterly data does also work with format
 #' tslist_q <- list()
 #' tslist_q$ts2 <- ts(rnorm(50),start = c(1990,4),frequency = 4)
-#' exportTsList(tslist_q,date_format="%Y-0%q")
+#' # Not Run
+#' # exportTsList(tslist_q,date_format="%Y-0%q")
 #' @export
 exportTsList <- function(tl,fname = NULL,cast = T, xlsx = F,
                          sep = ";",dec=".",
@@ -54,7 +60,7 @@ exportTsList <- function(tl,fname = NULL,cast = T, xlsx = F,
   #write.csv2(tsdf,file = fname,row.names = F)
   #  reshape2::dcast(tsdf)
   if(cast){
-    tsdf <- reshape2::dcast(tsdf,time ~ series)
+    tsdf <- dcast(tsdf,time ~ series)
   }
   
   # format the date
@@ -79,7 +85,7 @@ exportTsList <- function(tl,fname = NULL,cast = T, xlsx = F,
   }
   
   if(xlsx){
-    openxlsx::write.xlsx(tsdf,paste0(fname,".xlsx"))
+    write.xlsx(tsdf,paste0(fname,".xlsx"))
   } else{
     write.table(tsdf,file = paste0(fname,".csv"), row.names = F, dec = dec, sep = sep)  
   }

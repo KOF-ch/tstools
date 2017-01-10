@@ -8,6 +8,8 @@
 #' mts_object <- ts(mat, frequency=12, start=c(2004,1))
 #' colnames(mts_object) <- c("IT","DE","CH","FR")
 #' ts_pred_uniform(mts_object)
+#' @importFrom tempdisagg ta td
+#' @importFrom stats lag predict
 #' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich 
 #' @export
 ts_pred_uniform <- function(x){
@@ -32,11 +34,13 @@ ts_pred_uniform <- function(x){
 #' Uses function ts_pred_uniform to predict the uniform temporal disaggregation of time series.
 #' 
 #' @param x multivariate time series object
+#' @importFrom stats lag predict
 #' @examples 
 #' mat <- matrix(c(7+rnorm(48),50+rnorm(48),70+rnorm(48),100+rnorm(48)),ncol=4)
 #' mts_object <- ts(mat, frequency=12, start=c(2004,1))
 #' colnames(mts_object) <- c("IT","DE","CH","FR")
 #' grc(mts_object)
+#' @importFrom stats lag predict
 #' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich 
 #' @export
 grc <- function(x){
@@ -59,6 +63,7 @@ grc <- function(x){
 #' mts_object <- ts(mat, frequency=12, start=c(2004,1))
 #' colnames(mts_object) <- c("IT","DE","CH","FR")
 #' anngrc(mts_object)
+#' @importFrom stats lag predict
 #' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich 
 #' @export
 anngrc <- function(x){
@@ -76,12 +81,14 @@ anngrc <- function(x){
 #' Uses function ts_pred_uniform to predict the uniform temporal disaggregation of time series.
 #' 
 #' @param x multivariate time series object
+#' @importFrom stats lag predict
 #' @examples 
 #' mat <- matrix(c(7+rnorm(48),50+rnorm(48),70+rnorm(48),100+rnorm(48)),ncol=4)
 #' mts_object <- ts(mat, frequency=12, start=c(2004,1))
 #' colnames(mts_object) <- c("IT","DE","CH","FR")
 #' yoygrc(mts_object)
 #' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich 
+#' @importFrom stats lag predict
 #' @export
 yoygrc <- function(x){
   
@@ -99,6 +106,7 @@ yoygrc <- function(x){
 #'
 #' @param rlist list of time series object 
 #' @param nlist list of time series object
+#' @importFrom stats lag predict
 #' @examples
 #' mat_r <- matrix(c(7+rnorm(12),50+rnorm(12),70+rnorm(12),100+rnorm(12)),ncol=4)
 #' r_ts <- ts(mat_r, frequency=4, start=c(2004,1))

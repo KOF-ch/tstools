@@ -32,13 +32,16 @@ tslist <- list()
 tslist$ts1 <- ts(rnorm(50),start = c(1990,1),frequency = 12)
 Sys.getlocale() # gets all locale categories
 Sys.getlocale("LC_TIME") # gets the time category only
-exportTsList(tslist,LC_TIME_LOCALE = "de_DE.UTF-8",date_format="\%Y \%b")
+# Not Run
+# exportTsList(tslist,LC_TIME_LOCALE = "de_DE.UTF-8",date_format="\%Y \%b")
 # returns .csv file with a 2010-Mai style dates. 
-exportTsList(tslist)
+# Not Run
+# exportTsList(tslist)
 # returns 2010-05 style dates
 # Quarterly data does also work with format
 tslist_q <- list()
 tslist_q$ts2 <- ts(rnorm(50),start = c(1990,4),frequency = 4)
-exportTsList(tslist_q,date_format="\%Y-0\%q")
+# Not Run
+# exportTsList(tslist_q,date_format="\%Y-0\%q")
 }
 
