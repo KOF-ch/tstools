@@ -22,6 +22,7 @@
 #' @param ... list of additional adhoc plot options.
 #' @export
 tsplot2y <- function(x,y,...,
+                     right_as_barchart = T,
                      theme_2y = NULL,
                      plot.title = NULL,
                      plot.subtitle = NULL,
@@ -53,9 +54,7 @@ tsplot2y <- function(x,y,...,
   if(is.null(theme_2y)){
     theme_2y <- initPrint2YTheme()
   }
-  
-  
-  
+
   # information for both plots
   #par(mar = theme_2y$par)
   x_axis_range <- range(unlist(x))
@@ -86,15 +85,18 @@ tsplot2y <- function(x,y,...,
     }  
   }
   
-  
-  tsplot(x,theme = theme_left,
-         ygrid_factor = ygrid_factor,
-         highlight_window = highlight_window,
-         manual_value_range = l_manual_y_range)
-  
-  
-  
-  
+  if(right_as_barchart){
+    tsContributionChart(y,
+                        show_sums_as_line = F,
+                        theme = theme_2y,
+                        print_x_axis = F,
+                        print_y_right = T)  
+  } else {
+    tsplot(x,theme = theme_left,
+           ygrid_factor = ygrid_factor,
+           highlight_window = highlight_window,
+           manual_value_range = l_manual_y_range)  
+  }
   
   # right Y axis plot
   ly <- length(y)
@@ -115,9 +117,8 @@ tsplot2y <- function(x,y,...,
   else
     theme_right$lwd <- theme_2y$lwd[-c(1:lx)]
 
-  
   par(new=T)
-  
+
   tsplot(y,
          plot.title = plot.title,
          plot.subtitle = plot.subtitle,
@@ -134,6 +135,9 @@ tsplot2y <- function(x,y,...,
   ts_time <- round(ts_time,digits = 5)
   date_range <- range(ts_time)
   value_range <- trunc(range(unlist(y),na.rm=T))
+  
+  
+  
   
   if(!is.null(lgnd)){
     # http://stackoverflow.com/questions/3932038/plot-a-legend-outside-of-the-plotting-area-in-base-graphics
@@ -152,7 +156,7 @@ tsplot2y <- function(x,y,...,
   
   if(write_pdf) dev.off()
   if(crop_pdf & write_pdf) {
-    if(Sys.which("pdfcrop") == "") cat("pdfcrop is not installed. To use this option, install pdfcrop if your on a 'Nix OS. If you're on Windows you're out of luck (anyway).") else {
+    if(Sys.which("pdfcrop") == "") cat("pdfcrop is not installed. To use this option, install pdfcrop if your on a 'Nix OS. If you're on Windows you're out of luck (anyway). You might want to use R Studio Server if it's available to you.") else {
       run_this <- sprintf("pdfcrop %s %s",paste0(fname,".pdf"),paste0(fname,".pdf"))
       system(run_this)
     }

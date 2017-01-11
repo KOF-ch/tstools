@@ -7,29 +7,29 @@
 #' \describe{
 #' \item{xlim}{range of the date column}
 #' \item{ygrid}{vector of horizontal grid lines}
-#' \item{xlab}{}
-#' \item{ylab}{}
+#' \item{xlab}{X-axis label}
+#' \item{ylab}{Y-axis label}
 #' \item{lty}{vector of line types}
 #' \item{xaxs}{}
 #' \item{yaxs}{}
 #' \item{xaxt}{}
 #' \item{yaxt}{}
-#' \item{tcl_1}{}
-#' \item{tcl_2}{}
-#' \item{padj_1}{how far are the labels away from ticks}
-#' \item{padj_2}{how far are the labels away from ticks}
+#' \item{tcl_1}{tick mark length for quarterly ticks}
+#' \item{tcl_2}{tick mark length for yearly ticks}
+#' \item{padj_1}{how far are the labels away from quarterly ticks}
+#' \item{padj_2}{how far are the labels away from yearly ticks}
 
 #' \item{title_adj}{}
 #' \item{title_line}{}
 #' \item{subtitle_line}{}
 #' \item{title_cex.main}{}
 #' \item{subtitle_cex.main}{}
-#' \item{lwd_ticks_1}{}
-#' \item{lwd_ticks_2}{}
+#' \item{lwd_ticks_1}{tick mark width for quarterly ticks}
+#' \item{lwd_ticks_2}{tick mark width for yearly ticks}
 
-#' \item{ygrid_lwd}{}
-#' \item{ygrid_lty}{}
-#' \item{ygrid_color}{}
+#' \item{ygrid_lwd}{line width of the horizontal grid}
+#' \item{ygrid_lty}{line type of the horizontal grid}
+#' \item{ygrid_color}{color of the horizontal grid}
 
 #' \item{line_colors}{Default colors of the KOF Swiss Economic Institute.}
 #' \item{highlight_window_color}{Background color a highlight window.}
