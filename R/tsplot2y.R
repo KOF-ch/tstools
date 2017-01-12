@@ -22,7 +22,7 @@
 #' @param ... list of additional adhoc plot options.
 #' @export
 tsplot2y <- function(x,y,...,
-                     right_as_barchart = T,
+                     right_as_barchart = F,
                      theme_2y = NULL,
                      plot.title = NULL,
                      plot.subtitle = NULL,

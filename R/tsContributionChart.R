@@ -57,12 +57,13 @@ tsContributionChart <- function(li, show_sums_as_line = T,
     neg_0[tsmat < 0] <- 0
     pos_0[!tsmat < 0] <- 0
     value_range <- c(floor(ifelse(is.null(dim(pos_0)),
-                                  min(pos_0),
-                                  min(rowSums(pos_0)))
+                                  min(pos_0, na.rm = T),
+                                  min(rowSums(pos_0,
+                                              na.rm = T)))
     ),
     ceiling(ifelse(is.null(dim(neg_0)),
-                   max(neg_0),
-                   max(rowSums(neg_0))
+                   max(neg_0, na.rm = T),
+                   max(rowSums(neg_0, na.rm = T))
     )
     )
     )

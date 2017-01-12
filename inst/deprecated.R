@@ -36,7 +36,7 @@ d <- initDefaultTheme()
 d$fillUpPeriod <- F
 d$tcl_2 <- -.75
 d$lwd <- 3
-d$title
+
 d$line_colors <- c(ETH8 = "#007a92",
                    ETH7 = "#a8322d",
                    ETH5_60 = "#cc67a7",
@@ -50,19 +50,34 @@ xx <- initDefaultTheme()
 KOF$reference
 tsContributionChart(KOF)
 undebug(tsContributionChart)
+# there is a y-axis scala problem! 
+tsplot2y(KOF$kofbarometer,KOF$reference,
+         right_as_barchart = T, theme = d)
+tsplot2y(KOF$kofbarometer,KOF$reference,
+         theme = d)
 
+# run this cause this helps track a potential bug
+tsContributionChart(KOF$kofbarometer)
 
-tsContributionChart(tli$ts1)
+# KOF
+tsContributionChart(KOF)
+
 
 tli <- list()
 tli$ts1 <- ts(rnorm(30,-1,10),start=c(2000,1),frequency = 4)
 tli$ts2 <- ts(rnorm(30,10,40),start=c(2000,1),frequency = 4)
 
+tsContributionChart(tli,manual_value_range = c(-100,100))
+
+tsplot2y(tli$ts1,tli$ts2,theme_2y = d,right_as_barchart = T)
+tsplot2y(KOF$kofbarometer,KOF$reference,
+         right_as_barchart = T)
+
 
 tm <- tsContributionChart(tli,theme = d)
 
 undebug(tsplot2y)
-tsplot2y(tli$ts1,tli,theme_2y = d)
+
 
 tms <- do.call("cbind",tli)
 debug(stackedBarChartsWithNegValues)
