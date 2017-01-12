@@ -48,8 +48,11 @@ d$line_colors <- c(ETH8 = "#007a92",
 xx <- initDefaultTheme()
 
 KOF$reference
-tsStackedBarChart(KOF)
-undebug(tsStackedBarChart)
+tsContributionChart(KOF)
+undebug(tsContributionChart)
+
+
+tsContributionChart(tli$ts1)
 
 tli <- list()
 tli$ts1 <- ts(rnorm(30,-1,10),start=c(2000,1),frequency = 4)

@@ -1,4 +1,7 @@
-.doYAxisWithHorizontalGrids <- function(theme,value_range,ygrid_factor,ygrid = T,
+.doYAxisWithHorizontalGrids <- function(theme,
+                                        value_range,
+                                        ygrid_factor,
+                                        ygrid = T,
                                         print_y_right = F){
   stps <- abs(value_range[1] -
                 value_range[2])/ygrid_factor
@@ -15,6 +18,7 @@
        labels = theme$yaxis_labels,
        tick = theme$yaxis_tick)
   if(ygrid){
-    for (hl in ygrid_lines)  abline(h = hl, col = theme$ygrid_color)
+    for (hl in ygrid_lines)  abline(h = hl,
+                                    col = theme$ygrid_color)
   }
 }

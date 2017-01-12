@@ -4,19 +4,19 @@
 #' @author Caroline Siegenthaler, Matthias Bannert
 #' @export
 tsContributionChart <- function(li, show_sums_as_line = T,
-                              theme = NULL,
-                              sum_line_color = "#999999",
-                              print_x_axis = T,
-                              quarter_ticks = T,
-                              print_y_axis = T,
-                              print_y_right = F,
-                              ygrid = T,
-                              ygrid_factor = 4,
-                              yaxis_factor = 20,
-                              box = T,
-                              symmetric_value_range = T,
-                              manual_value_range = NULL,
-                              manual_date_range = NULL){
+                                theme = NULL,
+                                sum_line_color = "#999999",
+                                print_x_axis = T,
+                                quarter_ticks = T,
+                                print_y_axis = T,
+                                print_y_right = F,
+                                ygrid = T,
+                                ygrid_factor = 4,
+                                yaxis_factor = 20,
+                                box = T,
+                                symmetric_value_range = T,
+                                manual_value_range = NULL,
+                                manual_date_range = NULL){
   if(is.null(theme)){
     theme <- initDefaultTheme()
   }
@@ -26,6 +26,10 @@ tsContributionChart <- function(li, show_sums_as_line = T,
   
   if(theme$fillUpPeriod){
     li <- lapply(li,fillUpYearWithNAs)
+  }
+  
+  if(inherits(li,"ts")){
+    li <- as.list(li)
   }
   
   # matrix works well with pos / neg checks.
@@ -53,15 +57,15 @@ tsContributionChart <- function(li, show_sums_as_line = T,
     neg_0[tsmat < 0] <- 0
     pos_0[!tsmat < 0] <- 0
     value_range <- c(floor(ifelse(is.null(dim(pos_0)),
-                                  min(neg_0),
+                                  min(pos_0),
                                   min(rowSums(pos_0)))
-                           ),
-                     ceiling(ifelse(is.null(dim(neg_0)),
-                                    max(neg_0),
-                                    max(rowSums(neg_0))
-                                    )
-                             )
-                     )
+    ),
+    ceiling(ifelse(is.null(dim(neg_0)),
+                   max(neg_0),
+                   max(rowSums(neg_0))
+    )
+    )
+    )
     value_range <- round(((value_range/10)+c(-1,1))*10)
     
     if(!is.null(manual_value_range)) value_range <-
@@ -73,35 +77,43 @@ tsContributionChart <- function(li, show_sums_as_line = T,
       value_range <- mx * c(-1,1)
     } 
     
+    
+    # plot the bars twice... otherwise grid is over the bars...
     pos_part <- barplot(t(neg_0),
                         ylim = value_range,
                         axes = F,
                         col = theme$line_colors)
+
+    if(print_y_axis){
+      .doYAxisWithHorizontalGrids(theme,
+                                  value_range,
+                                  ygrid_factor = ygrid_factor)
+    }
+    
+    pos_part <- barplot(t(neg_0),
+                        ylim = value_range,
+                        axes = F,
+                        col = theme$line_colors,add = T)
+
     neg_part <- barplot(t(pos_0),
                         ylim = value_range,
                         axes = F,
                         col = theme$line_colors,
                         add = T)
-    
-    if(print_y_axis){
-      .doYAxisWithHorizontalGrids(theme,
-                                  value_range,
-                                  ygrid_factor = ygrid_factor)
-    } 
-    
-    if(print_x_axis) .addTsAxis(quarter_ticks = quarter_ticks,
+
+   if(print_x_axis) .addTsAxis(quarter_ticks = quarter_ticks,
                                 ts_time = ts_time,
                                 date_range = date_range,
                                 at = pos_part,
                                 theme = theme)
+    }
+
+  if(show_sums_as_line && !is.null(dim(tsmat))) {
+    lines(x = pos_part,
+          y = rowSums(tsmat),
+          col = sum_line_color,
+          lwd = theme$lwd,
+          lty = theme$lty) 
   }
-  
-  if(show_sums_as_line) lines(x = pos_part,
-                              y = rowSums(tsmat),
-                              col = sum_line_color,
-                              lwd = theme$lwd,
-                              lty = theme$lty)
-  
-  
   if(box) box()
 }
