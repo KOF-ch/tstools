@@ -88,7 +88,8 @@ tsContributionChart <- function(li, show_sums_as_line = T,
     if(print_y_axis){
       .doYAxisWithHorizontalGrids(theme,
                                   value_range,
-                                  ygrid_factor = ygrid_factor)
+                                  ygrid_factor = ygrid_factor,
+                                  print_y_right = print_y_right)
     }
     
     pos_part <- barplot(t(neg_0),

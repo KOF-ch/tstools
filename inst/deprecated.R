@@ -50,6 +50,7 @@ xx <- initDefaultTheme()
 KOF$reference
 tsContributionChart(KOF)
 undebug(tsContributionChart)
+undebug(tsplot2y)
 # there is a y-axis scala problem! 
 tsplot2y(KOF$kofbarometer,KOF$reference,
          right_as_barchart = T, theme = d)
