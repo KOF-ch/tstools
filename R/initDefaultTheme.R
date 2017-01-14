@@ -46,9 +46,11 @@
 #' }
 #' @param date_range character defaults to NULL
 #' @export
-initDefaultTheme <- function(date_range = NULL){
+initDefaultTsTheme <- function(){
   theme <- list()
-  theme$xlim <- date_range
+  theme$ygrid_factor <- 4
+  theme$use_ygrid <- T
+  theme$box <- T
   theme$ygrid <- seq(-60, 60, 30)
   theme$xlab <- NA
   theme$ylab <- NA
@@ -60,7 +62,7 @@ initDefaultTheme <- function(date_range = NULL){
   theme$yaxt <- 'n'  
   theme$lwd <- 1.5
   theme$tcl_1 <- -0.5
-  theme$tcl_2 <- -0.5
+  theme$tcl_2 <- -.75
   theme$padj_1 <- .25 # how far are the labels away from ticks
   theme$padj_2 <- .25
   # titles

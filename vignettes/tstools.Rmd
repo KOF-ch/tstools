@@ -20,11 +20,19 @@ line charts and plots are thus easily extensible. Base R plots look rather techn
 ## Basic usage
 **tstools'** workhorse plot function is *tsplot*. It offers methods for objects of class ts and lists. In addition to *tsplot*, *tsplot2y* enables the user to plots with two Y-axes.
 
-### Single time series
+### Single time series: line chart
 ```{r,fig.width = 7}
 library(tstools)
 data(KOF)
 tsplot(KOF$kofbarometer)
+```
+
+### Single time series: bar chart
+```{r,fig.width = 7}
+library(tstools)
+data(KOF)
+baro_short <- window(KOF$kofbarometer,start=c(2010,1))
+tsBarPlot(KOF$kofbarometer,theme = d)
 ```
 
 ### Multiple time series
@@ -44,6 +52,16 @@ or a list of time series:
 ```{r,fig.width = 7}
 tsplot(tslist)
 ```
+
+## Advanced use
+This section provides application examples covering the following topics: 
+Barcharts, combination of bar and line charts, multiple Y axes and pdf export.
+The subsequent *themes* sections discusses manyfold layout options and how themes
+can be defined as layout templates for multiple plots. 
+
+
+
+
 
 ## Themes
 Balancing out a ton of defaults to create nifty plots is one of **tstools** contributions. Yet, you might want to tweak single parameters. **tstools** organizes many plotting features in lists called themes. There 3 functions that init default themes. 

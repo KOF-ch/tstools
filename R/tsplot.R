@@ -11,7 +11,7 @@
 #' TRUE.
 #' 
 #' @export
-tsplot <- function(series,...,
+tsplot <- function(series, ...,
                    theme = NULL,
                    plot.title = NULL,
                    plot.subtitle = NULL,
@@ -35,7 +35,7 @@ tsplot <- function(series,...,
 
 #' @rdname tsplot
 #' @export
-tsplot.ts <- function(series,...,
+tsplot.ts <- function(series, ...,
                       theme = NULL,
                       plot.title = NULL,
                       plot.subtitle = NULL,
@@ -155,7 +155,7 @@ tsplot.mts <- function(series,...,
 
 #' @rdname tsplot
 #' @export
-tsplot.list <- function(series,sel=NULL,
+tsplot.list <- function(series,
                         theme = NULL,
                         plot.title = NULL,
                         plot.subtitle = NULL,
@@ -181,13 +181,6 @@ tsplot.list <- function(series,sel=NULL,
   if(!all(unlist(lapply(series,is.ts))))
     stop("all elements of the list need to be objects of class ts.")
   
-  # select the entire series if there is no particular selection
-  if(!is.null(sel)){
-    series <- series[sel]  
-  }
-  
-  # definition of a default theme
-  
   if(is.null(theme)){
     theme <- initDefaultTheme()
   }
@@ -198,39 +191,32 @@ tsplot.list <- function(series,sel=NULL,
                               Don't use this theme / template in case
                               you need more, just use basic plotting
                               and build such a plot on your own.")
-
-  
   if(theme$fillUpPeriod){
     series <- lapply(series,fillUpYearWithNAs)
   }
   
+  # Determine time range (x-axis)
+  # and value range (y-axis)# ############
   ts_time <- unique(unlist(lapply(series,time)))
-  # floating problems when comparing stuff, set it to 
-  # 5 digits ... 
   ts_time <- round(ts_time,digits = 5)
   date_range <- range(ts_time)
+  # value range #######################
   value_range <- range(unlist(series),na.rm=T)
   value_range <- trunc(value_range)
   value_range <- c((floor(value_range[1]/10)-1)*10,
                    (ceiling(value_range[2]/10)+1)*10)
   
-  
-  
-  
-
-  # manual ranges are important for 2 axis plot 
-  # convenience functions... 
+  # overwite automatically generated ranges #
   if(!is.null(manual_date_range)){
-     theme$xlim = manual_date_range
-     ts_time <- seq(from = manual_date_range[1],
-                    to = manual_date_range[2],by = .25)
-     date_range <- manual_date_range
+    date_range <- manual_date_range
+    ts_time <- seq(from = date_range[1],
+                   to = date_range[2],
+                   by = .25)
   }
   
   if(!is.null(manual_value_range)){
     value_range <- manual_value_range 
   }
-  
   
   if(write_pdf){
     if(is.null(fname)){
@@ -251,9 +237,9 @@ tsplot.list <- function(series,sel=NULL,
   # bottom,left,top,right
   par(mar = theme$mar)
   
-  # Define Plot ###############
+  # Define First Plot Plot ###############
   plot(series[[1]],
-       xlim = theme$xlim,
+       xlim = date_range,
        ylim = value_range,
        col = theme$line_colors[[1]],
        lwd = theme$lwd[1],
@@ -263,69 +249,36 @@ tsplot.list <- function(series,sel=NULL,
        ylab = theme$ylab,
        xaxs = theme$xaxs,
        yaxs = theme$yaxs,
-       xaxt = theme$xaxt,
-       yaxt = theme$yaxt,
+       xaxt = "n",
+       yaxt = "n",
        ...)
- 
+  
+  # BACKGROUND (i.e. plot over these elements) START ################
+  # print x-axis, always true in standalone plots
+  if(print_x_axis) .addXAxis(quarter_ticks = quarter_ticks,
+                             date_range = date_range,
+                             theme = theme,
+                             ts_time)
+  
+  # y-axis
+  if(print_y_axis) .addYAxis(theme = theme,
+                             ygrid = ygrid,
+                             value_range = value_range,
+                             ygrid_factor = ygrid_factor,
+                             print_y_right = print_y_right)
+
   if(!is.null(highlight_window)){
     rect(highlight_window[1],
          value_range[1],
          highlight_window[2],
          value_range[2],
-         col=theme$highlight_window_color,
-         border=NA)
-    
+         col = theme$highlight_window_color,
+         border = NA)
   } 
   
-   
-  # this param is always true in stand alone plots, 
-  # might be useful if multiple tsplots are plotted 
-  # top of each other
-  if(print_x_axis){
-    # axis and ticks defintion
-    if(quarter_ticks){
-      ext_qtr <- ts_time[abs(ts_time * 4 - floor(ts_time * 4)) < 0.001]
-      ext_label <- ifelse(ext_qtr - floor(ext_qtr) == 0.5, as.character(floor(ext_qtr)), NA)
-      # x-axis
-      axis(1, at = ext_qtr, labels = ext_label,
-           tcl = theme$tcl_1, cex.axis = theme$cex.axis_1, padj = theme$padj_1)
-      axis(1, at = date_range[1]:date_range[2],
-           tcl = theme$tcl_2,
-           lwd.ticks = theme$lwd_ticks_1, labels = FALSE) # thick tick marks
-      
-    } else{
-      axis(1, at = min_date_value:max_date_value,
-           tcl = theme$tcl_1,
-           cex.axis = theme$cex.axis_1,
-           padj = theme$padj_1)
-    }
-  }
-  # y-axis
-  if(print_y_axis){
-    #stps <- sum(abs(value_range))/ygrid_factor
-    stps <- abs(value_range[1] -
-                  value_range[2])/ygrid_factor
-    ygrid_labels <- seq(from = value_range[1],
-                       to = value_range[2],
-                       by = stps)
-    ygrid_lines <- ygrid_labels[-c(1,length(ygrid_labels))]
-    axis(ifelse(print_y_right,4,2),
-         at = ygrid_labels,
-         tcl = theme$tcl_1,
-         cex.axis = theme$cex.axis_2,
-         padj = theme$padj_2,
-         las = theme$axis_las_2,
-         labels = theme$yaxis_labels,
-         tick = theme$yaxis_tick)
-    if(ygrid){
-      for (hl in ygrid_lines)  abline(h = hl, col = theme$ygrid_color)
-    }
-  } 
+  # BACKGROUND (i.e. plot over these elements) END 
   
-  
-  
-  
-    # add multiple series to the plot #####
+  # add multiple time series to the plot #####
   if(length(series) > 1){
     for (i in 2:length(series)){
       lines(series[[i]],
@@ -339,8 +292,9 @@ tsplot.list <- function(series,sel=NULL,
             )
     }
   }
-  
-  # Add Title to plot #####
+
+  # LEGENDS, TITLE ####################
+  # Add Title to plot 
   # title
   if(!is.null(plot.title)){
     title(main = plot.title, adj = theme$title_adj,
@@ -370,7 +324,7 @@ tsplot.list <- function(series,sel=NULL,
            xpd = theme$lgnd_xpd)
     
   }
-  
+  # EXPORT ####################################
   if(write_pdf) dev.off()
   if(crop_pdf & write_pdf) {
     if(Sys.which("pdfcrop") == "") cat("pdfcrop is not installed. To use this option, install pdfcrop if your on a 'Nix OS. If you're on Windows you're out of luck (anyway).") else {
@@ -378,9 +332,6 @@ tsplot.list <- function(series,sel=NULL,
       system(run_this)
     }
   }
-  
+  ###################
 }
-
-
-
 

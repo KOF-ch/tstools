@@ -4,9 +4,9 @@
 \alias{tsplot2y}
 \title{Create Time Series Plots With Two Ordinates (Y-axes)}
 \usage{
-tsplot2y(x, y, ..., theme_2y = NULL, plot.title = NULL,
-  plot.subtitle = NULL, lgnd = NULL, write_pdf = F, crop_pdf = F,
-  fname = NULL, highlight_window = NULL, theme_out = F,
+tsplot2y(x, y, ..., right_as_barchart = F, theme_2y = NULL,
+  plot.title = NULL, plot.subtitle = NULL, lgnd = NULL, write_pdf = F,
+  crop_pdf = F, fname = NULL, highlight_window = NULL, theme_out = F,
   ygrid_factor = 4, l_manual_y_range = NULL, r_manual_y_range = NULL)
 }
 \arguments{

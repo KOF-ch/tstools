@@ -28,7 +28,7 @@ tsplot(series, ..., theme = NULL, plot.title = NULL, plot.subtitle = NULL,
   print_y_axis = T, print_y_right = F, highlight_window = NULL,
   manual_date_range = NULL, manual_value_range = NULL, auto_name = NULL)
 
-\method{tsplot}{list}(series, sel = NULL, theme = NULL, plot.title = NULL,
+\method{tsplot}{list}(series, theme = NULL, plot.title = NULL,
   plot.subtitle = NULL, lgnd = NULL, write_pdf = F, crop_pdf = F,
   fname = NULL, cex_label = 0.65, ygrid = T, ygrid_factor = 5,
   yaxis_factor = 20, quarter_ticks = T, theme_out = F, print_x_axis = T,

@@ -1,3 +1,49 @@
+con <- setNames(runif(12), seq(as.Date("2014-01-01"), as.Date("2014-12-31"), "month"))
+xlim <- c(0, length(con)*1.25)
+x <- barplot(con, col = "green", xlab = "", ylab = "", ylim = c(0, max(con) * 1.1), axes = FALSE, xlim = xlim)
+par(new = TRUE)
+plot(x = x, type = "b", y = runif(12), xlim = xlim, xlab = "", ylab = "", axes = FALSE)
+abline(v = x, col = "red")
+
+data(KOF)
+baro_short <- window(KOF$kofbarometer,start=c(2010))
+
+range(time(baro_short))
+tsplot(baro_short,manual_value_range = c(0,130))
+par(new=T)
+xx <- barplot(t(baro_short),axes=F,
+              ylim=c(0,130),yaxs="i",
+              xaxs = "i")
+par(new=T)
+tsplot(baro_short,manual_value_range = c(0,130))
+abline(h=110,col="blue")
+
+plot(NULL,xlim = range(time(baro_short)),
+     ylim = c(0,130),xlab="",ylab="")
+par(new=T)
+xx <- barplot(t(baro_short),axes=F,
+              ylim=c(0,130),yaxs="i",
+              xaxs = "i")
+par(new=T)
+tsplot(baro_short,manual_value_range = c(0,130),
+       print_x_axis = F,
+       print_y_axis = F)
+
+
+plot(NULL,
+     xlim = range(time(baro_short))+.1,
+     ylim = c(0,130),xlab="",ylab="",
+     axes = F,
+     xaxs="i",
+     yaxs="i")
+
+box()
+
+# axis(4,)
+# axis(1,)
+# axis(2,)
+
+
 #' Add a line plot to the stacked bar chart
 addLinePlot <- function(c_vect){
   
