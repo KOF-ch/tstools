@@ -159,6 +159,9 @@ tsplot.list <- function(series,
                         theme = NULL,
                         plot.title = NULL,
                         plot.subtitle = NULL,
+                        manual_date_range = NULL,
+                        manual_value_range = NULL,
+                        highlight_window = NULL,
                         lgnd = NULL,
                         write_pdf = F,
                         crop_pdf = F,
@@ -172,9 +175,6 @@ tsplot.list <- function(series,
                         print_x_axis = T,
                         print_y_axis = T,
                         print_y_right = F,
-                        highlight_window = NULL,
-                        manual_date_range = NULL,
-                        manual_value_range = NULL,
                         auto_name = NULL,
                         ...){
   # some sanity checks
@@ -182,7 +182,7 @@ tsplot.list <- function(series,
     stop("all elements of the list need to be objects of class ts.")
   
   if(is.null(theme)){
-    theme <- initDefaultTheme()
+    theme <- initDefaultLineTheme()
   }
   
   # don't have default colors for more than 6 lines
@@ -191,147 +191,16 @@ tsplot.list <- function(series,
                               Don't use this theme / template in case
                               you need more, just use basic plotting
                               and build such a plot on your own.")
-  if(theme$fillUpPeriod){
-    series <- lapply(series,fillUpYearWithNAs)
+  
+  xy_range_left <- tsLinePlot(series,manual_date_range = manual_date_range,
+                              manual_value_range = manual_value_range)
+  if(theme$print_x) addXAxis(xy_range_left)
+  if(theme$print_y) {
+    y_ticks <- addYAxis(xy_range_left,
+                   y_grd_steps = theme$ygrid_steps,
+                   manual_value_range = manual_value_range)
+    if(theme$print_y_grid) addYGrids(y_ticks,theme = theme)
   }
-  
-  # Determine time range (x-axis)
-  # and value range (y-axis)# ############
-  ts_time <- unique(unlist(lapply(series,time)))
-  ts_time <- round(ts_time,digits = 5)
-  date_range <- range(ts_time)
-  # value range #######################
-  value_range <- range(unlist(series),na.rm=T)
-  value_range <- trunc(value_range)
-  value_range <- c((floor(value_range[1]/10)-1)*10,
-                   (ceiling(value_range[2]/10)+1)*10)
-  
-  # overwite automatically generated ranges #
-  if(!is.null(manual_date_range)){
-    date_range <- manual_date_range
-    ts_time <- seq(from = date_range[1],
-                   to = date_range[2],
-                   by = .25)
+  if(theme$box) box()
   }
-  
-  if(!is.null(manual_value_range)){
-    value_range <- manual_value_range 
-  }
-  
-  if(write_pdf){
-    if(is.null(fname)){
-      fname <- auto_name
-      pdf(paste0(fname,".pdf"),
-          pointsize = theme$pointsize,
-          height = theme$height,
-          width = theme$width) # 7 is default, but any other number would do probably  
-    } else {
-      if(!is.character(fname)) stop("file name needs to be a character without file extension.")
-      pdf(paste0(fname,".pdf"),
-          pointsize = theme$pointsize,
-          height = theme$height,
-          width = theme$width) # 7 is default, but any other number would do probably  
-    }  
-  }
-  
-  # bottom,left,top,right
-  par(mar = theme$mar)
-  
-  # Define First Plot Plot ###############
-  plot(series[[1]],
-       xlim = date_range,
-       ylim = value_range,
-       col = theme$line_colors[[1]],
-       lwd = theme$lwd[1],
-       lty = theme$lty[1],
-       # a4_asp = (210 / 2) / (275 / 4),
-       xlab = theme$xlab,
-       ylab = theme$ylab,
-       xaxs = theme$xaxs,
-       yaxs = theme$yaxs,
-       xaxt = "n",
-       yaxt = "n",
-       ...)
-  
-  # BACKGROUND (i.e. plot over these elements) START ################
-  # print x-axis, always true in standalone plots
-  if(print_x_axis) .addXAxis(quarter_ticks = quarter_ticks,
-                             date_range = date_range,
-                             theme = theme,
-                             ts_time)
-  
-  # y-axis
-  if(print_y_axis) .addYAxis(theme = theme,
-                             ygrid = ygrid,
-                             value_range = value_range,
-                             ygrid_factor = ygrid_factor,
-                             print_y_right = print_y_right)
-
-  if(!is.null(highlight_window)){
-    rect(highlight_window[1],
-         value_range[1],
-         highlight_window[2],
-         value_range[2],
-         col = theme$highlight_window_color,
-         border = NA)
-  } 
-  
-  # BACKGROUND (i.e. plot over these elements) END 
-  
-  # add multiple time series to the plot #####
-  if(length(series) > 1){
-    for (i in 2:length(series)){
-      lines(series[[i]],
-            col=theme$line_colors[[i]],
-            lwd = ifelse(length(theme$lwd) > 1,
-                         theme$lwd[i],
-                         theme$lwd),
-            lty = ifelse(length(theme$lty) > 1,
-                         theme$lty[i],
-                         theme$lty)
-            )
-    }
-  }
-
-  # LEGENDS, TITLE ####################
-  # Add Title to plot 
-  # title
-  if(!is.null(plot.title)){
-    title(main = plot.title, adj = theme$title_adj,
-          line = theme$title_line,
-          cex.main = theme$title_cex.main)  
-  }
-  
-  # subtitle
-  if(!is.null(plot.subtitle)){
-    mtext(plot.subtitle, adj = theme$title_adj,
-          line = theme$subtitle_line,
-          cex = theme$subtitle_cex)  
-  }
-  
-  if(theme_out) theme
-  
-  if(!is.null(lgnd)){
-    legend("bottomleft",
-           inset = theme$lgnd_inset,
-           legend = lgnd,
-           box.col = NA, 
-           lty = theme$lty,
-           lwd = theme$lwd,
-           cex = theme$lgnd_cex_label,
-           col = theme$line_colors,
-           bty = theme$lgnd_bty, 
-           xpd = theme$lgnd_xpd)
-    
-  }
-  # EXPORT ####################################
-  if(write_pdf) dev.off()
-  if(crop_pdf & write_pdf) {
-    if(Sys.which("pdfcrop") == "") cat("pdfcrop is not installed. To use this option, install pdfcrop if your on a 'Nix OS. If you're on Windows you're out of luck (anyway).") else {
-      run_this <- sprintf("pdfcrop %s %s",paste0(fname,".pdf"),paste0(fname,".pdf"))
-      system(run_this)
-    }
-  }
-  ###################
-}
 

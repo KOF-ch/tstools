@@ -46,15 +46,18 @@
 #' }
 #' @param date_range character defaults to NULL
 #' @export
-initDefaultTsTheme <- function(){
+initDefaultLineTheme <- function(){
   theme <- list()
-  theme$ygrid_factor <- 4
-  theme$use_ygrid <- T
-  theme$box <- T
+  theme$print_x <- T
+  theme$print_y <- T
+  theme$print_y_grid <- T
+  theme$ygrid_steps <- 5
+  theme$box <- F
   theme$ygrid <- seq(-60, 60, 30)
   theme$xlab <- NA
   theme$ylab <- NA
   theme$lty <- 1
+  theme$use_ygrid <- T
   # axis
   theme$xaxs <- 'i'
   theme$yaxs <- 'i'  

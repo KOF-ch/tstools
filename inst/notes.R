@@ -74,7 +74,7 @@ tsLinePlot <- function(tsl,
   # move the ts to list to the higher level later on:
   if(!is.list(tsl)) tsl <- as.list(tsl)
   
-  if(is.null(theme)) theme <- initDefaultTsTheme()
+  if(is.null(theme)) theme <- initDefaultLineTheme()
   # determine xlim, ylim
   d <- list()
   d$date_range <- .getDateRange(tsl,manual_date_range)
@@ -104,14 +104,27 @@ tsLinePlot <- function(tsl,
   d
 }
 
+tsBarPlot <- function()
+
+
+
 addYAxis <- function(d,
                      right = F,
-                     y_grd_steps){
+                     y_grd_steps,
+                     manual_value_range){
   stps <- abs(d$value_range[1]-
                 d$value_range[2])/y_grd_steps
-  tick_positions <- seq(d$value_range[1],
-                        d$value_range[2],
-                        by = ceiling(stps))  
+  
+  if(is.null(manual_value_range)){
+    tick_positions <- seq(d$value_range[1],
+                          d$value_range[2],
+                          by = ceiling(stps))    
+  } else {
+    tick_positions <- seq(manual_value_range[1],
+                          manual_value_range[2],
+                          by = ceiling(stps))    
+  }
+  
   if(right){
     axis(4, at = tick_positions)
   } else{
@@ -120,25 +133,50 @@ addYAxis <- function(d,
   tick_positions
 }
 
-addXAxis <- function(d, steps){
+addXAxis <- function(d, s){
   axis(1, at = seq(floor(d$date_range[1]),
                   ceiling(d$date_range[2]),
-                  by = steps))
+                  by = s))
 }
 
 addYGrids <- function(tick_positions,theme){
-  
+  for (hl in tick_positions){
+    abline(h = hl,
+           col = theme$ygrid_color)
+  } 
 }
+
+# 1) Multiple lines in one plot, same y-axis
+tsplot(KOF$reference,manual_value_range = c(-20,10))
+tsplot(KOF$kofbarometer)
+
+# 2) Multiple lines in one plot, l/r y-axis
+tsplot2y(KOF$kofbarometer,KOF$reference)
+
+
 
 
 xx <- tsLinePlot(KOF$kofbarometer)
-axis(1,at = seq(xx$date_range[1],
-                ceiling(xx$date_range[2]),by=1))
-addYAxis(xx,y_grd_steps = 4)
+addXAxis(xx)
+tp <- addYAxis(xx,y_grd_steps = 4,manual_value_range = NULL)
+addYGrids(tp,tt)
 box()
 par(new = T)
 yy <- tsLinePlot(KOF$reference)
-addYAxis(yy,right=T,y_grd_steps = 4)
+addYAxis(yy,right=T,y_grd_steps = 4,manual_value_range = NULL)
+
+
+
+debug(tsplot2y)
+tsplot2y(KOF$kofbarometer,KOF$reference)
+undebug(tsplot.list)
+tsplot(KOF$reference,manual_value_range = c(-20,10))
+
+
+
+
+
+
 
 
 
