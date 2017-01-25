@@ -185,6 +185,7 @@ tsplot.list <- function(series,
     theme <- initDefaultLineTheme()
   }
   
+  
   # don't have default colors for more than 6 lines
   if(length(series) > 6) stop("This convenience plot function does not
                               support more than 6 series in one plot.
@@ -192,9 +193,20 @@ tsplot.list <- function(series,
                               you need more, just use basic plotting
                               and build such a plot on your own.")
   
+  # fill up year with NAs before the series are being passed 
+  # on to other functions, but check whether freq is either 
+  # quarterly or monthly, this makes quarterly ticks look 
+  # better... 
+  all_q_or_m <- all(sapply(series,function(x) frequency(x) %in% c(4,12)))
+  if(all(theme$fillYearWithNA & all_q_or_m)){
+    series <- lapply(series,fillUpYearWithNAs)
+  }
+  
+  
   xy_range_left <- tsLinePlot(series,manual_date_range = manual_date_range,
-                              manual_value_range = manual_value_range)
-  if(theme$print_x) addXAxis(xy_range_left)
+                              manual_value_range = manual_value_range,
+                              theme = theme)
+  if(theme$print_x) addXAxis(xy_range_left, theme = theme)
   if(theme$print_y) {
     y_ticks <- addYAxis(xy_range_left,
                    y_grd_steps = theme$ygrid_steps,

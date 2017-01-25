@@ -4,10 +4,8 @@
 \alias{tsplot2y}
 \title{Create Time Series Plots With Two Ordinates (Y-axes)}
 \usage{
-tsplot2y(x, y, ..., right_as_barchart = F, theme_2y = NULL,
-  plot.title = NULL, plot.subtitle = NULL, lgnd = NULL, write_pdf = F,
-  crop_pdf = F, fname = NULL, highlight_window = NULL, theme_out = F,
-  ygrid_factor = 4, l_manual_y_range = NULL, r_manual_y_range = NULL)
+tsplot2y(x, y, ..., theme = NULL, plot.title = NULL, plot.subtitle = NULL,
+  l_manual_y_range = NULL, r_manual_y_range = NULL)
 }
 \arguments{
 \item{x}{list of time series, related to the right Y-axis}
@@ -16,11 +14,11 @@ tsplot2y(x, y, ..., right_as_barchart = F, theme_2y = NULL,
 
 \item{...}{list of additional adhoc plot options.}
 
+\item{theme}{list}
+
 \item{plot.title}{character}
 
 \item{plot.subtitle}{character}
-
-\item{theme}{list}
 }
 \description{
 Create Time Series Plots With Two Ordinates (Y-axes)

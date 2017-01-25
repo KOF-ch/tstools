@@ -10,10 +10,10 @@
 #' \item{xlab}{X-axis label}
 #' \item{ylab}{Y-axis label}
 #' \item{lty}{vector of line types}
-#' \item{xaxs}{}
-#' \item{yaxs}{}
-#' \item{xaxt}{}
-#' \item{yaxt}{}
+#' \item{xaxs}{should the x-axis start a plot coordinate 0? possible values "r", "i", "e", "s", "d", see ?par}
+#' \item{yaxs}{should the y-axis start a plot coordinate 0? possible values "r", "i", "e", "s", "d"}
+#' \item{xaxt}{axis type, "n" = no axis}
+#' \item{yaxt}{axis type, "n" = no axis}
 #' \item{tcl_1}{tick mark length for quarterly ticks}
 #' \item{tcl_2}{tick mark length for yearly ticks}
 #' \item{padj_1}{how far are the labels away from quarterly ticks}
@@ -52,6 +52,70 @@ initDefaultLineTheme <- function(){
   theme$print_y <- T
   theme$print_y_grid <- T
   theme$ygrid_steps <- 5
+  theme$label_quarterly = T
+  theme$fillYearWithNA <- TRUE
+  theme$box <- F
+  theme$ygrid <- seq(-60, 60, 30)
+  theme$xlab <- NA
+  theme$ylab <- NA
+  theme$lty <- 1
+  theme$use_ygrid <- T
+  # axis
+  theme$xaxs <- 'r'
+  theme$yaxs <- 'i'  
+  theme$xaxt <- 'n'  
+  theme$yaxt <- 'n'  
+  theme$lwd <- 1.5
+  theme$tcl_1 <- -0.5
+  theme$tcl_2 <- -.75
+  theme$padj_1 <- .25 # how far are the labels away from ticks
+  theme$padj_2 <- .25
+  # titles
+  theme$title_adj <- 0
+  theme$title_line <- 1.5
+  theme$subtitle_line <- .3
+  theme$title_cex.main <- 1
+  theme$subtitle_cex.main <- 1
+  theme$lwd_ticks_1 <- 1.5
+  theme$lwd_ticks_2 <- 1
+  # ygrid
+  theme$ygrid_lwd <- 1
+  theme$ygrid_lty <- 1
+  theme$ygrid_color <- "#00000022"
+  # colors
+  theme$line_colors <- c(ETH8 = "#007a92",
+                         ETH7 = "#a8322d",
+                         ETH5_60 = "#cc67a7",
+                         ETH5 = "#91056a",
+                         ETH8_60 = "#66b0c2",
+                         ETH7_50 = "#e19794")
+  theme$highlight_window_color <- "#91056a22"
+  # margin
+  # bottom,left,top,right
+  theme$par <- c(5, 4, 4, 2) + 0.1 # R default
+  #theme$height <- NULL
+  #theme$width <- NULL
+  theme$pointsize <- 10
+  # legend
+  # legend
+  theme$lgnd_cex_label <- .8
+  theme$lgnd_bty <- "n"
+  theme$lgnd_vertical_spacing <- 1.6
+  theme$lgnd_inset <- c(0,0)
+  theme$lgnd_xpd <- TRUE
+  theme$fillUpPeriod <- TRUE
+  theme
+}
+
+initDefaultBarTheme <- function(){
+  theme <- list()
+  theme$print_x <- T
+  theme$print_y <- T
+  theme$print_y_grid <- T
+  theme$ygrid_steps <- 5
+  theme$label_quarterly = TRUE
+  theme$fillYearWithNA <- TRUE
+  theme$sum_as_line <- TRUE
   theme$box <- F
   theme$ygrid <- seq(-60, 60, 30)
   theme$xlab <- NA
@@ -101,9 +165,16 @@ initDefaultLineTheme <- function(){
   theme$lgnd_vertical_spacing <- 1.6
   theme$lgnd_inset <- c(0,0)
   theme$lgnd_xpd <- TRUE
-  theme$fillUpPeriod <- TRUE
   theme
 }
+
+
+
+
+
+
+
+
 
 #' @export
 initPrintTheme <- function(date_range = NULL){

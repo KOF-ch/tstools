@@ -29,12 +29,12 @@ tsplot(series, ..., theme = NULL, plot.title = NULL, plot.subtitle = NULL,
   manual_date_range = NULL, manual_value_range = NULL, auto_name = NULL)
 
 \method{tsplot}{list}(series, theme = NULL, plot.title = NULL,
-  plot.subtitle = NULL, lgnd = NULL, write_pdf = F, crop_pdf = F,
-  fname = NULL, cex_label = 0.65, ygrid = T, ygrid_factor = 5,
-  yaxis_factor = 20, quarter_ticks = T, theme_out = F, print_x_axis = T,
-  print_y_axis = T, print_y_right = F, highlight_window = NULL,
-  manual_date_range = NULL, manual_value_range = NULL, auto_name = NULL,
-  ...)
+  plot.subtitle = NULL, manual_date_range = NULL,
+  manual_value_range = NULL, highlight_window = NULL, lgnd = NULL,
+  write_pdf = F, crop_pdf = F, fname = NULL, cex_label = 0.65,
+  ygrid = T, ygrid_factor = 5, yaxis_factor = 20, quarter_ticks = T,
+  theme_out = F, print_x_axis = T, print_y_axis = T, print_y_right = F,
+  auto_name = NULL, ...)
 }
 \arguments{
 \item{series}{object of class ts, or list of time series series.}

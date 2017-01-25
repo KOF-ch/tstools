@@ -20,10 +20,10 @@ the following plot parameters:
 \item{xlab}{X-axis label}
 \item{ylab}{Y-axis label}
 \item{lty}{vector of line types}
-\item{xaxs}{}
-\item{yaxs}{}
-\item{xaxt}{}
-\item{yaxt}{}
+\item{xaxs}{should the x-axis start a plot coordinate 0? possible values "r", "i", "e", "s", "d", see ?par}
+\item{yaxs}{should the y-axis start a plot coordinate 0? possible values "r", "i", "e", "s", "d"}
+\item{xaxt}{axis type, "n" = no axis}
+\item{yaxt}{axis type, "n" = no axis}
 \item{tcl_1}{tick mark length for quarterly ticks}
 \item{tcl_2}{tick mark length for yearly ticks}
 \item{padj_1}{how far are the labels away from quarterly ticks}
