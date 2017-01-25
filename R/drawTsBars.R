@@ -89,7 +89,8 @@ drawTsBars <- function(tsl,
     # watch out rowSums handles na.rm by setting NAs to 0
     # mathematically this makes sense, but is not
     # expecting in the process... 
-    rs <- rowSums(tsmat,na.rm = T)
+    rs <- rowSums(stripTrailingNAsFromTs(tsmat),
+                  na.rm = T)
     lines(x = pos_part[1:length(rs)], y = rs,
           lwd = theme$lwd,
         col = theme$line_colors[-c(1:length(tsl))],
