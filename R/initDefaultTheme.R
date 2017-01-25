@@ -115,7 +115,6 @@ initDefaultBarTheme <- function(){
   theme$ygrid_steps <- 5
   theme$label_quarterly = TRUE
   theme$fillYearWithNA <- TRUE
-  theme$sum_as_line <- TRUE
   theme$box <- F
   theme$ygrid <- seq(-60, 60, 30)
   theme$xlab <- NA

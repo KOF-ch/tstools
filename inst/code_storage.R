@@ -108,6 +108,7 @@ axis(side=1, labels = t_sq, at = bb$bar_pos)
 abline(h=0,col="blue",lwd=1)
 abline(h=2.7619020,col="blue",lwd=1)
 abline(v = .7,col="blue",lwd=1)
+abline(v = 24.7,col="blue",lwd=1)
 abline(v = 2008,col="blue",lwd=1)
 abline(v = 2012.25,col="blue",lwd=1)
 

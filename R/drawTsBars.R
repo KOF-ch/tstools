@@ -1,8 +1,8 @@
 #' @export
 drawTsBars <- function(tsl,
-         show_sums_as_line = F,
          manual_value_range = NULL,
          manual_date_range = NULL,
+         sum_as_line,
          theme = NULL,
          no_plot = F){
   
@@ -83,13 +83,17 @@ drawTsBars <- function(tsl,
                         xlim = c(0,length(ts_time)*1.25),
                         col = theme$line_colors,
                         plot = !no_plot,add=T)
-    
-    if(show_sums_as_line==T) {
-      
-      c_vect_col_sums <- colSums(t(c_vect))
-      lines(x=c_barplot1, y=c_vect_col_sums)
-      
-    }
+  }
+  
+  if(all(sum_as_line & length(tsl) > 1)){
+    # watch out rowSums handles na.rm by setting NAs to 0
+    # mathematically this makes sense, but is not
+    # expecting in the process... 
+    rs <- rowSums(tsmat,na.rm = T)
+    lines(x = pos_part[1:length(rs)], y = rs,
+          lwd = theme$lwd,
+        col = theme$line_colors[-c(1:length(tsl))],
+          lty = theme$lty)
   }
   
   

@@ -24,15 +24,38 @@ tsplot2y(KOF$kofbarometer,KOF$reference)
 
 # 3) simple ts bar chart
 tt <- initDefaultBarTheme()
-tt$label_quarterly <- F
+tt$label_quarterly <- T
 tsBarPlot(short)
 tsBarPlot(short,theme = tt)
 
+# 4) stacked bar chart 
+tsli <- list(ts1 = ts(runif(20,-5,10),start=c(2010,1),frequency = 4),
+             ts2= ts(runif(20,-7,12),start=c(2010,1),frequency = 4))
+
+tsBarPlot(tsli,manual_value_range = c(-30,30))
+# with sum as line
+# write a stripTrailingNAs function
+
+tsli <- list(ts1 = ts(c(runif(20,-5,10),NA,2,NA,NA),start=c(2010,1),frequency = 4),
+             ts2= ts(c(runif(20,-7,12),NA,3,NA,NA),start=c(2010,1),frequency = 4))
 
 
+stripTrailingNAsFromTs(tsli$ts1)
 
 
-# 4) stacked bar chart with sum as line
 
 
 # 5) add additional lines to bar chart (use right y-axis)
+
+
+# add highlight window again! 
+
+# clean up options
+
+# prepare small presentations
+
+# write pdf options
+
+# talk about the issue tracker
+
+# non-goals

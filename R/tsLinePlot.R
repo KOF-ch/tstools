@@ -10,7 +10,7 @@ tsLinePlot <- function(tsl,
   if(is.null(theme)) theme <- initDefaultLineTheme()
   # determine xlim, ylim
   d <- list()
-  ts_time <- unique(unlist(lapply(tsl2,time)))
+  ts_time <- unique(unlist(lapply(tsl,time)))
   d$ts_time <- round(ts_time,digits = 5)
   if(is.null(manual_date_range)){
     d$date_range <- .getDateRange(tsl,manual_date_range)  

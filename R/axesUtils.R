@@ -31,10 +31,15 @@ addXAxis <- function(d, isBar = F, theme){
     # set labels, we need blanks, because we do not want to have a label
     # at every x-tick
     blanks <- rep(NA,length(d$ts_time))
-    
+    tf <- abs(d$ts_time-trunc(d$ts_time)) < 0.001
     # the base barplot function has its own understanding of x-axis
     if(theme$label_quarterly){
-      #tf <- abs(d$ts_time*4 - floor(d$ts_time *4)) < 0.001
+      axis(1, at = d$bar_pos[tf],labels = d$ts_time[tf],
+           tcl = theme$tcl_2,
+           lwd.ticks = theme$lwd_ticks_1)
+      tf_q <- abs(d$ts_time * 4 - floor(d$ts_time * 4)) < 0.001
+      axis(1, at = d$bar_pos[tf_q], labels = FALSE, yaxs = theme$yaxs,
+           tcl = theme$tcl_1, cex.axis = theme$cex.axis_1, padj = theme$padj_1)
     } else{
       # replace blanks where we want labels
       # in this case only at begin of full years

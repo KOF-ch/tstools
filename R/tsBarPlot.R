@@ -1,7 +1,9 @@
 #' @export
 tsBarPlot <- function(tsl,manual_date_range = NULL,
                       manual_value_range = NULL,
-                      theme = NULL){
+                      sum_as_line = TRUE,
+                      theme = NULL,
+                      quiet = T){
   if(is.null(theme)) theme <- initDefaultBarTheme()
   
   
@@ -21,6 +23,7 @@ tsBarPlot <- function(tsl,manual_date_range = NULL,
   # grids can be set up before drawing on them.
   b_pos <- drawTsBars(tsl,
                       manual_value_range = value_range,
+                      sum_as_line = sum_as_line,
                       no_plot = T)
 
   plot(NULL,
@@ -41,7 +44,8 @@ tsBarPlot <- function(tsl,manual_date_range = NULL,
   }
 
   par(new = T)
-  b_pos <- drawTsBars(tsl, manual_value_range = value_range)
+  b_pos <- drawTsBars(tsl, manual_value_range = value_range,
+                      sum_as_line = sum_as_line)
   
   # it's massively important to invoke x-axis after bar plot
   # is really plotting, otherwise you don't get the ticks
@@ -51,6 +55,8 @@ tsBarPlot <- function(tsl,manual_date_range = NULL,
              theme = theme)
   }
   
+  
+  
   if(theme$box) box()
-  b_pos
+  if(!quiet) b_pos
 }

@@ -15,3 +15,25 @@ stripLeadingNAsFromTs <- function(s){
     window(s,start = start_time, end = end_time)
   }
 }
+
+#' @export
+stripTrailingNAsFromTs <- function(ts){
+  if(is.null(dim(ts))){
+    ntf <- is.na(ts)
+  } else{
+    ntf <- apply(ts,1,function(x) all(is.na(x)))
+  }
+  na_pos <- which(ntf)
+  sqntl <- length(ntf)-na_pos
+  if(rev(sqntl)[1] != 0){
+    return(ts)
+  } else {
+    rmv <- na_pos[sqntl-1 <= 1]
+    if(is.null(dim(ts))){
+      ts(ts[-rmv],start = start(ts),frequency = frequency(ts))  
+    } else {
+      ts(ts[-rmv,],start = start(ts),frequency = frequency(ts))  
+    }
+    
+  }
+}  
