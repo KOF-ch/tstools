@@ -2,7 +2,8 @@
 addYAxis <- function(d,
                      right = F,
                      y_grd_steps,
-                     manual_value_range){
+                    # theme = theme,
+                     manual_value_range = NULL){
   stps <- abs(d$value_range[1]-
                 d$value_range[2])/y_grd_steps
   
@@ -17,9 +18,9 @@ addYAxis <- function(d,
   }
   
   if(right){
-    axis(4, at = tick_positions)
+    axis(4, at = tick_positions, yaxs = "i")
   } else{
-    axis(2, at = tick_positions)
+    axis(2, at = tick_positions, yaxs = "i")
   }
   tick_positions
 }

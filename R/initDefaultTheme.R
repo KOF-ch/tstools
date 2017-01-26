@@ -296,7 +296,20 @@ initPrint2YTheme <- function(date_range = NULL){
   theme
 }
 
-
+#' @export
+initDefaultTheme <- function(){
+  theme <- list()
+  theme$fillYearWithNA <- TRUE
+  theme$year_labels_mid <- TRUE
+  theme$yearly_ticks <- TRUE
+  theme$quarterly_ticks <- TRUE
+  theme$lwd_ticks_y <- 1.5
+  theme$lwd_ticks_q <- 1
+  theme$tcl_q <- -0.5
+  theme$tcl_y <- -.75
+  
+  theme
+}
 
 
 

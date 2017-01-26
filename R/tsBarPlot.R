@@ -1,6 +1,8 @@
 #' @export
-tsBarPlot <- function(tsl,manual_date_range = NULL,
+tsBarPlot <- function(tsl,tsr = NULL,
+                      manual_date_range = NULL,
                       manual_value_range = NULL,
+                      r_manual_value_range = NULL,
                       sum_as_line = TRUE,
                       theme = NULL,
                       quiet = T){
@@ -44,7 +46,8 @@ tsBarPlot <- function(tsl,manual_date_range = NULL,
   }
 
   par(new = T)
-  b_pos <- drawTsBars(tsl, manual_value_range = value_range,
+  b_pos <- drawTsBars(tsl,
+                      manual_value_range = value_range,
                       sum_as_line = sum_as_line)
   
   # it's massively important to invoke x-axis after bar plot
@@ -54,6 +57,30 @@ tsBarPlot <- function(tsl,manual_date_range = NULL,
     addXAxis(b_pos,isBar = T,
              theme = theme)
   }
+  
+  if(!is.null(tsr)){
+    if(inherits(tsr,"ts")){
+      tsr <- as.list(tsr)
+    }
+    if(!all(unlist(lapply(tsr,is.ts))))
+      stop("all elements of the tsr need to be objects of class ts.")  
+    
+    b_pos_r <- b_pos
+    if(is.null(r_manual_value_range)){
+      b_pos_r$value_range <- c(1,2)
+    } else{
+      b_pos_r$value_range  <- r_manual_value_range
+    }
+    
+    
+  
+    # something goes wrong here... fix the x-axis part
+    par(new=T)
+    addYAxis(b_pos_r, right = T,
+             y_grd_steps = theme$ygrid_steps)
+    
+  }
+  
   
   
   

@@ -1,5 +1,5 @@
 #' @export
-drawTsBars <- function(tsl,
+drawTsBars <- function(tsl, 
          manual_value_range = NULL,
          manual_date_range = NULL,
          sum_as_line,
@@ -88,7 +88,7 @@ drawTsBars <- function(tsl,
   if(all(sum_as_line & length(tsl) > 1)){
     # watch out rowSums handles na.rm by setting NAs to 0
     # mathematically this makes sense, but is not
-    # expecting in the process... 
+    # expected in the process... 
     rs <- rowSums(stripTrailingNAsFromTs(tsmat),
                   na.rm = T)
     lines(x = pos_part[1:length(rs)], y = rs,
@@ -96,8 +96,7 @@ drawTsBars <- function(tsl,
         col = theme$line_colors[-c(1:length(tsl))],
           lty = theme$lty)
   }
-  
-  
+
   d$value_range <- value_range
   d$date_range <- date_range
   d$bar_pos <- pos_part
