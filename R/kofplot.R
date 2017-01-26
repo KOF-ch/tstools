@@ -11,14 +11,14 @@ kofplot <- function(tsl,
   
   if(global_theme$fillYearWithNA){
     tsl <- lapply(tsl,fillUpYearWithNAs)
-    tsr <- lapply(tsr,fillUpYearWithNAs)
+    if(!is.null(tsr)) tsr <- lapply(tsr,fillUpYearWithNAs)
   }
   
   
   all_series <- c(tsl,tsr)
   global_info <- getTimeInfo(all_series)
   tsl_info <- getTimeInfo(tsl)
-  tsr_info <- getTimeInfo(tsr)
+  if(!is.null(tsr)) tsr_info <- getTimeInfo(tsr)
   
   if(!is.null(l_manual_value_range)){
     tsl_info$y_range <- l_manual_value_range
@@ -58,7 +58,7 @@ kofplot <- function(tsl,
     if(global_theme$quarterly_ticks){
       axis(1,at = q_tick_pos,
            xlim = global_info$x_range,
-           lwd.ticks = global_theme$lwd_ticks_1,
+           lwd.ticks = global_theme$lwd_ticks_q,
            labels = q_tick_lab)
     }
   } else{
@@ -66,17 +66,26 @@ kofplot <- function(tsl,
       axis(1,
            at = global_info$x_range[1]:global_info$x_range[2],
            xlim = global_info$x_range,
-           lwd.ticks = global_theme$lwd_ticks_1)
+           lwd.ticks = global_theme$lwd_ticks_y)
     }
     
     if(global_theme$quarterly_ticks){
       axis(1,at = seq(global_info$x_range[1],
                       global_info$x_range[2],by=.25),
            xlim = global_info$x_range,
-           lwd.ticks = global_theme$lwd_ticks_1,
+           lwd.ticks = global_theme$lwd_ticks_q,
            labels = FALSE)
     }
   }
+  
+  # add y-axis LEFT #####################
+  
+  
+  
+  
+  # add y-axis right
+  
+  
   
   
 }

@@ -307,6 +307,7 @@ initDefaultTheme <- function(){
   theme$lwd_ticks_q <- 1
   theme$tcl_q <- -0.5
   theme$tcl_y <- -.75
+  theme$bar_border_color <- "black"
   
   theme
 }
