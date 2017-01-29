@@ -24,7 +24,7 @@ library(tempdisagg)
 short_q <- ta(short,to = "quarterly",conversion = "average")
 short_b_q <- ta(short_b,to = "quarterly",conversion = "average")
 
-plot(short_b,axes=F,type="b",xlim=c(2008,2013))
+plot(short_b,axes=F,type="l",xlim=c(2008,2013))
 axis(1,xlim=c(2008,2013))
 # should do pos and neg sep
 library(scales)
@@ -36,27 +36,28 @@ rect(time(short_b),0,time(short_b)+1/12,short_b)
 
 
 
-lowLevelBarPlot <- function(tsl){
-  # split nega and pos values
-  # do this for one time series
-  # and build an S3 method for mts as well... 
-  neg_0 <- tsmat
-  pos_0 <- tsmat
-  neg_0[tsmat < 0] <- 0
-  pos_0[!tsmat < 0] <- 0
-  
-  
-  
-  rect(time(short_b_q),0,time(short_b_q)+1/4,short_b_q,col = alpha("blue",.5),border=NA)
-}
 
 
+plot(10,axes=F,
+     type="n",
+     ann=F,
+     ylim=range(short),
+     xlim=c(2008,2013))
+.lowLevelBarPlot(short)
 
 getTimeInfo(short_b)
-
+undebug(lowLevelBarPlot)
 debug(kofplot)
-kofplot(short_b)
+
+axis(side = 1)
+
+kofplot(short_q)
+
+
 getTimeInfo(list(short_b))
+
+
+findInterval(-1,range(-10,10))==1
 
 
 

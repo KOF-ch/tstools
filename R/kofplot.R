@@ -3,6 +3,7 @@ kofplot <- function(tsl,
                     tsr = NULL,
                     manual_date_range = NULL,
                     l_manual_value_range = NULL,
+                    manual_y_grid = NULL,
                     global_theme = NULL,
                     tsl_theme = NULL,
                     tsr_theme = NULL){
@@ -79,15 +80,23 @@ kofplot <- function(tsl,
   }
   
   # add y-axis LEFT #####################
+  if(is.null(l_manual_value_range)){
+    l_manual_value_range <- c(-1,1)
+  } 
+  
+  if(is.null(manual_y_grid)){
+    y_grid
+  } else{
+    y_grid <- manual_y_grid
+  }
   
   
   
+  
+  # add barplot to the left axis
+  .lowLevelBarPlot(tsl[[1]])
   
   # add y-axis right
-  
-  
-  
-  
 }
 
 #' @export

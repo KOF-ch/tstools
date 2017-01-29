@@ -297,8 +297,19 @@ initPrint2YTheme <- function(date_range = NULL){
 }
 
 #' @export
+initLowLevelBarTheme <- function(){
+  theme <- list()
+  theme$border <- "black"
+  theme$fill_color <- "blue"
+  theme
+}
+
+
+#' @export
 initDefaultTheme <- function(){
   theme <- list()
+  theme$yaxs <- "r"
+  theme$xaxs <- "r"
   theme$fillYearWithNA <- TRUE
   theme$year_labels_mid <- TRUE
   theme$yearly_ticks <- TRUE
@@ -308,7 +319,11 @@ initDefaultTheme <- function(){
   theme$tcl_q <- -0.5
   theme$tcl_y <- -.75
   theme$bar_border_color <- "black"
-  
+  theme$y_grid_color <- "#CCCCCC"
+  theme$y_grid_lwd <- 1
+  theme$y_grid_lty <- 1
+  theme$y_zero_higlight <- F
+  theme$y_zero_higlight_color <- "#FF0000"
   theme
 }
 
