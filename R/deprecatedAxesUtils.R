@@ -1,5 +1,5 @@
 #' @export
-addYAxis <- function(d,
+DaddYAxis <- function(d,
                      right = F,
                      y_grd_steps,
                     # theme = theme,
@@ -26,7 +26,7 @@ addYAxis <- function(d,
 }
 
 #' @export
-addXAxis <- function(d, isBar = F, theme){
+DaddXAxis <- function(d, isBar = F, theme){
   # BAR PLOT ###########
   if(isBar){
     # set labels, we need blanks, because we do not want to have a label
@@ -76,7 +76,7 @@ addXAxis <- function(d, isBar = F, theme){
 }
 
 #' @export
-addYGrids <- function(tick_positions,theme){
+DaddYGrids <- function(tick_positions,theme){
   for (hl in tick_positions){
     abline(h = hl,
            col = theme$ygrid_color)
