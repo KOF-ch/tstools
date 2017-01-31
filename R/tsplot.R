@@ -1,218 +1,157 @@
-#' Basic Times Series Plot Method
-#'
-#' @param series object of class ts, or list of time series series.
-#' @param ... objects of class ts
-#' @param theme list holding extra style arguments to be passed to plot.
-#' @param ygrid_dynamic logical, defaults to FALSE. Should ygrids be dynamic?
-#' If not, the ygrid configuration of the theme is used. 
-#' @param ygrid_factor numeric, defaults to 5. Factor by which the difference 
-#' between the maximum and the minimum y value should be divided. This parameter
-#' determines the number of horizontal grid lines when dynamic ygrid_dynamic is 
-#' TRUE.
-#' 
 #' @export
-tsplot <- function(series, ...,
-                   theme = NULL,
-                   plot.title = NULL,
-                   plot.subtitle = NULL,
-                   lgnd = NULL,
-                   write_pdf = F,
-                   crop_pdf = F,
-                   cex_label = 0.65,
-                   fname = NULL,
-                   ygrid = T,
-                   ygrid_factor = 4,
-                   yaxis_factor,
-                   theme_out,
-                   print_x_axis,
-                   print_y_axis = T,
-                   print_y_right = F,
-                   highlight_window = NULL,
-                   manual_date_range = NULL,
-                   manual_value_range = NULL,
-                   auto_name = NULL) UseMethod("tsplot")
+tsplot <- function(...,
+                   tsr = NULL,
+                   xlim = NULL,
+                   ylim = NULL,
+                   theme = NULL){
+  UseMethod("tsplot")
+} 
 
-
-#' @rdname tsplot
 #' @export
-tsplot.ts <- function(series, ...,
-                      theme = NULL,
-                      plot.title = NULL,
-                      plot.subtitle = NULL,
-                      lgnd = NULL,
-                      write_pdf = F,
-                      crop_pdf = F,
-                      cex_label = 0.65,
-                      fname = NULL,
-                      ygrid = T,
-                      ygrid_factor = 4,
-                      yaxis_factor = 20,
-                      quarter_ticks = T,
-                      theme_out = F,
-                      print_x_axis = T,
-                      print_y_axis = T,
-                      print_y_right = F,
-                      highlight_window = NULL,
-                      manual_date_range = NULL,
-                      manual_value_range = NULL,
-                      auto_name = NULL){
-  
+tsplot.ts <- function(...,
+                      tsr = NULL,
+                      xlim = NULL,
+                      ylim = NULL,
+                      theme = NULL){
+  tsl <- list(...)
+  tsplot(tsl,tsr = tsr,
+         xlim = xlim,
+         ylim = ylim,
+         theme = theme)
+}
+
+#' @export
+tsplot.mts <- function(...,
+                       tsr = NULL,
+                       xlim = NULL,
+                       ylim = NULL,
+                       theme = NULL){
   li <- list(...)
+  if(length(li) > 1){
+    stop("If you use multivariate time series objects (mts), make sure to pass only one object per axis. Place all time series you want to plot on one y-axis in one mts object or list of time series.")
+  } else{
+    tsplot(as.list(li[[1]]),
+           tsr = tsr,
+           xlim = xlim,
+           ylim = ylim,
+           theme = theme)
+  }
+}
+
+#' @export
+tsplot.list <- function(...,
+                        tsr = NULL,
+                        left_as_bar = FALSE,
+                        overall_xlim = NULL,
+                        overall_ylim = NULL,
+                        manual_date_ticks = NULL,
+                        manual_value_ticks_l = NULL,
+                        manual_value_ticks_r = NULL,
+                        theme = NULL){
   
-  # get the name of the first time series for 
-  # file naming if no file name is specified.
-  auto_nm <- deparse(substitute(series))
+  tsl <- (...)
+  tsr <- .sanitizeTsr(tsr)
   
-  # list of time series
-  tl <- c(list(series),li)
+  if(is.null(theme)) theme <- initDefaultTheme()
+  if(theme$fillYearWithNAs){
+    tsl <- lapply(tsl,fillUpYearWithNAs)
+    if(!is.null(tsr)) tsr <- lapply(tsr,fillUpYearWithNAs)
+  }
   
-  if(!all(unlist(lapply(li,is.ts)))) 
-    stop("all list elements must be of class ts!")
+  global_x <- .getDateInfo(tsl,tsr,
+                           theme,manual_date_ticks)
   
-  # basically pass it all on to the list method of tsplot
-  tsplot(tl,theme = theme, 
-         ygrid_factor = ygrid_factor,
-         yaxis_factor = yaxis_factor,
-         plot.title = plot.title,
-         plot.subtitle = plot.subtitle,
-         lgnd = lgnd,
-         write_pdf = write_pdf,
-         crop_pdf = crop_pdf,
-         cex_label = cex_label,
-         fname = fname,
-         theme_out = theme_out,
-         ygrid = ygrid,
-         print_x_axis = print_x_axis,
-         print_y_axis = print_y_axis,
-         print_y_right = print_y_right,
-         highlight_window = highlight_window,
-         manual_date_range = manual_date_range,
-         manual_value_range = manual_value_range,
-         auto_name = auto_nm)  
+  global_y <- list(y_range = c(-100,100))
   
+  # global_y <- .getValueInfo(tsl,tsr,
+  #                           theme, 
+  #                           manual_value_ticks_l,
+  #                           manual_value_ticks_r)
+  
+  # BASE CANVAS 
+  plot(NULL,
+       xlim = global_x$x_range,
+       ylim = global_y$y_range,
+       axes = F,
+       xlab = "",
+       ylab = "",
+       xaxs = theme$xaxs,
+       yaxs = theme$yaxs
+  )
+  
+  # add X-Axis (always the same, no matter how many lines or 
+  # or whether bar or line)
+  axis(1)
+  
+  
+  if(left_as_bar){
+    # draw barplot
+    return(drawTsBars(tsl,theme=theme))
+    
+  } else {
+    # draw lineplot
+    drawTsLines(tsl,theme=theme)
+    
+    
+  }
+  
+  # Add a right axis line plot
+  if(is.null(tsr)){
+    
+  }
 }
 
 
-#' @rdname tsplot
-#' @export
-tsplot.mts <- function(series,...,
-                      theme = NULL,
-                      plot.title = NULL,
-                      plot.subtitle = NULL,
-                      lgnd = NULL,
-                      write_pdf = F,
-                      crop_pdf = F,
-                      cex_label = 0.65,
-                      fname = NULL,
-                      ygrid = T,
-                      ygrid_factor = 4,
-                      yaxis_factor = 20,
-                      quarter_ticks = T,
-                      theme_out = F,
-                      print_x_axis = T,
-                      print_y_axis = T,
-                      print_y_right = F,
-                      highlight_window = NULL,
-                      manual_date_range = NULL,
-                      manual_value_range = NULL,
-                      auto_name = NULL){
-  
-  li <- list(...)
-  
-  # get the name of the first time series for 
-  # file naming if no file name is specified.
-  auto_nm <- deparse(substitute(series))
-  
-  # list of time series
-  tl <- c(list(series),li)
-  
-  if(!all(unlist(lapply(li,is.ts)))) 
-    stop("all list elements must be of class ts!")
-  
-  # basically pass it all on to the list method of tsplot
-  tsplot(tl,theme = theme, 
-         ygrid_factor = ygrid_factor,
-         yaxis_factor = yaxis_factor,
-         plot.title = plot.title,
-         plot.subtitle = plot.subtitle,
-         lgnd = lgnd,
-         write_pdf = write_pdf,
-         crop_pdf = crop_pdf,
-         cex_label = cex_label,
-         fname = fname,
-         theme_out = theme_out,
-         ygrid = ygrid,
-         print_x_axis = print_x_axis,
-         print_y_axis = print_y_axis,
-         print_y_right = print_y_right,
-         highlight_window = highlight_window,
-         manual_date_range = manual_date_range,
-         manual_value_range = manual_value_range,
-         auto_name = auto_nm)  
-  
+# o <- diff(r)*theme$y_offset_pct
+# d$x_range <- r + c(-o,o)
+#' determine ticks and grid position
+#' theme contains which grids should be drawn etc.
+.getDateInfo <- function(tsr,tsl,theme,
+                         manual_date_ticks){
+  d <- list()
+  if(!is.null(manual_date_ticks)){
+    d$x_ticks <- manual_date_ticks
+    d$x_range <- range(manual_date_ticks)
+    return(d)
+  } else{
+    # NO MANUAL X-AXIS given
+    all_series <- c(tsl,tsr)
+    d$x_range <- range(time(unlist(all_series)))
+    if(theme$yearly_ticks){
+      
+    }
+    if(theme$quarterly_ticks){
+      if(theme$year_labels_mid){
+        
+      }
+    }
+  }
 }
 
 
-#' @rdname tsplot
-#' @export
-tsplot.list <- function(series,
-                        theme = NULL,
-                        plot.title = NULL,
-                        plot.subtitle = NULL,
-                        manual_date_range = NULL,
-                        manual_value_range = NULL,
-                        highlight_window = NULL,
-                        lgnd = NULL,
-                        write_pdf = F,
-                        crop_pdf = F,
-                        fname = NULL,
-                        cex_label = 0.65,
-                        ygrid = T,
-                        ygrid_factor = 5,
-                        yaxis_factor = 20,
-                        quarter_ticks = T,
-                        theme_out = F,
-                        print_x_axis = T,
-                        print_y_axis = T,
-                        print_y_right = F,
-                        auto_name = NULL,
-                        ...){
-  # some sanity checks
-  if(!all(unlist(lapply(series,is.ts))))
-    stop("all elements of the list need to be objects of class ts.")
-  
-  if(is.null(theme)){
-    theme <- initDefaultLineTheme()
+
+#' Make sure right axis object is of appropriate class.
+.sanitizeTsr <- function(tsr){
+  if(is.null(tsr)){
+    return(tsr)
+  } else if(inherits(tsr,"mts")){
+    as.list(tsr)
+  } else if(inherits(tsr,"ts")){
+    list(tsr)
+  } else if(inherits(tsr,"list")){
+    tsr
+  } else {
+    stop("Time series object to be plotted on the right axis, 
+         has to be either of class ts, mts or list.")
   }
-  
-  
-  # don't have default colors for more than 6 lines
-  if(length(series) > 6) stop("This convenience plot function does not
-                              support more than 6 series in one plot.
-                              Don't use this theme / template in case
-                              you need more, just use basic plotting
-                              and build such a plot on your own.")
-  
-  # fill up year with NAs before the series are being passed 
-  # on to other functions, but check whether freq is either 
-  # quarterly or monthly, this makes quarterly ticks look 
-  # better... 
-  all_q_or_m <- all(sapply(series,function(x) frequency(x) %in% c(4,12)))
-  if(all(theme$fillYearWithNA & all_q_or_m)){
-    series <- lapply(series,fillUpYearWithNAs)
-  }
-  
-  
-  xy_range_left <- tsLinePlot(series,manual_date_range = manual_date_range,
-                              manual_value_range = manual_value_range,
-                              theme = theme)
-  if(theme$print_x) addXAxis(xy_range_left, theme = theme)
-  if(theme$print_y) {
-    y_ticks <- addYAxis(xy_range_left,
-                   y_grd_steps = theme$ygrid_steps,
-                   manual_value_range = manual_value_range)
-    if(theme$print_y_grid) addYGrids(y_ticks,theme = theme)
-  }
-  if(theme$box) box()
-  }
+}
+
+.getXAxisInfo <- function(tsl,tsr,theme){
+  unlist(c(tsr,tsl))
+}
+
+
+
+
+
 

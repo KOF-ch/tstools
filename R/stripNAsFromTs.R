@@ -1,8 +1,10 @@
-#' Strip Leading NAs from a Time Series Object
+#' Strip Leading / Trailing NAs from a Time Series Object
 #' 
 #' Removes NAs to begin with and starts time series index at the first non-NA value.
 #' 
+#' 
 #' @param s an object of class ts.
+#' @rdname stripNAsFromTs
 #' @export 
 stripLeadingNAsFromTs <- function(s){
   if(!is.na(s[1])){
@@ -16,6 +18,7 @@ stripLeadingNAsFromTs <- function(s){
   }
 }
 
+#' @rdname stripNAsFromTs
 #' @export
 stripTrailingNAsFromTs <- function(ts){
   if(is.null(dim(ts))){

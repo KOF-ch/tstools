@@ -27,13 +27,7 @@ data(KOF)
 tsplot(KOF$kofbarometer)
 ```
 
-### Single time series: bar chart
-```{r,fig.width = 7}
-library(tstools)
-data(KOF)
-baro_short <- window(KOF$kofbarometer,start=c(2010,1))
-tsBarPlot(KOF$kofbarometer,theme = d)
-```
+
 
 ### Multiple time series
 ```{r}
@@ -67,18 +61,18 @@ can be defined as layout templates for multiple plots.
 Balancing out a ton of defaults to create nifty plots is one of **tstools** contributions. Yet, you might want to tweak single parameters. **tstools** organizes many plotting features in lists called themes. There 3 functions that init default themes. 
 
 ```{r}
-default_1 <- initDefaultTheme()
-print_1 <- initPrintTheme()
-print_2y <- initPrint2YTheme()
-names(default_1)
+# default_1 <- initDefaultTheme()
+# print_1 <- initPrintTheme()
+# print_2y <- initPrint2YTheme()
+# names(default_1)
 ```
 
 All lists contain many parameters that can be overwritten separately. For example, you can change the line type and simply pass the adjusted theme to the plot function.
 Note that you can use a vector for line specific properties if you got multiple series. If you use a scalar, the property is set to this value for all lines.
 
 ```{r,fig.width = 7}
-default_1$lty <- c(1,2)
-tsplot(tslist,theme = default_1)
+# default_1$lty <- c(1,2)
+# tsplot(tslist,theme = default_1)
 ```
 
 ## Plots with 2 Y-axes
