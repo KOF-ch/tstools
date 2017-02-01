@@ -12,11 +12,20 @@ tslist$ts4 <- ts(runif(15,-40,20),start=c(2010,1),
 
 
 
-tsplot(tslist,manual_date_ticks = 2010:2014,left_as_bar = F)
+
 
 
 debug(tsplot)
 tsplot(tslist$ts1,manual_date_ticks = 2010:2014,left_as_bar = T)
+
+
+undebug(drawTsBars)
+tsplot(tslist[1:3],manual_date_ticks = 2010:2015,left_as_bar = T)
+
+# this seems to work... 
+rect(ts_time[1],0,ts_time[1]+1/frq,h_pos[1L:NR_POS,1])
+
+rect(2010,0,ts_time+1/frq)
 
 
 
@@ -28,6 +37,12 @@ class(tm)
 
 as.list(tm)
 
+plot(rnorm)
+abline(v=.3)
+rect(0,c(-2,-1),0.1,c(-1,0),col=c("blue","green"))
+
+
+rect(c(0,0.4),-2,c(0.2,0.5),0,col=c("blue","green"))
 
 
 tf(tm,tm)
@@ -35,7 +50,7 @@ tf(tm,tm)
 
 
 undebug(barplot)
-barplot(t(tm))
+barplot(t(do.call("cbind",tslist)))
 
 
 hy <- t(tm)

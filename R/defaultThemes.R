@@ -14,12 +14,12 @@ initDefaultTheme <- function(){
   theme$quarterly_ticks <- T
   theme$year_labels_mid <- T
   theme$bar_border <- "black"
-  theme$bar_pos_fill_color <- c(ETH8 = "#007a92",
-                            ETH7 = "#a8322d",
-                            ETH5 = "#91056a",
-                            ETH5_60 = "#cc67a7",
-                            ETH8_60 = "#66b0c2",
-                            ETH7_50 = "#e19794")
+  theme$bar_pos_fill_color <- c(ETH8 = "#007A92",
+                            ETH7 = "#A8322D",
+                            ETH5 = "#91056A",
+                            ETH5_60 = "#CC67A7",
+                            ETH8_60 = "#66B0C2",
+                            ETH7_50 = "#E19794")
   theme$bar_neg_fill_color <- c(ETH8 = "#007a92",
                                 ETH7 = "#a8322d",
                                 ETH5 = "#91056a",
