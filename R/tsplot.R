@@ -1,30 +1,43 @@
 #' @export
 tsplot <- function(...,
                    tsr = NULL,
-                   xlim = NULL,
-                   ylim = NULL,
+                   left_as_bar = FALSE,
+                   overall_xlim = NULL,
+                   overall_ylim = NULL,
+                   manual_date_ticks = NULL,
+                   manual_value_ticks_l = NULL,
+                   manual_value_ticks_r = NULL,
                    theme = NULL){
   UseMethod("tsplot")
 } 
 
 #' @export
-tsplot.ts <- function(...,
-                      tsr = NULL,
-                      xlim = NULL,
-                      ylim = NULL,
+tsplot.ts <- function(...,tsr = NULL,
+                      left_as_bar = FALSE,
+                      overall_xlim = NULL,
+                      overall_ylim = NULL,
+                      manual_date_ticks = NULL,
+                      manual_value_ticks_l = NULL,
+                      manual_value_ticks_r = NULL,
                       theme = NULL){
   tsl <- list(...)
   tsplot(tsl,tsr = tsr,
-         xlim = xlim,
-         ylim = ylim,
+         manual_date_ticks = manual_date_ticks,
+         left_as_bar = left_as_bar,
+         overall_xlim = overall_xlim,
+         overall_ylim = overall_ylim,
          theme = theme)
 }
 
 #' @export
 tsplot.mts <- function(...,
                        tsr = NULL,
-                       xlim = NULL,
-                       ylim = NULL,
+                       left_as_bar = FALSE,
+                       overall_xlim = NULL,
+                       overall_ylim = NULL,
+                       manual_date_ticks = NULL,
+                       manual_value_ticks_l = NULL,
+                       manual_value_ticks_r = NULL,
                        theme = NULL){
   li <- list(...)
   if(length(li) > 1){
@@ -32,8 +45,10 @@ tsplot.mts <- function(...,
   } else{
     tsplot(as.list(li[[1]]),
            tsr = tsr,
-           xlim = xlim,
-           ylim = ylim,
+           manual_date_ticks = manual_date_ticks,
+           left_as_bar = left_as_bar,
+           overall_xlim = overall_xlim,
+           overall_ylim = overall_ylim,
            theme = theme)
   }
 }
