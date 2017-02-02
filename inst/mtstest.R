@@ -17,14 +17,14 @@ reflist$rs1 <- ts(runif(20,-3,3),start=c(2010,1),
 reflist$rs2 <- ts(runif(20,-5,5),start=c(2010,1),
                   frequency = 4)
 
-
+tslist[1:3]
 
 
 
 undebug(tsplot)
 tsplot(tslist$ts1,manual_date_ticks = 2010:2014,left_as_bar = T,theme=tt)
 
-tsplot(tslist$ts1,tsr = reflist,manual_date_ticks = 2010:2014,left_as_bar = T,theme=tt)
+tsplot(tslist[1:3],tsr = reflist,manual_date_ticks = 2010:2014,left_as_bar = T,theme=tt)
 
 
 

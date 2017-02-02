@@ -57,18 +57,15 @@ drawTsBars.mts <- function(x, theme = NULL){
     # draw the positive part
   #h_pos <- rbind(rectbar = 0,apply(t(neg_0),2L,cumsum))
   h_pos <- rbind(rectbase = 0,apply(t(neg_0),2L,cumsum))
-  NR_POS <- nrow(h_pos)
+  NR_POS <- nrow(h_pos[-1,])
   NC_POS <- ncol(h_pos)
-  # get rid of color names otherwise names are used to 
-  # tweak this somehow... don't tryna help me R :)
-  col <- theme$bar_pos_fill_color[1:NR_POS]
-  names(col) <- NULL
+  
   for (i in 1L:NC_POS) {
   rect(ts_time[i],
        h_pos[1L:NR_POS,i],
        ts_time[i]+1/frq,
        h_pos[-1,i],
-       col = col,
+       col = theme$bar_fill_color[1:NR_POS],
        border = theme$bar_border
        )
   }
@@ -80,7 +77,7 @@ drawTsBars.mts <- function(x, theme = NULL){
          h_neg[1L:NR_POS,i],
          ts_time[i]+1/frq,
          h_neg[-1,i],
-         col = col,
+         col = theme$bar_fill_color[1:NR_POS],
          border = theme$bar_border
     )
   }
