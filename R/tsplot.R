@@ -62,7 +62,8 @@ tsplot.list <- function(...,
                         manual_date_ticks = NULL,
                         manual_value_ticks_l = NULL,
                         manual_value_ticks_r = NULL,
-                        theme = NULL){
+                        theme = NULL,
+                        quiet = TRUE){
   
   tsl <- (...)
   tsr <- .sanitizeTsr(tsr)
@@ -79,6 +80,7 @@ tsplot.list <- function(...,
   # y can't be global in the first place, cause 
   # tsr and tsl have different scales.... 
   left_y <- list(y_range = c(-100,100))
+  right_y <- list(y_range = c(-3,3))
   
   # global_y <- .getValueInfo(tsl,tsr,
   #                           theme, 
@@ -123,19 +125,35 @@ tsplot.list <- function(...,
   
   if(left_as_bar){
     # draw barplot
-    return(drawTsBars(tsl,theme=theme))
+    drawTsBars(tsl,theme=theme)
     
   } else {
     # draw lineplot
     drawTsLines(tsl,theme=theme)
-    
-    
   }
   
   # Add a right axis line plot
-  if(is.null(tsr)){
-    
+  if(!is.null(tsr)){
+    par(new = T)
+    plot(NULL,
+         xlim = global_x$x_range,
+         ylim = right_y$y_range,
+         axes = F,
+         xlab = "",
+         ylab = "",
+         yaxs = theme$yaxs,
+         xaxs = theme$xaxs
+    )
+    drawTsLines(tsr,theme=theme)
   }
+  
+  # return axes and tick info, as well as theme maybe? 
+  if(!quiet){
+    
+  } else{
+    return()
+  }
+  
 }
 
 
