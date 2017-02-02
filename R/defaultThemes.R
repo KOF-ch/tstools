@@ -10,6 +10,8 @@ initDefaultTheme <- function(){
                          ETH7_50 = "#e19794")
   theme$lwd <- c(2,3,4,2,3,4)
   theme$lty <- 1
+  theme$xaxs <- "i"
+  theme$yaxs <- "i"
   theme$yearly_ticks <- T
   theme$quarterly_ticks <- T
   theme$year_labels_mid <- T
@@ -26,5 +28,9 @@ initDefaultTheme <- function(){
                                 ETH5_60 = "#cc67a7",
                                 ETH8_60 = "#66b0c2",
                                 ETH7_50 = "#e19794")
+  theme$highlight_window <- F
+  theme$highlight_window_start <- NULL
+  theme$highlight_window_end <- NULL
+  theme$highlight_color <- "#e9e9e9"
   theme
 }

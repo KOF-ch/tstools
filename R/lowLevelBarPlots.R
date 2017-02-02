@@ -25,8 +25,7 @@ drawTsBars.ts <- function(x, theme = NULL){
             ts_time+1/frq,
             0,
             border = theme$bar_border,
-            col = theme$bar_pos_fill_color[1]
-       )
+            col = theme$bar_pos_fill_color[1])
   
   
 }

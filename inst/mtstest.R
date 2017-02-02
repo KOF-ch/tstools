@@ -15,12 +15,16 @@ tslist$ts4 <- ts(runif(15,-40,20),start=c(2010,1),
 
 
 
-debug(tsplot)
+undebug(tsplot)
 tsplot(tslist$ts1,manual_date_ticks = 2010:2014,left_as_bar = T)
+tt <- initDefaultTheme()
+tt$highlight_window <- T
+tsplot(tslist$ts1,manual_date_ticks = 2010:2014,theme = tt)
 
 
 undebug(drawTsBars)
 tsplot(tslist[1:3],manual_date_ticks = 2010:2015,left_as_bar = T)
+
 
 # this seems to work... 
 rect(ts_time[1],0,ts_time[1]+1/frq,h_pos[1L:NR_POS,1])

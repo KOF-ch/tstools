@@ -76,7 +76,9 @@ tsplot.list <- function(...,
   global_x <- .getDateInfo(tsl,tsr,
                            theme,manual_date_ticks)
   
-  global_y <- list(y_range = c(-100,100))
+  # y can't be global in the first place, cause 
+  # tsr and tsl have different scales.... 
+  left_y <- list(y_range = c(-100,100))
   
   # global_y <- .getValueInfo(tsl,tsr,
   #                           theme, 
@@ -86,13 +88,33 @@ tsplot.list <- function(...,
   # BASE CANVAS 
   plot(NULL,
        xlim = global_x$x_range,
-       ylim = global_y$y_range,
+       ylim = left_y$y_range,
        axes = F,
        xlab = "",
        ylab = "",
        xaxs = theme$xaxs,
        yaxs = theme$yaxs
   )
+  
+  if(theme$highlight_window){
+    if(!is.null(theme$highlight_window_start)){
+      xl <- theme$highlight_window_start
+    } else{
+      xl <- global_x$x_range[2]-2
+    }
+    
+    if(!is.null(theme$highlight_window_end)){
+      xr <- theme$highlight_window_end
+    } else{
+      xr <- global_x$x_range[2]
+    }
+    rect(xl,left_y$y_range[1],xr,left_y$y_range[2],
+         col = theme$highlight_color,
+         border = NA)
+      
+      
+  }
+  
   
   # add X-Axis (always the same, no matter how many lines or 
   # or whether bar or line)
