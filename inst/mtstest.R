@@ -1,5 +1,9 @@
+
+### WHAT IF a series doesn't start in the first period of the
+## year
+
 tslist <- list()
-tslist$ts1 <- ts(runif(20,10,50),start=c(2010,1),
+tslist$ts1 <- ts(runif(18,10,50),start=c(2010,4),
                  frequency = 4)
 tslist$ts2 <- ts(runif(20,-10,20),start=c(2010,1),
                  frequency = 4)
@@ -9,6 +13,10 @@ tslist$ts3 <- ts(runif(20,-40,20),start=c(2010,1),
 
 tslist$ts4 <- ts(runif(15,-40,20),start=c(2010,1),
                  frequency = 4)
+tslist$ts5 <- ts(runif(40,-40,20),start=c(2010,1),
+                 frequency = 12)
+
+
 
 reflist <- list()
 reflist$rs1 <- ts(runif(20,-3,3),start=c(2010,1),
@@ -17,20 +25,52 @@ reflist$rs1 <- ts(runif(20,-3,3),start=c(2010,1),
 reflist$rs2 <- ts(runif(20,-5,5),start=c(2010,1),
                   frequency = 4)
 
-tslist[1:3]
+
+xx <- getGlobalXInfo(tslist[1:3],NULL,F)
+
+tsplot(tslist[2:4],left_as_bar = T)
+tsplot(tslist[2:4],left_as_bar = F)
+
+tt <- initDefaultTheme()
+tt$highlight_window <- T
+tsplot(tslist[2:4],left_as_bar = T,theme = tt)
 
 
+
+
+debug(tsplot)
+tsplot(tslist[1],left_as_bar = F)
 
 undebug(tsplot)
 tsplot(tslist$ts1,manual_date_ticks = 2010:2014,left_as_bar = T,theme=tt)
 
-tsplot(tslist[1:3],tsr = reflist,manual_date_ticks = 2010:2014,left_as_bar = T,theme=tt)
+undebug(drawTsBars)
+
+
+tsplot(tslist[1:3],tsr = reflist,
+       manual_date_ticks = 2010:2014,left_as_bar = T,theme=tt)
+
+plot(rnorm(100))
+rect(c(0,20,60),0,c(10,40,80),1,col=tt$bar_fill_color[2:4])
+
+
+rect(20,0,40,1,col=tt$bar_fill_color[2])
+rect(60,0,80,1,col=tt$bar_fill_color[3])
 
 
 
-tt <- initDefaultTheme()
-tt$highlight_window <- T
-tsplot(tslist$ts1,manual_date_ticks = 2010:2014,theme = tt)
+
+
+tsplot(tslist[1:3],tsr = NULL,
+       manual_date_ticks = 2010:2014,
+       left_as_bar = T,
+       theme=tt)
+
+
+
+
+tsplot(tslist$ts1,left_as_bar = F,theme = tt)
+
 
 
 undebug(drawTsBars)

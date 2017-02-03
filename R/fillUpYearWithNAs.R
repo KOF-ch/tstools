@@ -4,10 +4,29 @@
 #' 
 #' @param ts object of class ts
 #' @export
-fillUpYearWithNAs <- function(x){
+fillUpYearWithNAs <- function(x,add_periods = 1,
+                              fill_up_start = FALSE){
   frq <- frequency(x)
-  y <- floor(round(max(time(x)),digits=5))
-  ymin <- min(time(x))
-  yna <- ts(rep(NA,frq),start = ymin,end=y+1,frequency = frq)
-  ts(c(x,yna), start = ymin, end = y+1, frequency = frq)
+  de <- frq-end(x)[2]
+  ds <- start(x)[2]-1
+  new_start <- c(start(x)[1],1)
+  if(fill_up_start){
+    ts(c(rep(NA,ds),x,rep(NA,de+add_periods)),
+       start = new_start,
+       frequency = frq
+    )
+  } else {
+    ts(c(x,rep(NA,de+add_periods)),
+       start = start(x),
+       frequency = frq
+    )
+  }
+  
+  
 }
+
+
+
+
+
+

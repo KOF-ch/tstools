@@ -2,6 +2,7 @@
 tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,
+                   fill_up_start = FALSE,
                    overall_xlim = NULL,
                    overall_ylim = NULL,
                    manual_date_ticks = NULL,
@@ -14,6 +15,7 @@ tsplot <- function(...,
 #' @export
 tsplot.ts <- function(...,tsr = NULL,
                       left_as_bar = FALSE,
+                      fill_up_start = fill_up_start,
                       overall_xlim = NULL,
                       overall_ylim = NULL,
                       manual_date_ticks = NULL,
@@ -22,6 +24,7 @@ tsplot.ts <- function(...,tsr = NULL,
                       theme = NULL){
   tsl <- list(...)
   tsplot(tsl,tsr = tsr,
+         fill_up_start = fill_up_start,
          manual_date_ticks = manual_date_ticks,
          left_as_bar = left_as_bar,
          overall_xlim = overall_xlim,
@@ -33,6 +36,7 @@ tsplot.ts <- function(...,tsr = NULL,
 tsplot.mts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,
+                       fill_up_start = fill_up_start,
                        overall_xlim = NULL,
                        overall_ylim = NULL,
                        manual_date_ticks = NULL,
@@ -45,6 +49,7 @@ tsplot.mts <- function(...,
   } else{
     tsplot(as.list(li[[1]]),
            tsr = tsr,
+           fill_up_start = fill_up_start,
            manual_date_ticks = manual_date_ticks,
            left_as_bar = left_as_bar,
            overall_xlim = overall_xlim,
@@ -57,6 +62,7 @@ tsplot.mts <- function(...,
 tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
+                        fill_up_start = F,
                         overall_xlim = NULL,
                         overall_ylim = NULL,
                         manual_date_ticks = NULL,
@@ -69,13 +75,9 @@ tsplot.list <- function(...,
   tsr <- .sanitizeTsr(tsr)
   
   if(is.null(theme)) theme <- initDefaultTheme()
-  if(theme$fillYearWithNAs){
-    tsl <- lapply(tsl,fillUpYearWithNAs)
-    if(!is.null(tsr)) tsr <- lapply(tsr,fillUpYearWithNAs)
-  }
   
-  global_x <- .getDateInfo(tsl,tsr,
-                           theme,manual_date_ticks)
+  
+  global_x <- getGlobalXInfo(tsl,tsr,fill_up_start = fill_up_start)
   
   # y can't be global in the first place, cause 
   # tsr and tsl have different scales.... 
@@ -117,10 +119,29 @@ tsplot.list <- function(...,
       
   }
   
+  # Global X-Axis ###################
+  if(theme$yearly_ticks){
+    if(theme$label_pos == "start"){
+      axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
+           lwd.ticks = theme$lwd_yearly_ticks,
+           tcl = theme$tcl_yearly_tick)    
+    } else{
+      axis(1,global_x$yearly_tick_pos,labels = F,
+           lwd.ticks = theme$lwd_yearly_ticks,
+           tcl = theme$tcl_yearly_tick)
+    }
+  }
   
-  # add X-Axis (always the same, no matter how many lines or 
-  # or whether bar or line)
-  axis(1)
+  if(theme$quarterly_ticks){
+    if(theme$label_pos == "mid"){
+      axis(1,global_x$quarterly_tick_pos,labels = global_x$year_labels_middle_q,
+           lwd.ticks = theme$lwd_quarterly_ticks)    
+    } else{
+      axis(1,global_x$quarterly_tick_pos,labels = F,
+           lwd.ticks = theme$lwd_quarterly_ticks)
+    }
+  }
+  
   
   
   if(left_as_bar){
@@ -155,58 +176,5 @@ tsplot.list <- function(...,
   }
   
 }
-
-
-# o <- diff(r)*theme$y_offset_pct
-# d$x_range <- r + c(-o,o)
-#' determine ticks and grid position
-#' theme contains which grids should be drawn etc.
-.getDateInfo <- function(tsr,tsl,theme,
-                         manual_date_ticks){
-  d <- list()
-  if(!is.null(manual_date_ticks)){
-    d$x_ticks <- manual_date_ticks
-    d$x_range <- range(manual_date_ticks)
-    return(d)
-  } else{
-    # NO MANUAL X-AXIS given
-    all_series <- c(tsl,tsr)
-    d$x_range <- range(time(unlist(all_series)))
-    if(theme$yearly_ticks){
-      
-    }
-    if(theme$quarterly_ticks){
-      if(theme$year_labels_mid){
-        
-      }
-    }
-  }
-}
-
-
-
-#' Make sure right axis object is of appropriate class.
-.sanitizeTsr <- function(tsr){
-  if(is.null(tsr)){
-    return(tsr)
-  } else if(inherits(tsr,"mts")){
-    as.list(tsr)
-  } else if(inherits(tsr,"ts")){
-    list(tsr)
-  } else if(inherits(tsr,"list")){
-    tsr
-  } else {
-    stop("Time series object to be plotted on the right axis, 
-         has to be either of class ts, mts or list.")
-  }
-}
-
-.getXAxisInfo <- function(tsl,tsr,theme){
-  unlist(c(tsr,tsl))
-}
-
-
-
-
 
 
