@@ -28,6 +28,9 @@ reflist$rs2 <- ts(runif(20,-5,5),start=c(2010,1),
 
 xx <- getGlobalXInfo(tslist[1:3],NULL,F)
 
+tsplot(tslist[2:3],tsr = tslist[3:4],left_as_bar = T,fill_up_start = T)
+tsplot(tslist[2:4],tsr = tslist$ts3,left_as_bar = T)
+
 tsplot(tslist[2:4],left_as_bar = T)
 tsplot(tslist[2:4],left_as_bar = F)
 
@@ -39,7 +42,7 @@ tsplot(tslist[2:4],left_as_bar = T,theme = tt)
 
 
 debug(tsplot)
-tsplot(tslist[1],left_as_bar = F)
+tsplot(tslist[2],left_as_bar = F)
 
 undebug(tsplot)
 tsplot(tslist$ts1,manual_date_ticks = 2010:2014,left_as_bar = T,theme=tt)

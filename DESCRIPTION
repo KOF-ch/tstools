@@ -7,10 +7,10 @@ Description: Convenience functions to handle time series data juggling and
 Author: "Matthias Bannert <bannert@kof.ethz.ch> [aut, cre]"
 Depends:
     R (>= 3.0.0),
-    stats
+    stats,
+    zoo
 Imports:
     xts,
-    zoo,
     ggplot2 (>= 2.2.0),
     tempdisagg,
     reshape2,

@@ -10,10 +10,10 @@
 #' @param dec character that separates decimals in .csv
 #' @param LC_TIME_LOCALE character time locale that differs from the standard locale. e.g. en_US.UTF-8. Defaults to NULL and uses the standard locale then. 
 #' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010. In combination with LC\_TIME\_Locale various international date formats can be produced. 
+#' @import zoo
 #' @importFrom reshape2 dcast
 #' @importFrom xts as.xts
 #' @importFrom openxlsx write.xlsx
-#' @importFrom zoo as.yearmon
 #' @examples 
 #' tslist <- list()
 #' tslist$ts1 <- ts(rnorm(50),start = c(1990,1),frequency = 12)

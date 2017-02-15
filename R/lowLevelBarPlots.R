@@ -4,7 +4,6 @@ drawTsBars <- function(x, theme = NULL,
   UseMethod("drawTsBars")
 } 
 
-#' @rdname lowLevelBarplots
 #' @export
 drawTsBars.ts <- function(x, theme = NULL){
   ts_time <- time(x)
@@ -30,7 +29,7 @@ drawTsBars.ts <- function(x, theme = NULL){
   
 }
 
-#' @rdname lowLevelBarplots
+
 #' @export
 drawTsBars.list <- function(x,
                             theme = NULL){
@@ -43,7 +42,7 @@ drawTsBars.list <- function(x,
   
 }
 
-#' @rdname lowLevelBarplots
+
 #' @export
 drawTsBars.mts <- function(x, theme = NULL){
   ts_time <- time(x)

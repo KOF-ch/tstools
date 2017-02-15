@@ -4,7 +4,7 @@
 \alias{fillUpYearWithNAs}
 \title{Fill Up a Time Series with NAs}
 \usage{
-fillUpYearWithNAs(x)
+fillUpYearWithNAs(x, add_periods = 1, fill_up_start = FALSE)
 }
 \arguments{
 \item{ts}{object of class ts}

@@ -29,6 +29,9 @@ tsplot.ts <- function(...,tsr = NULL,
          left_as_bar = left_as_bar,
          overall_xlim = overall_xlim,
          overall_ylim = overall_ylim,
+         manual_date_ticks = manual_date_ticks,
+         manual_value_ticks_l = manual_value_ticks_l,
+         manual_value_ticks_r = manual_value_ticks_r,
          theme = theme)
 }
 
@@ -36,7 +39,7 @@ tsplot.ts <- function(...,tsr = NULL,
 tsplot.mts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,
-                       fill_up_start = fill_up_start,
+                       fill_up_start = NULL,
                        overall_xlim = NULL,
                        overall_ylim = NULL,
                        manual_date_ticks = NULL,
@@ -71,7 +74,7 @@ tsplot.list <- function(...,
                         theme = NULL,
                         quiet = TRUE){
   
-  tsl <- (...)
+  tsl <- unlist(list(...),recursive = F)
   tsr <- .sanitizeTsr(tsr)
   
   if(is.null(theme)) theme <- initDefaultTheme()

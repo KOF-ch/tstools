@@ -12,8 +12,14 @@ stripLeadingNAsFromTs <- function(s){
   } else{
     nas <- which(is.na(s))
     end <- min(which(diff(nas) > 1))+1
-    start_time <- time(s)[end]
-    end_time <- time(s)[length(s)]
+    if(end == Inf){
+      start_time <- time(s)[which(!is.na(s))[1]]
+      end_time <- time(s)[length(s)]
+    } else{
+      start_time <- time(s)[end]
+      end_time <- time(s)[length(s)]  
+    }
+    
     window(s,start = start_time, end = end_time)
   }
 }
