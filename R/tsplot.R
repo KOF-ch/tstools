@@ -13,7 +13,8 @@ tsplot <- function(...,
 } 
 
 #' @export
-tsplot.ts <- function(...,tsr = NULL,
+tsplot.ts <- function(...,
+                      tsr = NULL,
                       left_as_bar = FALSE,
                       fill_up_start = fill_up_start,
                       overall_xlim = NULL,
@@ -22,14 +23,14 @@ tsplot.ts <- function(...,tsr = NULL,
                       manual_value_ticks_l = NULL,
                       manual_value_ticks_r = NULL,
                       theme = NULL){
-  tsl <- list(...)
-  tsplot(tsl,tsr = tsr,
-         fill_up_start = fill_up_start,
-         manual_date_ticks = manual_date_ticks,
+  li <- list(...)
+  mdt <- manual_date_ticks
+  tsplot(li,
+         tsr = tsr,
          left_as_bar = left_as_bar,
+         manual_date_ticks = manual_date_ticks,
          overall_xlim = overall_xlim,
          overall_ylim = overall_ylim,
-         manual_date_ticks = manual_date_ticks,
          manual_value_ticks_l = manual_value_ticks_l,
          manual_value_ticks_r = manual_value_ticks_r,
          theme = theme)
@@ -62,7 +63,7 @@ tsplot.mts <- function(...,
 }
 
 #' @export
-tsplot.list <- function(...,
+tsplot.list <- function(tsl,
                         tsr = NULL,
                         left_as_bar = FALSE,
                         fill_up_start = F,
@@ -74,12 +75,12 @@ tsplot.list <- function(...,
                         theme = NULL,
                         quiet = TRUE){
   
-  tsl <- unlist(list(...),recursive = F)
+  #tsl <- unlist(list(...),recursive = F)
   tsr <- .sanitizeTsr(tsr)
   
   if(is.null(theme)) theme <- initDefaultTheme()
   
-  
+  # so far manual date ticks are ignored.
   global_x <- getGlobalXInfo(tsl,tsr,fill_up_start = fill_up_start)
   
   # y can't be global in the first place, cause 

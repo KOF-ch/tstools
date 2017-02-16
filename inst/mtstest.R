@@ -26,12 +26,53 @@ reflist$rs2 <- ts(runif(20,-5,5),start=c(2010,1),
                   frequency = 4)
 
 
+tsplot(tslist[1:3],tsr = reflist, left_as_bar = T)
+
+undebug(tsplot)
+tsplot(tslist[1],tsr=reflist)
+
+tsplot(tslist[[1]],tslist[[2]],tslist[[3]],tsr=reflist,left_as_bar = T)
+tsplot(tslist[[1]],tslist[[2]],tslist[[3]],tsr=reflist)
+tsplot(tslist[[1]],tslist[[2]],tslist[[3]],tsr=reflist,manual_date_ticks = 1990:2010)
+
+tsplot(tslist[1:3],tsr=reflist,left_as_bar = T)
+
+
+tt <- initDefaultTheme()
+tt$highlight_window <- T
+tt$label_pos <- "mid"
+tt$line_to_middle <- T
+tsplot(tslist[2:4],left_as_bar = T,theme = tt)
+tsplot(tslist[2:4],left_as_bar = F,theme = tt)
+
+exportTsList(tslist[1:3],date_format = "%Y-0%q",xlsx=T)
+
+
+tslist$ts6 <- ts(runif(230,-10,10),start=c(1951,1),frequency = 4)
+exportTsList(tslist[c(1:3,6)],date_format = "%Y-0%q",xlsx=T)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 xx <- getGlobalXInfo(tslist[1:3],NULL,F)
 
 tsplot(tslist[2:3],tsr = tslist[3:4],left_as_bar = T,fill_up_start = T)
 tsplot(tslist[2:4],tsr = tslist$ts3,left_as_bar = T)
 
-tsplot(tslist[2:4],left_as_bar = T)
+tsplot(tslist[1:3],tsr = reflist,left_as_bar = T)
+
+
 tsplot(tslist[2:4],left_as_bar = F)
 
 tt <- initDefaultTheme()
@@ -45,7 +86,10 @@ debug(tsplot)
 tsplot(tslist[2],left_as_bar = F)
 
 undebug(tsplot)
-tsplot(tslist$ts1,manual_date_ticks = 2010:2014,left_as_bar = T,theme=tt)
+tsplot(tslist$ts1)
+tsplot(tslist,manual_date_ticks = 2010:2014)
+tsplot(tslist)
+
 
 undebug(drawTsBars)
 
