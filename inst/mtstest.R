@@ -27,9 +27,11 @@ reflist$rs2 <- ts(runif(20,-5,5),start=c(2010,1),
 
 
 tsplot(tslist[1:2],tsr = reflist,
-       manual_value_ticks_l = seq(-20,60,by=10),
-       manual_value_ticks_r = seq(-6,6,by=2),
-       left_as_bar = T)
+       manual_value_ticks_l = seq(-20,70,by=10),
+       manual_value_ticks_r = seq(-8,10,by=2),
+       left_as_bar = F,
+       theme = tt)
+box()
 
 undebug(tsplot)
 tsplot(tslist[1],tsr=reflist)
