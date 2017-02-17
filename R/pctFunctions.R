@@ -7,12 +7,13 @@
 #' ts_1 <- ts(rnorm(12), frequency=4, start=c(2004,1))
 #' pct(ts_1)
 #' @author Florian Eckert and Heiner Mikosch, KOF, ETH Zurich 
+#' 
 #' @export
 pct <- function(x){
   
   # Period over period percentage change at each time point
   # Time shift is one time point
-  result <- ((x/lag(x,-1))-1)*100
+  result <- ((x/stats::lag(x,-1))-1)*100
   colnames(result) <- colnames(x)
   result
   
@@ -31,7 +32,7 @@ annpct <- function(x){
   
   # Annual percentage change at each time point
   # Time shift is one time point
-  result <- ((x/lag(x,-1))^frequency(x)-1)*100
+  result <- ((x/stats::lag(x,-1))^frequency(x)-1)*100
   colnames(result) <- colnames(x)
   result
   
@@ -50,7 +51,7 @@ yoypct <- function(x){
   
   # Year-over-year percentage change at each time point
   # Time shift is the frequency of the time series
-  result <- ((x/lag(x,-frequency(x)))-1)*100
+  result <- ((x/stats::lag(x,-frequency(x)))-1)*100
   colnames(result) <- colnames(x)
   result
   

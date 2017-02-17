@@ -98,6 +98,49 @@ addYGrids <- function(tick_positions,theme){
   } 
 }
 
+#'@export
+findGapSize <- function(r,tick_count){
+  d <- diff(r)
+  raw_tick_size <- d / (tick_count-1)
+  m <- ceiling(log(raw_tick_size,10)-1);
+  pow10m <- 10^m
+  ceil_tick_size <- ceiling(raw_tick_size / pow10m) * pow10m;
+  ceil_tick_size
+}
+
+#'@export
+findTicks <- function(r,tick_count){
+  # potential tick count needs to sorted otherwise, 
+  # automatic selection of 
+  gaps <- findGapSize(r=r,sort(tick_count))
+  lb <- (r[1] %/% gaps) * gaps
+  d <- ceiling(diff(r))
+  tms <- (d %/% gaps) + 1
+  ub <- lb + (tms * gaps)
+  seqs <- list()
+  bys <- list()
+  for(i in seq_along(gaps)){
+    seqs[[i]] <- seq(lb[i],ub[i],gaps[i])
+  }
+  
+  # prefer max number of ticks
+  # that can be  devided by 10
+  # second best: by 5
+  # otherwise
+  by10 <- which(gaps %% 10 == 0)
+  by5 <- which(gaps %% 5 == 0)
+  if(any(by10)){
+    return(seqs[[max(by10)]])
+  } else if(any(by5)){
+    return(seqs[[max(by5)]])
+  } else{
+    w <- which.max((lb-r[1]) + (r[2]-ub))
+    seqs[[w]]
+  }
+  
+}
+
+
 
 
 

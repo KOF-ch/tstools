@@ -2,6 +2,7 @@
 tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,
+                   tickFinder = findTicks,
                    fill_up_start = FALSE,
                    overall_xlim = NULL,
                    overall_ylim = NULL,
@@ -16,6 +17,7 @@ tsplot <- function(...,
 tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,
+                      tickFinder = findTicks,
                       fill_up_start = fill_up_start,
                       overall_xlim = NULL,
                       overall_ylim = NULL,
@@ -27,6 +29,7 @@ tsplot.ts <- function(...,
   tsplot(li,
          tsr = tsr,
          left_as_bar = left_as_bar,
+         tickFinder = findTicks,
          manual_date_ticks = manual_date_ticks,
          overall_xlim = overall_xlim,
          overall_ylim = overall_ylim,
@@ -39,6 +42,7 @@ tsplot.ts <- function(...,
 tsplot.mts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,
+                       tickFinder = findTicks,
                        fill_up_start = NULL,
                        overall_xlim = NULL,
                        overall_ylim = NULL,
@@ -55,6 +59,7 @@ tsplot.mts <- function(...,
            fill_up_start = fill_up_start,
            manual_date_ticks = manual_date_ticks,
            left_as_bar = left_as_bar,
+           tickFinder = tickFinder,
            overall_xlim = overall_xlim,
            overall_ylim = overall_ylim,
            theme = theme)
@@ -65,6 +70,7 @@ tsplot.mts <- function(...,
 tsplot.list <- function(tsl,
                         tsr = NULL,
                         left_as_bar = FALSE,
+                        tickFinder = 
                         fill_up_start = F,
                         overall_xlim = NULL,
                         overall_ylim = NULL,
@@ -167,7 +173,7 @@ tsplot.list <- function(tsl,
   
   # LEFT Y-AXIS
   if(theme$show_left_y_axis){
-    axis(2,left_y$y_ticks)
+    axis(2,left_y$y_ticks,las = theme$y_las)
   }
   
   if(theme$show_y_grids){
@@ -200,7 +206,7 @@ tsplot.list <- function(tsl,
     
     # RIGHT Y-Axis
     if(theme$show_right_y_axis){
-      axis(4,right_y$y_ticks)
+      axis(4,right_y$y_ticks,las = theme$y_las)
     }
     
     

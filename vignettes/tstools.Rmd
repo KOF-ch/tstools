@@ -40,7 +40,7 @@ dataset *KOF* that ships with *tstools*. By default year labels are placed in th
 quarters are denoted by small tick marks, years are denoted by longer ticks. Note, the original time series
 is just shortened a bit to zoom in a bit. The object *short* is of class ts.
 
-```{r,fig.width = 7}
+```{r,fig.width = 7,fig.height=6,message=FALSE}
 library(tstools)
 data(KOF)
 short <- window(KOF$kofbarometer,start=c(2007,1),end=c(2014,1))
@@ -65,11 +65,11 @@ tslist$ts2 <- ts2
 ```
 
 Either plot single time series separated by commas:
-```{r,fig.width = 7}
+```{r,fig.width = 7,fig.height=6}
 tsplot(ts1,ts2,manual_value_ticks_l = seq(-10,60,by=10))
 ```
 or a list of time series:
-```{r,fig.width = 7}
+```{r,fig.width = 7,fig.height=6}
 tsplot(tslist,manual_value_ticks_l = seq(-10,60,by=10))
 ```
 
@@ -82,7 +82,7 @@ implying that a bar is centered above the category tick for that period.
 truly represent an entire quarter. Note that stacked bar charts imply that all
 involved series have the same frequency.
 
-```{r,fig.width = 7}
+```{r,fig.width = 7,fig.height=6}
 tsb1 <- ts(runif(30,-30,20),start=c(2010,1),frequency = 4)
 tsb2 <- ts(runif(30,0,50),start=c(2010,1),frequency = 4)
 tsb3 <- ts(runif(30,0,50),start=c(2010,1),frequency = 4)
@@ -99,7 +99,7 @@ co-movement 2 Y-axis with different scales are popular. Hence *tsplot*
 introduces a second argument, *tsr* (time series right), which is an object of
 class ts or a list of time series.
 
-```{r,fig.width = 7}
+```{r,fig.width = 7,fig.height=6}
 data(KOF)
 tsplot(KOF$kofbarometer,
        tsr = KOF$reference,
@@ -115,7 +115,7 @@ provide a list of time series to both the ... argument and the tsr argument
 and choose left_as_bar = T. Note that the line chart is automatically moved
 to the middle of the quarterly bar. 
 
-```{r,fig.width = 7}
+```{r,fig.width = 7,fig.height=6}
 tsb1 <- ts(runif(30,-30,20),start=c(2010,1),frequency = 4)
 tsb2 <- ts(runif(30,0,30),start=c(2010,1),frequency = 4)
 tsb3 <- ts(runif(30,0,30),start=c(2010,1),frequency = 4)
@@ -145,7 +145,7 @@ to see all available options.
 Consider the above graph. Let's add a highlight window to mark the fact that
 2016 and 2017 are estimates.
 
-```{r,fig.width = 7}
+```{r,fig.width = 7,fig.height=6}
 tt <- initDefaultTheme()
 tt$highlight_window <- T
 tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
@@ -157,7 +157,7 @@ tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
 ```
 
 Get a box... 
-```{r,fig.width = 7}
+```{r,fig.width = 7,fig.height=6}
 tt$use_box <- T
 tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
        manual_value_ticks_l = seq(-40,80,by=20),
@@ -170,7 +170,7 @@ tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
 
 Change line types...
 
-```{r,fig.width = 7}
+```{r,fig.width = 7,fig.height=6}
 tt$lty <- c(3,2,1)
 tsplot(tsb1,tsb2,tsb3,
        manual_value_ticks_l = seq(-40,80,by=20),

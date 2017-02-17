@@ -1,17 +1,71 @@
 
-findTickSize <- function(r,tick_count){
+findGapSize <- function(r,tick_count){
   d <- diff(r)
   raw_tick_size <- d / (tick_count-1)
   m <- ceiling(log(raw_tick_size,10)-1);
   pow10m <- 10^m
-  rounded_tick_size <- ceiling(raw_tick_size / pow10m) * pow10m;
-  rounded_tick_size
+  ceil_tick_size <- ceiling(raw_tick_size / pow10m) * pow10m;
+  ceil_tick_size
 }
+
+findTicks <- function(r,tick_count){
+  # potential tick count needs to sorted otherwise, 
+  # automatic selection of 
+  gaps <- findGapSize(r=r,sort(tick_count))
+  lb <- (r[1] %/% gaps) * gaps
+  d <- ceiling(diff(r))
+  tms <- (d %/% gaps) + 1
+  ub <- lb + (tms * gaps)
+  seqs <- list()
+  bys <- list()
+  for(i in seq_along(gaps)){
+    seqs[[i]] <- seq(lb[i],ub[i],gaps[i])
+  }
+  
+  # prefer max number of ticks
+  # that can be  devided by 10
+  # second best: by 5
+  # otherwise
+  by10 <- which(gaps %% 10 == 0)
+  by5 <- which(gaps %% 5 == 0)
+  if(any(by10)){
+    return(seqs[[max(by10)]])
+  } else if(any(by5)){
+    return(seqs[[max(by5)]])
+  } else{
+    w <- which.max((lb-r[1]) + (r[2]-ub))
+    seqs[[w]]
+  }
+  
+}
+
+
+
+debug(findTicks)
+findTicks(c(30,100),c(9))
 
 kb <- range(KOF$kofbarometer)
 ref <- range(KOF$reference)
 
-findTickSize(kb,5:10)
+f <- function(a=findGapSize){
+  a(c(20,100),5)
+}
+
+
+
+
+# if any is by element is 10,5, or twenty prefer that? 
+max(which(c(3,4) %% 10 == 0))
+
+
+
+
+
+
+
+
+
+
 
 findBounds <- function(r_tsl, r_tsr = NULL,
                        potential_tick_count = c(5,6,8,10)){
@@ -20,6 +74,9 @@ findBounds <- function(r_tsl, r_tsr = NULL,
   # denoting lower/upper bound 
   # suggestions for potential ticks
   l_ticks <- findTickSize(r_tsl,potential_tick_count)  
+  kb[1] %/% l_ticks
+  
+  
   n_lower_b <- ((r_tsl[1] %/% l_ticks) * l_ticks) 
   n_upper_b <- ((r_tsl[2] %/% l_ticks)+1) * l_ticks
   
@@ -37,6 +94,7 @@ findBounds <- function(r_tsl, r_tsr = NULL,
   out
 }
 
+debug(findBounds)
 xx <- findBounds(kb)
 
 seq(xx$n_lower_b[4],xx$n_upper_b[4],

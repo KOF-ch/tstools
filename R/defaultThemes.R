@@ -27,6 +27,7 @@ initDefaultTheme <- function(){
   theme$highlight_window_end <- NULL
   theme$highlight_color <- "#e9e9e9"
   theme$use_box <- F
+  theme$y_las <- 2 
   # X AXIS ###############
   theme$yearly_ticks <- T
   theme$quarterly_ticks <- T
