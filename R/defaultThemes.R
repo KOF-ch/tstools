@@ -40,6 +40,7 @@ initDefaultTheme <- function(){
   # Y AXIS
   theme$show_left_y_axis <- T
   theme$show_right_y_axis <- T
+  theme$y_grid_count <- c(5,6,8,10)
   theme$show_y_grids <- T
   theme$y_grid_color <- "#CCCCCC"
   theme

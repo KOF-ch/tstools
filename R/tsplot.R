@@ -9,7 +9,8 @@ tsplot <- function(...,
                    manual_date_ticks = NULL,
                    manual_value_ticks_l = NULL,
                    manual_value_ticks_r = NULL,
-                   theme = NULL){
+                   theme = NULL,
+                   quiet = TRUE){
   UseMethod("tsplot")
 } 
 
@@ -17,20 +18,22 @@ tsplot <- function(...,
 tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,
-                      tickFinder = findTicks,
+                      tick_function = findTicks,
                       fill_up_start = fill_up_start,
                       overall_xlim = NULL,
                       overall_ylim = NULL,
                       manual_date_ticks = NULL,
                       manual_value_ticks_l = NULL,
                       manual_value_ticks_r = NULL,
-                      theme = NULL){
+                      theme = NULL,
+                      quiet = TRUE){
   li <- list(...)
   tsplot(li,
          tsr = tsr,
          left_as_bar = left_as_bar,
-         tickFinder = findTicks,
+         tick_function = tick_function,
          manual_date_ticks = manual_date_ticks,
+         quiet = quiet,
          overall_xlim = overall_xlim,
          overall_ylim = overall_ylim,
          manual_value_ticks_l = manual_value_ticks_l,
@@ -42,14 +45,15 @@ tsplot.ts <- function(...,
 tsplot.mts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,
-                       tickFinder = findTicks,
+                       tick_function = findTicks,
                        fill_up_start = NULL,
                        overall_xlim = NULL,
                        overall_ylim = NULL,
                        manual_date_ticks = NULL,
                        manual_value_ticks_l = NULL,
                        manual_value_ticks_r = NULL,
-                       theme = NULL){
+                       theme = NULL,
+                       quiet = TRUE){
   li <- list(...)
   if(length(li) > 1){
     stop("If you use multivariate time series objects (mts), make sure to pass only one object per axis. Place all time series you want to plot on one y-axis in one mts object or list of time series.")
@@ -59,7 +63,7 @@ tsplot.mts <- function(...,
            fill_up_start = fill_up_start,
            manual_date_ticks = manual_date_ticks,
            left_as_bar = left_as_bar,
-           tickFinder = tickFinder,
+           tick_function = tick_function,
            overall_xlim = overall_xlim,
            overall_ylim = overall_ylim,
            theme = theme)
@@ -70,7 +74,7 @@ tsplot.mts <- function(...,
 tsplot.list <- function(tsl,
                         tsr = NULL,
                         left_as_bar = FALSE,
-                        tickFinder = 
+                        tick_function = findTicks,
                         fill_up_start = F,
                         overall_xlim = NULL,
                         overall_ylim = NULL,
@@ -80,8 +84,9 @@ tsplot.list <- function(tsl,
                         theme = NULL,
                         quiet = TRUE){
   
-  #tsl <- unlist(list(...),recursive = F)
+  tsl_r <- range(unlist(tsl))
   tsr <- .sanitizeTsr(tsr)
+  tsr_r <- range(unlist(tsr))
   
   if(is.null(theme)) theme <- initDefaultTheme()
   
@@ -96,7 +101,11 @@ tsplot.list <- function(tsl,
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
-    return("Only works with manual value ticks...")
+    left_y <- list(y_range = 
+                     range(tick_function(tsl_r,theme$y_grid_count)),
+                   y_ticks = 
+                     tick_function(tsl_r,theme$y_grid_count))
+    # return("Only works with manual value ticks...")
   }
   # time series right 
   if(!is.null(tsr)){
@@ -104,18 +113,21 @@ tsplot.list <- function(tsl,
       if(length(manual_value_ticks_r) != length(left_y$y_ticks)){
         return("When using to manual tick position vectors, both need to be of same length! (Otherwise grids look ugly)")
       }
-      
       right_y <- list(y_range = range(manual_value_ticks_r),
-                     y_ticks = manual_value_ticks_r)  
+                      y_ticks = manual_value_ticks_r)  
     } else {
-      return("Only works with manual value ticks for right axis ...")
+      right_y <- list(y_range = 
+                        range(tick_function(tsr_r,
+                                            length(left_y$y_ticks))),
+                      y_ticks = tick_function(tsr_r,
+                                              length(left_y$y_ticks)))  
     }
     
     
     
   }
   
-
+  
   # CANVAS OPTIONS END #########################################
   
   # BASE CANVAS 
@@ -144,8 +156,8 @@ tsplot.list <- function(tsl,
     rect(xl,left_y$y_range[1],xr,left_y$y_range[2],
          col = theme$highlight_color,
          border = NA)
-      
-      
+    
+    
   }
   
   # Global X-Axis ###################
@@ -214,17 +226,11 @@ tsplot.list <- function(tsl,
   
   if(theme$use_box) box()
   
-  
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
-    
-  } else{
-    return()
-  }
-  
-  
-  
-  
+    output <- list(left_range = tsl_r,
+                   right_range = tsl_l)
+  } 
 }
 
 

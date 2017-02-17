@@ -25,6 +25,11 @@ reflist$rs1 <- ts(runif(20,-3,3),start=c(2010,1),
 reflist$rs2 <- ts(runif(20,-5,5),start=c(2010,1),
                   frequency = 4)
 
+debug(tsplot)
+tsplot(tslist[1:2],tsr=range(reflist$rs1))
+
+
+
 
 tsplot(tslist[1:2],tsr = reflist,
        manual_value_ticks_l = seq(-20,70,by=10),

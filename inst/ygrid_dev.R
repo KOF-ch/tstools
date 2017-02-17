@@ -42,7 +42,7 @@ findTicks <- function(r,tick_count){
 
 
 debug(findTicks)
-findTicks(c(30,100),c(9))
+findTicks(tr,c(5,6,8))
 
 kb <- range(KOF$kofbarometer)
 ref <- range(KOF$reference)

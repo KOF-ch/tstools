@@ -44,7 +44,7 @@ is just shortened a bit to zoom in a bit. The object *short* is of class ts.
 library(tstools)
 data(KOF)
 short <- window(KOF$kofbarometer,start=c(2007,1),end=c(2014,1))
-tsplot(short,manual_value_ticks_l = seq(60,130,by=10))
+tsplot(short)
 ```
 
 ### Multiple time series (same y-axis) in one line chart
