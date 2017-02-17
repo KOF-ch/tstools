@@ -91,6 +91,12 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
 }
 
 
+addYGrids <- function(tick_positions,theme){
+  for (hl in tick_positions){
+    abline(h = hl,
+           col = theme$y_grid_color)
+  } 
+}
 
 
 

@@ -26,7 +26,10 @@ reflist$rs2 <- ts(runif(20,-5,5),start=c(2010,1),
                   frequency = 4)
 
 
-tsplot(tslist[1:3],tsr = reflist, left_as_bar = T)
+tsplot(tslist[1:2],tsr = reflist,
+       manual_value_ticks_l = seq(-20,60,by=10),
+       manual_value_ticks_r = seq(-6,6,by=2),
+       left_as_bar = T)
 
 undebug(tsplot)
 tsplot(tslist[1],tsr=reflist)

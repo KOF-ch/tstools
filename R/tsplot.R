@@ -24,7 +24,6 @@ tsplot.ts <- function(...,
                       manual_value_ticks_r = NULL,
                       theme = NULL){
   li <- list(...)
-  mdt <- manual_date_ticks
   tsplot(li,
          tsr = tsr,
          left_as_bar = left_as_bar,
@@ -80,18 +79,38 @@ tsplot.list <- function(tsl,
   
   if(is.null(theme)) theme <- initDefaultTheme()
   
+  # CANVAS OPTIONS START #########################################
   # so far manual date ticks are ignored.
   global_x <- getGlobalXInfo(tsl,tsr,fill_up_start = fill_up_start)
   
   # y can't be global in the first place, cause 
   # tsr and tsl have different scales.... 
-  left_y <- list(y_range = c(-100,100))
-  right_y <- list(y_range = c(-3,3))
+  # time series left
+  if(!is.null(manual_value_ticks_l)){
+    left_y <- list(y_range = range(manual_value_ticks_l),
+                   y_ticks = manual_value_ticks_l)  
+  } else{
+    return("Only works with manual value ticks...")
+  }
+  # time series right 
+  if(!is.null(tsr)){
+    if(!is.null(manual_value_ticks_r)){
+      if(length(manual_value_ticks_r) != length(left_y$y_ticks)){
+        return("When using to manual tick position vectors, both need to be of same length! (Otherwise grids look ugly)")
+      }
+      
+      right_y <- list(y_range = range(manual_value_ticks_r),
+                     y_ticks = manual_value_ticks_r)  
+    } else {
+      return("Only works with manual value ticks for right axis ...")
+    }
+    
+    
+    
+  }
   
-  # global_y <- .getValueInfo(tsl,tsr,
-  #                           theme, 
-  #                           manual_value_ticks_l,
-  #                           manual_value_ticks_r)
+
+  # CANVAS OPTIONS END #########################################
   
   # BASE CANVAS 
   plot(NULL,
@@ -146,6 +165,14 @@ tsplot.list <- function(tsl,
     }
   }
   
+  # LEFT Y-AXIS
+  if(theme$show_left_y_axis){
+    axis(2,left_y$y_ticks)
+  }
+  
+  if(theme$show_y_grids){
+    addYGrids(left_y$y_ticks,theme=theme)
+  }
   
   
   if(left_as_bar){
@@ -157,7 +184,7 @@ tsplot.list <- function(tsl,
     drawTsLines(tsl,theme=theme)
   }
   
-  # Add a right axis line plot
+  # RIGHT PLOT #######################
   if(!is.null(tsr)){
     par(new = T)
     plot(NULL,
@@ -170,7 +197,17 @@ tsplot.list <- function(tsl,
          xaxs = theme$xaxs
     )
     drawTsLines(tsr,theme=theme)
+    
+    # RIGHT Y-Axis
+    if(theme$show_right_y_axis){
+      axis(4,right_y$y_ticks)
+    }
+    
+    
   }
+  
+  if(theme$use_box) box()
+  
   
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
@@ -178,6 +215,9 @@ tsplot.list <- function(tsl,
   } else{
     return()
   }
+  
+  
+  
   
 }
 

@@ -26,6 +26,7 @@ initDefaultTheme <- function(){
   theme$highlight_window_start <- NULL
   theme$highlight_window_end <- NULL
   theme$highlight_color <- "#e9e9e9"
+  theme$use_box <- F
   # X AXIS ###############
   theme$yearly_ticks <- T
   theme$quarterly_ticks <- T
@@ -35,6 +36,11 @@ initDefaultTheme <- function(){
   theme$lwd_yearly_ticks <- 1.5
   theme$lwd_quarterly_ticks <- 1
   theme$label_pos <- "mid"
+  # Y AXIS
+  theme$show_left_y_axis <- T
+  theme$show_right_y_axis <- T
+  theme$show_y_grids <- T
+  theme$y_grid_color <- "#CCCCCC"
   theme
 }
 
