@@ -2,7 +2,7 @@
 tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,
-                   tickFinder = findTicks,
+                   find_ticks_function = "findTicks",
                    fill_up_start = FALSE,
                    overall_xlim = NULL,
                    overall_ylim = NULL,
@@ -18,7 +18,7 @@ tsplot <- function(...,
 tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,
-                      tick_function = findTicks,
+                      find_ticks_function = "findTicks",
                       fill_up_start = fill_up_start,
                       overall_xlim = NULL,
                       overall_ylim = NULL,
@@ -31,7 +31,7 @@ tsplot.ts <- function(...,
   tsplot(li,
          tsr = tsr,
          left_as_bar = left_as_bar,
-         tick_function = tick_function,
+         find_ticks_function = find_ticks_function,
          manual_date_ticks = manual_date_ticks,
          quiet = quiet,
          overall_xlim = overall_xlim,
@@ -45,7 +45,7 @@ tsplot.ts <- function(...,
 tsplot.mts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,
-                       tick_function = findTicks,
+                       find_ticks_function = "findTicks",
                        fill_up_start = NULL,
                        overall_xlim = NULL,
                        overall_ylim = NULL,
@@ -63,7 +63,7 @@ tsplot.mts <- function(...,
            fill_up_start = fill_up_start,
            manual_date_ticks = manual_date_ticks,
            left_as_bar = left_as_bar,
-           tick_function = tick_function,
+           find_ticks_function = find_ticks_function,
            overall_xlim = overall_xlim,
            overall_ylim = overall_ylim,
            theme = theme)
@@ -74,7 +74,8 @@ tsplot.mts <- function(...,
 tsplot.list <- function(tsl,
                         tsr = NULL,
                         left_as_bar = FALSE,
-                        tick_function = findTicks,
+                        find_ticks_function = "findTicks",
+                        tick_function_args = list(tsl_r,theme$y_grid_count),
                         fill_up_start = F,
                         overall_xlim = NULL,
                         overall_ylim = NULL,
@@ -86,7 +87,8 @@ tsplot.list <- function(tsl,
   
   tsl_r <- range(unlist(tsl))
   tsr <- .sanitizeTsr(tsr)
-  tsr_r <- range(unlist(tsr))
+  if(!is.null(tsr)) tsr_r <- range(unlist(tsr))
+  
   
   if(is.null(theme)) theme <- initDefaultTheme()
   
@@ -101,10 +103,14 @@ tsplot.list <- function(tsl,
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
-    left_y <- list(y_range = 
-                     range(tick_function(tsl_r,theme$y_grid_count)),
-                   y_ticks = 
-                     tick_function(tsl_r,theme$y_grid_count))
+    if(left_as_bar) return("Finding ticks automatically when stacking values is not supported yet. Please use manual_value_ticks.")
+    
+    left_y <- list(y_range = range(do.call(find_ticks_function,
+                                           list(tsl_r,theme$y_grid_count)
+                                           )),
+                   y_ticks = do.call(find_ticks_function,
+                                     list(tsl_r,theme$y_grid_count)
+                                     ))
     # return("Only works with manual value ticks...")
   }
   # time series right 
@@ -117,10 +123,12 @@ tsplot.list <- function(tsl,
                       y_ticks = manual_value_ticks_r)  
     } else {
       right_y <- list(y_range = 
-                        range(tick_function(tsr_r,
-                                            length(left_y$y_ticks))),
-                      y_ticks = tick_function(tsr_r,
-                                              length(left_y$y_ticks)))  
+                        range(do.call(find_ticks_function,
+                                      list(tsr_r,
+                                           length(left_y$y_ticks)))
+                        ),
+                      y_ticks = do.call(find_ticks_function,
+                                        list(tsr_r,length(left_y$y_ticks))))
     }
     
     

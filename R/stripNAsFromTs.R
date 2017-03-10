@@ -11,7 +11,14 @@ stripLeadingNAsFromTs <- function(s){
     s
   } else{
     nas <- which(is.na(s))
-    end <- min(which(diff(nas) > 1))+1
+    # when all difference are zero, just take the last 
+    # NA in line, otherwise only use the first to go beyond 1
+    if(all(diff(nas) == 1)){
+      end <- nas[length(nas)]+1
+    } else{
+      end <- min(which(diff(nas) > 1))+1  
+    }
+    
     if(end == Inf){
       start_time <- time(s)[which(!is.na(s))[1]]
       end_time <- time(s)[length(s)]

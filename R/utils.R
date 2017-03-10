@@ -116,9 +116,18 @@ findTicks <- function(r,tick_count){
   lb <- (r[1] %/% gaps) * gaps
   d <- ceiling(diff(r))
   tms <- (d %/% gaps) + 1
+  ub <- lb + (tms * gaps)  
+  # correct algorithm when values are below upper bound
+  ub_large_enough <- ub >= r[2]
+  tms[!ub_large_enough] <- tms[!ub_large_enough] + 1
   ub <- lb + (tms * gaps)
+  # overwrite everything else if there is only one tick
+  # cause this is rather a forced command because tick_count
+  # was determined in a previous call!
+  if(length(tick_count) == 1){
+    ub <- lb + ((tick_count-1) * gaps)
+  }
   seqs <- list()
-  bys <- list()
   for(i in seq_along(gaps)){
     seqs[[i]] <- seq(lb[i],ub[i],gaps[i])
   }
