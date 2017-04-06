@@ -9,6 +9,7 @@
 #' @param xlsx logical. Should data be exported to .xlsx? Defaults to FALSE.
 #' @param sep character that separates columns in .csv
 #' @param dec character that separates decimals in .csv
+#' @param meta_header character vector of additional meta description headline. Defaults to NULL. 
 #' @param LC_TIME_LOCALE character time locale that differs from the standard locale. e.g. en_US.UTF-8. Defaults to NULL and uses the standard locale then. 
 #' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010. In combination with LC\_TIME\_Locale various international date formats can be produced. 
 #' @param timeAsX logical should time be put to the x-axis of the spreadsheet?
@@ -35,6 +36,7 @@ exportTsList <- function(tl,fname = NULL,
                          auto_date = T,
                          cast = T, xlsx = F,
                          sep = ";",dec=".",
+                         meta_header = NULL,
                          LC_TIME_LOCALE = NULL,
                          date_format = NULL,
                          timeAsX = FALSE){
@@ -90,7 +92,7 @@ exportTsList <- function(tl,fname = NULL,
     # wanna experience an R WTF try sdf$time <- ifelse(frq == 12, format(tsdf$time, "%Y-%m"),stop("some message")) 
     if(frq == 12){
       tsdf$time <- format(tsdf$time,"%Y-%m")
-      li_time <- format(li_time,"%Y-%m")
+      li_time <- format(li_range_seq,"%Y-%m")
     } else {
       stop("need to provide a date_format argument if frequency is not monthly")
     }
@@ -98,7 +100,12 @@ exportTsList <- function(tl,fname = NULL,
   
   if(cast){
     mts_obj <- do.call("cbind",tl)
-    tsdf <- data.frame(date = li_time,mts_obj)
+    tsdf <- data.frame(date = li_time,mts_obj,stringsAsFactors = F)
+    if(!is.null(meta_header)){
+      if(length(meta_header) != length(tl)) stop("number of meta description elements differs from number of time series.")
+      tsdf <- rbind(c(paste0("frequency ",frq),meta_header),tsdf)
+    }
+    
     names(tsdf) <- c("date",names(tl))
   }
   
