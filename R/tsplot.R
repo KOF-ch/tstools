@@ -10,7 +10,8 @@ tsplot <- function(...,
                    manual_value_ticks_l = NULL,
                    manual_value_ticks_r = NULL,
                    theme = NULL,
-                   quiet = TRUE){
+                   quiet = TRUE,
+                   auto_legend = TRUE){
   UseMethod("tsplot")
 } 
 
@@ -26,7 +27,9 @@ tsplot.ts <- function(...,
                       manual_value_ticks_l = NULL,
                       manual_value_ticks_r = NULL,
                       theme = NULL,
-                      quiet = TRUE){
+                      quiet = TRUE,
+                      auto_legend = TRUE
+                      ){
   li <- list(...)
   tsplot(li,
          tsr = tsr,
@@ -34,6 +37,7 @@ tsplot.ts <- function(...,
          find_ticks_function = find_ticks_function,
          manual_date_ticks = manual_date_ticks,
          quiet = quiet,
+         auto_legend = auto_legend,
          overall_xlim = overall_xlim,
          overall_ylim = overall_ylim,
          manual_value_ticks_l = manual_value_ticks_l,
@@ -53,7 +57,8 @@ tsplot.mts <- function(...,
                        manual_value_ticks_l = NULL,
                        manual_value_ticks_r = NULL,
                        theme = NULL,
-                       quiet = TRUE){
+                       quiet = TRUE,
+                       auto_legend = TRUE){
   li <- list(...)
   if(length(li) > 1){
     stop("If you use multivariate time series objects (mts), make sure to pass only one object per axis. Place all time series you want to plot on one y-axis in one mts object or list of time series.")
@@ -75,7 +80,8 @@ tsplot.list <- function(tsl,
                         tsr = NULL,
                         left_as_bar = FALSE,
                         find_ticks_function = "findTicks",
-                        tick_function_args = list(tsl_r,theme$y_grid_count),
+                        tick_function_args = list(tsl_r,
+                                                  theme$y_grid_count),
                         fill_up_start = F,
                         overall_xlim = NULL,
                         overall_ylim = NULL,
@@ -83,7 +89,17 @@ tsplot.list <- function(tsl,
                         manual_value_ticks_l = NULL,
                         manual_value_ticks_r = NULL,
                         theme = NULL,
-                        quiet = TRUE){
+                        quiet = TRUE,
+                        auto_legend = TRUE
+                        ){
+  
+  # thanks to @christophsax for that snippet.
+  # I been looking for this for while..
+  op <- par(no.readonly = TRUE) # restore par on exit
+  on.exit(par(op))
+  
+  cnames <- names(tsl)
+  # if(!is.null(tsr)) cnames <- names(tsr) 
   
   tsl_r <- range(unlist(tsl))
   tsr <- .sanitizeTsr(tsr)
@@ -234,6 +250,32 @@ tsplot.list <- function(tsl,
   
   if(theme$use_box) box()
   
+  # add legend
+  if(auto_legend){
+    par(fig=c(0, 1, 0, 1),
+        oma=c(0.5, 1, 2, 1),
+        mar=c(0, 0, 0, 0),
+        new=TRUE)
+    plot(0, 0, type="n", bty="n", xaxt="n", yaxt="n")
+    
+    if(!left_as_bar){
+      legend("bottomleft", 
+             legend = cnames,
+             horiz = TRUE, 
+             bty = "n",
+             col = theme$line_colors,
+             lty = theme$lty,
+             lwd = theme$lwd)  
+    } else{
+      legend("bottomleft", 
+             legend = cnames,
+             horiz = TRUE, 
+             bty = "n",
+             fill = theme$bar_fill_color)  
+    }
+    
+  }
+
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
     output <- list(left_range = tsl_r,
