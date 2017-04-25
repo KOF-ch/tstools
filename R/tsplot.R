@@ -271,7 +271,18 @@ tsplot.list <- function(tsl,
              legend = cnames,
              horiz = TRUE, 
              bty = "n",
-             fill = theme$bar_fill_color)  
+             fill = theme$bar_fill_color)
+      if(!is.null(tsr)) {
+        legend("bottomleft", 
+               legend = names(tsr),
+               horiz = TRUE, 
+               bty = "n",
+               col = theme$line_colors,
+               lty = theme$lty,
+               lwd = theme$lwd)  
+      }
+      
+      
     }
     
   }

@@ -1,4 +1,10 @@
 
+do.call("findTicks",list(r=c(0,100),c(5,6,8,10)))
+
+
+
+
+
 findGapSize <- function(r,tick_count){
   d <- diff(r)
   raw_tick_size <- d / (tick_count-1)

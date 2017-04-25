@@ -1,12 +1,14 @@
 ---
-title: "tstools - A Time Series Toolbox for Official Statistics"
+title: "tstools"
+subtitle: "A time series toolbox for official statistics"
+author: "Matthias Bannert"
+date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{tstools}
+  %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
-
 # About tstools
 The *tstools* package provides convenience functions to process, plot and export time series. It aims at time series data stemming from official statistics, respectively macroeconomic data. Hence the package is focused on regular time series of monthly, quarterly or yearly frequency. 
 
@@ -16,11 +18,11 @@ The *tstools* package provides convenience functions to process, plot and export
 ## Why yet another time series package?
 One of the open source community's biggest gurus, Dirk Eddelbuettel, said it best when being asked whether it would make sense to come up with a new project: ``It's your itch - it's your project.``
 And yes, there were some itches in every day work that needed to be scratched. How about: ``I can't believe it's so disgusting to create simple plots with 2 y-axes of different scales.``, or ``This R thing can't do time series bar charts 'properly' - even Excel can do this. I don't get the hype.``. Or did I mention ``Why isn't the 2010 label in the middle of the year?``? 
-Even the omniscient Doctor Google didn't come up with a satisfactory solution: One the one hand you could find hacky solutions to somehow get one of these plots done with R. On the other hand you could find some of the greatest data visualization gurus arguing how flawed all these kind of plots are and that you should rather go with other ways of showing the information. While the former is not an option for production use, the latter isn't much better if you are not the dictator of your organization (which is unlikely if you're a developer). 
+Even the omniscient Doctor Google didn't come up with a satisfactory solution: On the one hand you could find hacky solutions to somehow get one of these plots done with R. On the other hand you could find some of the greatest data visualization gurus arguing how flawed all these kind of plots are and that you should rather go with other ways of showing the information. While the former is not an option for production use, the latter isn't much better if you are not the dictator of your organization (which is unlikely if you're a developer). 
 
 While I do admit some of these graphs have debatable underlying concepts, the real question is: How does other software do it? 
 Defaults and lots of guesses. If you know your users and use cases, you will be fairly good at guessing what they want. Knowing what users want makes your software look good and defintions and functions calls simple. This is exactly the strategy of *tstools*: Aim at regular time series of monthly, quarterly or yearly frequency. Aim at official statisticians and macroeconomists. It's not too difficult to see what these users want and why they want it. Contribution to economic growth in a particular period typically comes from multiple sources which is why stacked bar charts are the state-of-the-art visualization. 
-Yes, there are stacked area charts too, but often growth needs to be shown together with an indicator that is scaled differently. So you might want to have a stacked bar chart that relates to the left y-axis while a line chart indicator relates to the right y-axis? Oh, and did I mention the data is of different frequency and lines should be in the middle of the bar (not at its left end) if they apply to the same period? *tstools* solves all of this domain-specific time series plotting. Plus the package provides several nifty convenients functions to make life of official statisticians a bit easier.
+Yes, there are stacked area charts too, but often growth needs to be shown together with an indicator that is scaled differently. So you might want to have a stacked bar chart that relates to the left y-axis while a line chart indicator relates to the right y-axis? Oh, and did I mention the data is of different frequency and lines should be in the middle of the bar (not at its left end) if they apply to the same period? *tstools* solves all of this domain-specific time series plotting. Plus the package provides several nifty convenience functions to make life of official statisticians a bit easier.
 
 
 ## How is tstools different from other time series packages?
@@ -32,13 +34,13 @@ As of February 2017, most of the functionality provided by *tstools* deals with 
 
 ## Basic usage
 Plotting with *tstools* is easy. There is only one generic plotting function called **tsplot**. Depending on what time series
-objects are passed on to the function the method dispatcher choose the right method automatically and plots the graph. The following sections will walk through several applied plotting examples. Horizontal grids, automatic shifting of series to the middle of the period, colors, line types, filling up started years and many more come as convenient defaults but can be adjusted using *themes*. 
+objects are passed on to the function the method dispatch chooses the right method automatically and plots the graph. The following sections will walk through several applied plotting examples. Horizontal grids that suit two axes, automatic shifting of series to the middle of the period, colors, line types, filling up started years and many more come as convenient defaults but can be adjusted using *themes*. 
 
 ### Single time series: line chart
 The most basic example of a time series plot is a time series line chart. The snippet below loads an example 
 dataset *KOF* that ships with *tstools*. By default year labels are placed in the middle of the year, 
-quarters are denoted by small tick marks, years are denoted by longer ticks. Note, the original time series
-is just shortened a bit to zoom in a bit. The object *short* is of class ts.
+quarters are denoted by small tick marks, years are denoted by longer ticks. In the example below, the original time series
+is just shortened in order to zoom in a bit. The object *short* is of class ts.
 
 ```{r,fig.width = 7,fig.height=6,message=FALSE}
 library(tstools)
@@ -66,11 +68,11 @@ tslist$ts2 <- ts2
 
 Either plot single time series separated by commas:
 ```{r,fig.width = 7,fig.height=6}
-tsplot(ts1,ts2,manual_value_ticks_l = seq(-10,60,by=10))
+tsplot(ts1,ts2)
 ```
 or a list of time series:
 ```{r,fig.width = 7,fig.height=6}
-tsplot(tslist,manual_value_ticks_l = seq(-10,60,by=10))
+tsplot(tslist)
 ```
 
 ### Left Y-Axis as (stacked) bar chart
@@ -102,9 +104,7 @@ class ts or a list of time series.
 ```{r,fig.width = 7,fig.height=6}
 data(KOF)
 tsplot(KOF$kofbarometer,
-       tsr = KOF$reference,
-       manual_value_ticks_l = seq(50,130,by=10),
-       manual_value_ticks_r = seq(-8,8,by=2))
+       tsr = KOF$reference)
 ```
 
 
@@ -127,6 +127,19 @@ tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
 
 
 ```
+
+## Y-Grids: automatic vs. manual
+*tstools* tries to guess a reasonable number of ticks (and horizontal grids).
+This can be tricky when several time series and multiple axes are involved. 
+*tstools'* standard procedure uses value ranges and a logarithm based algorithm to find the order of magnitude of a scale. Further *tstools* brute forces through a number of reasonable tick counts and chooses a suitable number of ticks. In case there is more than one y-axis the choice will be passed on to the other axis. 
+
+### Using another function
+However, there are countless possibilities and the number of ticks and grids may come to a matter of personal taste in the end. Hence, *tstools* provides not only the flexibility to set grids manually, you can even pass another algorithm implement in you very own R function that gives back a vector of ticks. Simply pass a function to the ``find_ticks_function`` argument. 
+Currently range, and potential tick count are fixed as arguments to these functions, but hopefully passing other sets of arguments will be possible soon.
+
+### Manual value ticks
+Often you just want to have a fixed scale, e.g., for an index that ranges from 0 to 100. Simply use the ``manual_value_ticks_l`` and ``manual_value_ticks_r``
+arguments to specify manual ticks and grids. In case you use 2 y-axes make sure both manual value tick vectors are of the same length. 
 
 
 ## Tweaking the defaults: Themes
@@ -209,6 +222,39 @@ text(2017.5,-35,"2.3%")
 text(2016.5,-35,"1.3%")
 
 ```
+
+
+# Exporting time series to spreadsheets
+
+Whether or not programmers like it, spreadsheets and Microsoft Excel in 
+particular remain a popular choice when it comes to sharing data. That's 
+why tstools helps export time series data to Excel (.xlsx) and .csv conveniently. 
+
+## Export a list of time series
+
+The function **exportTsList** is well documented and self-explaining. You can check
+parameters and examples by simply typing **?exportTsList**.
+Hence let's focus on a few more advanced feature here. 
+
+```{r,eval=F}
+data(KOF)
+exportTsList(KOF,
+             fname = "test",
+             xlsx = T,
+             meta_header = c("the world famous KOF Baro","the not-so famous reference"))
+```
+
+The code above uses an example dataset provided by **tstools**. The KOF dataset is a list of two
+time series: the KOF Barometer and a reference series. Both series are of monthly frequency. Note,
+that the current version of **exportTsList** only supports exports from lists that contain time
+series of the same frequency. In case you got mixed frequencies, e.g., monthly and quarterly, you 
+need to export to two different spreadsheets. You may provide a file name without file extension.
+In case you do not provide a file name a standard slug plus a date part will be used as the file name. 
+The file extension is will be .xlsx in case xlsx = TRUE and .csv in case xlsx is set to FALSE.
+
+**tstools** exports are designed to be machine friendly. I.e., single line headers, no stupid names, UTF-8 encoded. Still in some cases you may want to add an additional headline to provide users with extra meta information. The meta_header argument provides you with an opportunity to do so. Just make sure the vector has as
+many elements as you have time series in your list. 
+
 
 
 
