@@ -238,7 +238,16 @@ tsplot.list <- function(tsl,
          yaxs = theme$yaxs,
          xaxs = theme$xaxs
     )
-    drawTsLines(tsr,theme=theme)
+    total_le <- length(tsl) + length(tsr)
+    start_r <- (total_le - (length(tsr)-1)):total_le
+
+    
+    tt_r <- theme
+    tt_r$line_colors <- tt_r$line_colors[start_r]
+    if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
+    if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
+
+    drawTsLines(tsr,theme = tt_r)
     
     # RIGHT Y-Axis
     if(theme$show_right_y_axis){
@@ -252,40 +261,44 @@ tsplot.list <- function(tsl,
   
   # add legend
   if(auto_legend){
-    par(fig=c(0, 1, 0, 1),
-        oma=c(0.5, 1, 2, 1),
-        mar=c(0, 0, 0, 0),
-        new=TRUE)
-    plot(0, 0, type="n", bty="n", xaxt="n", yaxt="n")
-    
-    if(!left_as_bar){
-      legend("bottomleft", 
-             legend = cnames,
-             horiz = TRUE, 
-             bty = "n",
-             col = theme$line_colors,
-             lty = theme$lty,
-             lwd = theme$lwd)  
-    } else{
-      legend("bottomleft", 
-             legend = cnames,
-             horiz = TRUE, 
-             bty = "n",
-             fill = theme$bar_fill_color)
-      if(!is.null(tsr)) {
-        legend("bottomleft", 
-               legend = names(tsr),
-               horiz = TRUE, 
-               bty = "n",
-               col = theme$line_colors,
-               lty = theme$lty,
-               lwd = theme$lwd)  
-      }
-      
-      
-    }
-    
+    addLegend(names(tsl),names(tsr),
+              theme = theme, left_as_bar = left_as_bar)
   }
+  # if(auto_legend){
+  #   par(fig=c(0, 1, 0, 1),
+  #       oma=c(0.5, 1, 2, 1),
+  #       mar=c(0, 0, 0, 0),
+  #       new=TRUE)
+  #   plot(0, 0, type="n", bty="n", xaxt="n", yaxt="n")
+  #   
+  #   if(!left_as_bar){
+  #     legend("bottomleft", 
+  #            legend = cnames,
+  #            horiz = TRUE, 
+  #            bty = "n",
+  #            col = theme$line_colors,
+  #            lty = theme$lty,
+  #            lwd = theme$lwd)  
+  #   } else{
+  #     legend("bottomleft", 
+  #            legend = cnames,
+  #            horiz = TRUE, 
+  #            bty = "n",
+  #            fill = theme$bar_fill_color)
+  #     if(!is.null(tsr)) {
+  #       legend("bottomleft", 
+  #              legend = names(tsr),
+  #              horiz = TRUE, 
+  #              bty = "n",
+  #              col = theme$line_colors,
+  #              lty = theme$lty,
+  #              lwd = theme$lwd)  
+  #     }
+  #     
+  #     
+  #   }
+  #   
+  # }
 
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){

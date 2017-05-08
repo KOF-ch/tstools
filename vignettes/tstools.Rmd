@@ -46,7 +46,7 @@ is just shortened in order to zoom in a bit. The object *short* is of class ts.
 library(tstools)
 data(KOF)
 short <- window(KOF$kofbarometer,start=c(2007,1),end=c(2014,1))
-tsplot(short)
+tsplot(short,auto_legend=F)
 ```
 
 ### Multiple time series (same y-axis) in one line chart
@@ -68,11 +68,11 @@ tslist$ts2 <- ts2
 
 Either plot single time series separated by commas:
 ```{r,fig.width = 7,fig.height=6}
-tsplot(ts1,ts2)
+tsplot(ts1,ts2,auto_legend=F)
 ```
 or a list of time series:
 ```{r,fig.width = 7,fig.height=6}
-tsplot(tslist)
+tsplot(tslist,auto_legend=F)
 ```
 
 ### Left Y-Axis as (stacked) bar chart
@@ -89,7 +89,7 @@ tsb1 <- ts(runif(30,-30,20),start=c(2010,1),frequency = 4)
 tsb2 <- ts(runif(30,0,50),start=c(2010,1),frequency = 4)
 tsb3 <- ts(runif(30,0,50),start=c(2010,1),frequency = 4)
 tsplot(tsb1,tsb2,tsb3,left_as_bar = T,
-       manual_value_ticks_l = seq(-40,100,by=20))
+       manual_value_ticks_l = seq(-40,100,by=20),auto_legend=F)
 ```
 
 ### Multiple Y-axis with different scales (line charts)
@@ -104,7 +104,7 @@ class ts or a list of time series.
 ```{r,fig.width = 7,fig.height=6}
 data(KOF)
 tsplot(KOF$kofbarometer,
-       tsr = KOF$reference)
+       tsr = KOF$reference,auto_legend=F)
 ```
 
 
@@ -123,7 +123,7 @@ tsr1 <- ts(runif(30,-4,6),start=c(2010,1),frequency = 4)
 tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
        manual_value_ticks_l = seq(-40,80,by=20),
        manual_value_ticks_r = seq(-4,8, by=2),
-       left_as_bar = T)
+       left_as_bar = T,auto_legend=F)
 
 
 ```
@@ -165,7 +165,7 @@ tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
        manual_value_ticks_l = seq(-40,80,by=20),
        manual_value_ticks_r = seq(-4,8, by=2),
        left_as_bar = T,
-       theme = tt)
+       theme = tt,auto_legend=F)
 
 ```
 
@@ -176,7 +176,7 @@ tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
        manual_value_ticks_l = seq(-40,80,by=20),
        manual_value_ticks_r = seq(-4,8, by=2),
        left_as_bar = T,
-       theme = tt)
+       theme = tt,auto_legend=F)
 
 ```
 
@@ -187,7 +187,7 @@ Change line types...
 tt$lty <- c(3,2,1)
 tsplot(tsb1,tsb2,tsb3,
        manual_value_ticks_l = seq(-40,80,by=20),
-       theme = tt)
+       theme = tt,auto_legend=F)
 
 ```
 
@@ -207,7 +207,7 @@ by *tsplot*. Here are just some applied examples to show what's possible.
 tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
        manual_value_ticks_l = seq(-40,80,by=20),
        manual_value_ticks_r = seq(-4,8, by=2),
-       left_as_bar = T)
+       left_as_bar = T,auto_legend=F)
 abline(h=6,col="red")
 
 ```
@@ -217,7 +217,7 @@ abline(h=6,col="red")
 ```{r,fig.width = 7,fig.height=6}
 tsplot(tsb1,tsb2,tsb3,
        manual_value_ticks_l = seq(-40,80,by=20),
-       left_as_bar = T)
+       left_as_bar = T,auto_legend=F)
 text(2017.5,-35,"2.3%")
 text(2016.5,-35,"1.3%")
 
