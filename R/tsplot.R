@@ -2,6 +2,8 @@
 tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,
+                   plot_title = NULL,
+                   plot_subtitle = NULL,
                    find_ticks_function = "findTicks",
                    fill_up_start = FALSE,
                    overall_xlim = NULL,
@@ -19,6 +21,8 @@ tsplot <- function(...,
 tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,
+                      plot_title = NULL,
+                      plot_subtitle = NULL,
                       find_ticks_function = "findTicks",
                       fill_up_start = fill_up_start,
                       overall_xlim = NULL,
@@ -49,6 +53,8 @@ tsplot.ts <- function(...,
 tsplot.mts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,
+                       plot_title = NULL,
+                       plot_subtitle = NULL,
                        find_ticks_function = "findTicks",
                        fill_up_start = NULL,
                        overall_xlim = NULL,
@@ -79,6 +85,8 @@ tsplot.mts <- function(...,
 tsplot.list <- function(tsl,
                         tsr = NULL,
                         left_as_bar = FALSE,
+                        plot_title = NULL,
+                        plot_subtitle = NULL,
                         find_ticks_function = "findTicks",
                         tick_function_args = list(tsl_r,
                                                   theme$y_grid_count),
@@ -93,10 +101,15 @@ tsplot.list <- function(tsl,
                         auto_legend = TRUE
                         ){
   
+  if(is.null(theme)) theme <- initDefaultTheme()
   # thanks to @christophsax for that snippet.
   # I been looking for this for while..
-  op <- par(no.readonly = TRUE) # restore par on exit
+  op <- par(no.readonly = T)
+  par(no.readonly = T,
+      mar = theme$margins)
+  # restore par on exit
   on.exit(par(op))
+  
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
@@ -106,7 +119,7 @@ tsplot.list <- function(tsl,
   if(!is.null(tsr)) tsr_r <- range(unlist(tsr))
   
   
-  if(is.null(theme)) theme <- initDefaultTheme()
+  
   
   # CANVAS OPTIONS START #########################################
   # so far manual date ticks are ignored.
@@ -264,41 +277,33 @@ tsplot.list <- function(tsl,
     addLegend(names(tsl),names(tsr),
               theme = theme, left_as_bar = left_as_bar)
   }
-  # if(auto_legend){
-  #   par(fig=c(0, 1, 0, 1),
-  #       oma=c(0.5, 1, 2, 1),
-  #       mar=c(0, 0, 0, 0),
-  #       new=TRUE)
-  #   plot(0, 0, type="n", bty="n", xaxt="n", yaxt="n")
-  #   
-  #   if(!left_as_bar){
-  #     legend("bottomleft", 
-  #            legend = cnames,
-  #            horiz = TRUE, 
-  #            bty = "n",
-  #            col = theme$line_colors,
-  #            lty = theme$lty,
-  #            lwd = theme$lwd)  
-  #   } else{
-  #     legend("bottomleft", 
-  #            legend = cnames,
-  #            horiz = TRUE, 
-  #            bty = "n",
-  #            fill = theme$bar_fill_color)
-  #     if(!is.null(tsr)) {
-  #       legend("bottomleft", 
-  #              legend = names(tsr),
-  #              horiz = TRUE, 
-  #              bty = "n",
-  #              col = theme$line_colors,
-  #              lty = theme$lty,
-  #              lwd = theme$lwd)  
-  #     }
-  #     
-  #     
-  #   }
-  #   
-  # }
+  
+  # add title and subtitle
+  if(!is.null(plot_title)){
+    if(!is.null(theme$title_transform)){
+      plot_title <- do.call(theme$title_transform,
+                            list(plot_title))
+    } 
+    title(main = plot_title, adj = theme$title_adj,
+          line = theme$title_line,
+          outer = theme$title_outer,
+          cex.main = theme$title_cex.main)    
+  }
+  
+  if(!is.null(plot_subtitle)){
+    if(!is.null(theme$subtitle_transform)){
+      plot_subtitle <- do.call(theme$subtitle_transform,
+                            list(plot_subtitle))
+    } 
+    mtext(plot_subtitle, adj = theme$title_adj,
+          line = theme$subtitle_line,
+          outer = theme$subtitle_outer,
+          cex = theme$subtitle_cex)    
+  }
+  
+  
+  
+  
 
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){

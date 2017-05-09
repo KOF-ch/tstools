@@ -1,6 +1,7 @@
 #'@export
 initDefaultTheme <- function(){
   theme <- list()
+  theme$margins <- c(5, 2.5, 3, 3) + 0.1
   theme$fillYearWithNAs <- TRUE
   theme$line_colors <- c(ETH6 = "#6f6f6e",
                          ETH6_60 = "#a9a9a8",
@@ -29,6 +30,8 @@ initDefaultTheme <- function(){
   theme$use_box <- F
   theme$y_las <- 2 
   # X AXIS ###############
+  theme$lwd_ticks_1 <- 1.5
+  theme$lwd_ticks_2 <- 1
   theme$yearly_ticks <- T
   theme$quarterly_ticks <- T
   theme$monthly_ticks <- F
@@ -45,6 +48,17 @@ initDefaultTheme <- function(){
   theme$y_grid_color <- "#CCCCCC"
   # legend
   theme$legend_col <- 3
+  # titles
+  theme$title_outer <- T
+  theme$title_adj <- 0
+  theme$title_line <- .8
+  theme$title_cex.main <- 1
+  theme$title_transform <- NULL
+  theme$subtitle_adj <- 0
+  theme$subtitle_outer <- T
+  theme$subtitle_line <- -.6
+  theme$subtitle_cex.main <- 1
+  theme$subtitle_transform <- "toupper"
   theme
 }
 

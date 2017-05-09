@@ -2,7 +2,7 @@
 addLegend <- function(tsln,tsrn = NULL, left_as_bar = F,
                       theme = initDefaultTheme()){
   par(fig = c(0, 1, 0, 1),
-      oma = c(0.5, 3, 2, 1),
+      oma = c(0.2, 3, 2, 1),
       mar = c(0, 0, 0, 0),
       new = TRUE)
   plot(0, 0, type="n", bty="n", xaxt="n", yaxt="n")
