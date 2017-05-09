@@ -59,6 +59,7 @@ initDefaultTheme <- function(){
   theme$subtitle_line <- -.6
   theme$subtitle_cex.main <- 1
   theme$subtitle_transform <- "toupper"
+  theme$subtitle_adj_r <- .9
   theme
 }
 

@@ -27,7 +27,7 @@ tsplot(ll,auto_legend = T,
 tsplot(ll,tsr = llr,
        plot_title = "random stuff",
        plot_subtitle = "testing tstools",
-       auto_legend = T,
+       plot_subtitle_r = "right tstools (%)",
        left_as_bar = T, 
        manual_value_ticks_l = seq(-60,100,by=20),
        manual_value_ticks_r = seq(-20,140,by=20)

@@ -3,7 +3,8 @@ tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,
                    plot_title = NULL,
-                   plot_subtitle = NULL,
+                   plot_subtitle = NULL,              
+                   plot_subtitle_r = NULL,
                    find_ticks_function = "findTicks",
                    fill_up_start = FALSE,
                    overall_xlim = NULL,
@@ -22,7 +23,7 @@ tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,
                       plot_title = NULL,
-                      plot_subtitle = NULL,
+                      plot_subtitle = NULL,                    plot_subtitle_r = NULL,
                       find_ticks_function = "findTicks",
                       fill_up_start = fill_up_start,
                       overall_xlim = NULL,
@@ -33,7 +34,7 @@ tsplot.ts <- function(...,
                       theme = NULL,
                       quiet = TRUE,
                       auto_legend = TRUE
-                      ){
+){
   li <- list(...)
   tsplot(li,
          tsr = tsr,
@@ -54,7 +55,7 @@ tsplot.mts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,
                        plot_title = NULL,
-                       plot_subtitle = NULL,
+                       plot_subtitle = NULL,                    plot_subtitle_r = NULL,
                        find_ticks_function = "findTicks",
                        fill_up_start = NULL,
                        overall_xlim = NULL,
@@ -86,7 +87,7 @@ tsplot.list <- function(tsl,
                         tsr = NULL,
                         left_as_bar = FALSE,
                         plot_title = NULL,
-                        plot_subtitle = NULL,
+                        plot_subtitle = NULL,                    plot_subtitle_r = NULL,
                         find_ticks_function = "findTicks",
                         tick_function_args = list(tsl_r,
                                                   theme$y_grid_count),
@@ -99,7 +100,7 @@ tsplot.list <- function(tsl,
                         theme = NULL,
                         quiet = TRUE,
                         auto_legend = TRUE
-                        ){
+){
   
   if(is.null(theme)) theme <- initDefaultTheme()
   # thanks to @christophsax for that snippet.
@@ -136,10 +137,10 @@ tsplot.list <- function(tsl,
     
     left_y <- list(y_range = range(do.call(find_ticks_function,
                                            list(tsl_r,theme$y_grid_count)
-                                           )),
-                   y_ticks = do.call(find_ticks_function,
-                                     list(tsl_r,theme$y_grid_count)
-                                     ))
+    )),
+    y_ticks = do.call(find_ticks_function,
+                      list(tsl_r,theme$y_grid_count)
+    ))
     # return("Only works with manual value ticks...")
   }
   # time series right 
@@ -253,13 +254,13 @@ tsplot.list <- function(tsl,
     )
     total_le <- length(tsl) + length(tsr)
     start_r <- (total_le - (length(tsr)-1)):total_le
-
+    
     
     tt_r <- theme
     tt_r$line_colors <- tt_r$line_colors[start_r]
     if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
     if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
-
+    
     drawTsLines(tsr,theme = tt_r)
     
     # RIGHT Y-Axis
@@ -293,7 +294,7 @@ tsplot.list <- function(tsl,
   if(!is.null(plot_subtitle)){
     if(!is.null(theme$subtitle_transform)){
       plot_subtitle <- do.call(theme$subtitle_transform,
-                            list(plot_subtitle))
+                               list(plot_subtitle))
     } 
     mtext(plot_subtitle, adj = theme$title_adj,
           line = theme$subtitle_line,
@@ -302,9 +303,20 @@ tsplot.list <- function(tsl,
   }
   
   
+  if(!is.null(plot_subtitle_r)){
+    if(!is.null(theme$subtitle_transform)){
+      plot_subtitle_r <- do.call(theme$subtitle_transform,
+                               list(plot_subtitle_r))
+    } 
+    mtext(plot_subtitle_r, adj = theme$subtitle_adj_r,
+          line = theme$subtitle_line,
+          outer = theme$subtitle_outer,
+          cex = theme$subtitle_cex)    
+  }
   
   
-
+  
+  
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
     output <- list(left_range = tsl_r,
