@@ -1,4 +1,4 @@
-tsplot(KOF["kofbarometer"],tsr = KOF["reference"],auto_legend = T)
+tsplot(KOF["kofbarometer"],tsr = KOF["reference"])
 
 tsb1 <- ts(runif(30,-30,20),start=c(2010,1),frequency = 4)
 tsb2 <- ts(runif(30,0,50),start=c(2010,1),frequency = 4)
@@ -8,6 +8,8 @@ ll <- list(t1 = tsb1, t2 = tsb2, t3 = tsb3)
 llr <- list(t4 = tsb4)
 
 tsplot(ll,tsr = llr,left_as_bar = T,
+       plot_title = "Ich bin ein Titel",
+       plot_subtitle = "Untertitel",
        manual_value_ticks_l = seq(-40,140,by=20),
        auto_legend = T)
 
@@ -17,7 +19,8 @@ tsplot(KOF)
 
 
 
-tsplot(KOF["kofbarometer"],tsr = KOF["reference"],auto_legend = T)
+tsplot(KOF["kofbarometer"],
+       tsr = KOF["reference"])
 tsplot(KOF,auto_legend = T)
 tsplot(ll,auto_legend = T)
 tsplot(ll,tsr = llr,auto_legend = T)

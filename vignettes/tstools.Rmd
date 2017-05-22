@@ -191,6 +191,23 @@ tsplot(tsb1,tsb2,tsb3,
 
 ```
 
+Adjust the highlight window
+
+```{r,fig.width = 7,fig.height=6}
+tt$highlight_window <- T
+tt$highlight_window_start <- c(2017,1)
+tt$highlight_window_end <- c(2018,1)
+tsplot(tsb1,tsb2,tsb3,
+       manual_value_ticks_l = seq(-40,80, by = 20),
+       theme = tt,
+       auto_legend = F)
+
+
+
+```
+
+
+
 
 
 ## Write to pdf
