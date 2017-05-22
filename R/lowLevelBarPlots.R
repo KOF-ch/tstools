@@ -18,13 +18,13 @@ drawTsBars.ts <- function(x, theme = NULL){
        ts_time+1/frq,
        neg_0,
        border = theme$bar_border,
-       col = theme$bar_pos_fill_color[1])
+       col = theme$bar_fill_color[1])
   
   rect(ts_time,pos_0,
             ts_time+1/frq,
             0,
             border = theme$bar_border,
-            col = theme$bar_pos_fill_color[1])
+            col = theme$bar_fill_color[1])
   
   
 }
