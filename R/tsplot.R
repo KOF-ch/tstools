@@ -285,8 +285,8 @@ tsplot.list <- function(tsl,
     if(is.null(names(tsl))){
       names(tsl) <- paste0("series_",1:length(tsl))
     }
-    if(is.null(names(tsr))){
-      names(tsl) <- paste0("series_",1:length(tsl))
+    if(is.null(names(tsr)) & !is.null(tsr)){
+      names(tsr) <- paste0("series_",1:length(tsr))
     }
     
     addLegend(names(tsl),names(tsr),
