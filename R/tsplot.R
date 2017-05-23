@@ -25,7 +25,8 @@ tsplot.ts <- function(...,
                       left_as_bar = FALSE,                
                       group_bar_chart = NULL,
                       plot_title = NULL,
-                      plot_subtitle = NULL,                    plot_subtitle_r = NULL,
+                      plot_subtitle = NULL,
+                      plot_subtitle_r = NULL,
                       find_ticks_function = "findTicks",
                       fill_up_start = fill_up_start,
                       overall_xlim = NULL,
@@ -40,7 +41,7 @@ tsplot.ts <- function(...,
   li <- list(...)
   tsplot(li,
          tsr = tsr,
-         left_as_bar = left_as_bar,          group_bar_chart = group_bar_chart,                    group_bar_chart = NULL,
+         left_as_bar = left_as_bar,
          group_bar_chart = group_bar_chart,
          find_ticks_function = find_ticks_function,
          manual_date_ticks = manual_date_ticks,
@@ -77,7 +78,8 @@ tsplot.mts <- function(...,
            tsr = tsr,
            fill_up_start = fill_up_start,
            manual_date_ticks = manual_date_ticks,
-           left_as_bar = left_as_bar,          group_bar_chart = group_bar_chart,                    group_bar_chart = NULL,
+           left_as_bar = left_as_bar,
+           group_bar_chart = group_bar_chart,
            find_ticks_function = find_ticks_function,
            overall_xlim = overall_xlim,
            overall_ylim = overall_ylim,
@@ -88,9 +90,11 @@ tsplot.mts <- function(...,
 #' @export
 tsplot.list <- function(tsl,
                         tsr = NULL,
-                        left_as_bar = FALSE,                    group_bar_chart = NULL,
+                        left_as_bar = FALSE,
+                        group_bar_chart = NULL,
                         plot_title = NULL,
-                        plot_subtitle = NULL,                    plot_subtitle_r = NULL,
+                        plot_subtitle = NULL,
+                        plot_subtitle_r = NULL,
                         find_ticks_function = "findTicks",
                         tick_function_args = list(tsl_r,
                                                   theme$y_grid_count),
@@ -278,6 +282,13 @@ tsplot.list <- function(tsl,
   
   # add legend
   if(auto_legend){
+    if(is.null(names(tsl))){
+      names(tsl) <- paste0("series_",1:length(tsl))
+    }
+    if(is.null(names(tsr))){
+      names(tsl) <- paste0("series_",1:length(tsl))
+    }
+    
     addLegend(names(tsl),names(tsr),
               theme = theme, left_as_bar = left_as_bar)
   }
