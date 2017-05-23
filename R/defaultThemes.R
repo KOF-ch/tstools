@@ -15,6 +15,7 @@ initDefaultTheme <- function(){
   theme$xaxs <- "i"
   theme$yaxs <- "i"
   theme$bar_border <- "#000000"
+  theme$total_bar_margin_pct <- .2
   theme$bar_fill_color <- c(ETH8 = "#007A92",
                             ETH8_60 = "#66b0c2",
                             ETH8_30 = "#b3d7e0",

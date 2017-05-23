@@ -1,7 +1,8 @@
 #' @export
 tsplot <- function(...,
                    tsr = NULL,
-                   left_as_bar = FALSE,
+                   left_as_bar = FALSE,                    
+                   group_bar_chart = NULL,
                    plot_title = NULL,
                    plot_subtitle = NULL,              
                    plot_subtitle_r = NULL,
@@ -21,7 +22,8 @@ tsplot <- function(...,
 #' @export
 tsplot.ts <- function(...,
                       tsr = NULL,
-                      left_as_bar = FALSE,
+                      left_as_bar = FALSE,                
+                      group_bar_chart = NULL,
                       plot_title = NULL,
                       plot_subtitle = NULL,                    plot_subtitle_r = NULL,
                       find_ticks_function = "findTicks",
@@ -38,7 +40,8 @@ tsplot.ts <- function(...,
   li <- list(...)
   tsplot(li,
          tsr = tsr,
-         left_as_bar = left_as_bar,
+         left_as_bar = left_as_bar,          group_bar_chart = group_bar_chart,                    group_bar_chart = NULL,
+         group_bar_chart = group_bar_chart,
          find_ticks_function = find_ticks_function,
          manual_date_ticks = manual_date_ticks,
          quiet = quiet,
@@ -53,9 +56,9 @@ tsplot.ts <- function(...,
 #' @export
 tsplot.mts <- function(...,
                        tsr = NULL,
-                       left_as_bar = FALSE,
+                       left_as_bar = FALSE,                                       group_bar_chart = NULL,
                        plot_title = NULL,
-                       plot_subtitle = NULL,                    plot_subtitle_r = NULL,
+                       plot_subtitle = NULL,                                      plot_subtitle_r = NULL,
                        find_ticks_function = "findTicks",
                        fill_up_start = NULL,
                        overall_xlim = NULL,
@@ -74,7 +77,7 @@ tsplot.mts <- function(...,
            tsr = tsr,
            fill_up_start = fill_up_start,
            manual_date_ticks = manual_date_ticks,
-           left_as_bar = left_as_bar,
+           left_as_bar = left_as_bar,          group_bar_chart = group_bar_chart,                    group_bar_chart = NULL,
            find_ticks_function = find_ticks_function,
            overall_xlim = overall_xlim,
            overall_ylim = overall_ylim,
@@ -85,7 +88,7 @@ tsplot.mts <- function(...,
 #' @export
 tsplot.list <- function(tsl,
                         tsr = NULL,
-                        left_as_bar = FALSE,
+                        left_as_bar = FALSE,                    group_bar_chart = NULL,
                         plot_title = NULL,
                         plot_subtitle = NULL,                    plot_subtitle_r = NULL,
                         find_ticks_function = "findTicks",
@@ -227,13 +230,15 @@ tsplot.list <- function(tsl,
   }
   
   if(theme$show_y_grids){
-    addYGrids(left_y$y_ticks,theme=theme)
+    addYGrids(left_y$y_ticks,theme = theme)
   }
   
   
   if(left_as_bar){
     # draw barplot
-    drawTsBars(tsl,theme=theme)
+    drawTsBars(tsl,
+               group_bar_chart = group_bar_chart,
+               theme = theme)
     
   } else {
     # draw lineplot
@@ -267,8 +272,6 @@ tsplot.list <- function(tsl,
     if(theme$show_right_y_axis){
       axis(4,right_y$y_ticks,las = theme$y_las)
     }
-    
-    
   }
   
   if(theme$use_box) box()
@@ -306,17 +309,14 @@ tsplot.list <- function(tsl,
   if(!is.null(plot_subtitle_r)){
     if(!is.null(theme$subtitle_transform)){
       plot_subtitle_r <- do.call(theme$subtitle_transform,
-                               list(plot_subtitle_r))
+                                 list(plot_subtitle_r))
     } 
-    mtext(plot_subtitle_r, adj = theme$subtitle_adj_r,
+    mtext(plot_subtitle_r,
+          adj = theme$subtitle_adj_r,
           line = theme$subtitle_line,
           outer = theme$subtitle_outer,
           cex = theme$subtitle_cex)    
   }
-  
-  
-  
-  
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
     output <- list(left_range = tsl_r,
