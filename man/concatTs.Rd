@@ -15,4 +15,3 @@ concatTs(ts1, ts2)
 Append one time series to another. This only works for non-overlapping time series of the same frequency.
 For overlapping time series please see \code{\link{resolveOverlap}}.
 }
-

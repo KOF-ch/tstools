@@ -188,13 +188,17 @@ tsplot.list <- function(tsl,
   
   if(theme$highlight_window){
     if(!is.null(theme$highlight_window_start)){
-      xl <- theme$highlight_window_start
+      xl <- computeDecimalTime(theme$highlight_window_start,
+                               theme$highlight_window_freq)
+      
     } else{
       xl <- global_x$x_range[2]-2
     }
     
     if(!is.null(theme$highlight_window_end)){
-      xr <- theme$highlight_window_end
+      xr <- computeDecimalTime(theme$highlight_window_end,
+                               theme$highlight_window_freq)
+      
     } else{
       xr <- global_x$x_range[2]
     }

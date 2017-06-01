@@ -12,4 +12,3 @@ fillUpYearWithNAs(x, add_periods = 1, fill_up_start = FALSE)
 \description{
 When plotting a time series you might want set the range of the plot a little wider than just the start and end date of the original series. This function add fills up the current period (typically year) with NA.
 }
-

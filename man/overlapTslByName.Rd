@@ -18,4 +18,3 @@ overlapTslByName(listA, listB, chunkA = "_f4", chunkB = "_f12")
 \description{
 Resolve Overlap Listwise, helpful with SA
 }
-

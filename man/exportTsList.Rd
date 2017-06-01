@@ -49,4 +49,3 @@ tslist_q <- list()
 tslist_q$ts2 <- ts(rnorm(50),start = c(1990,4),frequency = 4)
 exportTsList(tslist_q,date_format="\%Y-0\%q")
 }
-

@@ -1,4 +1,69 @@
-#'@export
+#' Initiate default theme
+#' 
+#' The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
+#' Hence the initDefaultTheme function create a fresh list object containing default values for lot of different layout parameters etc. By replacing single elements of the list and passing the entire list to the plot function, single aspects can be tweaked while keeping most defaults. Init defaultTheme does not need any parameters. 
+#' 
+#' @details 
+#' Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments. I will try to write comments on all params soon. 
+#' The list contains the following elements:
+#' * margins               
+#' * fillYearWithNAs logical: should a year be filled up with NAs if values do not go until the last period of the last year?       
+#' * line_colors vector of RGB code strings defaults 
+#' * line_to_middle        
+#' * lwd integer vector of line width                   
+#' * lty integer vector of line types, solid, dashed etc. see also \code{\link{par}}.                   
+#' * xaxs                  
+#' * yaxs                  
+#' * bar_border RGB color code string of all bars borders
+#' * total_bar_margin_pct share of space left for margins when grouping bar charts 
+#' * bar_fill_color vector RGB color code strings denoting the fill of (stacked) bar chart elements
+#' * sum_line_color        
+#' * highlight_window logical should a highlight window be used for background?     
+#' * highlight_color RGB string color, color of the highlight background window       
+#' * use_box logical: should there be a box around the plot? defaults to FALSE.               
+#' * y_las                 
+#' * lwd_ticks_1           
+#' * lwd_ticks_2           
+#' * yearly_ticks logical: should there be yearly tick marks?         
+#' * quarterly_ticks logical: should there be quarterly tick marks?       
+#' * monthly_ticks logical: should there be monthly tick marks?         
+#' * tcl_quarterly_tick_tcl
+#' * tcl_yearly_tick       
+#' * lwd_yearly_ticks      
+#' * lwd_quarterly_ticks   
+#' * label_pos             
+#' * show_left_y_axis      
+#' * show_right_y_axis     
+#' * y_grid_count          
+#' * show_y_grids          
+#' * y_grid_color          
+#' * legend_col            
+#' * title_outer           
+#' * title_adj             
+#' * title_line            
+#' * title_cex.main        
+#' * subtitle_adj          
+#' * subtitle_outer        
+#' * subtitle_line         
+#' * subtitle_cex.main     
+#' * subtitle_transform    
+#' * subtitle_adj_r        
+#' 
+#' @examples 
+#' # create a list
+#' data(KOF)
+#' tt <- initDefaultTheme()
+#' # adjust a single element
+#' tt$highlight_window <- T
+#' # pass the list to tsplot
+#' tsplot(KOF$kofbarometer,theme = tt)
+#' # for more theme examples check the vignette
+#' vignette("tstools")
+#' 
+#' 
+#' @md
+#' @author Matthias Bannert
+#' @export
 initDefaultTheme <- function(){
   theme <- list()
   theme$margins <- c(5, 2.5, 3, 3) + 0.1
@@ -24,7 +89,9 @@ initDefaultTheme <- function(){
                             ETH5_60 = "#cc67a7",
                             ETH5_30 = "#e6b3d3")
   theme$sum_line_color <- "#1e1e1e"
+  # Highlight window ############
   theme$highlight_window <- F
+  theme$highlight_window_freq <- 4
   theme$highlight_window_start <- NULL
   theme$highlight_window_end <- NULL
   theme$highlight_color <- "#e9e9e9"

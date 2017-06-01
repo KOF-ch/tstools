@@ -12,4 +12,3 @@ cantons(full = F)
 \description{
 Vector of Swiss cantons
 }
-

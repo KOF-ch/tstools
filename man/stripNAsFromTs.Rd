@@ -15,4 +15,3 @@ stripTrailingNAsFromTs(ts)
 \description{
 Removes NAs to begin with and starts time series index at the first non-NA value.
 }
-

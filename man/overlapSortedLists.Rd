@@ -15,4 +15,3 @@ overlapSortedLists(listA, listB)
 Concat overlapping time series list wise. List needs
 to be of same length. Takes names of list B.
 }
-

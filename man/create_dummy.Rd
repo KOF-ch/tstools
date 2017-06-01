@@ -31,4 +31,3 @@ The function allows for additional convenience when specifying single period dum
 \author{
 Matthias Bannert
 }
-
