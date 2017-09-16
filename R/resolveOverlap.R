@@ -54,8 +54,14 @@ resolveOverlap <- function (ts1, ts2, keep_ts2 = T, tolerance = 1e-3)
   ts2s <- min(time(ts2))
   ts2e <- max(time(ts2))
   if (ts1s < ts2s & ts1e < ts2e) {
-    out <- c(ts1[1:(which(abs(time(ts1)-ts2s) <= tol) - 1)], ts2)
-    out <- ts(out, start = ts1s, frequency = freq)
+    # add special case of appending single values to a ts
+    if(length(ts2) == 1){
+      out <- c(ts1,ts2)
+      out <- ts(out, start = ts1s, frequency = freq)  
+    } else {
+      out <- c(ts1[1:(which(abs(time(ts1)-ts2s) <= tol) - 1)], ts2)
+      out <- ts(out, start = ts1s, frequency = freq)  
+    }
   }
   else if (ts1s < ts2s & ts1e >= ts2e) {
     a <- which(abs(time(ts1)-ts2s) <= tol)

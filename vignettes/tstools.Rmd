@@ -273,6 +273,18 @@ The file extension is will be .xlsx in case xlsx = TRUE and .csv in case xlsx is
 many elements as you have time series in your list. 
 
 
+# FAQs
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -19,6 +19,8 @@
 #' * bar_fill_color vector RGB color code strings denoting the fill of (stacked) bar chart elements
 #' * sum_line_color        
 #' * highlight_window logical should a highlight window be used for background?     
+#' * highlight_window_start integer vector year,period
+#' * highlight_window_end integer vector year,period
 #' * highlight_color RGB string color, color of the highlight background window       
 #' * use_box logical: should there be a box around the plot? defaults to FALSE.               
 #' * y_las                 
@@ -92,8 +94,8 @@ initDefaultTheme <- function(){
   # Highlight window ############
   theme$highlight_window <- F
   theme$highlight_window_freq <- 4
-  theme$highlight_window_start <- NULL
-  theme$highlight_window_end <- NULL
+  theme$highlight_window_start <- NA
+  theme$highlight_window_end <- NA
   theme$highlight_color <- "#e9e9e9"
   theme$use_box <- F
   theme$y_las <- 2 
@@ -121,7 +123,7 @@ initDefaultTheme <- function(){
   theme$title_adj <- 0
   theme$title_line <- .8
   theme$title_cex.main <- 1
-  theme$title_transform <- NULL
+  theme$title_transform <- NA
   theme$subtitle_adj <- 0
   theme$subtitle_outer <- T
   theme$subtitle_line <- -.6

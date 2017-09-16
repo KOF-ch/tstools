@@ -27,6 +27,8 @@ The list contains the following elements:
 \item bar_fill_color vector RGB color code strings denoting the fill of (stacked) bar chart elements
 \item sum_line_color
 \item highlight_window logical should a highlight window be used for background?
+\item highlight_window_start integer vector year,period
+\item highlight_window_end integer vector year,period
 \item highlight_color RGB string color, color of the highlight background window
 \item use_box logical: should there be a box around the plot? defaults to FALSE.
 \item y_las

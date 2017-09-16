@@ -187,7 +187,7 @@ tsplot.list <- function(tsl,
   )
   
   if(theme$highlight_window){
-    if(!is.null(theme$highlight_window_start)){
+    if(!any(is.na(theme$highlight_window_start))){
       xl <- computeDecimalTime(theme$highlight_window_start,
                                theme$highlight_window_freq)
       
@@ -195,7 +195,7 @@ tsplot.list <- function(tsl,
       xl <- global_x$x_range[2]-2
     }
     
-    if(!is.null(theme$highlight_window_end)){
+    if(!any(is.na(theme$highlight_window_end))){
       xr <- computeDecimalTime(theme$highlight_window_end,
                                theme$highlight_window_freq)
       
@@ -299,7 +299,7 @@ tsplot.list <- function(tsl,
   
   # add title and subtitle
   if(!is.null(plot_title)){
-    if(!is.null(theme$title_transform)){
+    if(!any(is.na(theme$title_transform))){
       plot_title <- do.call(theme$title_transform,
                             list(plot_title))
     } 

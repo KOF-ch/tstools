@@ -4,9 +4,9 @@
 \alias{exportTsList}
 \title{Export A List of Time Series to CSV}
 \usage{
-exportTsList(tl, fname = NULL, auto_date = T, cast = T, xlsx = F,
+exportTsList(x, tl, fname = NULL, auto_date = T, cast = T, xlsx = F,
   sep = ";", dec = ".", meta_header = NULL, LC_TIME_LOCALE = NULL,
-  date_format = NULL, timeAsX = FALSE)
+  date_format = NULL)
 }
 \arguments{
 \item{tl}{list of time series}
@@ -27,9 +27,7 @@ exportTsList(tl, fname = NULL, auto_date = T, cast = T, xlsx = F,
 
 \item{LC_TIME_LOCALE}{character time locale that differs from the standard locale. e.g. en_US.UTF-8. Defaults to NULL and uses the standard locale then.}
 
-\item{date_format}{character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010. In combination with LC\_TIME\_Locale various international date formats can be produced.}
-
-\item{timeAsX}{logical should time be put to the x-axis of the spreadsheet?
+\item{date_format}{character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010. In combination with LC\_TIME\_Locale various international date formats can be produced. 
 Defaults to FALSE.}
 }
 \description{
