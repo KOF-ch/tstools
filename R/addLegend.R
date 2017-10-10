@@ -1,5 +1,7 @@
 #' @export
-addLegend <- function(tsln,tsrn = NULL, left_as_bar = F,
+addLegend <- function(tsln,
+                      tsrn = NULL,
+                      left_as_bar = F,
                       theme = initDefaultTheme()){
   par(fig = c(0, 1, 0, 1),
       oma = c(0.2, 3, 2, 1),
@@ -13,7 +15,7 @@ addLegend <- function(tsln,tsrn = NULL, left_as_bar = F,
     if(!left_as_bar){
       legend("bottomleft", 
              legend = tsln,
-             ncol = 2,
+             ncol = theme$legend_col,
              #horiz = TRUE, 
              bty = "n",
              col = na.omit(theme$line_colors[1:ll]),
@@ -22,7 +24,7 @@ addLegend <- function(tsln,tsrn = NULL, left_as_bar = F,
     } else {
       legend("bottomleft", 
              legend = tsln,
-             ncol = 2,
+             ncol = theme$legend_col,
              #horiz = TRUE, 
              bty = "n",
              fill = na.omit(theme$bar_fill_color[1:ll]))  
@@ -33,7 +35,7 @@ addLegend <- function(tsln,tsrn = NULL, left_as_bar = F,
     if(!left_as_bar){
       legend("bottomleft", 
              legend = c(tsln,tsrn),
-             ncol = 3,
+             ncol = theme$legend_col,
              bty = "n",
              col = na.omit(theme$line_colors[1:lr]),
              lty = na.omit(theme$lty[1:lr]),
@@ -45,8 +47,7 @@ addLegend <- function(tsln,tsrn = NULL, left_as_bar = F,
              bty = "n",
              border = rep(NA,length(c(tsln,tsrn))),
              fill = theme$bar_fill_color[1:length(tsln)][1:length(c(tsln,tsrn))],
-             col = c(rep(NA,length(tsln)),
-                     theme$line_colors[(length(tsln)+1):length(c(tsln,tsrn))]),
+             col = theme$legend_col,
              lty = na.omit(theme$lty[1:length(tsrn)]),
              lwd = na.omit(theme$lwd[1:length(tsrn)])) 
     }

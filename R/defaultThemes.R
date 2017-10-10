@@ -70,12 +70,13 @@ initDefaultTheme <- function(){
   theme <- list()
   theme$margins <- c(5, 2.5, 3, 3) + 0.1
   theme$fillYearWithNAs <- TRUE
-  theme$line_colors <- c(ETH6 = "#6f6f6e",
-                         ETH6_60 = "#a9a9a8",
-                         ETH4 = "#72791c",
-                         ETH4_60 = "#a9af66",
-                         ETH7 = "#a8322d",
-                         ETH7_50 = "#e19794")
+  theme$line_colors <- c("ETH_8_100" = "#007a92",
+                         "ETH_4_100" = "#72791c",
+                         "ETH_8_20" = "#cce5eb",
+                         "ETH_5_60" = "#cc67a7",
+                         "ETH_8_60" = "#66b0c2",
+                         "ETH_5_100" = "#91056a",
+                         "ETH_4_60" = "#a9af66")
   theme$line_to_middle <- T
   theme$lwd <- c(2,3,1,4,2,4)
   theme$lty <- 1
