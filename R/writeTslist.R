@@ -14,7 +14,13 @@
 #' @param ... additional optional parameters which may be method specific. the 'wide' parameter is specific to .xlsx and .csv exports.
 #' @rdname writeTslist
 #' @export
-writeTslist <- function(tsl, fn = NULL, date_format = NULL, ...) UseMethod("writeTslist")
+writeTslist <- function(tsl, fn = "timeseriesdb_export", date_format = NULL, ...) {
+  # Timestamp filename
+  fn <- paste0(fn,"_",gsub("-","_",Sys.Date()))
+  message(fn)
+  
+  UseMethod("writeTslist")
+}
 
 
 
@@ -23,18 +29,22 @@ writeTslist <- function(tsl, fn = NULL, date_format = NULL, ...) UseMethod("writ
 #' @rdname writeTslist
 #' @export
 writeTslist.toJSON <- function(tsl,
-                               fn = NULL,
+                               fn,
                                date_format = NULL, ...){
+  message(fn)
   ll <- lapply(tsl,function(x){
     xx <- xts::as.xts(x)
     
     if(frequency(x) == 4){
-      dv <- as.yearqtr(time(xx))  
+      dv <- as.yearqtr(time(xx))
     } else if(frequency(x) == 12){
       dv <- as.yearqtr(time(xx))  
     } else{
-      dv <- as.character(time(xx))
+      dv <- time(xx)
     }
+    
+    # Cast to char so toJSON can handle them
+    dv <- as.character(dv)
     
     if(!is.null(date_format)){
      dv <- format(dv,date_format) 
@@ -50,8 +60,8 @@ writeTslist.toJSON <- function(tsl,
                dataframe = "values" ,
                pretty=T),
         paste(fn,"json",sep="."))
-  if(zip) zip(paste(fn,"zip",sep = "."),
-              paste(fn,"json",sep="."))
+  # if(zip) zip(paste(fn,"zip",sep = "."),
+  #             paste(fn,"json",sep="."))
 }
 
 
