@@ -36,8 +36,10 @@ writeTimeSeries <- function(tl,
      
      env[[varname]] <- tl;
      
+     write_name <- paste0(fname, ".RData")
+     
      # Save said environment
-     save(list=ls(env), file=paste0(fname, ".RData"), envir=env)
+     save(list=ls(env), file=write_name, envir=env)
   } else {
     nTs <- length(tl)
     wide = ifelse(!is.null(args$wide), args$wide, FALSE)
@@ -73,7 +75,7 @@ writeTimeSeries <- function(tl,
         newline <- ifelse(json_pretty, "\n", "")
         json <- paste0("[", newline, "[\"", paste(names(tsdf), collapse="\",\""), "\"],", newline)
         for(i in seq(1, nrow(tsdf))) {
-          json <- paste0(json, "[\"", tsdf[i, 1], "\",", paste(tsdf[i, seq(2, nTs+1)], collapse=","), "],", newline)
+          json <- paste0(json, "[\"", tsdf[i, 1], "\",", paste(tsdf[i, seq(2, nTs+1)], collapse=","), "]", ifelse(i == nrow(tsdf), "", ","), newline)
         }
         json <- paste0(json, "]")
       } else {
@@ -85,10 +87,12 @@ writeTimeSeries <- function(tl,
           }
           data.frame(time=as.character(t), value=x, row.names=NULL)
         })
-        json <- toJSON(jsondf, pretty=json_pretty)
+        json <- toJSON(jsondf, pretty=json_pretty, digits=16)
       }
       
-      write(json, paste(fname, "json", sep="."))
+      write_name <- paste(fname, "json", sep=".")
+      
+      write(json, write_name)
       
     } else {
       if(wide) {
@@ -105,10 +109,21 @@ writeTimeSeries <- function(tl,
         } else if(nrow(tsdf) > 1e6) {
           stop("XLSX format can not handle more than 1'000'000 rows")
         }
+        
+        write_name <- paste0(fname, ".xlsx")
+        
         write.xlsx(tsdf, paste0(fname,".xlsx"))
       } else{
+        write_name <- paste0(fname, ".csv")
+        
         write.table(tsdf, paste0(fname,".csv"), row.names = F, quote = F, sep=";", dec=".")  
       }
     }
+  }
+  
+  should_zip <- ifelse(!is.null(args$zip), args$zip, FALSE)
+  
+  if(should_zip) {
+    zip(paste0(fname, ".zip"), write_name)
   }
 }
