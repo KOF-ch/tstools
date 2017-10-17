@@ -1,14 +1,19 @@
-#' TODO: Dox
+#' writeTimeSeries
+#' 
+#' Export a list of time series to a file.
 #' @param tl list of time series
 #' @param fname character file name. If set to NULL a standard file name chunk + Sys.Date is used.
-#' @param wide logical. Should the resulting data.frame be cast to wide format? Defaults to TRUE
-#' @param xlsx logical. Should data be exported to .xlsx? Defaults to FALSE.
-#' @param LC_TIME_LOCALE character time locale that differs from the standard locale. e.g. en_US.UTF-8. Defaults to NULL and uses the standard locale then. 
 #' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010. In combination with LC\_TIME\_Locale various international date formats can be produced. 
+#'
+#' @param wide optional for csv and xlsx. If TRUE, the data is written in a wide format. Defaults to FALSE.
+#' @param json_pretty optional for json. If TRUE the JSON is outputted in a more human readable format.
+#' This results in larger file sizes. Defualts to FALSE.
+#'
 #' @importFrom reshape2 dcast
-#' @importFrom xts as.xts
+#' @importFrom xts as.xts xts
 #' @importFrom openxlsx write.xlsx
 #' @importFrom zoo as.yearmon
+#' @importFrom jsonlite toJSON
 #' @export
 writeTimeSeries <- function(tl,
                             fname = "timeseriesdb_export",
@@ -67,28 +72,17 @@ writeTimeSeries <- function(tl,
     }
     
     if(format == "json") {
-      json_apiformat <- ifelse(!is.null(args$json_apiformat), args$json_apiformat, FALSE)
       json_pretty <- ifelse(!is.null(args$json_pretty), args$json_pretty, FALSE) # TODO: getArgs helper?
-      
-      if(json_apiformat) {
-        # Meh, spin our own serializer
-        newline <- ifelse(json_pretty, "\n", "")
-        json <- paste0("[", newline, "[\"", paste(names(tsdf), collapse="\",\""), "\"],", newline)
-        for(i in seq(1, nrow(tsdf))) {
-          json <- paste0(json, "[\"", tsdf[i, 1], "\",", paste(tsdf[i, seq(2, nTs+1)], collapse=","), "]", ifelse(i == nrow(tsdf), "", ","), newline)
+    
+      # Output an object of arrays of objects { "key": [{"time": time1, "value": value1}, ...], ...}
+      jsondf <- lapply(tl, function(x) {
+        t <- time(x)
+        if(!is.null(date_format)) {
+          t <- format(t, date_format)
         }
-        json <- paste0(json, "]")
-      } else {
-        # Output an object of arrays of objects { "key": [{"time": time1, "value": value1}, ...], ...}
-        jsondf <- lapply(tl, function(x) {
-          t <- time(x)
-          if(!is.null(date_format)) {
-            t <- format(t, date_format)
-          }
-          data.frame(time=as.character(t), value=x, row.names=NULL)
-        })
-        json <- toJSON(jsondf, pretty=json_pretty, digits=16)
-      }
+        data.frame(time=as.character(t), value=x, row.names=NULL)
+      })
+      json <- toJSON(jsondf, pretty=json_pretty, digits=16)
       
       write_name <- paste(fname, "json", sep=".")
       

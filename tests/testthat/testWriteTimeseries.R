@@ -159,69 +159,11 @@ test_that("Pretty JSON export works", {
   expect_equal(xts, xts_read)
 })
 
-test_that("API JSON export works", {
-  json_read_name <- paste0(fn_read, ".json")
-  
-  writeTimeSeries(xts, fname=fn, format="json", date_format="%Y-%m", json_apiformat=TRUE)
-  fid <- file(json_read_name)
-  xts_read <- jsonlite::fromJSON(readLines(fid))
-  close(fid)
-  
-  unlink(json_read_name)
-  
-  dim_read <- dim(xts_read)
-  
-  expect_equal(dim_read, c(n+1, 3))
-  expect_equal(xts_read[1,], c("time", "ts1", "ts2"))
-  
-  names_read <- xts_read[1,]
-  xts_read <- xts_read[seq(2, dim_read[1]),]
-  
-  t_read <- as.yearmon(xts_read[, 1])
-  
-  xts_read <- lapply(seq(2, dim_read[2]), function(x) {
-    xts(as.numeric(xts_read[, x]), order.by=t_read)
-  })
-  
-  names(xts_read) <- names_read[2:length(names_read)]
-  
-  expect_equal(xts, xts_read)
-})
-
-test_that("Pretty API JSON export works", {
-  json_read_name <- paste0(fn_read, ".json")
-  
-  writeTimeSeries(xts, fname=fn, format="json", date_format="%Y-%m", json_apiformat=TRUE, json_pretty=TRUE)
-  fid <- file(json_read_name)
-  xts_read <- jsonlite::fromJSON(readLines(fid))
-  close(fid)
-  
-  unlink(json_read_name)
-  
-  dim_read <- dim(xts_read)
-  
-  expect_equal(dim_read, c(n+1, 3))
-  expect_equal(xts_read[1,], c("time", "ts1", "ts2"))
-  
-  names_read <- xts_read[1,]
-  xts_read <- xts_read[seq(2, dim_read[1]),]
-  
-  t_read <- as.yearmon(xts_read[, 1])
-  
-  xts_read <- lapply(seq(2, dim_read[2]), function(x) {
-    xts(as.numeric(xts_read[, x]), order.by=t_read)
-  })
-  
-  names(xts_read) <- names_read[2:length(names_read)]
-  
-  expect_equal(xts, xts_read)
-})
-
 test_that("Zipping works", {
   json_read_name <- paste0(fn_read, ".json")
   zip_read_name <- paste0(fn_read, ".zip")
   
-  writeTimeSeries(xts, fname=fn, format="json", date_format="%Y-%m", json_apiformat=TRUE, json_pretty=TRUE, zip=TRUE)
+  writeTimeSeries(xts, fname=fn, format="json", date_format="%Y-%m", json_pretty=TRUE, zip=TRUE)
   
   expect_true(file.exists(zip_read_name))
   
@@ -236,22 +178,13 @@ test_that("Zipping works", {
   
   unlink(json_read_name)
   unlink(zip_read_name)
+
+  expect_equal(length(xts_read), 2)
+  expect_equal(names(xts_read), c("ts1", "ts2"))
   
-  dim_read <- dim(xts_read)
-  
-  expect_equal(dim_read, c(n+1, 3))
-  expect_equal(xts_read[1,], c("time", "ts1", "ts2"))
-  
-  names_read <- xts_read[1,]
-  xts_read <- xts_read[seq(2, dim_read[1]),]
-  
-  t_read <- as.yearmon(xts_read[, 1])
-  
-  xts_read <- lapply(seq(2, dim_read[2]), function(x) {
-    xts(as.numeric(xts_read[, x]), order.by=t_read)
+  xts_read <- lapply(xts_read, function(x) {
+    xts(x$value, order.by=as.yearmon(x$time))
   })
-  
-  names(xts_read) <- names_read[2:length(names_read)]
   
   expect_equal(xts, xts_read)
 })

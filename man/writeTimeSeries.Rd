@@ -2,7 +2,7 @@
 % Please edit documentation in R/writeTimeseries.R
 \name{writeTimeSeries}
 \alias{writeTimeSeries}
-\title{TODO: Dox}
+\title{writeTimeSeries}
 \usage{
 writeTimeSeries(tl, fname = "timeseriesdb_export", format = c("csv", "xlsx",
   "json", "rdata"), date_format = NULL, ...)
@@ -14,12 +14,11 @@ writeTimeSeries(tl, fname = "timeseriesdb_export", format = c("csv", "xlsx",
 
 \item{date_format}{character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010. In combination with LC\_TIME\_Locale various international date formats can be produced.}
 
-\item{wide}{logical. Should the resulting data.frame be cast to wide format? Defaults to TRUE}
+\item{wide}{optional for csv and xlsx. If TRUE, the data is written in a wide format. Defaults to FALSE.}
 
-\item{xlsx}{logical. Should data be exported to .xlsx? Defaults to FALSE.}
-
-\item{LC_TIME_LOCALE}{character time locale that differs from the standard locale. e.g. en_US.UTF-8. Defaults to NULL and uses the standard locale then.}
+\item{json_pretty}{optional for json. If TRUE the JSON is outputted in a more human readable format.
+This results in larger file sizes. Defualts to FALSE.}
 }
 \description{
-TODO: Dox
+Export a list of time series to a file.
 }
