@@ -4,22 +4,30 @@ n <- 100
 freq <- 12
 t <- yearmon(seq(2011, 2011+(n-1)/freq, 1/freq))
 xts <- list(
-  #ts1 = ts(data=runif(100), start=2011.5, frequency=12),
-  #ts2 = ts(data=runif(100), start=2011.5, frequency=12)
   ts1 = xts(runif(n), order.by=t),
   ts2 = xts(runif(n), order.by=t)
+)
+
+ts <- list(
+  ts1 = as.ts(xts$ts1, start=start(xts$ts1), end=end(xts$ts1)),
+  ts2 = as.ts(xts$ts2, start=start(xts$ts2), end=end(xts$ts2))
 )
 
 fn <- "test_ts"
 fn_read <- paste0(fn, "_",gsub("-","_",Sys.Date()))
 
+csv_wide_name <- paste0(fn, "_wide", "_", gsub("-","_",Sys.Date()), ".csv")
+csv_long_name <- paste0(fn, "_long", "_", gsub("-","_",Sys.Date()), ".csv")
+xlsx_wide_name <- paste0(fn, "_wide", "_", gsub("-","_",Sys.Date()), ".xlsx")
+xlsx_long_name <- paste0(fn, "_long", "_", gsub("-","_",Sys.Date()), ".xlsx")
+rdata_read_name <- paste0(fn, "_", gsub("-","_",Sys.Date()), ".RData")
+json_read_name <- paste0(fn, "_", gsub("-","_",Sys.Date()), ".json")
+zip_read_name <- paste0(fn, "_", gsub("-","_",Sys.Date()), ".zip")
+
 test_that("CSV wide export works", {
-  csv_wide_name <- paste0(fn_read, ".csv")
   
-  writeTimeSeries(xts, format="csv", fname=fn, date_format="%Y-%m", wide=TRUE)
+  writeTimeSeries(xts, format="csv", fname=paste0(fn, "_wide"), date_format="%Y-%m", wide=TRUE)
   xts_read <- read.csv(csv_wide_name, sep=";", stringsAsFactors=FALSE)
-  
-  unlink(csv_wide_name)
   
   expect_that(dim(xts_read), equals(c(n, 3)))
   expect_that(names(xts_read), equals(c("date", "ts1", "ts2")))
@@ -34,12 +42,9 @@ test_that("CSV wide export works", {
 })
 
 test_that("CSV long export works", {
-  csv_long_name <- paste0(fn_read, ".csv")
   
-  writeTimeSeries(xts, format="csv", fname=fn, date_format="%Y-%m")
+  writeTimeSeries(xts, format="csv", fname=paste0(fn, "_long"), date_format="%Y-%m")
   xts_read <- read.csv(csv_long_name, sep=";", stringsAsFactors=FALSE)
-  
-  unlink(csv_long_name)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
   expect_that(names(xts_read), equals(c("date", "value", "series")))
@@ -56,12 +61,9 @@ test_that("CSV long export works", {
 })
 
 test_that("XLSX wide export works", {
-  xlsx_wide_name <- paste0(fn_read, ".xlsx")
   
-  writeTimeSeries(xts, format="xlsx", fname=fn, date_format="%Y-%m", wide=TRUE)
+  writeTimeSeries(xts, format="xlsx", fname=paste0(fn, "_wide"), date_format="%Y-%m", wide=TRUE)
   xts_read <- openxlsx::read.xlsx(xlsx_wide_name)
-  
-  unlink(xlsx_wide_name)
   
   expect_that(dim(xts_read), equals(c(n, 3)))
   expect_that(names(xts_read), equals(c("date", "ts1", "ts2")))
@@ -76,12 +78,9 @@ test_that("XLSX wide export works", {
 })
 
 test_that("XLSX long export works", {
-  xlsx_long_name <- paste0(fn_read, ".xlsx")
   
-  writeTimeSeries(xts, format="xlsx", fname=fn, date_format="%Y-%m")
+  writeTimeSeries(xts, format="xlsx", fname=paste0(fn, "_long"), date_format="%Y-%m")
   xts_read <- openxlsx::read.xlsx(xlsx_long_name)
-  
-  unlink(xlsx_long_name)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
   expect_that(names(xts_read), equals(c("date", "value", "series")))
@@ -107,8 +106,6 @@ test_that("RData export works", {
 })
 
 test_that("Named RData export works", {
-  rdata_read_name <- paste0(fn_read, ".RData")
-  
   varname <- "test_ts_read"
   
   writeTimeSeries(xts, format="rdata", fname=fn, rdata_varname=varname)
@@ -118,14 +115,11 @@ test_that("Named RData export works", {
 })
 
 test_that("JSON export works", {
-  json_read_name <- paste0(fn_read, ".json")
   
   writeTimeSeries(xts, fname=fn, format="json", date_format="%Y-%m")
   fid <- file(json_read_name)
   xts_read <- jsonlite::fromJSON(readLines(fid))
   close(fid)
-  
-  unlink(json_read_name)
   
   expect_equal(length(xts_read), 2)
   expect_equal(dim(xts_read[[1]]), c(100, 2))
@@ -146,8 +140,6 @@ test_that("Pretty JSON export works", {
   xts_read <- jsonlite::fromJSON(readLines(fid))
   close(fid)
   
-  unlink(json_read_name)
-  
   expect_equal(length(xts_read), 2)
   expect_equal(dim(xts_read[[1]]), c(100, 2))
   expect_equal(names(xts_read), c("ts1", "ts2"))
@@ -160,8 +152,6 @@ test_that("Pretty JSON export works", {
 })
 
 test_that("Zipping works", {
-  json_read_name <- paste0(fn_read, ".json")
-  zip_read_name <- paste0(fn_read, ".zip")
   
   writeTimeSeries(xts, fname=fn, format="json", date_format="%Y-%m", json_pretty=TRUE, zip=TRUE)
   
@@ -175,9 +165,6 @@ test_that("Zipping works", {
   fid <- file(json_read_name)
   xts_read <- jsonlite::fromJSON(readLines(fid))
   close(fid)
-  
-  unlink(json_read_name)
-  unlink(zip_read_name)
 
   expect_equal(length(xts_read), 2)
   expect_equal(names(xts_read), c("ts1", "ts2"))
@@ -188,3 +175,22 @@ test_that("Zipping works", {
   
   expect_equal(xts, xts_read)
 })
+
+test_that("imports work", {
+  expect_equal(ts, importTimeSeries(csv_wide_name))
+  expect_equal(ts, importTimeSeries(csv_long_name))
+  expect_equal(ts, importTimeSeries(xlsx_wide_name))
+  expect_equal(ts, importTimeSeries(xlsx_long_name))
+  expect_equal(ts, importTimeSeries(json_read_name))
+  
+  expect_error(importTimeSeries(importTimeSeries(json_read_name, format="jpeg")), "should be one of")
+  expect_error(importTimeSeries("randomfile.txt"), "Could not detect")
+})
+
+unlink(csv_long_name)
+unlink(csv_wide_name)
+unlink(xlsx_long_name)
+unlink(xlsx_wide_name)
+unlink(rdata_read_name)
+unlink(json_read_name)
+unlink(zip_read_name)
