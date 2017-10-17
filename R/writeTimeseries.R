@@ -118,6 +118,8 @@ writeTimeSeries <- function(tl,
   should_zip <- ifelse(!is.null(args$zip), args$zip, FALSE)
   
   if(should_zip) {
-    zip(paste0(fname, ".zip"), write_name)
+    zip_name <- paste0(fname, ".zip")
+    unlink(zip_name)
+    zip(zip_name, write_name)
   }
 }
