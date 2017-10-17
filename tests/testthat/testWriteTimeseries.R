@@ -157,9 +157,6 @@ test_that("Zipping works", {
   
   expect_true(file.exists(zip_read_name))
   
-  unlink(json_read_name)
-  unzip(zip_read_name)
-  
   expect_true(file.exists(json_read_name))
   
   fid <- file(json_read_name)
@@ -182,15 +179,27 @@ test_that("imports work", {
   expect_equal(ts, importTimeSeries(xlsx_wide_name))
   expect_equal(ts, importTimeSeries(xlsx_long_name))
   expect_equal(ts, importTimeSeries(json_read_name))
+  expect_equal(ts, importTimeSeries(zip_read_name))
+  
+  faulty_zip <- "fz.zip"
+  zip(faulty_zip, c(csv_long_name, csv_wide_name))
+  expect_warning(importTimeSeries(faulty_zip), "Found more than 1 file")
+  unlink(faulty_zip)
+  
+  temp <- tempfile()
+  write("test", temp)
+  zip(faulty_zip, temp)
+  expect_error(importTimeSeries(faulty_zip), "Zipped file is not")
+  unlink(faulty_zip)
   
   expect_error(importTimeSeries(importTimeSeries(json_read_name, format="jpeg")), "should be one of")
   expect_error(importTimeSeries("randomfile.txt"), "Could not detect")
 })
 
-unlink(csv_long_name)
-unlink(csv_wide_name)
-unlink(xlsx_long_name)
-unlink(xlsx_wide_name)
-unlink(rdata_read_name)
-unlink(json_read_name)
-unlink(zip_read_name)
+# unlink(csv_long_name)
+# unlink(csv_wide_name)
+# unlink(xlsx_long_name)
+# unlink(xlsx_wide_name)
+# unlink(rdata_read_name)
+# unlink(json_read_name)
+# unlink(zip_read_name)
