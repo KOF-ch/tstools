@@ -22,10 +22,10 @@ test_that("CSV wide export works", {
   unlink(csv_wide_name)
   
   expect_that(dim(xts_read), equals(c(n, 3)))
-  expect_that(names(xts_read), equals(c("time", "ts1", "ts2")))
+  expect_that(names(xts_read), equals(c("date", "ts1", "ts2")))
   
-  t_read <- as.yearmon(xts_read$time)
-  xts_read$time <- NULL
+  t_read <- as.yearmon(xts_read$date)
+  xts_read$date <- NULL
   xts_read <- lapply(xts_read, function(x) {
     xts(x, order.by=t_read)
   })
@@ -42,12 +42,12 @@ test_that("CSV long export works", {
   unlink(csv_long_name)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
-  expect_that(names(xts_read), equals(c("time", "value", "series")))
+  expect_that(names(xts_read), equals(c("date", "value", "series")))
 
-  xts_read <- reshape2::dcast(xts_read ,time ~ series)
+  xts_read <- reshape2::dcast(xts_read ,date ~ series)
   
-  t_read <- as.yearmon(xts_read$time)
-  xts_read$time <- NULL
+  t_read <- as.yearmon(xts_read$date)
+  xts_read$date <- NULL
   xts_read <- lapply(xts_read, function(x) {
     xts(x, order.by=t_read)
   })
@@ -64,10 +64,10 @@ test_that("XLSX wide export works", {
   unlink(xlsx_wide_name)
   
   expect_that(dim(xts_read), equals(c(n, 3)))
-  expect_that(names(xts_read), equals(c("time", "ts1", "ts2")))
+  expect_that(names(xts_read), equals(c("date", "ts1", "ts2")))
   
-  t_read <- as.yearmon(xts_read$time)
-  xts_read$time <- NULL
+  t_read <- as.yearmon(xts_read$date)
+  xts_read$date <- NULL
   xts_read <- lapply(xts_read, function(x) {
     xts(x, order.by=t_read)
   })
@@ -84,12 +84,12 @@ test_that("XLSX long export works", {
   unlink(xlsx_long_name)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
-  expect_that(names(xts_read), equals(c("time", "value", "series")))
+  expect_that(names(xts_read), equals(c("date", "value", "series")))
   
-  xts_read <- reshape2::dcast(xts_read ,time ~ series)
+  xts_read <- reshape2::dcast(xts_read ,date ~ series)
   
-  t_read <- as.yearmon(xts_read$time)
-  xts_read$time <- NULL
+  t_read <- as.yearmon(xts_read$date)
+  xts_read$date <- NULL
   xts_read <- lapply(xts_read, function(x) {
     xts(x, order.by=t_read)
   })
@@ -132,7 +132,7 @@ test_that("JSON export works", {
   expect_equal(names(xts_read), c("ts1", "ts2"))
   
   xts_read <- lapply(xts_read, function(x) {
-    xts(x$value, order.by=as.yearmon(x$time))
+    xts(x$value, order.by=as.yearmon(x$date))
   })
   
   expect_equal(xts, xts_read)
@@ -153,7 +153,7 @@ test_that("Pretty JSON export works", {
   expect_equal(names(xts_read), c("ts1", "ts2"))
   
   xts_read <- lapply(xts_read, function(x) {
-    xts(x$value, order.by=as.yearmon(x$time))
+    xts(x$value, order.by=as.yearmon(x$date))
   })
   
   expect_equal(xts, xts_read)
@@ -183,7 +183,7 @@ test_that("Zipping works", {
   expect_equal(names(xts_read), c("ts1", "ts2"))
   
   xts_read <- lapply(xts_read, function(x) {
-    xts(x$value, order.by=as.yearmon(x$time))
+    xts(x$value, order.by=as.yearmon(x$date))
   })
   
   expect_equal(xts, xts_read)

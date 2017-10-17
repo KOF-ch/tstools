@@ -3,7 +3,7 @@
 #' Export a list of time series to a file.
 #' @param tl list of time series
 #' @param fname character file name. If set to NULL a standard file name chunk + Sys.Date is used.
-#' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010. In combination with LC\_TIME\_Locale various international date formats can be produced. 
+#' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010.
 #'
 #' @param wide optional for csv and xlsx. If TRUE, the data is written in a wide format. Defaults to FALSE.
 #' @param json_pretty optional for json. If TRUE the JSON is outputted in a more human readable format.
@@ -56,7 +56,7 @@ writeTimeSeries <- function(tl,
         if(!is.null(date_format)) {
           t <- format(t, date_format)
         }
-        dframe <- data.frame(time = t,
+        dframe <- data.frame(date = t,
                              value = tl[[x]],row.names = NULL)
         dframe$series <- x
         dframe
@@ -64,9 +64,9 @@ writeTimeSeries <- function(tl,
       tsdf <- do.call("rbind",out_list)
     } else {
       tsdf <- as.data.frame(tl)
-      tsdf$time <- time(tl[[1]])
+      tsdf$date <- time(tl[[1]])
       if(!is.null(date_format)) {
-        tsdf$time <- format(tsdf$time, date_format)
+        tsdf$date <- format(tsdf$date, date_format)
       }
       tsdf <- tsdf[, c(nTs+1, seq(1, nTs))]
     }
@@ -74,13 +74,13 @@ writeTimeSeries <- function(tl,
     if(format == "json") {
       json_pretty <- ifelse(!is.null(args$json_pretty), args$json_pretty, FALSE) # TODO: getArgs helper?
     
-      # Output an object of arrays of objects { "key": [{"time": time1, "value": value1}, ...], ...}
+      # Output an object of arrays of objects { "key": [{"date": time1, "value": value1}, ...], ...}
       jsondf <- lapply(tl, function(x) {
         t <- time(x)
         if(!is.null(date_format)) {
           t <- format(t, date_format)
         }
-        data.frame(time=as.character(t), value=x, row.names=NULL)
+        data.frame(date=as.character(t), value=x, row.names=NULL)
       })
       json <- toJSON(jsondf, pretty=json_pretty, digits=16)
       
