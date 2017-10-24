@@ -38,7 +38,7 @@ writeTimeSeries <- function(tl,
   if(format %in% c("csv", "xlsx") && wide) {
     ts_lengths <- sapply(tl, length)
     if(!all(diff(ts_lengths)==0)) {
-      stop("tl contains time series of diferent lengths. Export to CSV or XLSX currently only works for series with same length.")
+      warning("tl contains time series of diferent lengths. Export to wide CSV or XLSX is not recommended.")
     }
   }
   
@@ -76,12 +76,14 @@ writeTimeSeries <- function(tl,
         })
         tsdf <- do.call("rbind",out_list)
       } else {
-        tsdf <- as.data.frame(tl)
-        tsdf$date <- time(tl[[1]])
+        tsmat <- do.call("cbind", tl)
+        dates <- time(tsmat[,1])
         if(!is.null(date_format)) {
-          tsdf$date <- format(tsdf$date, date_format)
+          dates <- format(dates, date_format)
         }
-        tsdf <- tsdf[, c(nTs+1, seq(1, nTs))]
+        tsdf <- as.data.frame(tsmat)
+        tsdf$date <- dates
+        tsdf <-  tsdf[, c(nTs+1, seq(1, nTs))]
       }
     }
     

@@ -197,7 +197,7 @@ test_that("imports work", {
   expect_error(importTimeSeries("randomfile.txt"), "Could not detect")
 })
 
-test_that("differing lengths fail for tabular export", {
+test_that("differing lengths work", {
   n1 <- 10
   freq <- 12
   t1 <- yearmon(seq(2011, 2011+(n1-1)/freq, 1/freq))
@@ -207,7 +207,15 @@ test_that("differing lengths fail for tabular export", {
     ts1 = xts(runif(n1), order.by=t1),
     ts2 = xts(runif(n2), order.by=t2)
   )
-  expect_error(writeTimeSeries(faulty_xts, format="csv", wide=T), "tl contains")
+  faulty_ts <- list(
+    ts1 = as.ts(faulty_xts$ts1, start=start(faulty_xts$ts1), end=end(faulty_xts$ts1)),
+    ts2 = as.ts(faulty_xts$ts2, start=start(faulty_xts$ts2), end=end(faulty_xts$ts2))
+  )
+  
+  expect_warning(writeTimeSeries(faulty_xts, format="csv", wide=T, fname="faulty", timestamp_file=F), "tl contains")
+  writeTimeSeries(faulty_xts, format="csv", wide=T, fname="faulty", timestamp_file=F)
+  read_faulty_ts <- importTimeSeries("faulty.csv")
+  expect_equal(read_faulty_ts, faulty_ts)
 })
 
 # unlink(csv_long_name)

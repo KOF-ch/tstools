@@ -8,8 +8,6 @@
 #' from the file extension.
 #' @return A named list of ts objects
 #' @export
-#' 
-#' TODO: Support for non-standard extension zipped files (a bit of a stretch though)
 importTimeSeries <- function(file, format=c("csv", "xlsx", "json", "zip")) {
   if(length(format) == 1) {
     format <- match.arg(format)  

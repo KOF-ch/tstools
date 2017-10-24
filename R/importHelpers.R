@@ -16,9 +16,13 @@ long_to_ts <- function(data) {
 
 wide_to_ts <- function(data) {
   t <- as.yearmon(data$date)
+  if(any(is.na(t))) {
+    t <- as.yearqtr(data$date)
+  }
   data$date <- NULL
   fata <- lapply(data, function(x) {
-    xt <- xts(x, order.by=t)
+    nas <- is.na(x)
+    xt <- xts(x[!nas], order.by=t[!nas])
     if(frequency(xt) < Inf) {
       as.ts(xt, start=start(xt), end=end(xt))
     } else {
