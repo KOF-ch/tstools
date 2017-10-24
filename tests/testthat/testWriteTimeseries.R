@@ -182,10 +182,11 @@ test_that("imports work", {
   expect_equal(ts, importTimeSeries(zip_read_name))
   
   faulty_zip <- "fz.zip"
+  message(csv_long_name)
   zip(faulty_zip, c(csv_long_name, csv_wide_name))
   expect_warning(importTimeSeries(faulty_zip), "Found more than 1 file")
   unlink(faulty_zip)
-  
+
   temp <- tempfile()
   write("test", temp)
   zip(faulty_zip, temp)
@@ -194,6 +195,19 @@ test_that("imports work", {
   
   expect_error(importTimeSeries(importTimeSeries(json_read_name, format="jpeg")), "should be one of")
   expect_error(importTimeSeries("randomfile.txt"), "Could not detect")
+})
+
+test_that("differing lengths fail for tabular export", {
+  n1 <- 10
+  freq <- 12
+  t1 <- yearmon(seq(2011, 2011+(n1-1)/freq, 1/freq))
+  n2 <- 13
+  t2 <- yearmon(seq(2011, 2011+(n2-1)/freq, 1/freq))
+  faulty_xts <- list(
+    ts1 = xts(runif(n1), order.by=t1),
+    ts2 = xts(runif(n2), order.by=t2)
+  )
+  expect_error(writeTimeSeries(faulty_xts, format="csv", wide=T), "tl contains")
 })
 
 # unlink(csv_long_name)

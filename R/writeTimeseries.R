@@ -29,6 +29,16 @@ writeTimeSeries <- function(tl,
   # Timestamp filename
   fname <- paste0(fname,"_",gsub("-","_",Sys.Date()))
   
+  wide = ifelse(!is.null(args$wide), args$wide, FALSE)
+  
+  # check for format compatability
+  if(format %in% c("csv", "xlsx") && wide) {
+    ts_lengths <- sapply(tl, length)
+    if(!all(diff(ts_lengths)==0)) {
+      stop("tl contains time series of diferent lengths. Export to CSV or XLSX currently only works for series with same length.")
+    }
+  }
+  
   # Standardize to xts (readTimeSeries may return ts, zoo, xts)
   tl <- lapply(tl, as.xts)
   
@@ -47,28 +57,29 @@ writeTimeSeries <- function(tl,
      save(list=ls(env), file=write_name, envir=env)
   } else {
     nTs <- length(tl)
-    wide = ifelse(!is.null(args$wide), args$wide, FALSE)
     
-    if(!wide && format != "json") {
-      # Make the list into a pretty, long data.frame
-      out_list <- lapply(names(tl),function(x){
-        t <- time(tl[[x]])
+    if(format != "json") {
+      if(!wide) {
+        # Make the list into a pretty, long data.frame
+        out_list <- lapply(names(tl),function(x){
+          t <- time(tl[[x]])
+          if(!is.null(date_format)) {
+            t <- format(t, date_format)
+          }
+          dframe <- data.frame(date = t,
+                               value = tl[[x]],row.names = NULL)
+          dframe$series <- x
+          dframe
+        })
+        tsdf <- do.call("rbind",out_list)
+      } else {
+        tsdf <- as.data.frame(tl)
+        tsdf$date <- time(tl[[1]])
         if(!is.null(date_format)) {
-          t <- format(t, date_format)
+          tsdf$date <- format(tsdf$date, date_format)
         }
-        dframe <- data.frame(date = t,
-                             value = tl[[x]],row.names = NULL)
-        dframe$series <- x
-        dframe
-      })
-      tsdf <- do.call("rbind",out_list)
-    } else {
-      tsdf <- as.data.frame(tl)
-      tsdf$date <- time(tl[[1]])
-      if(!is.null(date_format)) {
-        tsdf$date <- format(tsdf$date, date_format)
+        tsdf <- tsdf[, c(nTs+1, seq(1, nTs))]
       }
-      tsdf <- tsdf[, c(nTs+1, seq(1, nTs))]
     }
     
     if(format == "json") {
