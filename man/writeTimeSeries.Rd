@@ -5,7 +5,7 @@
 \title{writeTimeSeries}
 \usage{
 writeTimeSeries(tl, fname = "timeseriesdb_export", format = c("csv", "xlsx",
-  "json", "rdata"), date_format = NULL, ...)
+  "json", "rdata"), date_format = NULL, timestamp_file = TRUE, ...)
 }
 \arguments{
 \item{tl}{list of time series}
@@ -13,6 +13,8 @@ writeTimeSeries(tl, fname = "timeseriesdb_export", format = c("csv", "xlsx",
 \item{fname}{character file name. If set to NULL a standard file name chunk + Sys.Date is used.}
 
 \item{date_format}{character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010.}
+
+\item{timestamp_file}{If TRUE, the current date will be appended to the file name}
 
 \item{wide}{optional for csv and xlsx. If TRUE, the data is written in a wide format. Defaults to FALSE.}
 

@@ -4,6 +4,7 @@
 #' @param tl list of time series
 #' @param fname character file name. If set to NULL a standard file name chunk + Sys.Date is used.
 #' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010.
+#' @param timestamp_file If TRUE, the current date will be appended to the file name
 #'
 #' @param wide optional for csv and xlsx. If TRUE, the data is written in a wide format. Defaults to FALSE.
 #' @param json_pretty optional for json. If TRUE the JSON is outputted in a more human readable format.
@@ -18,7 +19,7 @@
 writeTimeSeries <- function(tl,
                             fname = "timeseriesdb_export",
                             format = c("csv", "xlsx", "json", "rdata"),
-                            date_format = NULL,
+                            date_format = NULL, timestamp_file = TRUE,
                             ...)
 {
   args = list(...)
@@ -27,7 +28,9 @@ writeTimeSeries <- function(tl,
   format = match.arg(format);
 
   # Timestamp filename
-  fname <- paste0(fname,"_",gsub("-","_",Sys.Date()))
+  if(timestamp_file) {
+    fname <- paste0(fname,"_",gsub("-","_",Sys.Date()))
+  }
   
   wide = ifelse(!is.null(args$wide), args$wide, FALSE)
   
