@@ -247,6 +247,10 @@ tsplot.list <- function(tsl,
     drawTsBars(tsl,
                group_bar_chart = group_bar_chart,
                theme = theme)
+    if(theme$sum_as_line){
+      reduced <- Reduce("+",tsl)
+      .drawSumAsLine(reduced, theme)
+    }
     
   } else {
     # draw lineplot

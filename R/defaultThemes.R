@@ -17,7 +17,10 @@
 #' * bar_border RGB color code string of all bars borders
 #' * total_bar_margin_pct share of space left for margins when grouping bar charts 
 #' * bar_fill_color vector RGB color code strings denoting the fill of (stacked) bar chart elements
+#' * sum_as_line  
 #' * sum_line_color        
+#' * sum_line_lty
+#' * sum_line_lwd
 #' * highlight_window logical should a highlight window be used for background?     
 #' * highlight_window_start integer vector year,period
 #' * highlight_window_end integer vector year,period
@@ -91,7 +94,10 @@ initDefaultTheme <- function(){
                             ETH5 = "#91056a",
                             ETH5_60 = "#cc67a7",
                             ETH5_30 = "#e6b3d3")
-  theme$sum_line_color <- "#1e1e1e"
+  theme$sum_as_line <- F
+  theme$sum_line_lty <- 1
+  theme$sum_line_lwd <- 3
+  theme$sum_line_color <- "#91056a"
   # Highlight window ############
   theme$highlight_window <- F
   theme$highlight_window_freq <- 4

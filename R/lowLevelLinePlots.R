@@ -36,6 +36,19 @@ drawTsLines.list <- function(x, theme = NULL){
   
 }
 
+.drawSumAsLine <- function(x, theme = NULL){
+  xx <- as.numeric(time(x))
+  yy <- x
+  frq <- frequency(x)
+  if(theme$line_to_middle) xx <- xx+(1/frq)/2
+  lines(xx,yy,
+        col = theme$sum_line_color,
+        lwd = theme$sum_line_lwd,
+        lty = theme$sum_line_lty
+  )
+}
+
+
 
 #' @export
 drawTsLines.mts <- function(x, theme = NULL,
