@@ -92,6 +92,22 @@ tsplot(tsb1,tsb2,tsb3,left_as_bar = T,
        manual_value_ticks_l = seq(-40,100,by=20),auto_legend=F)
 ```
 
+Because economists love to add up positive and negative contributions it is 
+helpful to be able to add the sum of the components to plot on a per period 
+basis. Here you go... 
+
+```{r,fig.width = 7,fig.height=6}
+tsl <- list(tsb1,tsb2,tsb3)
+tt <- initDefaultTheme()
+tt$sum_as_line <- T
+tsplot(tsl,left_as_bar = T,
+       manual_value_ticks_l = seq(-40,100,by=20),
+       auto_legend=F,theme = tt)
+```
+
+
+
+
 ### Multiple Y-axis with different scales (line charts)
 In order to compare indicators it's covenient in some domains to plot 
 two time series of completely different scale, e.g., a growth rate and

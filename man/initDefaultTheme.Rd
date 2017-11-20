@@ -25,7 +25,10 @@ The list contains the following elements:
 \item bar_border RGB color code string of all bars borders
 \item total_bar_margin_pct share of space left for margins when grouping bar charts
 \item bar_fill_color vector RGB color code strings denoting the fill of (stacked) bar chart elements
+\item sum_as_line
 \item sum_line_color
+\item sum_line_lty
+\item sum_line_lwd
 \item highlight_window logical should a highlight window be used for background?
 \item highlight_window_start integer vector year,period
 \item highlight_window_end integer vector year,period
