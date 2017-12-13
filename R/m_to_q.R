@@ -7,7 +7,7 @@
 #' 
 #' @export
 m_to_q <- function(series){
-  stopifinot(frequency(series) == 12)
+  stopifnot(frequency(series) == 12)
   if(!any(is.na(series))) return(series)
   period <- start(series)[2]
   q_start <- c(start(series)[1],rep(1:4,each=3)[period])
