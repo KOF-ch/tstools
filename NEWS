@@ -1,0 +1,3 @@
+0.2.7.9.1: minor change to unit test to avoid re-import warning with other packages that load openxlsx.
+0.2.7.9: added function to turn quarterly to monthly series (interpolate).
+0.2.7.8: added function to start after last internal NA.
