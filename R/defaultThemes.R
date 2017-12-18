@@ -71,7 +71,7 @@
 #' @export
 initDefaultTheme <- function(){
   theme <- list()
-  theme$margins <- c(5, 2.5, 3, 3) + 0.1
+  theme$margins <- c(5, 4, 3, 3) + 0.1
   theme$fillYearWithNAs <- TRUE
   theme$line_colors <- c("ETH_8_100" = "#007a92",
                          "ETH_4_100" = "#72791c",
