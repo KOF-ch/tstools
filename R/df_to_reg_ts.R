@@ -62,7 +62,7 @@ df_to_reg_ts <- function(dframe,
   names(na_df)[-1] <- var_cols
   
   if(return_ts){
-    lapply(na_df[,-1],ts,start = start_period, end = end_period, frequency = freq)  
+    lapply(na_df[,-1],ts,start = as.numeric(start_period), end = as.numeric(end_period), frequency = freq)  
   } else{
     na_df
   }
