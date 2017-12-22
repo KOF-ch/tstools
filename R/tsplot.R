@@ -122,7 +122,7 @@ tsplot.list <- function(tsl,
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
   
-  tsl_r <- as.numeric(range(unlist(tsl),na.rm = T))
+  tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
   tsr <- .sanitizeTsr(tsr)
   if(!is.null(tsr)) tsr_r <- range(unlist(tsr))
   
