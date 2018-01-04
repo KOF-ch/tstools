@@ -32,9 +32,12 @@ writeTimeSeries <- function(tl,
     fname <- paste0(fname,"_",gsub("-","_",Sys.Date()))
   }
   
-  wide = ifelse(!is.null(args$wide), args$wide, FALSE)
+  wide <- ifelse(!is.null(args$wide), args$wide, FALSE)
   
-  data.table_available = suppressWarnings(suppressPackageStartupMessages(require(data.table)));
+  data.table_available <- suppressWarnings(
+    suppressPackageStartupMessages(
+      require(data.table))
+  )
   
   # check for format compatability
   if(format %in% c("csv", "xlsx") && wide) {
