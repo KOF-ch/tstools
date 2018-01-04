@@ -34,6 +34,8 @@ writeTimeSeries <- function(tl,
   
   wide = ifelse(!is.null(args$wide), args$wide, FALSE)
   
+  data.table_available = suppressWarnings(suppressPackageStartupMessages(require(data.table)));
+  
   # check for format compatability
   if(format %in% c("csv", "xlsx") && wide) {
     ts_lengths <- sapply(tl, length)
@@ -102,7 +104,12 @@ writeTimeSeries <- function(tl,
       
       write_name <- paste(fname, "json", sep=".")
       
-      write(json, write_name)
+      if(data.table_available) {
+        # Write json as a "single element CSV" for speed
+        fwrite(list(json), file=write_name, quote=FALSE, col.names=FALSE)
+      } else {
+        write(json, write_name)
+      }
       
     } else {
       if(wide) {
@@ -126,7 +133,11 @@ writeTimeSeries <- function(tl,
       } else{
         write_name <- paste0(fname, ".csv")
         
-        write.table(tsdf, paste0(fname,".csv"), row.names = F, quote = F, sep=";", dec=".")  
+        if(data.table_available) {
+          fwrite(tsdf, write_name) 
+        } else {
+          write.table(tsdf, file = write_name, row.names = F, quote = F, sep=";", dec=".")  
+        }
       }
     }
   }

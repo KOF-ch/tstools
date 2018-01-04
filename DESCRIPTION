@@ -13,8 +13,11 @@ Imports:
     xts,
     jsonlite,
     reshape2
-Suggests: knitr, rmarkdown,
-    testthat
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat,
+    data.table
 VignetteBuilder: knitr    
 Date: 2016-01-01
 License: GPL-2
