@@ -22,10 +22,10 @@ writeTimeSeries <- function(tl,
                             date_format = NULL, timestamp_file = TRUE,
                             ...)
 {
-  args = list(...)
+  args <- list(...)
   
   # Match format
-  format = match.arg(format);
+  format <- match.arg(format);
 
   # Timestamp filename
   if(timestamp_file) {
