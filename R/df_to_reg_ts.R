@@ -1,9 +1,9 @@
 #' Turn data.frame to Regular Monthly or Quarterly Time Series
 #' 
 #' Turn a data.frame with date columns to a regular time series object 
-#' if possible. Design to work with quarterly and monthlty data. 
+#' if possible. Design to work with quarterly and monthly data. 
 #' 
-#' @param dframe
+#' @param dframe data.frame input
 #' @param year_col integer, logical or character vector indicating the year 
 #' position within the data.frame.
 #' @param period_col integer, logical or character vector indicating the period 

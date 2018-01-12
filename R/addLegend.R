@@ -1,4 +1,3 @@
-#' @export
 addLegend <- function(tsln,
                       tsrn = NULL,
                       left_as_bar = F,

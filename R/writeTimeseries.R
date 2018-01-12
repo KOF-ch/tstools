@@ -12,7 +12,6 @@
 #'
 #' @importFrom reshape2 dcast
 #' @importFrom xts as.xts xts
-#' @importFrom openxlsx write.xlsx
 #' @importFrom zoo as.yearmon
 #' @importFrom jsonlite toJSON
 #' @export
@@ -43,7 +42,7 @@ writeTimeSeries <- function(tl,
   if(format %in% c("csv", "xlsx") && wide) {
     ts_lengths <- sapply(tl, length)
     if(!all(diff(ts_lengths)==0)) {
-      warning("tl contains time series of diferent lengths. Export to wide CSV or XLSX is not recommended.")
+      warning("list contains time series of different lengths. Export to wide .csv or xlsx is not recommended.")
     }
   }
   
@@ -123,6 +122,13 @@ writeTimeSeries <- function(tl,
         }
       }
       
+      
+      xlsx_available <- suppressWarnings(require(openxlsx))
+      if(!xlsx_available) {
+        format <- "csv"
+        warning("package openxlsx non available, writing .csv")
+      }
+      
       if(format == "xlsx"){
         if(nTs > 1000) {
           stop("XSLX format can not handle more than 1000 time series")
@@ -131,15 +137,17 @@ writeTimeSeries <- function(tl,
         }
         
         write_name <- paste0(fname, ".xlsx")
+        openxlsx::write.xlsx(tsdf, paste0(fname,".xlsx"))
         
-        write.xlsx(tsdf, paste0(fname,".xlsx"))
       } else{
         write_name <- paste0(fname, ".csv")
         
         if(data.table_available) {
           fwrite(tsdf, write_name) 
         } else {
-          write.table(tsdf, file = write_name, row.names = F, quote = F, sep=";", dec=".")  
+          write.table(tsdf, file = write_name,
+                      row.names = F, quote = F,
+                      sep=",", dec=".")  
         }
       }
     }

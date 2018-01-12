@@ -6,9 +6,13 @@
 #' @param file Path to the file to be read
 #' @param format Which file format is the data stored in? If no format is supplied, importTimeSeries will attempt to guess
 #' from the file extension.
+#' @param sep character seperator for csv files. defaults to ','.
 #' @return A named list of ts objects
 #' @export
-importTimeSeries <- function(file, format=c("csv", "xlsx", "json", "zip")) {
+importTimeSeries <- function(file,
+                             format = c("csv", "xlsx",
+                                        "json", "zip"),
+                             sep = ",") {
   if(length(format) == 1) {
     format <- match.arg(format)  
   } else {
@@ -46,8 +50,8 @@ importTimeSeries <- function(file, format=c("csv", "xlsx", "json", "zip")) {
 }
 
 # Could export these, but no real need.
-importTimeSeries.csv <- function(file) {
-  csv <- read.csv(file, sep=";", stringsAsFactors=FALSE)
+importTimeSeries.csv <- function(file, sep = ",") {
+  csv <- read.csv(file, sep = sep, stringsAsFactors = FALSE)
   
   if(length(csv) == 3 && all(names(csv) == c("date", "value", "series"))) {
     long_to_ts(csv)
@@ -56,9 +60,16 @@ importTimeSeries.csv <- function(file) {
   }
 }
 
-#' @importFrom openxlsx read.xlsx
+
 importTimeSeries.xlsx <- function(file) {
-  xlsx <- read.xlsx(file)
+  xlsx_available <- suppressWarnings(require(openxlsx))
+      if(!xlsx_available) {
+        format <- "csv"
+        warning("package openxlsx non available, writing .csv")
+      }
+  if(!xlsx_available) return(warning("openxlsx not available. Install openxlsx or export to csv."))    
+  
+  xlsx <- openxlsx::read.xlsx(file)
   
   if(length(xlsx) == 3 && all(names(xlsx) == c("date", "value", "series"))) {
     long_to_ts(xlsx)

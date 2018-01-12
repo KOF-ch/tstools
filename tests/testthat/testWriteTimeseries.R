@@ -4,8 +4,8 @@ n <- 100
 freq <- 12
 t <- yearmon(seq(2011, 2011+(n-1)/freq, 1/freq))
 xts <- list(
-  ts1 = xts(runif(n), order.by=t),
-  ts2 = xts(runif(n), order.by=t)
+  ts1 = xts::xts(runif(n), order.by=t),
+  ts2 = xts::xts(runif(n), order.by=t)
 )
 
 ts <- list(
@@ -26,8 +26,9 @@ zip_read_name <- paste0(fn, "_", gsub("-","_",Sys.Date()), ".zip")
 
 test_that("CSV wide export works", {
   
-  writeTimeSeries(xts, format="csv", fname=paste0(fn, "_wide"), date_format="%Y-%m", wide=TRUE)
-  xts_read <- read.csv(csv_wide_name, sep=";", stringsAsFactors=FALSE)
+  writeTimeSeries(xts, format="csv", fname=paste0(fn, "_wide"),
+                  date_format="%Y-%m", wide=TRUE)
+  xts_read <- read.csv(csv_wide_name, sep=",", stringsAsFactors=FALSE)
   
   expect_that(dim(xts_read), equals(c(n, 3)))
   expect_that(names(xts_read), equals(c("date", "ts1", "ts2")))
@@ -35,26 +36,29 @@ test_that("CSV wide export works", {
   t_read <- as.yearmon(xts_read$date)
   xts_read$date <- NULL
   xts_read <- lapply(xts_read, function(x) {
-    xts(x, order.by=t_read)
+    xts::xts(x, order.by = t_read)
   })
   
   expect_that(xts_read, equals(xts, tolerance=1e-4))
 })
 
 test_that("CSV long export works", {
-  
-  writeTimeSeries(xts, format="csv", fname=paste0(fn, "_long"), date_format="%Y-%m")
-  xts_read <- read.csv(csv_long_name, sep=";", stringsAsFactors=FALSE)
+  writeTimeSeries(xts, format="csv",
+                  fname=paste0(fn, "_long"),
+                  date_format="%Y-%m")
+  xts_read <- read.csv(csv_long_name, sep=",",
+                       stringsAsFactors = FALSE)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
-  expect_that(names(xts_read), equals(c("date", "value", "series")))
+  expect_that(names(xts_read),
+              equals(c("date", "value", "series")))
 
-  xts_read <- reshape2::dcast(xts_read ,date ~ series)
+  xts_read <- reshape2::dcast(xts_read, date ~ series)
   
   t_read <- as.yearmon(xts_read$date)
   xts_read$date <- NULL
   xts_read <- lapply(xts_read, function(x) {
-    xts(x, order.by=t_read)
+    xts::xts(x, order.by=t_read)
   })
 
   expect_that(xts_read, equals(xts, tolerance=1e-4))
@@ -62,7 +66,10 @@ test_that("CSV long export works", {
 
 test_that("XLSX wide export works", {
   
-  writeTimeSeries(xts, format="xlsx", fname=paste0(fn, "_wide"), date_format="%Y-%m", wide=TRUE)
+  writeTimeSeries(xts, format = "xlsx",
+                  fname = paste0(fn, "_wide"),
+                  date_format = "%Y-%m",
+                  wide = TRUE)
   xts_read <- openxlsx::read.xlsx(xlsx_wide_name)
   
   expect_that(dim(xts_read), equals(c(n, 3)))
@@ -71,7 +78,7 @@ test_that("XLSX wide export works", {
   t_read <- as.yearmon(xts_read$date)
   xts_read$date <- NULL
   xts_read <- lapply(xts_read, function(x) {
-    xts(x, order.by=t_read)
+    xts::xts(x, order.by=t_read)
   })
   
   expect_that(xts_read, equals(xts, tolerance=1e-4))
@@ -204,16 +211,27 @@ test_that("differing lengths work", {
   n2 <- 13
   t2 <- yearmon(seq(2011, 2011+(n2-1)/freq, 1/freq))
   faulty_xts <- list(
-    ts1 = xts(runif(n1), order.by=t1),
-    ts2 = xts(runif(n2), order.by=t2)
+    ts1 = xts::xts(runif(n1), order.by=t1),
+    ts2 = xts::xts(runif(n2), order.by=t2)
   )
   faulty_ts <- list(
-    ts1 = as.ts(faulty_xts$ts1, start=start(faulty_xts$ts1), end=end(faulty_xts$ts1)),
-    ts2 = as.ts(faulty_xts$ts2, start=start(faulty_xts$ts2), end=end(faulty_xts$ts2))
+    ts1 = as.ts(faulty_xts$ts1,
+                start = start(faulty_xts$ts1),
+                end = end(faulty_xts$ts1)),
+    ts2 = as.ts(faulty_xts$ts2,
+                start = start(faulty_xts$ts2),
+                end = end(faulty_xts$ts2))
   )
   
-  expect_warning(writeTimeSeries(faulty_xts, format="csv", wide=T, fname="faulty", timestamp_file=F), "tl contains")
-  writeTimeSeries(faulty_xts, format="csv", wide=T, fname="faulty", timestamp_file=F)
+  expect_warning(writeTimeSeries(faulty_xts,
+                                 format = "csv",
+                                 wide = T,
+                                 fname = "faulty",
+                                 timestamp_file = F),
+                 "list contains")
+  writeTimeSeries(faulty_xts, format="csv",
+                  wide=T, fname="faulty",
+                  timestamp_file = F)
   read_faulty_ts <- importTimeSeries("faulty.csv")
   expect_equal(read_faulty_ts, faulty_ts)
 })

@@ -58,8 +58,8 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
 
 # o <- diff(r)*theme$y_offset_pct
 # d$x_range <- r + c(-o,o)
-#' determine ticks and grid position
-#' theme contains which grids should be drawn etc.
+# determine ticks and grid position
+# theme contains which grids should be drawn etc.
 .getDateInfo <- function(tsr,tsl,theme,
                          manual_date_ticks){
   d <- list()
@@ -84,7 +84,7 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
 
 
 
-#' Make sure right axis object is of appropriate class.
+# Make sure right axis object is of appropriate class.
 .sanitizeTsr <- function(tsr){
   if(is.null(tsr)){
     return(tsr)
