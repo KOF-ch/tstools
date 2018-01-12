@@ -1,18 +1,15 @@
-#' @export
 drawTsLines <- function(x, theme = NULL,
                         ...){
   UseMethod("drawTsLines")
 } 
 
 
-#' @export
 drawTsLines.ts <- function(x, theme = NULL,
                            ...){
   
 }
 
 
-#' @export
 drawTsLines.list <- function(x, theme = NULL){
   for (i in 1:length(x)){
     xx <- as.numeric(time(x[[i]]))
@@ -50,11 +47,11 @@ drawTsLines.list <- function(x, theme = NULL){
 
 
 
-#' @export
-drawTsLines.mts <- function(x, theme = NULL,
-                            ...){
-  
-}
+
+# drawTsLines.mts <- function(x, theme = NULL,
+#                             ...){
+#   
+# }
 
 
 

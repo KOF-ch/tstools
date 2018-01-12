@@ -1,10 +1,9 @@
-#' @export
 drawTsBars <- function(x, group_bar_chart = FALSE, theme = NULL,
                        ...){
   UseMethod("drawTsBars")
 } 
 
-#' @export
+
 drawTsBars.ts <- function(x, group_bar_chart = FALSE,
                           theme = NULL){
   ts_time <- time(x)
@@ -31,7 +30,6 @@ drawTsBars.ts <- function(x, group_bar_chart = FALSE,
 }
 
 
-#' @export
 drawTsBars.list <- function(x,
                             group_bar_chart = FALSE,
                             theme = NULL){
@@ -49,7 +47,6 @@ drawTsBars.list <- function(x,
 }
 
 
-#' @export
 drawTsBars.mts <- function(x,
                            group_bar_chart =  FALSE,
                            theme = NULL){
