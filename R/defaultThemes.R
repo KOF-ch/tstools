@@ -137,6 +137,8 @@ initDefaultTheme <- function(){
   theme$subtitle_cex.main <- 1
   theme$subtitle_transform <- "toupper"
   theme$subtitle_adj_r <- .9
+  theme$legend_intersp_x <- 1
+  theme$legend_intersp_y <- 1
   theme
 }
 

@@ -19,14 +19,18 @@ addLegend <- function(tsln,
              bty = "n",
              col = na.omit(theme$line_colors[1:ll]),
              lty = na.omit(theme$lty[1:ll]),
-             lwd = na.omit(theme$lwd[1:ll]))    
+             lwd = na.omit(theme$lwd[1:ll]),
+             x.intersp = theme$legend_intersp_x,
+             y.intersp = theme$legend_intersp_y)    
     } else {
       legend("bottomleft", 
              legend = tsln,
              ncol = theme$legend_col,
              #horiz = TRUE, 
              bty = "n",
-             fill = na.omit(theme$bar_fill_color[1:ll]))  
+             fill = na.omit(theme$bar_fill_color[1:ll]),
+             x.intersp = theme$legend_intersp_x,
+             y.intersp = theme$legend_intersp_y)  
     }
     
   } else {
@@ -38,7 +42,9 @@ addLegend <- function(tsln,
              bty = "n",
              col = na.omit(theme$line_colors[1:lr]),
              lty = na.omit(theme$lty[1:lr]),
-             lwd = na.omit(theme$lwd[1:lr]))   
+             lwd = na.omit(theme$lwd[1:lr]),
+             x.intersp = theme$legend_intersp_x,
+             y.intersp = theme$legend_intersp_y)   
     } else {
       legend("bottomleft", 
              legend = c(tsln,tsrn),
@@ -48,7 +54,9 @@ addLegend <- function(tsln,
              fill = theme$bar_fill_color[1:length(tsln)][1:length(c(tsln,tsrn))],
              col = theme$legend_col,
              lty = na.omit(theme$lty[1:length(tsrn)]),
-             lwd = na.omit(theme$lwd[1:length(tsrn)])) 
+             lwd = na.omit(theme$lwd[1:length(tsrn)]),
+             x.intersp = theme$legend_intersp_x,
+             y.intersp = theme$legend_intersp_y) 
     }
     
   }
