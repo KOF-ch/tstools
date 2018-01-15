@@ -1,3 +1,5 @@
+0.3.2: optional data.table read csv for speedup
+0.3.1: minor add ons, problems in versions fixed
 0.3: function to create regular time series from data.frames
 0.2.7.9.1: minor change to unit test to avoid re-import warning with other packages that load openxlsx.
 0.2.7.9: added function to turn quarterly to monthly series (interpolate).

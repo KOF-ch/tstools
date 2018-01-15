@@ -33,7 +33,7 @@ writeTimeSeries <- function(tl,
   
   wide <- ifelse(!is.null(args$wide), args$wide, FALSE)
   
-  data.table_available <- requireNamespace("openxlsx")
+  data.table_available <- requireNamespace("data.table", quietly = TRUE)
   
   # check for format compatability
   if(format %in% c("csv", "xlsx") && wide) {
@@ -122,7 +122,7 @@ writeTimeSeries <- function(tl,
       }
       
       
-      xlsx_available <- requireNamespace("openxlsx")
+      xlsx_available <- requireNamespace("openxlsx", quietly = TRUE)
       if(!xlsx_available) {
         format <- "csv"
         warning("package openxlsx non available, writing .csv")
