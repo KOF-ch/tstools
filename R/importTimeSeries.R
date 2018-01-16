@@ -63,10 +63,7 @@ importTimeSeries.csv <- function(file, sep = ",") {
 
 importTimeSeries.xlsx <- function(file) {
   xlsx_available <- requireNamespace("openxlsx")
-      if(!xlsx_available) {
-        format <- "csv"
-        warning("package openxlsx non available, writing .csv")
-      }
+
   if(!xlsx_available) return(warning("openxlsx not available. Install openxlsx or export to csv."))    
   
   xlsx <- openxlsx::read.xlsx(file)
