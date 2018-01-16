@@ -21,25 +21,25 @@ importTimeSeries <- function(file,
     if(!(format %in% c("csv", "xlsx", "json", "zip"))) {
       stop("Could not detect file format. Please supply format parameter!\nValid file formats are csv, xlsx, json and zip.")
     }
+  }
+  
+  if(format == "zip") {
+    contents <- unzip(file, list=TRUE)
     
-    if(format == "zip") {
-      contents <- unzip(file, list=TRUE)
-      
-      if(nrow(contents) > 1) {
-        warning("Found more than 1 file in zip archive, proceeding with the first one...")
-      }
-      
-      zipped_file <- contents$Name[1]
-      message(sprintf("Found file %s in zip archive, proceeding...", zipped_file))
-    
-      zipped_format <- regmatches(zipped_file, regexec(".*?[.](.*)$", zipped_file))[[1]][2]
-      if(!(zipped_format %in% c("csv", "xlsx", "json"))) {
-        stop("Zipped file is not a csv-, xlsx- or json-file!")
-      }
-      
-      file <- unz(file, zipped_file)
-      format <- zipped_format
+    if(nrow(contents) > 1) {
+      warning("Found more than 1 file in zip archive, proceeding with the first one...")
     }
+    
+    zipped_file <- contents$Name[1]
+    message(sprintf("Found file %s in zip archive, proceeding...", zipped_file))
+  
+    zipped_format <- regmatches(zipped_file, regexec(".*?[.](.*)$", zipped_file))[[1]][2]
+    if(!(zipped_format %in% c("csv", "xlsx", "json"))) {
+      stop("Zipped file is not a csv-, xlsx- or json-file!")
+    }
+    
+    file <- unz(file, zipped_file)
+    format <- zipped_format
   }
   
   switch(format, 
