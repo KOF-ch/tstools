@@ -1,3 +1,4 @@
+0.3.3: speedup writeTimeSeries by optionally using data.table's rbindlist
 0.3.2: optional data.table read csv for speedup
 0.3.1: minor add ons, problems in versions fixed
 0.3: function to create regular time series from data.frames

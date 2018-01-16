@@ -23,6 +23,10 @@ writeTimeSeries <- function(tl,
 {
   args <- list(...)
   
+  # check whether data.table is available,
+  # if not choose a slower fallback
+  data.table_available <- requireNamespace("data.table", quietly = TRUE)
+  
   # Match format
   format <- match.arg(format);
 
@@ -32,9 +36,7 @@ writeTimeSeries <- function(tl,
   }
   
   wide <- ifelse(!is.null(args$wide), args$wide, FALSE)
-  
-  data.table_available <- requireNamespace("data.table", quietly = TRUE)
-  
+
   # check for format compatability
   if(format %in% c("csv", "xlsx") && wide) {
     ts_lengths <- sapply(tl, length)
@@ -64,18 +66,35 @@ writeTimeSeries <- function(tl,
     
     if(format != "json") {
       if(!wide) {
-        # Make the list into a pretty, long data.frame
-        out_list <- lapply(names(tl),function(x){
-          t <- time(tl[[x]])
-          if(!is.null(date_format)) {
-            t <- format(t, date_format)
-          }
-          dframe <- data.frame(date = t,
-                               value = tl[[x]],row.names = NULL)
-          dframe$series <- x
-          dframe
-        })
-        tsdf <- do.call("rbind",out_list)
+        # convert the list into a pretty, long data.frame
+        if(data.table_available){
+          out_list <- lapply(names(tl),function(x){
+            data.table::data.table(date = index(tl[[x]]),
+                       value = tl[[x]],
+                       keys = x)
+          })
+          # data.table behaves differently than rbind 
+          # thus date needs to converted into a character
+          # otherwise it's modified when writing to disk.
+          tsdf <- data.table::rbindlist(out_list)
+          data.table::setnames(tsdf,names(tsdf),c("date","value","series"))
+          data.table::set(tsdf, j = 'date', value = as.character(tsdf$date))
+        } else {
+          out_list <- lapply(names(tl),function(x){
+            t <- time(tl[[x]])
+            if(!is.null(date_format)) {
+              t <- format(t, date_format)
+            }
+            dframe <- data.frame(date = t,
+                                 value = tl[[x]],row.names = NULL)
+            dframe$series <- x
+            dframe
+          })
+          
+          # need to fix this 
+          tsdf <- do.call("rbind",out_list)  
+        }
+
       } else {
         tsmat <- do.call("cbind", tl)
         dates <- time(tsmat[,1])
@@ -125,7 +144,7 @@ writeTimeSeries <- function(tl,
       xlsx_available <- requireNamespace("openxlsx", quietly = TRUE)
       if(!xlsx_available) {
         format <- "csv"
-        warning("package openxlsx non available, writing .csv")
+        warning("package openxlsx not available, writing .csv")
       }
       
       if(format == "xlsx"){
