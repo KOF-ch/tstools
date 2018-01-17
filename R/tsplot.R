@@ -155,13 +155,8 @@ tsplot.list <- function(tsl,
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
-      right_y <- list(y_range = 
-                        range(do.call(find_ticks_function,
-                                      list(tsr_r,
-                                           length(left_y$y_ticks)))
-                        ),
-                      y_ticks = do.call(find_ticks_function,
-                                        list(tsr_r,length(left_y$y_ticks))))
+      right_ticks <- do.call(find_ticks_function, list(tsr_r, theme$y_grid_count, theme))
+      right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
     
     
