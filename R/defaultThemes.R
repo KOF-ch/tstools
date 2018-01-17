@@ -139,6 +139,7 @@ initDefaultTheme <- function(){
   theme$subtitle_adj_r <- .9
   theme$legend_intersp_x <- 1
   theme$legend_intersp_y <- 1
+  theme$y_range_scale_factor <- 1
   theme
 }
 
