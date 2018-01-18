@@ -140,7 +140,7 @@ initDefaultTheme <- function(){
   theme$legend_intersp_x <- 1
   theme$legend_intersp_y <- 1
   theme$y_grid_count_strict <- TRUE # do not allow extra ticks to be attached by y_tick_margin (which could lead to y_grid_count being violated)
-  theme$y_tick_margin <- 0.5        # at least 50% of top/bottom tick range must be empty if y_grid_count_strict
+  theme$y_tick_margin <- 0.5        # at least 50% of top/bottom tick range must be empty if y_grid_count_strict is FALSE
   theme
 }
 
