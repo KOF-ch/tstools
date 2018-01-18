@@ -127,7 +127,7 @@ findTicks <- function(r,tick_count,tt){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
   # r <- r * tt$y_range_factor
-  gaps <- findGapSize(r=r,sort(tick_count),tt)
+  gaps <- findGapSize(r=r,sort(tick_count))
   lb <- (r[1] %/% gaps) * gaps
   d <- diff(r)
   tms <- pmax(1, (d %/% gaps))
