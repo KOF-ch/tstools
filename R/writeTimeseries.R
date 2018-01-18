@@ -82,7 +82,11 @@ writeTimeSeries <- function(tl,
           }))
           
           tl_dates <- unlist(lapply(tl, function(x){
-            as.character(index(x))
+            if(is.null(date_format)) {
+              as.character(index(x))
+            } else {
+              format(index(x), date_format)
+            }
           }))
           
           tsdf <- data.table(date = tl_dates,
