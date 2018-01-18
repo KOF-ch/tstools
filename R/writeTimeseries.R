@@ -81,17 +81,13 @@ writeTimeSeries <- function(tl,
             rep(x, tl_lengths[x])
           }))
           
-          tl_dates <- unlist(lapply(tl, function(x){
-            if(is.null(date_format)) {
-              as.character(index(x))
-            } else {
-              format(index(x), date_format)
-            }
-          }))
+          tl_dates <- unlist(lapply(tl, index))
           
-          tsdf <- data.frame(date = tl_dates,
+          tl_dates <- as.character(tl_dates)
+          
+          tsdf <- data.table(date = tl_dates,
                              value = as.character(tl_values),
-                             series = as.character(tl_names))
+                             series = tl_names)
         } else {
           out_list <- lapply(names(tl),function(x){
             t <- time(tl[[x]])
