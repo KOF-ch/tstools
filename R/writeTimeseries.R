@@ -89,7 +89,7 @@ writeTimeSeries <- function(tl,
             }
           }))
           
-          tsdf <- data.table(date = tl_dates,
+          tsdf <- data.frame(date = tl_dates,
                              value = as.character(tl_values),
                              series = as.character(tl_names))
         } else {
