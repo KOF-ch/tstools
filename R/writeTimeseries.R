@@ -19,6 +19,7 @@ writeTimeSeries <- function(tl,
                             fname = "timeseriesdb_export",
                             format = c("csv", "xlsx", "json", "rdata"),
                             date_format = NULL, timestamp_file = TRUE,
+                            round_digits = NULL,
                             ...)
 {
   args <- list(...)
@@ -68,17 +69,25 @@ writeTimeSeries <- function(tl,
       if(!wide) {
         # convert the list into a pretty, long data.frame
         if(data.table_available){
-          out_list <- lapply(names(tl),function(x){
-            data.table::data.table(date = index(tl[[x]]),
-                       value = tl[[x]],
-                       keys = x)
-          })
-          # data.table behaves differently than rbind 
-          # thus date needs to converted into a character
-          # otherwise it's modified when writing to disk.
-          tsdf <- data.table::rbindlist(out_list)
-          data.table::setnames(tsdf,names(tsdf),c("date","value","series"))
-          data.table::set(tsdf, j = 'date', value = as.character(tsdf$date))
+          tl_lengths <- sapply(tl, length)
+          
+          tl_values <- unlist(tl)
+          
+          if(!is.null(round_digits)) {
+            tl_values <- round(tl_values, round_digits)
+          }
+          
+          tl_names <- unlist(lapply(names(tl_lengths), function(x) {
+            rep(x, tl_lengths[x])
+          }))
+          
+          tl_dates <- unlist(lapply(tl, function(x){
+            as.character(index(x))
+          }))
+          
+          tsdf <- data.table(date = tl_dates,
+                             value = as.character(tl_values),
+                             series = as.character(tl_names))
         } else {
           out_list <- lapply(names(tl),function(x){
             t <- time(tl[[x]])
