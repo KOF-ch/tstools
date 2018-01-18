@@ -5,7 +5,8 @@
 \title{writeTimeSeries}
 \usage{
 writeTimeSeries(tl, fname = "timeseriesdb_export", format = c("csv", "xlsx",
-  "json", "rdata"), date_format = NULL, timestamp_file = TRUE, ...)
+  "json", "rdata"), date_format = NULL, timestamp_file = TRUE,
+  round_digits = NULL, ...)
 }
 \arguments{
 \item{tl}{list of time series}
