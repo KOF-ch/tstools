@@ -46,9 +46,6 @@ writeTimeSeries <- function(tl,
     }
   }
   
-  # Standardize to xts (readTimeSeries may return ts, zoo, xts)
-  tl <- lapply(tl, as.xts)
-  
   # Export data
   if(format == "rdata") {
      # Dump list into an empty environment
@@ -71,23 +68,38 @@ writeTimeSeries <- function(tl,
         if(data.table_available){
           tl_lengths <- sapply(tl, length)
           
-          tl_values <- unlist(tl)
+          tl_frequencies <- sapply(tl, frequency)
           
-          if(!is.null(round_digits)) {
-            tl_values <- round(tl_values, round_digits)
-          }
-          
+          # TODO: There has to be a more elegant solution (i.e. generate the index beforehand)
           tl_names <- unlist(lapply(names(tl_lengths), function(x) {
             rep(x, tl_lengths[x])
           }))
           
-          tl_dates <- unlist(lapply(tl, index))
+          dateExtract <- function(date, freq) {
+            year <- floor(date)
+            if(freq[1] == 4) {
+              quarter <- 4*(date - year) + 1
+              sprintf("%d Q%d", year, quarter)
+            } else {
+              month <- floor(12*(date - year)) + 1
+              sprintf("%d %d", year, month)
+            }
+          }
           
-          tl_dates <- as.character(tl_dates)
+          tsdf <- data.table(value = do.call(c, tl))
           
-          tsdf <- data.table(date = tl_dates,
-                             value = as.character(tl_values),
-                             series = tl_names)
+          tsdf[, series := tl_names]
+          
+          tsdf[, index := .GRP, by = series]
+          
+          tsdf[, freq := tl_frequencies[index]]  # TODO: Is this faster with by=index?
+          
+          tsdf[, date_numeric := as.numeric(time(tl[[index]])), by = index]
+          
+          tsdf[, date := dateExtract(date_numeric, freq), by = freq]
+          
+          tsdf[ ,`:=`(index = NULL, date_numeric = NULL)]
+          
         } else {
           out_list <- lapply(names(tl),function(x){
             t <- time(tl[[x]])
