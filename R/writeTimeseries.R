@@ -86,11 +86,16 @@ writeTimeSeries <- function(tl,
             }
           }
           
-          tsdf <- data.table(value = do.call(c, tl))
+          # tsdf <- data.table(value = do.call(c, tl))
+          # 
+          # tsdf[, series := tl_names]
           
-          tsdf[, series := tl_names]
+          tsdf <- data.table(series = tl_names)
           
           tsdf[, index := .GRP, by = series]
+          
+          # ~5 times faster than unlist or do.call(c, tl) @ 10k ts <3
+          tsdf[, value := tl[[index]][seq(.N)], by = index]
           
           tsdf[, freq := tl_frequencies[index]]  # TODO: Is this faster with by=index?
           
