@@ -81,28 +81,16 @@ writeTimeSeries <- function(tl,
                         date_numeric = as.numeric(time(tl[[index]]))), 
                by = index]
           
-          dateExtract <- function(date, freq) {
-            year <- floor(date)
-            if(freq[1] == 4) {
-              quarter <- 4*(date - year) + 1
-              sprintf("%d Q%d", year, quarter)
-            } else {
-              month <- floor(12*(date - year)) + 1
-              sprintf("%d %d", year, month)
-            }
-          }
-          
-          tsdf[, date := dateExtract(date_numeric, freq), by = freq]
+          tsdf[, date := formatNumericDate(date_numeric, freq, date_format), by = freq]
           
           tsdf[ , `:=`(index = NULL, date_numeric = NULL, freq = NULL, internal_index = NULL)]
           
         } else {
           out_list <- lapply(names(tl),function(x){
             t <- time(tl[[x]])
-            if(!is.null(date_format)) {
-              t <- format(t, date_format)
-            }
-            dframe <- data.frame(date = t,
+            f <- frequency(tl[[x]])
+            
+            dframe <- data.frame(date = formatNumericDate(t, f, date_format),
                                  value = tl[[x]],row.names = NULL)
             dframe$series <- x
             dframe
@@ -115,11 +103,11 @@ writeTimeSeries <- function(tl,
       } else {
         tsmat <- do.call("cbind", tl)
         dates <- time(tsmat[,1])
-        if(!is.null(date_format)) {
-          dates <- format(dates, date_format)
-        }
+        freq <- frequency(tl[[1]])
+        
         tsdf <- as.data.frame(tsmat)
-        tsdf$date <- dates
+        tsdf$date <- formatNumericDate(dates, freq, date_format)
+        
         tsdf <-  tsdf[, c(nTs+1, seq(1, nTs))]
       }
     }
@@ -130,10 +118,11 @@ writeTimeSeries <- function(tl,
       # Output an object of arrays of objects { "key": [{"date": time1, "value": value1}, ...], ...}
       jsondf <- lapply(tl, function(x) {
         t <- time(x)
-        if(!is.null(date_format)) {
-          t <- format(t, date_format)
-        }
-        data.frame(date=as.character(t), value=x, row.names=NULL)
+        f <- frequency(x)
+        
+        t <- formatNumericDate(t, f, date_format)
+        
+        data.frame(date = t, value = x, row.names = NULL)
       })
       json <- toJSON(jsondf, pretty=json_pretty, digits=16)
       
