@@ -66,14 +66,20 @@ writeTimeSeries <- function(tl,
       if(!wide) {
         # convert the list into a pretty, long data.frame
         if(data.table_available){
-          tl_lengths <- sapply(tl, length)
+          tl_lengths <- data.table(length = sapply(tl, length))
           
-          tl_frequencies <- sapply(tl, frequency)
+          index <- seq(nrow(tl_lengths))
           
-          # TODO: There has to be a more elegant solution (i.e. generate the index beforehand)
-          tl_names <- unlist(lapply(names(tl_lengths), function(x) {
-            rep(x, tl_lengths[x])
-          }))
+          tsdf <- tl_lengths[, .(internal_index = seq(length)), by = index]
+          
+          tl_names <- names(tl)
+          
+          tsdf[, `:=`(
+                        freq = frequency(tl[[index]]),
+                        series = tl_names[index],
+                        value = as.numeric(tl[[index]][internal_index]),
+                        date_numeric = as.numeric(time(tl[[index]]))), 
+               by = index]
           
           dateExtract <- function(date, freq) {
             year <- floor(date)
@@ -86,24 +92,9 @@ writeTimeSeries <- function(tl,
             }
           }
           
-          # tsdf <- data.table(value = do.call(c, tl))
-          # 
-          # tsdf[, series := tl_names]
-          
-          tsdf <- data.table(series = tl_names)
-          
-          tsdf[, index := .GRP, by = series]
-          
-          # ~5 times faster than unlist or do.call(c, tl) @ 10k ts <3
-          tsdf[, value := tl[[index]][seq(.N)], by = index]
-          
-          tsdf[, freq := tl_frequencies[index]]  # TODO: Is this faster with by=index?
-          
-          tsdf[, date_numeric := as.numeric(time(tl[[index]])), by = index]
-          
           tsdf[, date := dateExtract(date_numeric, freq), by = freq]
           
-          tsdf[ ,`:=`(index = NULL, date_numeric = NULL)]
+          tsdf[ , `:=`(index = NULL, date_numeric = NULL, freq = NULL, internal_index = NULL)]
           
         } else {
           out_list <- lapply(names(tl),function(x){
