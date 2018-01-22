@@ -129,9 +129,14 @@ findTicks <- function(r,tick_count,tt){
   # r <- r * tt$y_range_factor
   gaps <- findGapSize(r=r,sort(tick_count))
   lb <- (r[1] %/% gaps) * gaps
-  d <- diff(r)
-  tms <- pmax(1, (d %/% gaps))
+  d <- ceiling(diff(r))
+  tms <- (d %/% gaps) + 1
   ub <- lb + (tms * gaps)  
+  
+  if(length(tick_count) == 1) {
+    ub <- lb + ((tick_count - 1)*gaps)
+  }
+  
   # correct algorithm when values are below upper bound
   ub_too_low <- ub <= r[2]
   while(any(ub_too_low)) {
