@@ -14,6 +14,7 @@
 #' @importFrom xts as.xts xts
 #' @importFrom zoo as.yearmon
 #' @importFrom jsonlite toJSON
+#' @import data.table
 #' @export
 writeTimeSeries <- function(tl,
                             fname = "timeseriesdb_export",
@@ -23,10 +24,6 @@ writeTimeSeries <- function(tl,
                             ...)
 {
   args <- list(...)
-  
-  # check whether data.table is available,
-  # if not choose a slower fallback
-  data.table_available <- requireNamespace("data.table", quietly = TRUE)
   
   # Match format
   format <- match.arg(format);
@@ -65,40 +62,24 @@ writeTimeSeries <- function(tl,
     if(format != "json") {
       if(!wide) {
         # convert the list into a pretty, long data.frame
-        if(data.table_available){
-          tl_lengths <- data.table(length = sapply(tl, length))
-          
-          index <- seq(nrow(tl_lengths))
-          
-          tsdf <- tl_lengths[, .(internal_index = seq(length)), by = index]
-          
-          tl_names <- names(tl)
-          
-          tsdf[, `:=`(
-                        freq = frequency(tl[[index]]),
-                        series = tl_names[index],
-                        value = as.numeric(tl[[index]][internal_index]),
-                        date_numeric = as.numeric(time(tl[[index]]))), 
-               by = index]
-          
-          tsdf[, date := formatNumericDate(date_numeric, freq, date_format), by = freq]
-          
-          tsdf[ , `:=`(index = NULL, date_numeric = NULL, freq = NULL, internal_index = NULL)]
-          
-        } else {
-          out_list <- lapply(names(tl),function(x){
-            t <- time(tl[[x]])
-            f <- frequency(tl[[x]])
-            
-            dframe <- data.frame(date = formatNumericDate(t, f, date_format),
-                                 value = tl[[x]],row.names = NULL)
-            dframe$series <- x
-            dframe
-          })
-          
-          # need to fix this 
-          tsdf <- do.call("rbind",out_list)  
-        }
+        tl_lengths <- data.table(length = sapply(tl, length))
+        
+        index <- seq(nrow(tl_lengths))
+        
+        tsdf <- tl_lengths[, .(internal_index = seq(length)), by = index]
+        
+        tl_names <- names(tl)
+        
+        tsdf[, `:=`(
+                      freq = frequency(tl[[index]]),
+                      series = tl_names[index],
+                      value = as.numeric(tl[[index]][internal_index]),
+                      date_numeric = as.numeric(time(tl[[index]]))), 
+             by = index]
+        
+        tsdf[, date := formatNumericDate(date_numeric, freq, date_format), by = freq]
+        
+        tsdf[ , `:=`(index = NULL, date_numeric = NULL, freq = NULL, internal_index = NULL)]
 
       } else {
         tsmat <- do.call("cbind", tl)
@@ -128,14 +109,10 @@ writeTimeSeries <- function(tl,
       
       write_name <- paste(fname, "json", sep=".")
       
-      if(data.table_available) {
-        # Write json as a "single element CSV" for speed
-        data.table::fwrite(list(json),
-                           file = write_name,
-               quote = FALSE, col.names = FALSE)
-      } else {
-        write(json, write_name)
-      }
+      # Write json as a "single element CSV" for speed
+      fwrite(list(json),
+                         file = write_name,
+             quote = FALSE, col.names = FALSE)
       
     } else {
       if(wide) {
@@ -167,13 +144,7 @@ writeTimeSeries <- function(tl,
       } else{
         write_name <- paste0(fname, ".csv")
         
-        if(data.table_available) {
-          data.table::fwrite(tsdf, write_name) 
-        } else {
-          write.table(tsdf, file = write_name,
-                      row.names = F, quote = F,
-                      sep=",", dec=".")  
-        }
+        fwrite(tsdf, write_name) 
       }
     }
   }
