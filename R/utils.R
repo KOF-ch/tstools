@@ -164,7 +164,7 @@ findTicks <- function(r,tick_count){
 }
 
 formatNumericDate <- function(date, freq, date_format = NULL) {
-  year <- floor(date)
+  year <- floor(date + 1/24)
   if(freq[1] == 4) {
     if(is.null(date_format)) {
       quarter <- 4*(date - year) + 1
