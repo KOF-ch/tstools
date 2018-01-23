@@ -123,10 +123,9 @@ findGapSize <- function(r,tick_count){
 }
 
 #'@export
-findTicks <- function(r,tick_count,tt){
+findTicks <- function(r,tick_count){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
-  # r <- r * tt$y_range_factor
   gaps <- findGapSize(r=r,sort(tick_count))
   lb <- (r[1] %/% gaps) * gaps
   d <- ceiling(diff(r))
@@ -142,14 +141,6 @@ findTicks <- function(r,tick_count,tt){
   while(any(ub_too_low)) {
     ub[ub_too_low] <- ub[ub_too_low] + gaps[ub_too_low]
     ub_too_low <- ub <= r[2]
-  }
-  
-  if(!tt$y_grid_count_strict) {
-    needs_extra_bottom <- r[1] < lb + gaps * tt$y_tick_margin
-    lb[needs_extra_bottom] <- lb[needs_extra_bottom] - gaps[needs_extra_bottom]
-    
-    needs_extra_top <- r[2] > ub - gaps * tt$y_tick_margin
-    ub[needs_extra_top] <- ub[needs_extra_top] + gaps[needs_extra_top]
   }
   
   seqs <- list()

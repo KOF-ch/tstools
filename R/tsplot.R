@@ -142,7 +142,7 @@ tsplot.list <- function(tsl,
   } else{
     if(left_as_bar) return("Finding ticks automatically when stacking values is not supported yet. Please use manual_value_ticks.")
     
-    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme))
+    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
   }
@@ -155,8 +155,65 @@ tsplot.list <- function(tsl,
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
-      theme$y_grid_count_strict <- TRUE
-      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme))
+      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks)))
+      right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
+    }
+  }
+  
+  if(!theme$y_grid_count_strict) {
+    left_diff <- diff(left_ticks)
+    left_d <- left_diff[1]
+    left_ub <- left_ticks[length(left_ticks)]
+    left_lb <- left_ticks[1]
+    
+    if(!is.null(tsr)) {
+      right_diff <- diff(right_ticks)
+      right_d <- right_diff[1]
+      right_ub <- right_ticks[length(left_ticks)]
+      right_lb <- right_ticks[1]
+    }
+    
+    left_needs_extra_tick_top <- tsl_r[2] > left_ub - left_d*theme$y_tick_margin
+    
+    if(left_needs_extra_tick_top) {
+      left_ticks <- c(left_ticks, left_ub + left_d)
+      if(!is.null(tsr)) {
+        right_ticks <- c(right_ticks, right_ub + right_d)
+      }
+    }
+    
+    left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
+    
+    if(left_needs_exta_tick_bottom) {
+      left_ticks <- c(left_lb - left_d, left_ticks)
+      if(!is.null(tsr)) {
+        right_ticks <- c(right_lb - right_d, right_ticks)
+      }
+    }
+    
+    if(!is.null(tsr)) {
+      right_needs_extra_tick_top <- tsr_r[2] > right_ub - right_d*theme$y_tick_margin
+      
+      if(right_needs_extra_tick_top) {
+        left_ticks <- c(left_ticks, left_ub + left_d)
+        right_ticks <- c(right_ticks, right_ub + right_d)
+      }
+      
+      right_needs_extra_tick_bottom <- tsr_r[1] < right_lb + right_d*theme$y_tick_margin
+      
+      if(right_needs_extra_tick_bottom) {
+        left_ticks <- c(left_lb - left_d, left_ticks)
+        right_ticks <- c(right_lb - right_d, right_ticks)
+      }
+    }
+    
+    # Technically we could save ourselves all that correcting if manual ticks are not null.
+    # This is just a convenient place to check.
+    if(is.null(manual_value_ticks_l)) {
+      left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
+    }
+    
+    if(is.null(manual_value_ticks_r)) {
       right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
   }
