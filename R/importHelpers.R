@@ -9,18 +9,20 @@ json_to_ts <- function(json_data) {
   }
 }
 
-#' @importFrom reshape2 dcast
+#' @importFrom data.table dcast
 long_to_ts <- function(data) {
   wide_to_ts(dcast(data, date ~ series))
 }
 
+#' @importFrom xts xts
+#' @importFrom zoo as.yearqtr as.yearmon
 wide_to_ts <- function(data) {
   t <- as.yearmon(data$date)
   if(any(is.na(t))) {
     t <- as.yearqtr(data$date)
   }
   data$date <- NULL
-  fata <- lapply(data, function(x) {
+  lapply(data, function(x) {
     nas <- is.na(x)
     xt <- xts(x[!nas], order.by=t[!nas])
     if(frequency(xt) < Inf) {

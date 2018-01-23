@@ -53,7 +53,7 @@ importTimeSeries <- function(file,
 importTimeSeries.csv <- function(file, sep = ",") {
   csv <- read.csv(file, sep = sep, stringsAsFactors = FALSE)
   
-  if(length(csv) == 3 && all(names(csv) == c("date", "value", "series"))) {
+  if(length(csv) == 3 && length(setdiff(names(csv), c("date", "value", "series"))) == 0) {
     long_to_ts(csv)
   } else {
     wide_to_ts(csv)
@@ -63,12 +63,12 @@ importTimeSeries.csv <- function(file, sep = ",") {
 
 importTimeSeries.xlsx <- function(file) {
   xlsx_available <- requireNamespace("openxlsx")
-
+  
   if(!xlsx_available) return(warning("openxlsx not available. Install openxlsx or export to csv."))    
   
   xlsx <- openxlsx::read.xlsx(file)
   
-  if(length(xlsx) == 3 && all(names(xlsx) == c("date", "value", "series"))) {
+  if(length(xlsx) == 3 && length(setdiff(names(xlsx), c("date", "value", "series"))) == 0) {
     long_to_ts(xlsx)
   } else {
     wide_to_ts(xlsx)
