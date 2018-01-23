@@ -10,9 +10,6 @@
 #' @param json_pretty optional for json. If TRUE the JSON is outputted in a more human readable format.
 #' This results in larger file sizes. Defualts to FALSE.
 #'
-#' @importFrom reshape2 dcast
-#' @importFrom xts as.xts xts
-#' @importFrom zoo as.yearmon
 #' @importFrom jsonlite toJSON
 #' @import data.table
 #' @export
