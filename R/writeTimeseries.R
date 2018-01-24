@@ -77,6 +77,7 @@ writeTimeSeries <- function(tl,
         tsdf[, date := formatNumericDate(date_numeric, freq, date_format), by = freq]
         
         tsdf[ , `:=`(index = NULL, date_numeric = NULL, freq = NULL, internal_index = NULL)]
+        setcolorder(tsdf, c("date", "value", "series"))
 
       } else {
         tsmat <- do.call("cbind", tl)
