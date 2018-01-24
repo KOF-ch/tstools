@@ -89,7 +89,7 @@ test_that("XLSX long export works", {
   xts_read <- openxlsx::read.xlsx(xlsx_long_name)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
-  expect_that(names(xts_read), equals(c("date", "value", "series")))
+  expect_that(setdiff(names(xts_read), c("date", "value", "series")), equals(character(0)))
   
   xts_read <- reshape2::dcast(xts_read ,date ~ series)
   
