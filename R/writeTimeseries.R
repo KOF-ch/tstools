@@ -83,10 +83,10 @@ writeTimeSeries <- function(tl,
         dates <- time(tsmat[,1])
         freq <- frequency(tl[[1]])
         
-        tsdf <- as.data.frame(tsmat)
-        tsdf$date <- formatNumericDate(dates, freq, date_format)
+        tsdf <- as.data.table(tsmat)
+        tsdf[, date := formatNumericDate(dates, freq, date_format)]
         
-        tsdf <-  tsdf[, c(nTs+1, seq(1, nTs))]
+        setcolorder(tsdf, c(nTs+1, seq(nTs)))
       }
     }
     
