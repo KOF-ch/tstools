@@ -8,6 +8,8 @@
 #' from the file extension.
 #' @param sep character seperator for csv files. defaults to ','.
 #' @return A named list of ts objects
+#' 
+#' @importFrom data.table fread
 #' @export
 importTimeSeries <- function(file,
                              format = c("csv", "xlsx",
@@ -51,7 +53,7 @@ importTimeSeries <- function(file,
 
 # Could export these, but no real need.
 importTimeSeries.csv <- function(file, sep = ",") {
-  csv <- read.csv(file, sep = sep, stringsAsFactors = FALSE)
+  csv <- fread(file, sep = sep, stringsAsFactors = FALSE)
   
   if(length(csv) == 3 && length(setdiff(names(csv), c("date", "value", "series"))) == 0) {
     long_to_ts(csv)
