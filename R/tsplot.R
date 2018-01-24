@@ -213,7 +213,7 @@ tsplot.list <- function(tsl,
       left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     }
     
-    if(is.null(manual_value_ticks_r)) {
+    if(is.null(manual_value_ticks_r) && !is.null(tsr)) {
       right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
   }
