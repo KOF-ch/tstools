@@ -88,7 +88,7 @@ tsplot.mts <- function(...,
 }
 
 #' @export
-tsplot.list <- function(tsl,
+tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
                         group_bar_chart = NULL,
@@ -108,6 +108,8 @@ tsplot.list <- function(tsl,
                         quiet = TRUE,
                         auto_legend = TRUE
 ){
+  
+  tsl <- c(...)
   
   if(is.null(theme)) theme <- initDefaultTheme()
   # thanks to @christophsax for that snippet.
