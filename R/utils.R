@@ -123,13 +123,13 @@ findGapSize <- function(r,tick_count){
 }
 
 #'@export
-findTicks <- function(r,tick_count,preferred_gap_sizes){
+findTicks <- function(r, true_r, tick_count, preferred_gap_sizes){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
   gaps <- findGapSize(r=r,sort(tick_count))
   lb <- (r[1] %/% gaps) * gaps
   d <- ceiling(diff(r))
-  tms <- (d %/% gaps) + 1
+  tms <- pmax(1, d %/% gaps)
   ub <- lb + (tms * gaps)  
   
   if(length(tick_count) == 1) {
@@ -137,10 +137,10 @@ findTicks <- function(r,tick_count,preferred_gap_sizes){
   }
   
   # correct algorithm when values are below upper bound
-  ub_too_low <- ub <= r[2]
+  ub_too_low <- ub <= true_r[2]
   while(any(ub_too_low)) {
     ub[ub_too_low] <- ub[ub_too_low] + gaps[ub_too_low]
-    ub_too_low <- ub <= r[2]
+    ub_too_low <- ub <= true_r[2]
   }
   
   seqs <- list()
