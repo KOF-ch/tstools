@@ -88,6 +88,9 @@ writeTimeSeries <- function(tl,
         tsdf <- as.data.table(tsmat)
         tsdf[, date := formatNumericDate(dates, freq, date_format)]
         
+        # Then cbinding xts, index is added as a column. We don't want that.
+        tsdf <- tsdf[, -"index", with = FALSE]
+        
         setcolorder(tsdf, c(nTs+1, seq(nTs)))
         
         if(transpose) {
