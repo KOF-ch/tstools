@@ -161,7 +161,7 @@ tsplot.list <- function(...,
   }
   
   if(!is.null(tsr)) {
-    tsr <- .sanitizeTsr(tsr)
+    tsr <- sanitizeTsr(tsr)
     tsr_r <- range(unlist(tsr))
     tsr_r_true <- tsr_r
     

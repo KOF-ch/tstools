@@ -12,7 +12,8 @@ computeDecimalTime <- function(v,f){
 }
 
 
-
+# function is called by tsplot, do not need to export
+# it but let's write a minimal comment on what it does.
 getGlobalXInfo <- function(tsl,tsr,fill_up_start){
   global_x <- list()
   
@@ -51,36 +52,11 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
   global_x
 }
 
-# o <- diff(r)*theme$y_offset_pct
-# d$x_range <- r + c(-o,o)
-# determine ticks and grid position
-# theme contains which grids should be drawn etc.
-.getDateInfo <- function(tsr,tsl,theme,
-                         manual_date_ticks){
-  d <- list()
-  if(!is.null(manual_date_ticks)){
-    d$x_ticks <- manual_date_ticks
-    d$x_range <- range(manual_date_ticks)
-    return(d)
-  } else{
-    # NO MANUAL X-AXIS given
-    all_series <- c(tsl,tsr)
-    d$x_range <- range(time(unlist(all_series)))
-    if(theme$yearly_ticks){
-      
-    }
-    if(theme$quarterly_ticks){
-      if(theme$year_labels_mid){
-        
-      }
-    }
-  }
-}
 
 
 
 # Make sure right axis object is of appropriate class.
-.sanitizeTsr <- function(tsr){
+sanitizeTsr <- function(tsr){
   if(is.null(tsr)){
     return(tsr)
   } else if(inherits(tsr,"mts")){
@@ -93,10 +69,6 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
     stop("Time series object to be plotted on the right axis, 
          has to be either of class ts, mts or list.")
   }
-}
-
-.getXAxisInfo <- function(tsl,tsr,theme){
-  unlist(c(tsr,tsl))
 }
 
 
