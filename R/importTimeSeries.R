@@ -53,7 +53,7 @@ importTimeSeries <- function(file,
 
 # Could export these, but no real need.
 importTimeSeries.csv <- function(file, sep = ",") {
-  csv <- fread(file, sep = sep, stringsAsFactors = FALSE)
+  csv <- fread(file, sep = sep, stringsAsFactors = FALSE, colClasses = "numeric")
   
   if(length(csv) == 3 && length(setdiff(names(csv), c("date", "value", "series"))) == 0) {
     long_to_ts(csv)
