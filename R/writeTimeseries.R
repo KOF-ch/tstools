@@ -31,6 +31,7 @@ writeTimeSeries <- function(tl,
   }
   
   wide <- ifelse(!is.null(args$wide), args$wide, FALSE)
+  transpose <- ifelse(!is.null(args$transpose), args$transpose, FALSE)
 
   # check for format compatability
   if(format %in% c("csv", "xlsx") && wide) {
@@ -88,6 +89,10 @@ writeTimeSeries <- function(tl,
         tsdf[, date := formatNumericDate(dates, freq, date_format)]
         
         setcolorder(tsdf, c(nTs+1, seq(nTs)))
+        
+        if(transpose) {
+          tsdf <- dcast(melt(tsdf, id.vars = "date", variable.name = "series"), series ~ date)
+        }
       }
     }
     
@@ -129,7 +134,10 @@ writeTimeSeries <- function(tl,
       }
       
       if(format == "xlsx"){
-        if(nTs > 1000) {
+        # TODO: Maybe move this up before the expensive operations.
+        # Need to figure out nrow(tsdf) as nPoints <- length(unique(c(all the dates)))
+        # or something though
+        if(ncol(tsdf) > 1000) {
           stop("XSLX format can not handle more than 1000 time series")
         } else if(nrow(tsdf) > 1e6) {
           stop("XLSX format can not handle more than 1'000'000 rows")
