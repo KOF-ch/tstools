@@ -123,44 +123,46 @@ findGapSize <- function(r,tick_count){
 }
 
 #'@export
-findTicks <- function(r,tick_count){
+findTicks <- function(r,tick_count,preferred_gap_sizes){
   # potential tick count needs to sorted otherwise, 
-  # automatic selection of 
+  # automatic selection of
   gaps <- findGapSize(r=r,sort(tick_count))
   lb <- (r[1] %/% gaps) * gaps
   d <- ceiling(diff(r))
   tms <- (d %/% gaps) + 1
   ub <- lb + (tms * gaps)  
-  # correct algorithm when values are below upper bound
-  ub_large_enough <- ub >= r[2]
-  tms[!ub_large_enough] <- tms[!ub_large_enough] + 1
-  ub <- lb + (tms * gaps)
-  # overwrite everything else if there is only one tick
-  # cause this is rather a forced command because tick_count
-  # was determined in a previous call!
-  if(length(tick_count) == 1){
-    ub <- lb + ((tick_count-1) * gaps)
+  
+  if(length(tick_count) == 1) {
+    ub <- lb + ((tick_count - 1)*gaps)
   }
+  
+  # correct algorithm when values are below upper bound
+  ub_too_low <- ub <= r[2]
+  while(any(ub_too_low)) {
+    ub[ub_too_low] <- ub[ub_too_low] + gaps[ub_too_low]
+    ub_too_low <- ub <= r[2]
+  }
+  
   seqs <- list()
-  for(i in seq_along(gaps)){
+  for(i in seq_along(gaps)) {
     seqs[[i]] <- seq(lb[i],ub[i],gaps[i])
   }
   
-  # prefer max number of ticks
-  # that can be  devided by 10
-  # second best: by 5
-  # otherwise
-  by10 <- which(gaps %% 10 == 0)
-  by5 <- which(gaps %% 5 == 0)
-  if(any(by10)){
-    return(seqs[[max(by10)]])
-  } else if(any(by5)){
-    return(seqs[[max(by5)]])
-  } else{
-    w <- which.max((lb-r[1]) + (r[2]-ub))
-    seqs[[w]]
+  # Try to select a reasonably pretty gap size
+  preferred_gap_sizes <- sort(preferred_gap_sizes, decreasing = TRUE)
+  for(gs in preferred_gap_sizes) {
+    by_gs <- which(gaps %% gs == 0)
+    
+    # If one or more ranges with the desired gap size exist
+    # return the one with the least number of ticks
+    if(any(by_gs)) {
+      return(seqs[[min(by_gs)]])
+    }
   }
   
+  # No pretty gaps found
+  w <- which.max((lb-r[1]) + (r[2]-ub))
+  seqs[[w]]
 }
 
 formatNumericDate <- function(date, freq, date_format = NULL) {
