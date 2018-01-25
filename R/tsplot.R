@@ -125,12 +125,14 @@ tsplot.list <- function(tsl,
   tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
   tsl_r_true <- tsl_r
   
-  # Restrict y range to at least theme$y_range_min_size
-  tsl_r_size <- diff(tsl_r)
-  if(tsl_r_size < theme$y_range_min_size) {
-    tsl_r_mid <- 0.5*tsl_r_size + tsl_r[1]
-    half_min_range_size <- 0.5*theme$y_range_min_size
-    tsl_r <- c(tsl_r_mid - half_min_range_size, tsl_r_mid + half_min_range_size)
+  if(!is.null(theme$y_range_min_size)) {
+    # Restrict y range to at least theme$y_range_min_size
+    tsl_r_size <- diff(tsl_r)
+    if(tsl_r_size < theme$y_range_min_size) {
+      tsl_r_mid <- 0.5*tsl_r_size + tsl_r[1]
+      half_min_range_size <- 0.5*theme$y_range_min_size
+      tsl_r <- c(tsl_r_mid - half_min_range_size, tsl_r_mid + half_min_range_size)
+    }
   }
   
   if(!is.null(tsr)) {
@@ -138,11 +140,13 @@ tsplot.list <- function(tsl,
     tsr_r <- range(unlist(tsr))
     tsr_r_true <- tsr_r
     
-    tsr_r_size <- diff(tsr_r)
-    if(tsr_r_size < theme$y_range_min_size) {
-      tsr_r_mid <- 0.5*tsr_r_size + tsr_r[1]
-      half_min_range_size <- 0.5*theme$y_range_min_size
-      tsr_r <- c(tsr_r_mid - half_min_range_size, tsr_r_mid + half_min_range_size)
+    if(!is.null(theme$y_range_min_size)) {
+      tsr_r_size <- diff(tsr_r)
+      if(tsr_r_size < theme$y_range_min_size) {
+        tsr_r_mid <- 0.5*tsr_r_size + tsr_r[1]
+        half_min_range_size <- 0.5*theme$y_range_min_size
+        tsr_r <- c(tsr_r_mid - half_min_range_size, tsr_r_mid + half_min_range_size)
+      }
     }
   }
   
