@@ -142,7 +142,7 @@ tsplot.list <- function(tsl,
   } else{
     if(left_as_bar) return("Finding ticks automatically when stacking values is not supported yet. Please use manual_value_ticks.")
     
-    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count))
+    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
   }
@@ -155,7 +155,7 @@ tsplot.list <- function(tsl,
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
-      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks)))
+      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme$preferred_y_gap_sizes))
       right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
   }

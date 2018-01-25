@@ -123,7 +123,7 @@ findGapSize <- function(r,tick_count){
 }
 
 #'@export
-findTicks <- function(r,tick_count){
+findTicks <- function(r,tick_count,preferred_gap_sizes){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
   gaps <- findGapSize(r=r,sort(tick_count))
@@ -149,7 +149,7 @@ findTicks <- function(r,tick_count){
   }
   
   # Try to select a reasonably pretty gap size
-  preferred_gap_sizes <- c(25, 20, 15, 10, 5, 2.5, 1, 0.5)
+  preferred_gap_sizes <- sort(preferred_gap_sizes, decreasing = TRUE)
   for(gs in preferred_gap_sizes) {
     by_gs <- which(gaps %% gs == 0)
     
