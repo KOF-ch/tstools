@@ -10,10 +10,8 @@
 #' @param json_pretty optional for json. If TRUE the JSON is outputted in a more human readable format.
 #' This results in larger file sizes. Defualts to FALSE.
 #'
-#' @importFrom reshape2 dcast
-#' @importFrom xts as.xts xts
-#' @importFrom zoo as.yearmon
 #' @importFrom jsonlite toJSON
+#' @import data.table
 #' @export
 writeTimeSeries <- function(tl,
                             fname = "timeseriesdb_export",
@@ -24,10 +22,6 @@ writeTimeSeries <- function(tl,
 {
   args <- list(...)
   
-  # check whether data.table is available,
-  # if not choose a slower fallback
-  data.table_available <- requireNamespace("data.table", quietly = TRUE)
-  
   # Match format
   format <- match.arg(format);
 
@@ -37,6 +31,7 @@ writeTimeSeries <- function(tl,
   }
   
   wide <- ifelse(!is.null(args$wide), args$wide, FALSE)
+  transpose <- ifelse(!is.null(args$transpose), args$transpose, FALSE)
 
   # check for format compatability
   if(format %in% c("csv", "xlsx") && wide) {
@@ -45,9 +40,6 @@ writeTimeSeries <- function(tl,
       warning("list contains time series of different lengths. Export to wide .csv or xlsx is not recommended.")
     }
   }
-  
-  # Standardize to xts (readTimeSeries may return ts, zoo, xts)
-  tl <- lapply(tl, as.xts)
   
   # Export data
   if(format == "rdata") {
@@ -68,51 +60,42 @@ writeTimeSeries <- function(tl,
     if(format != "json") {
       if(!wide) {
         # convert the list into a pretty, long data.frame
-        if(data.table_available){
-          tl_lengths <- sapply(tl, length)
-          
-          tl_values <- unlist(tl)
-          
-          if(!is.null(round_digits)) {
-            tl_values <- round(tl_values, round_digits)
-          }
-          
-          tl_names <- unlist(lapply(names(tl_lengths), function(x) {
-            rep(x, tl_lengths[x])
-          }))
-          
-          tl_dates <- unlist(lapply(tl, index))
-          
-          tl_dates <- as.character(tl_dates)
-          
-          tsdf <- data.table(date = tl_dates,
-                             value = as.character(tl_values),
-                             series = tl_names)
-        } else {
-          out_list <- lapply(names(tl),function(x){
-            t <- time(tl[[x]])
-            if(!is.null(date_format)) {
-              t <- format(t, date_format)
-            }
-            dframe <- data.frame(date = t,
-                                 value = tl[[x]],row.names = NULL)
-            dframe$series <- x
-            dframe
-          })
-          
-          # need to fix this 
-          tsdf <- do.call("rbind",out_list)  
-        }
+        tl_lengths <- data.table(length = sapply(tl, length))
+        
+        index <- seq(nrow(tl_lengths))
+        
+        tsdf <- tl_lengths[, .(internal_index = seq(length)), by = index]
+        
+        tl_names <- names(tl)
+        
+        tsdf[, `:=`(
+                      freq = frequency(tl[[index]]),
+                      series = tl_names[index],
+                      value = as.numeric(tl[[index]][internal_index]),
+                      date_numeric = as.numeric(time(tl[[index]]))), 
+             by = index]
+        
+        tsdf[, date := formatNumericDate(date_numeric, freq, date_format), by = freq]
+        
+        tsdf[ , `:=`(index = NULL, date_numeric = NULL, freq = NULL, internal_index = NULL)]
+        setcolorder(tsdf, c("date", "value", "series"))
 
       } else {
         tsmat <- do.call("cbind", tl)
         dates <- time(tsmat[,1])
-        if(!is.null(date_format)) {
-          dates <- format(dates, date_format)
+        freq <- frequency(tl[[1]])
+        
+        tsdf <- as.data.table(tsmat)
+        tsdf[, date := formatNumericDate(dates, freq, date_format)]
+        
+        # Then cbinding xts, index is added as a column. We don't want that.
+        tsdf <- tsdf[, -"index", with = FALSE]
+        
+        setcolorder(tsdf, c(nTs+1, seq(nTs)))
+        
+        if(transpose) {
+          tsdf <- dcast(melt(tsdf, id.vars = "date", variable.name = "series"), series ~ date)
         }
-        tsdf <- as.data.frame(tsmat)
-        tsdf$date <- dates
-        tsdf <-  tsdf[, c(nTs+1, seq(1, nTs))]
       }
     }
     
@@ -122,23 +105,20 @@ writeTimeSeries <- function(tl,
       # Output an object of arrays of objects { "key": [{"date": time1, "value": value1}, ...], ...}
       jsondf <- lapply(tl, function(x) {
         t <- time(x)
-        if(!is.null(date_format)) {
-          t <- format(t, date_format)
-        }
-        data.frame(date=as.character(t), value=x, row.names=NULL)
+        f <- frequency(x)
+        
+        t <- formatNumericDate(t, f, date_format)
+        
+        data.frame(date = t, value = x, row.names = NULL)
       })
       json <- toJSON(jsondf, pretty=json_pretty, digits=16)
       
       write_name <- paste(fname, "json", sep=".")
       
-      if(data.table_available) {
-        # Write json as a "single element CSV" for speed
-        data.table::fwrite(list(json),
-                           file = write_name,
-               quote = FALSE, col.names = FALSE)
-      } else {
-        write(json, write_name)
-      }
+      # Write json as a "single element CSV" for speed
+      fwrite(list(json),
+                         file = write_name,
+             quote = FALSE, col.names = FALSE)
       
     } else {
       if(wide) {
@@ -157,7 +137,10 @@ writeTimeSeries <- function(tl,
       }
       
       if(format == "xlsx"){
-        if(nTs > 1000) {
+        # TODO: Maybe move this up before the expensive operations.
+        # Need to figure out nrow(tsdf) as nPoints <- length(unique(c(all the dates)))
+        # or something though
+        if(ncol(tsdf) > 1000) {
           stop("XSLX format can not handle more than 1000 time series")
         } else if(nrow(tsdf) > 1e6) {
           stop("XLSX format can not handle more than 1'000'000 rows")
@@ -170,13 +153,7 @@ writeTimeSeries <- function(tl,
       } else{
         write_name <- paste0(fname, ".csv")
         
-        if(data.table_available) {
-          data.table::fwrite(tsdf, write_name) 
-        } else {
-          write.table(tsdf, file = write_name,
-                      row.names = F, quote = F,
-                      sep=",", dec=".")  
-        }
+        fwrite(tsdf, write_name) 
       }
     }
   }

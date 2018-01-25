@@ -164,3 +164,23 @@ findTicks <- function(r, true_r, tick_count, preferred_gap_sizes){
   w <- which.max((lb-r[1]) + (r[2]-ub))
   seqs[[w]]
 }
+
+formatNumericDate <- function(date, freq, date_format = NULL) {
+  year <- floor(date + 1/24)
+  if(freq[1] == 4) {
+    if(is.null(date_format)) {
+      quarter <- 4*(date - year) + 1
+      return(sprintf("%d Q%d", year, quarter))
+    } else {
+      month <- floor(12*(date - year)) + 1
+    }
+  } else {
+    month <- floor(12*(date - year + 1/24)) + 1  # Why "+ 1/24"? Because floating point arithmetic. 12*0.0833333 may not be 12.
+    if(is.null(date_format)) {
+      return(sprintf("%d-%d", year, month))
+    }
+  }
+  
+  format(as.Date(sprintf("%d-%d-01", year, month)), date_format)
+}
+

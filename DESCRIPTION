@@ -12,7 +12,6 @@ Imports:
     zoo,
     xts,
     graphics,
-    xts,
     jsonlite,
     reshape2,
     data.table,

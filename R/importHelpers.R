@@ -9,24 +9,35 @@ json_to_ts <- function(json_data) {
   }
 }
 
-#' @importFrom reshape2 dcast
+#' @importFrom data.table dcast
 long_to_ts <- function(data) {
-  wide_to_ts(dcast(data, date ~ series))
+  data_dt <- as.data.table(data)
+  
+  data_dt[, date_zoo := as.numeric(as.yearmon(date)), by = series]
+  data_dt[is.na(date_zoo), date_zoo := as.numeric(as.yearqtr(date))]
+  
+  dt_of_lists <- data_dt[, {
+    dT <- diff(date_zoo)
+    if(any(diff(dT) > 1e-6)) {
+      .(ts_object = list(xts(value, order_by = date_zoo)))
+    } else {
+      .(ts_object = list(ts(value, start = .SD[1, date_zoo], end = .SD[.N, date_zoo], deltat = dT[1])))
+    }
+  }, by = series]
+  
+  tslist <- dt_of_lists[, ts_object]
+  names(tslist) <- dt_of_lists[, series]
+  
+  tslist
 }
 
+#' @importFrom xts xts
+#' @importFrom zoo as.yearqtr as.yearmon
 wide_to_ts <- function(data) {
-  t <- as.yearmon(data$date)
-  if(any(is.na(t))) {
-    t <- as.yearqtr(data$date)
+  if(!("date" %in% names(data))) {
+    # Data was written in transposed format
+    long_to_ts(melt(data, id.vars = "series", variable.name = "date")) 
+  } else {
+    long_to_ts(melt(data, id.vars = "date", variable.name = "series"))
   }
-  data$date <- NULL
-  fata <- lapply(data, function(x) {
-    nas <- is.na(x)
-    xt <- xts(x[!nas], order.by=t[!nas])
-    if(frequency(xt) < Inf) {
-      as.ts(xt, start=start(xt), end=end(xt))
-    } else {
-      xt
-    }
-  })
 }
