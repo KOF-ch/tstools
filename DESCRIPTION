@@ -9,6 +9,7 @@ Depends:
     zoo (>= 1.7-12),
 Imports:
     xts,
+    stats,
     graphics,
     jsonlite,
     reshape2,
