@@ -79,7 +79,7 @@ addYGrids <- function(tick_positions,theme){
   } 
 }
 
-#'@export
+
 findGapSize <- function(r,tick_count){
   d <- diff(r)
   raw_tick_size <- d / (tick_count-1)
@@ -89,7 +89,7 @@ findGapSize <- function(r,tick_count){
   ceil_tick_size
 }
 
-#'@export
+
 findTicks <- function(r, true_r, tick_count, preferred_gap_sizes){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
