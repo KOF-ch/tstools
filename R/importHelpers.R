@@ -34,5 +34,10 @@ long_to_ts <- function(data) {
 #' @importFrom xts xts
 #' @importFrom zoo as.yearqtr as.yearmon
 wide_to_ts <- function(data) {
-  long_to_ts(melt(data, id.vars = "date"))
+  if(!("date" %in% names(data))) {
+    # Data was written in transposed format
+    long_to_ts(melt(data, id.vars = "series", variable.name = "date")) 
+  } else {
+    long_to_ts(melt(data, id.vars = "date", variable.name = "series"))
+  }
 }
