@@ -123,8 +123,32 @@ tsplot.list <- function(tsl,
   # if(!is.null(tsr)) cnames <- names(tsr) 
   
   tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
-  tsr <- .sanitizeTsr(tsr)
-  if(!is.null(tsr)) tsr_r <- range(unlist(tsr))
+  tsl_r_true <- tsl_r
+  
+  if(!is.null(theme$y_range_min_size)) {
+    # Restrict y range to at least theme$y_range_min_size
+    tsl_r_size <- diff(tsl_r)
+    if(tsl_r_size < theme$y_range_min_size) {
+      tsl_r_mid <- 0.5*tsl_r_size + tsl_r[1]
+      half_min_range_size <- 0.5*theme$y_range_min_size
+      tsl_r <- c(tsl_r_mid - half_min_range_size, tsl_r_mid + half_min_range_size)
+    }
+  }
+  
+  if(!is.null(tsr)) {
+    tsr <- .sanitizeTsr(tsr)
+    tsr_r <- range(unlist(tsr))
+    tsr_r_true <- tsr_r
+    
+    if(!is.null(theme$y_range_min_size)) {
+      tsr_r_size <- diff(tsr_r)
+      if(tsr_r_size < theme$y_range_min_size) {
+        tsr_r_mid <- 0.5*tsr_r_size + tsr_r[1]
+        half_min_range_size <- 0.5*theme$y_range_min_size
+        tsr_r <- c(tsr_r_mid - half_min_range_size, tsr_r_mid + half_min_range_size)
+      }
+    }
+  }
   
   
   
@@ -142,7 +166,7 @@ tsplot.list <- function(tsl,
   } else{
     if(left_as_bar) return("Finding ticks automatically when stacking values is not supported yet. Please use manual_value_ticks.")
     
-    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes))
+    left_ticks <- do.call(find_ticks_function, list(tsl_r, tsl_r_true, theme$y_grid_count, theme$preferred_y_gap_sizes))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
   }
@@ -155,7 +179,7 @@ tsplot.list <- function(tsl,
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
-      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme$preferred_y_gap_sizes))
+      right_ticks <- do.call(find_ticks_function, list(tsr_r, tsr_r_true, length(left_ticks), theme$preferred_y_gap_sizes))
       right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
   }
