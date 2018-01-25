@@ -1,3 +1,26 @@
+#' Plot time series
+#' 
+#' Doc to be expanded later. This just fixes #33.
+#' 
+#' @param ... 
+#'
+#' @param tsr 
+#' @param left_as_bar 
+#' @param group_bar_chart 
+#' @param plot_title 
+#' @param plot_subtitle 
+#' @param plot_subtitle_r 
+#' @param find_ticks_function 
+#' @param fill_up_start 
+#' @param overall_xlim 
+#' @param overall_ylim 
+#' @param manual_date_ticks 
+#' @param manual_value_ticks_l 
+#' @param manual_value_ticks_r 
+#' @param theme 
+#' @param quiet 
+#' @param auto_legend 
+#'
 #' @export
 tsplot <- function(...,
                    tsr = NULL,
