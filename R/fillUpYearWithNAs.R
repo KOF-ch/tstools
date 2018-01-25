@@ -2,9 +2,11 @@
 #' 
 #' When plotting a time series you might want set the range of the plot a little wider than just the start and end date of the original series. This function add fills up the current period (typically year) with NA.
 #' 
-#' @param ts object of class ts
+#' @param x object of class ts
+#' @param add_periods integer periods to add.
+#' @param fill_up_start logical should start year be filled up? Defaults to FALSE.
 #' @export
-fillUpYearWithNAs <- function(x,add_periods = 1,
+fillUpYearWithNAs <- function(x, add_periods = 1,
                               fill_up_start = FALSE){
   frq <- frequency(x)
   de <- frq-end(x)[2]

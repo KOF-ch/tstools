@@ -9,10 +9,10 @@
 #' @param period_col integer, logical or character vector indicating the period 
 #' position within the data.frame.
 #' @param freq integer indicating the frequency of new time series.
-#' @param logical should a (list of) time series be returned? Defaults to TRUE. 
+#' @param return_ts logical should a (list of) time series be returned? Defaults to TRUE. 
 #' FALSE returns data.frame.
 #' @param by character overwrite automatically detected (from freq) by parameter.
-#' e.g. '1 day'
+#' e.g. '1 day'. Defaults to NULL.
 #' @examples 
 #' start_m <- as.Date("2017-01-01")
 #' df_missing <- data.frame( 

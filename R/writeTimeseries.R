@@ -5,18 +5,15 @@
 #' @param fname character file name. If set to NULL a standard file name chunk + Sys.Date is used.
 #' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010.
 #' @param timestamp_file If TRUE, the current date will be appended to the file name
-#'
-#' @param wide optional for csv and xlsx. If TRUE, the data is written in a wide format. Defaults to FALSE.
-#' @param json_pretty optional for json. If TRUE the JSON is outputted in a more human readable format.
-#' This results in larger file sizes. Defualts to FALSE.
-#'
+#' @param ... optinal logical arguments such as 'wide', 'json_pretty', 'zip'.
 #' @importFrom jsonlite toJSON
 #' @import data.table
 #' @export
 writeTimeSeries <- function(tl,
                             fname = "timeseriesdb_export",
                             format = c("csv", "xlsx", "json", "rdata"),
-                            date_format = NULL, timestamp_file = TRUE,
+                            date_format = NULL,
+                            timestamp_file = TRUE,
                             round_digits = NULL,
                             ...)
 {
