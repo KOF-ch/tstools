@@ -11,12 +11,12 @@ tsqm <- function(qts){
   if(frequency(qts) == 12) return(qts)
   start_date <- start(qts)
   mts <- as.vector(t(qts %*% t(c(1,1,1))))
-  mts <- ts(mts, start = .quarter_to_month(start_date), freq = 12)
+  mts <- ts(mts, start = quarter_to_month(start_date), freq = 12)
   mts
   
 }
 
-.quarter_to_month <- function(sdate){
+quarter_to_month <- function(sdate){
   y <- sdate[1]
   qms <- c(1,4,7,10)
   out <- qms[sdate[2]]

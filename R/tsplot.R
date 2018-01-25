@@ -344,7 +344,7 @@ tsplot.list <- function(...,
                theme = theme)
     if(theme$sum_as_line){
       reduced <- Reduce("+",tsl)
-      .drawSumAsLine(reduced, theme)
+      drawSumAsLine(reduced, theme)
     }
     
   } else {
