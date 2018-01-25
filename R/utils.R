@@ -12,11 +12,6 @@ computeDecimalTime <- function(v,f){
 }
 
 
-#' @export 
-print.SQL <- function(x,...){
-  cat(gsub("\n[ \t]+","\n",x))
-}
-
 
 getGlobalXInfo <- function(tsl,tsr,fill_up_start){
   global_x <- list()
