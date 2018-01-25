@@ -155,9 +155,9 @@ findTicks <- function(r,tick_count){
   by10 <- which(gaps %% 10 == 0)
   by5 <- which(gaps %% 5 == 0)
   if(any(by10)){
-    return(seqs[[max(by10)]])
+    return(seqs[[min(by10)]])
   } else if(any(by5)){
-    return(seqs[[max(by5)]])
+    return(seqs[[min(by5)]])
   } else{
     w <- which.max((lb-r[1]) + (r[2]-ub))
     seqs[[w]]
