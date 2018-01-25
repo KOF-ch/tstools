@@ -1,9 +1,9 @@
 Package: tstools
 Type: Package
-Version: 0.3.4
+Version: 0.3.4.2
 Title: A time series toolbox for official statistics
 Description: The *tstools* package provides convenience functions to process, plot and export time series. It aims at time series data stemming from official statistics, respectively macroeconomic data. Hence the package is focused on regular time series of monthly, quarterly or yearly frequency. The current form of the package focuses on domain-specific graphs such as growth contribution charts with 2 y-axis.
-Author: "Matthias Bannert <bannert@kof.ethz.ch> [aut, cre]"
+Author: "Matthias Bannert <bannert@kof.ethz.ch> [aut, cre], Severin Thoeni <thoeni@kof.ethz.ch> [aut]"
 Depends:
     R (>= 3.0.0),
     zoo (>= 1.7-12),
@@ -14,13 +14,13 @@ Imports:
     graphics,
     xts,
     jsonlite,
-    reshape2
+    reshape2,
+    data.table,
 Suggests:
     knitr,
     rmarkdown,
     testthat,
-    openxlsx,
-    data.table
+    openxlsx
 VignetteBuilder: knitr    
 Date: 2016-01-01
 License: GPL-2
