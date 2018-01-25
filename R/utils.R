@@ -123,7 +123,7 @@ findGapSize <- function(r,tick_count){
 }
 
 #'@export
-findTicks <- function(r,tick_count){
+findTicks <- function(r,tick_count,preferred_gap_sizes){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
   gaps <- findGapSize(r=r,sort(tick_count))
@@ -148,18 +148,19 @@ findTicks <- function(r,tick_count){
     seqs[[i]] <- seq(lb[i],ub[i],gaps[i])
   }
   
-  # prefer max number of ticks
-  # that can be  devided by 10
-  # second best: by 5
-  # otherwise
-  by10 <- which(gaps %% 10 == 0)
-  by5 <- which(gaps %% 5 == 0)
-  if(any(by10)){
-    return(seqs[[max(by10)]])
-  } else if(any(by5)){
-    return(seqs[[max(by5)]])
-  } else{
-    w <- which.max((lb-r[1]) + (r[2]-ub))
-    seqs[[w]]
+  # Try to select a reasonably pretty gap size
+  preferred_gap_sizes <- sort(preferred_gap_sizes, decreasing = TRUE)
+  for(gs in preferred_gap_sizes) {
+    by_gs <- which(gaps %% gs == 0)
+    
+    # If one or more ranges with the desired gap size exist
+    # return the one with the least number of ticks
+    if(any(by_gs)) {
+      return(seqs[[min(by_gs)]])
+    }
   }
+  
+  # No pretty gaps found
+  w <- which.max((lb-r[1]) + (r[2]-ub))
+  seqs[[w]]
 }
