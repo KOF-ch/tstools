@@ -18,11 +18,11 @@ position within the data.frame.}
 
 \item{freq}{integer indicating the frequency of new time series.}
 
-\item{by}{character overwrite automatically detected (from freq) by parameter.
-e.g. '1 day'}
-
-\item{logical}{should a (list of) time series be returned? Defaults to TRUE. 
+\item{return_ts}{logical should a (list of) time series be returned? Defaults to TRUE. 
 FALSE returns data.frame.}
+
+\item{by}{character overwrite automatically detected (from freq) by parameter.
+e.g. '1 day'. Defaults to NULL.}
 }
 \description{
 Turn a data.frame with date columns to a regular time series object 

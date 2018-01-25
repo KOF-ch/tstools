@@ -17,10 +17,7 @@ writeTimeSeries(tl, fname = "timeseriesdb_export", format = c("csv", "xlsx",
 
 \item{timestamp_file}{If TRUE, the current date will be appended to the file name}
 
-\item{wide}{optional for csv and xlsx. If TRUE, the data is written in a wide format. Defaults to FALSE.}
-
-\item{json_pretty}{optional for json. If TRUE the JSON is outputted in a more human readable format.
-This results in larger file sizes. Defualts to FALSE.}
+\item{...}{optinal logical arguments such as 'wide', 'json_pretty', 'zip'.}
 }
 \description{
 Export a list of time series to a file.
