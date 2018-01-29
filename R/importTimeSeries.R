@@ -40,7 +40,7 @@ importTimeSeries <- function(file,
       stop("Zipped file is not a csv-, xlsx- or json-file!")
     }
     
-    file <- unz(file, zipped_file)
+    file <- unzip(file, zipped_file, exdir = tempdir())
     format <- zipped_format
   }
   
