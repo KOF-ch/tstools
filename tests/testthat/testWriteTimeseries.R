@@ -276,11 +276,8 @@ test_that("differing lengths work", {
                                  fname = "faulty",
                                  timestamp_file = F),
                  "list contains")
-  writeTimeSeries(faulty_xts, format="csv",
-                  wide=T, fname="faulty",
-                  timestamp_file = F)
   read_faulty_ts <- importTimeSeries("faulty.csv")
-  expect_equal(read_faulty_ts, faulty_ts)
+  expect_equal(read_faulty_ts, faulty_ts, tolerance = 1e-3)
 })
 
 unlink(csv_long_name)

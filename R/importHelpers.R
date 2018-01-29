@@ -26,6 +26,7 @@ long_to_ts <- function(data) {
   }, by = series]
   
   tslist <- dt_of_lists[, ts_object]
+  tslist <- lapply(tslist, na.trim)
   names(tslist) <- dt_of_lists[, series]
   
   tslist
