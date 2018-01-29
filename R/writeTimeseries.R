@@ -83,7 +83,7 @@ writeTimeSeries <- function(tl,
 
       } else {
         tsmat <- do.call("cbind", tl)
-        dates <- time(tsmat[,1])
+        dates <- time(tsmat)
         freq <- frequency(tl[[1]])
         
         tsdf <- as.data.table(tsmat)
