@@ -147,8 +147,21 @@ tsplot.list <- function(...,
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
   
-  tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
-  tsl_r_true <- tsl_r
+  if(left_as_bar) {
+    # Combine ts
+    tsmat <- do.call("ts.union", tsl)
+    
+    # Set all NAs to 0 so range() works properly
+    tsmat[is.na(tsmat)] <- 0
+    ranges <- apply(tsmat, 1, function(r) {
+      range(c(sum(r[r < 0]), sum(r[r >= 0])))
+    })
+    tsl_r <- c(min(ranges[1,]), max(ranges[2,]))
+    tsl_r_true <- tsl_r
+  } else {
+    tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
+    tsl_r_true <- tsl_r
+  }
   
   if(!is.null(theme$y_range_min_size)) {
     # Restrict y range to at least theme$y_range_min_size
@@ -189,8 +202,6 @@ tsplot.list <- function(...,
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
-    if(left_as_bar) return("Finding ticks automatically when stacking values is not supported yet. Please use manual_value_ticks.")
-    
     left_ticks <- do.call(find_ticks_function, list(tsl_r, tsl_r_true, theme$y_grid_count, theme$preferred_y_gap_sizes))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
