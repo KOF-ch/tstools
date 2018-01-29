@@ -151,12 +151,17 @@ tsplot.list <- function(...,
     # Combine ts
     tsmat <- do.call("ts.union", tsl)
     
-    # Set all NAs to 0 so range() works properly
-    tsmat[is.na(tsmat)] <- 0
-    ranges <- apply(tsmat, 1, function(r) {
-      range(c(sum(r[r < 0]), sum(r[r >= 0])))
-    })
-    tsl_r <- c(min(ranges[1,]), max(ranges[2,]))
+    if(inherits(tsmat, "mts")) {
+      # Set all NAs to 0 so range() works properly
+      tsmat[is.na(tsmat)] <- 0
+      ranges <- apply(tsmat, 1, function(r) {
+        range(c(sum(r[r < 0]), sum(r[r >= 0])))
+      })
+      tsl_r <- c(min(ranges[1,]), max(ranges[2,]))
+    } else {
+      # tsmat is still a single ts
+      tsl_r <- range(tsmat)
+    }
     tsl_r_true <- tsl_r
   } else {
     tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
