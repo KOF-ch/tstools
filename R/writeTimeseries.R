@@ -96,6 +96,7 @@ writeTimeSeries <- function(tl,
         }
         
         setcolorder(tsdf, c(nTs+1, seq(nTs)))
+        setnames(tsdf, c("date", names(tl)))
         
         if(transpose) {
           tsdf <- dcast(melt(tsdf, id.vars = "date", variable.name = "series"), series ~ date)
