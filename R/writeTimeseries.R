@@ -38,6 +38,10 @@ writeTimeSeries <- function(tl,
     }
   }
   
+  if(!is.null(round_digits)) {
+    tl <- lapply(tl, round, digits = round_digits)
+  }
+  
   # Export data
   if(format == "rdata") {
      # Dump list into an empty environment
@@ -86,7 +90,10 @@ writeTimeSeries <- function(tl,
         tsdf[, date := formatNumericDate(dates, freq, date_format)]
         
         # Then cbinding xts, index is added as a column. We don't want that.
-        tsdf <- tsdf[, -"index", with = FALSE]
+        # Alternatively: suppressWarnings?
+        if("index" %in% names(tsdf)) {
+          tsdf <- tsdf[, -"index", with = FALSE]
+        }
         
         setcolorder(tsdf, c(nTs+1, seq(nTs)))
         
