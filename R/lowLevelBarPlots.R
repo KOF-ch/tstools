@@ -51,6 +51,9 @@ drawTsBars.mts <- function(x,
                            group_bar_chart =  FALSE,
                            theme = NULL){
   if(is.null(group_bar_chart)) group_bar_chart <- FALSE
+
+  x[is.na(x)] <- 0
+  
   ts_time <- time(x)
   frq <- frequency(x)
   neg_0 <- x
