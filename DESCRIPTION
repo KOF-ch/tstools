@@ -7,12 +7,10 @@ Author: "Matthias Bannert <bannert@kof.ethz.ch> [aut, cre], Severin Thoeni <thoe
 Depends:
     R (>= 3.0.0),
     zoo (>= 1.7-12),
-LinkingTo: zoo,
 Imports:
-    zoo,
     xts,
+    stats,
     graphics,
-    xts,
     jsonlite,
     reshape2,
     data.table,

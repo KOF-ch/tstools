@@ -19,7 +19,7 @@ create_dummy <- function(end_basic,
                          start_basic = c(1980,1),
                          basic_value = 0,
                          dummy_value = 1,
-                         freq = 4){
+                         frequency = 4){
   basic <- ts(basic_value,start_basic,
               end_basic,frequency = freq)
   if(is.null(dummy_end)){

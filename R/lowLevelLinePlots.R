@@ -33,7 +33,7 @@ drawTsLines.list <- function(x, theme = NULL){
   
 }
 
-.drawSumAsLine <- function(x, theme = NULL){
+drawSumAsLine <- function(x, theme = NULL){
   xx <- as.numeric(time(x))
   yy <- x
   frq <- frequency(x)
@@ -44,15 +44,5 @@ drawTsLines.list <- function(x, theme = NULL){
         lty = theme$sum_line_lty
   )
 }
-
-
-
-
-# drawTsLines.mts <- function(x, theme = NULL,
-#                             ...){
-#   
-# }
-
-
 
 

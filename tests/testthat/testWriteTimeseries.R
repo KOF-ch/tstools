@@ -17,8 +17,10 @@ fn <- "test_ts"
 fn_read <- paste0(fn, "_",gsub("-","_",Sys.Date()))
 
 csv_wide_name <- paste0(fn, "_wide", "_", gsub("-","_",Sys.Date()), ".csv")
+csv_wide_transposed_name <- paste0(fn, "_wide_transposed_", gsub("-", "_", Sys.Date()), ".csv")
 csv_long_name <- paste0(fn, "_long", "_", gsub("-","_",Sys.Date()), ".csv")
 xlsx_wide_name <- paste0(fn, "_wide", "_", gsub("-","_",Sys.Date()), ".xlsx")
+xlsx_wide_transposed_name <- paste0(fn, "_wide_transposed_", gsub("-", "_", Sys.Date()), ".xlsx")
 xlsx_long_name <- paste0(fn, "_long", "_", gsub("-","_",Sys.Date()), ".xlsx")
 rdata_read_name <- paste0(fn, "_", gsub("-","_",Sys.Date()), ".RData")
 json_read_name <- paste0(fn, "_", gsub("-","_",Sys.Date()), ".json")
@@ -42,6 +44,28 @@ test_that("CSV wide export works", {
   expect_that(xts_read, equals(xts, tolerance=1e-4))
 })
 
+test_that("CSV transposed export works", {
+  writeTimeSeries(xts, format="csv",
+                  fname=paste0(fn, "_wide_transposed"),
+                  date_format="%Y-%m",
+                  wide=TRUE, transpose=TRUE)
+  
+  xts_read <- read.csv(csv_wide_transposed_name, sep=",", stringsAsFactors = FALSE, header = FALSE)
+  
+  expect_that(dim(xts_read), equals(c(3, n+1)))
+  
+  t_read <- as.yearmon(as.character(xts_read[1,2:(n+1)]))
+  xts_read_xts <- list()
+  
+  for(i in 2:3) {
+    xts_read_xts[[i-1]] <- xts::xts(as.numeric(xts_read[i,2:(n+1)]), order.by = t_read)
+  }
+  
+  names(xts_read_xts) <- xts_read[2:3, 1]
+  
+  expect_that(xts_read_xts, equals(xts, tolerance = 1e-4))
+})
+
 test_that("CSV long export works", {
   writeTimeSeries(xts, format="csv",
                   fname=paste0(fn, "_long"),
@@ -50,8 +74,7 @@ test_that("CSV long export works", {
                        stringsAsFactors = FALSE)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
-  expect_that(names(xts_read),
-              equals(c("date", "value", "series")))
+  expect_that(setdiff(names(xts_read), c("date", "value", "series")), equals(character(0)))
 
   xts_read <- reshape2::dcast(xts_read, date ~ series)
   
@@ -84,13 +107,35 @@ test_that("XLSX wide export works", {
   expect_that(xts_read, equals(xts, tolerance=1e-4))
 })
 
+test_that("XLSX transposed export works", {
+  writeTimeSeries(xts, format="xlsx",
+                  fname=paste0(fn, "_wide_transposed"),
+                  date_format="%Y-%m",
+                  wide=TRUE, transpose=TRUE)
+  
+  xts_read <- openxlsx::read.xlsx(xlsx_wide_transposed_name)
+  
+  expect_that(dim(xts_read), equals(c(2, n+1)))
+  
+  t_read <- as.yearmon(as.character(names(xts_read)[2:(n+1)]))
+  xts_read_xts <- list()
+  
+  for(i in 1:2) {
+    xts_read_xts[[i]] <- xts::xts(as.numeric(xts_read[i,2:(n+1)]), order.by = t_read)
+  }
+  
+  names(xts_read_xts) <- xts_read[1:2, 1]
+  
+  expect_that(xts_read_xts, equals(xts, tolerance = 1e-4))
+})
+
 test_that("XLSX long export works", {
   
   writeTimeSeries(xts, format="xlsx", fname=paste0(fn, "_long"), date_format="%Y-%m")
   xts_read <- openxlsx::read.xlsx(xlsx_long_name)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
-  expect_that(names(xts_read), equals(c("date", "value", "series")))
+  expect_that(setdiff(names(xts_read), c("date", "value", "series")), equals(character(0)))
   
   xts_read <- reshape2::dcast(xts_read ,date ~ series)
   
@@ -182,8 +227,10 @@ test_that("Zipping works", {
 
 test_that("imports work", {
   expect_equal(ts, importTimeSeries(csv_wide_name))
+  expect_equal(ts, importTimeSeries(csv_wide_transposed_name))
   expect_equal(ts, importTimeSeries(csv_long_name))
   expect_equal(ts, importTimeSeries(xlsx_wide_name))
+  expect_equal(ts, importTimeSeries(xlsx_wide_transposed_name))
   expect_equal(ts, importTimeSeries(xlsx_long_name))
   expect_equal(ts, importTimeSeries(json_read_name))
   expect_equal(ts, importTimeSeries(zip_read_name))

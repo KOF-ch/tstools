@@ -1,3 +1,26 @@
+#' Plot time series
+#' 
+#' Doc to be expanded later. This just fixes #33.
+#' 
+#' @param ... 
+#'
+#' @param tsr 
+#' @param left_as_bar 
+#' @param group_bar_chart 
+#' @param plot_title 
+#' @param plot_subtitle 
+#' @param plot_subtitle_r 
+#' @param find_ticks_function 
+#' @param fill_up_start 
+#' @param overall_xlim 
+#' @param overall_ylim 
+#' @param manual_date_ticks 
+#' @param manual_value_ticks_l 
+#' @param manual_value_ticks_r 
+#' @param theme 
+#' @param quiet 
+#' @param auto_legend 
+#'
 #' @export
 tsplot <- function(...,
                    tsr = NULL,
@@ -88,7 +111,7 @@ tsplot.mts <- function(...,
 }
 
 #' @export
-tsplot.list <- function(tsl,
+tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
                         group_bar_chart = NULL,
@@ -108,6 +131,8 @@ tsplot.list <- function(tsl,
                         quiet = TRUE,
                         auto_legend = TRUE
 ){
+  
+  tsl <- c(...)
   
   if(is.null(theme)) theme <- initDefaultTheme()
   # thanks to @christophsax for that snippet.
@@ -136,7 +161,7 @@ tsplot.list <- function(tsl,
   }
   
   if(!is.null(tsr)) {
-    tsr <- .sanitizeTsr(tsr)
+    tsr <- sanitizeTsr(tsr)
     tsr_r <- range(unlist(tsr))
     tsr_r_true <- tsr_r
     
@@ -319,7 +344,7 @@ tsplot.list <- function(tsl,
                theme = theme)
     if(theme$sum_as_line){
       reduced <- Reduce("+",tsl)
-      .drawSumAsLine(reduced, theme)
+      drawSumAsLine(reduced, theme)
     }
     
   } else {

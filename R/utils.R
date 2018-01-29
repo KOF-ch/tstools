@@ -12,12 +12,8 @@ computeDecimalTime <- function(v,f){
 }
 
 
-#' @export 
-print.SQL <- function(x,...){
-  cat(gsub("\n[ \t]+","\n",x))
-}
-
-
+# function is called by tsplot, do not need to export
+# it but let's write a minimal comment on what it does.
 getGlobalXInfo <- function(tsl,tsr,fill_up_start){
   global_x <- list()
   
@@ -56,36 +52,11 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
   global_x
 }
 
-# o <- diff(r)*theme$y_offset_pct
-# d$x_range <- r + c(-o,o)
-# determine ticks and grid position
-# theme contains which grids should be drawn etc.
-.getDateInfo <- function(tsr,tsl,theme,
-                         manual_date_ticks){
-  d <- list()
-  if(!is.null(manual_date_ticks)){
-    d$x_ticks <- manual_date_ticks
-    d$x_range <- range(manual_date_ticks)
-    return(d)
-  } else{
-    # NO MANUAL X-AXIS given
-    all_series <- c(tsl,tsr)
-    d$x_range <- range(time(unlist(all_series)))
-    if(theme$yearly_ticks){
-      
-    }
-    if(theme$quarterly_ticks){
-      if(theme$year_labels_mid){
-        
-      }
-    }
-  }
-}
 
 
 
 # Make sure right axis object is of appropriate class.
-.sanitizeTsr <- function(tsr){
+sanitizeTsr <- function(tsr){
   if(is.null(tsr)){
     return(tsr)
   } else if(inherits(tsr,"mts")){
@@ -100,10 +71,6 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
   }
 }
 
-.getXAxisInfo <- function(tsl,tsr,theme){
-  unlist(c(tsr,tsl))
-}
-
 
 addYGrids <- function(tick_positions,theme){
   for (hl in tick_positions){
@@ -112,7 +79,7 @@ addYGrids <- function(tick_positions,theme){
   } 
 }
 
-#'@export
+
 findGapSize <- function(r,tick_count){
   d <- diff(r)
   raw_tick_size <- d / (tick_count-1)
@@ -122,7 +89,7 @@ findGapSize <- function(r,tick_count){
   ceil_tick_size
 }
 
-#'@export
+
 findTicks <- function(r, true_r, tick_count, preferred_gap_sizes){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
@@ -164,3 +131,23 @@ findTicks <- function(r, true_r, tick_count, preferred_gap_sizes){
   w <- which.max((lb-r[1]) + (r[2]-ub))
   seqs[[w]]
 }
+
+formatNumericDate <- function(date, freq, date_format = NULL) {
+  year <- floor(date + 1/24)
+  if(freq[1] == 4) {
+    if(is.null(date_format)) {
+      quarter <- 4*(date - year) + 1
+      return(sprintf("%d Q%d", year, quarter))
+    } else {
+      month <- floor(12*(date - year)) + 1
+    }
+  } else {
+    month <- floor(12*(date - year + 1/24)) + 1  # Why "+ 1/24"? Because floating point arithmetic. 12*0.0833333 may not be 12.
+    if(is.null(date_format)) {
+      return(sprintf("%d-%d", year, month))
+    }
+  }
+  
+  format(as.Date(sprintf("%d-%d-01", year, month)), date_format)
+}
+

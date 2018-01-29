@@ -7,7 +7,11 @@
 fillUpYearWithNAs(x, add_periods = 1, fill_up_start = FALSE)
 }
 \arguments{
-\item{ts}{object of class ts}
+\item{x}{object of class ts}
+
+\item{add_periods}{integer periods to add.}
+
+\item{fill_up_start}{logical should start year be filled up? Defaults to FALSE.}
 }
 \description{
 When plotting a time series you might want set the range of the plot a little wider than just the start and end date of the original series. This function add fills up the current period (typically year) with NA.

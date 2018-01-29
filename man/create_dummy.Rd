@@ -5,7 +5,8 @@
 \title{Flexible Function to Create Time Series Dummy Variables}
 \usage{
 create_dummy(end_basic, dummy_start, dummy_end = NULL, sp = T,
-  start_basic = c(1980, 1), basic_value = 0, dummy_value = 1, freq = 4)
+  start_basic = c(1980, 1), basic_value = 0, dummy_value = 1,
+  frequency = 4)
 }
 \arguments{
 \item{end_basic}{numeric vector of form c(yyyy,p) defining the end of the time series.}
