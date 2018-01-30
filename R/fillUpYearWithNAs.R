@@ -35,7 +35,7 @@ fillUpYearWithNAs.ts <- function(x, add_periods = 1,
 fillUpYearWithNAs.xts <- function(x, add_periods = 1,
                                   fill_up_start = FALSE){
   
-  cat("xts support for filling up NAs not supported yet.")
+  stop("xts support for filling up NAs not supported yet.")
   
   
 }
@@ -45,7 +45,7 @@ fillUpYearWithNAs.xts <- function(x, add_periods = 1,
 fillUpYearWithNAs.zoo <- function(x, add_periods = 1,
                                   fill_up_start = FALSE){
   
-  cat("zoo support for filling up NAs not supported yet.")
+  stop("zoo support for filling up NAs not supported yet.")
 }
 
 
