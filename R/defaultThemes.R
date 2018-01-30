@@ -59,7 +59,7 @@
 #' data(KOF)
 #' tt <- initDefaultTheme()
 #' # adjust a single element
-#' tt$highlight_window <- T
+#' tt$highlight_window <- TRUE
 #' # pass the list to tsplot
 #' tsplot(KOF$kofbarometer,theme = tt)
 #' # for more theme examples check the vignette
