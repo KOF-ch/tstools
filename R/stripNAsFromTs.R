@@ -33,22 +33,22 @@ stripLeadingNAsFromTs <- function(s){
 
 #' @rdname stripNAsFromTs
 #' @export
-stripTrailingNAsFromTs <- function(ts){
-  if(is.null(dim(ts))){
-    ntf <- is.na(ts)
+stripTrailingNAsFromTs <- function(s){
+  if(is.null(dim(s))){
+    ntf <- is.na(s)
   } else{
-    ntf <- apply(ts,1,function(x) all(is.na(x)))
+    ntf <- apply(s,1,function(x) all(is.na(x)))
   }
   na_pos <- which(ntf)
   sqntl <- length(ntf)-na_pos
   if(rev(sqntl)[1] != 0){
-    return(ts)
+    return(s)
   } else {
     rmv <- na_pos[sqntl-1 <= 1]
-    if(is.null(dim(ts))){
-      ts(ts[-rmv],start = start(ts),frequency = frequency(ts))  
+    if(is.null(dim(s))){
+      ts(s[-rmv],start = start(s),frequency = frequency(s))  
     } else {
-      ts(ts[-rmv,],start = start(ts),frequency = frequency(ts))  
+      ts(s[-rmv,],start = start(s),frequency = frequency(s))  
     }
     
   }

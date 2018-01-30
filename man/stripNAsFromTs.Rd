@@ -7,7 +7,7 @@
 \usage{
 stripLeadingNAsFromTs(s)
 
-stripTrailingNAsFromTs(ts)
+stripTrailingNAsFromTs(s)
 }
 \arguments{
 \item{s}{an object of class ts.}

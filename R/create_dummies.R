@@ -10,7 +10,7 @@
 #' @param start_basic numeric vector of form c(yyyy,p) defining the start of the time series. Defaults to c(1980,1)
 #' @param basic_value default value of the time series, defaults to 0.
 #' @param dummy_value the alternative value, defaults to 1.
-#' @param frequency frequency of the regular time series, defaults to 4 (quarterly).
+#' @param frequency integer frequency of the regular time series, defaults to 4 (quarterly).
 #' @author Matthias Bannert
 create_dummy <- function(end_basic,
                          dummy_start,

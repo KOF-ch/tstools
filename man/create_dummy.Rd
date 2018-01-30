@@ -23,7 +23,7 @@ create_dummy(end_basic, dummy_start, dummy_end = NULL, sp = T,
 
 \item{dummy_value}{the alternative value, defaults to 1.}
 
-\item{frequency}{frequency of the regular time series, defaults to 4 (quarterly).}
+\item{frequency}{integer frequency of the regular time series, defaults to 4 (quarterly).}
 }
 \description{
 Generate time series with a default value that is changed within a certain subperiod. 

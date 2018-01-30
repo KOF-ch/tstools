@@ -4,6 +4,7 @@
 #' if possible. Design to work with quarterly and monthly data. 
 #' 
 #' @param dframe data.frame input
+#' @param var_cols columns that contain variables as opposed to date index.
 #' @param year_col integer, logical or character vector indicating the year 
 #' position within the data.frame.
 #' @param period_col integer, logical or character vector indicating the period 

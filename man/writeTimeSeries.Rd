@@ -4,20 +4,23 @@
 \alias{writeTimeSeries}
 \title{writeTimeSeries}
 \usage{
-writeTimeSeries(tl, fname = "timeseriesdb_export", format = c("csv", "xlsx",
-  "json", "rdata"), date_format = NULL, timestamp_file = TRUE,
-  round_digits = NULL, ...)
+writeTimeSeries(tl, fname = "timeseriesdb_export", format = "csv",
+  date_format = NULL, timestamp_file = TRUE, round_digits = NULL, ...)
 }
 \arguments{
 \item{tl}{list of time series}
 
 \item{fname}{character file name. If set to NULL a standard file name chunk + Sys.Date is used.}
 
+\item{format}{character denotes export formats. Defaults to .csv. "csv", "xlsx", "json", "rdata" are available. Spreadsheet formats like csv allow for further optional parameters.}
+
 \item{date_format}{character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010.}
 
 \item{timestamp_file}{If TRUE, the current date will be appended to the file name}
 
-\item{...}{optinal logical arguments such as 'wide', 'json_pretty', 'zip'.}
+\item{round_digits}{integer, precision in digits.}
+
+\item{...}{optinal logical arguments such as 'wide','transposed', 'json_pretty', 'zip'.}
 }
 \description{
 Export a list of time series to a file.

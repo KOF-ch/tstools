@@ -10,6 +10,8 @@ df_to_reg_ts(dframe, var_cols, year_col = "year", period_col = "month",
 \arguments{
 \item{dframe}{data.frame input}
 
+\item{var_cols}{columns that contain variables as opposed to date index.}
+
 \item{year_col}{integer, logical or character vector indicating the year 
 position within the data.frame.}
 
