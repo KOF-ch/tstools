@@ -111,6 +111,48 @@ tsplot.mts <- function(...,
 }
 
 #' @export
+tsplot.zoo <- function(...,
+                       tsr = NULL,
+                       left_as_bar = FALSE,                
+                       group_bar_chart = NULL,
+                       plot_title = NULL,
+                       plot_subtitle = NULL,
+                       plot_subtitle_r = NULL,
+                       find_ticks_function = "findTicks",
+                       fill_up_start = fill_up_start,
+                       overall_xlim = NULL,
+                       overall_ylim = NULL,
+                       manual_date_ticks = NULL,
+                       manual_value_ticks_l = NULL,
+                       manual_value_ticks_r = NULL,
+                       theme = NULL,
+                       quiet = TRUE,
+                       auto_legend = TRUE) {
+  stop("zoo objets are not supported yet. Please convert your data to ts!")
+}
+
+#' @export
+tsplot.xts <- function(...,
+                       tsr = NULL,
+                       left_as_bar = FALSE,                
+                       group_bar_chart = NULL,
+                       plot_title = NULL,
+                       plot_subtitle = NULL,
+                       plot_subtitle_r = NULL,
+                       find_ticks_function = "findTicks",
+                       fill_up_start = fill_up_start,
+                       overall_xlim = NULL,
+                       overall_ylim = NULL,
+                       manual_date_ticks = NULL,
+                       manual_value_ticks_l = NULL,
+                       manual_value_ticks_r = NULL,
+                       theme = NULL,
+                       quiet = TRUE,
+                       auto_legend = TRUE) {
+  stop("xts objects are not supported yet. Please convert your data to ts if possible!")
+}
+
+#' @export
 tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
