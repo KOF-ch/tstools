@@ -2,7 +2,7 @@
 % Please edit documentation in R/tsplot.R
 \name{tsplot}
 \alias{tsplot}
-\title{Plot time series}
+\title{Plot Time Series}
 \usage{
 tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = NULL,
   plot_title = NULL, plot_subtitle = NULL, plot_subtitle_r = NULL,
@@ -12,40 +12,40 @@ tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = NULL,
   quiet = TRUE, auto_legend = TRUE)
 }
 \arguments{
-\item{...}{}
+\item{...}{multiple objects of class ts or a list of time series. All objects passed through the ... parameter relate to the standard left y-axis.}
 
-\item{tsr}{}
+\item{tsr}{list of time series objects of class ts.}
 
-\item{left_as_bar}{}
+\item{left_as_bar}{logical should the series that relate to the left bar be drawn as (stacked) bar charts?}
 
-\item{group_bar_chart}{}
+\item{group_bar_chart}{logical should a bar chart be grouped instead of stacked?}
 
-\item{plot_title}{}
+\item{plot_title}{character title to be added to the plot}
 
-\item{plot_subtitle}{}
+\item{plot_subtitle}{character subtitle to be added to the plot}
 
-\item{plot_subtitle_r}{}
+\item{plot_subtitle_r}{character second subtitle to be added at the top right}
 
-\item{find_ticks_function}{}
+\item{find_ticks_function}{function to compute ticks.}
 
-\item{fill_up_start}{}
+\item{fill_up_start}{logical should the start year be filled up?}
 
-\item{overall_xlim}{}
+\item{overall_xlim}{integer overall x-axis limits, defaults to NULL.}
 
-\item{overall_ylim}{}
+\item{overall_ylim}{integer overall y-axis limits, defaults to NULL.}
 
-\item{manual_date_ticks}{}
+\item{manual_date_ticks}{character vector of manual date ticks.}
 
-\item{manual_value_ticks_l}{}
+\item{manual_value_ticks_l}{numeric vector, forcing ticks to the left y-axis}
 
-\item{manual_value_ticks_r}{}
+\item{manual_value_ticks_r}{numeric vector, forcing ticks to the right y-axis}
 
-\item{theme}{}
+\item{theme}{list of default plot output parameters. Defaults to NULL, which leads to \code{\link{initDefaultTheme}} being called. Please see the vignette for details about tweaking themes.}
 
-\item{quiet}{}
+\item{quiet}{logical suppress output, defaults to TRUE.}
 
-\item{auto_legend}{}
+\item{auto_legend}{logical should legends be printed automatically, defaults to TRUE.}
 }
 \description{
-Doc to be expanded later. This just fixes #33.
+Conveniently plot time series.
 }

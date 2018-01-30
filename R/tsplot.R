@@ -1,25 +1,24 @@
-#' Plot time series
+#' Plot Time Series
 #' 
-#' Doc to be expanded later. This just fixes #33.
+#' Conveniently plot time series. 
 #' 
-#' @param ... 
-#'
-#' @param tsr 
-#' @param left_as_bar 
-#' @param group_bar_chart 
-#' @param plot_title 
-#' @param plot_subtitle 
-#' @param plot_subtitle_r 
-#' @param find_ticks_function 
-#' @param fill_up_start 
-#' @param overall_xlim 
-#' @param overall_ylim 
-#' @param manual_date_ticks 
-#' @param manual_value_ticks_l 
-#' @param manual_value_ticks_r 
-#' @param theme 
-#' @param quiet 
-#' @param auto_legend 
+#' @param ... multiple objects of class ts or a list of time series. All objects passed through the ... parameter relate to the standard left y-axis.
+#' @param tsr list of time series objects of class ts.
+#' @param left_as_bar logical should the series that relate to the left bar be drawn as (stacked) bar charts?
+#' @param group_bar_chart logical should a bar chart be grouped instead of stacked?
+#' @param plot_title character title to be added to the plot
+#' @param plot_subtitle character subtitle to be added to the plot 
+#' @param plot_subtitle_r character second subtitle to be added at the top right
+#' @param find_ticks_function function to compute ticks.
+#' @param fill_up_start logical should the start year be filled up? 
+#' @param overall_xlim integer overall x-axis limits, defaults to NULL. 
+#' @param overall_ylim integer overall y-axis limits, defaults to NULL.
+#' @param manual_date_ticks character vector of manual date ticks.
+#' @param manual_value_ticks_l numeric vector, forcing ticks to the left y-axis 
+#' @param manual_value_ticks_r numeric vector, forcing ticks to the right y-axis 
+#' @param theme list of default plot output parameters. Defaults to NULL, which leads to \code{\link{initDefaultTheme}} being called. Please see the vignette for details about tweaking themes.
+#' @param quiet logical suppress output, defaults to TRUE.
+#' @param auto_legend logical should legends be printed automatically, defaults to TRUE.
 #'
 #' @export
 tsplot <- function(...,
