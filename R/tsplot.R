@@ -149,9 +149,9 @@ tsplot.list <- function(...,
   
   if(left_as_bar) {
     # Combine ts
-    tsmat <- do.call("ts.union", tsl)
+    tsmat <- do.call("cbind", tsl)
     
-    if(inherits(tsmat, "mts")) {
+    if(!is.null(dim(tsmat)) && dim(tsmat)[2] > 1) {
       # Set all NAs to 0 so range() works properly
       tsmat[is.na(tsmat)] <- 0
       ranges <- apply(tsmat, 1, function(r) {
