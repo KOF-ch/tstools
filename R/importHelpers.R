@@ -12,6 +12,7 @@ json_to_ts <- function(json_data) {
 }
 
 #' @importFrom data.table dcast
+#' @importFrom zoo na.trim
 long_to_ts <- function(data) {
   data_dt <- as.data.table(data)
   
@@ -21,9 +22,9 @@ long_to_ts <- function(data) {
   dt_of_lists <- data_dt[, {
     dT <- diff(date_zoo)
     if(any(diff(dT) > 1e-6)) {
-      .(ts_object = list(xts(value, order_by = date_zoo)))
+      list(ts_object = list(xts(value, order_by = date_zoo)))
     } else {
-      .(ts_object = list(ts(value, start = .SD[1, date_zoo], end = .SD[.N, date_zoo], deltat = dT[1])))
+      list(ts_object = list(ts(value, start = .SD[1, date_zoo], end = .SD[.N, date_zoo], deltat = dT[1])))
     }
   }, by = series]
   
@@ -33,6 +34,8 @@ long_to_ts <- function(data) {
   
   tslist
 }
+
+utils::globalVariables(c("date_zoo", "series", "ts_object", "value"))
 
 #' @importFrom xts xts
 #' @importFrom zoo as.yearqtr as.yearmon

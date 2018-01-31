@@ -10,6 +10,7 @@
 #' @param ... optinal logical arguments such as 'wide','transposed', 'json_pretty', 'zip'.
 #' @importFrom jsonlite toJSON
 #' @import data.table
+#' @importFrom utils zip
 #' @export
 writeTimeSeries <- function(tl,
                             fname = "timeseriesdb_export",
@@ -67,7 +68,7 @@ writeTimeSeries <- function(tl,
         
         index <- seq(nrow(tl_lengths))
         
-        tsdf <- tl_lengths[, .(internal_index = seq(length)), by = index]
+        tsdf <- tl_lengths[, list(internal_index = seq(length)), by = index]
         
         tl_names <- names(tl)
         
@@ -173,3 +174,5 @@ writeTimeSeries <- function(tl,
     zip(zip_name, write_name)
   }
 }
+
+utils::globalVariables(c("internal_index", "date_numeric"))
