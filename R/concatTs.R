@@ -6,6 +6,7 @@
 #' @param ts1 object of class ts1, typically the older of two time series.
 #' @param ts2 object of class ts1, typically the younger of two time series.
 #' @export
+#' @importFrom stats frequency time ts
 concatTs <- function(ts1,ts2){
   stopifnot(frequency(ts1) == frequency(ts2))
   if(any(time(ts1) %in% time(ts2))) 

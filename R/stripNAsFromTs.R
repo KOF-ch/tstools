@@ -5,6 +5,8 @@
 #' 
 #' @param s an object of class ts.
 #' @rdname stripNAsFromTs
+#' 
+#' @importFrom stats window
 #' @export 
 stripLeadingNAsFromTs <- function(s){
   if(!is.na(s[1])){
@@ -32,6 +34,7 @@ stripLeadingNAsFromTs <- function(s){
 }
 
 #' @rdname stripNAsFromTs
+#' @importFrom stats start
 #' @export
 stripTrailingNAsFromTs <- function(s){
   if(is.null(dim(s))){

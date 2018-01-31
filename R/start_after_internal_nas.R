@@ -9,6 +9,7 @@
 #' 
 #' @param series on object of class ts
 #' @seealso \code{\link{stripLeadingNAsFromTs}}, \code{\link{stripTrailingNAsFromTs}}
+#' @importFrom stats window
 #' @export
 #' @examples
 #' ts1 <- 1:30

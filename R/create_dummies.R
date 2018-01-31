@@ -12,6 +12,7 @@
 #' @param dummy_value the alternative value, defaults to 1.
 #' @param frequency integer frequency of the regular time series, defaults to 4 (quarterly).
 #' @author Matthias Bannert
+#' @importFrom stats ts
 create_dummy <- function(end_basic,
                          dummy_start,
                          dummy_end = NULL,
@@ -21,7 +22,7 @@ create_dummy <- function(end_basic,
                          dummy_value = 1,
                          frequency = 4){
   basic <- ts(basic_value,start_basic,
-              end_basic,frequency = freq)
+              end_basic,frequency = frequency)
   if(is.null(dummy_end)){
     if(sp){
       dummy_end <- dummy_start   
@@ -30,7 +31,7 @@ create_dummy <- function(end_basic,
     }
   } 
   dummy <- ts(dummy_value,dummy_start,
-              dummy_end,frequency = freq)
+              dummy_end,frequency = frequency)
   resolveOverlap(basic,dummy)
   
 }

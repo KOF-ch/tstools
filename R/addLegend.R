@@ -1,3 +1,5 @@
+#' @importFrom graphics par plot legend
+#' @importFrom stats na.omit
 addLegend <- function(tsln,
                       tsrn = NULL,
                       left_as_bar = F,

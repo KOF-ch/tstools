@@ -10,6 +10,7 @@
 #' @return A named list of ts objects
 #' 
 #' @importFrom data.table fread
+#' @importFrom utils unzip
 #' @export
 importTimeSeries <- function(file,
                              format = c("csv", "xlsx",

@@ -71,7 +71,7 @@ sanitizeTsr <- function(tsr){
   }
 }
 
-
+#' @importFrom graphics abline
 addYGrids <- function(tick_positions,theme){
   for (hl in tick_positions){
     abline(h = hl,
