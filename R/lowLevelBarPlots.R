@@ -4,6 +4,7 @@ drawTsBars <- function(x, group_bar_chart = FALSE, theme = NULL,
 } 
 
 
+#' @importFrom graphics rect
 drawTsBars.ts <- function(x, group_bar_chart = FALSE,
                           theme = NULL){
   ts_time <- time(x)
@@ -30,6 +31,7 @@ drawTsBars.ts <- function(x, group_bar_chart = FALSE,
 }
 
 
+#' @importFrom graphics rect
 drawTsBars.list <- function(x,
                             group_bar_chart = FALSE,
                             theme = NULL){
@@ -47,6 +49,7 @@ drawTsBars.list <- function(x,
 }
 
 
+#' @importFrom graphics rect
 drawTsBars.mts <- function(x,
                            group_bar_chart =  FALSE,
                            theme = NULL){

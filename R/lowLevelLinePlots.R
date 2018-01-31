@@ -33,6 +33,7 @@ drawTsLines.list <- function(x, theme = NULL){
   
 }
 
+#' @importFrom graphics lines
 drawSumAsLine <- function(x, theme = NULL){
   xx <- as.numeric(time(x))
   yy <- x

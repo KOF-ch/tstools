@@ -15,6 +15,7 @@
 #' @param ts2 ts time series, typically the younger series
 #' @param keep_ts2 logical should ts2 be kept? Defaults to TRUE.
 #' @param tolerance numeric when comparing min and max values with a index vector of a time series R runs in to trouble with precision handling, thus a tolerance needs to be set. Typically this does not need to be adjusted. E.g. 2010 != 2010.000. With the help of the tolerance parameter these two are equal.
+#' @importFrom stats is.ts
 #' @export
 #' @examples
 #' ts1 <- ts(rnorm(100),start = c(1990,1),frequency = 4)

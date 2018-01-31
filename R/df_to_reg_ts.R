@@ -26,6 +26,7 @@
 #' df_to_reg_ts(df_missing, c("value","another_value"), return_ts = FALSE)
 #' @export
 #' @importFrom data.table year quarter month
+#' @importFrom stats ts
 df_to_reg_ts <- function(dframe,
                          var_cols,
                          year_col = "year",

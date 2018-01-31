@@ -1,4 +1,6 @@
 # Helper to turn api-returned json (lists) into lists of ts objects
+
+#' @importFrom stats as.ts start end
 json_to_ts <- function(json_data) {
   xt <- xts(json_data$value, order.by=as.yearmon(json_data$date))
   

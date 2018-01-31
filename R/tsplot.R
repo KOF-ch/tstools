@@ -21,6 +21,8 @@
 #' @param quiet 
 #' @param auto_legend 
 #'
+#' @importFrom graphics rect axis box title mtext
+#'
 #' @export
 tsplot <- function(...,
                    tsr = NULL,
@@ -492,7 +494,7 @@ tsplot.list <- function(...,
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
     output <- list(left_range = tsl_r,
-                   right_range = tsl_l)
+                   right_range = tsr_r)
   } 
 }
 

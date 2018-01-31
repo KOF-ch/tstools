@@ -15,4 +15,5 @@ Repeat quarterly variables two times to generate a monthly variable.
 \examples{
 tsq <- ts(1:20,start=c(1990,1),frequency = 4)
 tsqm(tsq)
+
 }

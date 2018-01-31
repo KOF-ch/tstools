@@ -1,3 +1,4 @@
+#' @importFrom stats frequency
 dateFromTs <- function(ts) {
   freq <- frequency(ts)
   start <- start(ts)
