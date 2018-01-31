@@ -22,7 +22,8 @@ writeTimeSeries <- function(tl,
   args <- list(...)
   
   # Match format
-  format <- match.arg(format);
+  allowed_formats <- c("csv", "xlsx", "json", "rdata")
+  format <- match.arg(format, allowed_formats)
 
   # Timestamp filename
   if(timestamp_file) {
