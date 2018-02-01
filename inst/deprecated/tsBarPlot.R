@@ -15,7 +15,7 @@ tsBarPlot <- function(tsl,tsr = NULL,
   # better... 
   all_q_or_m <- all(sapply(tsl,function(x) frequency(x) %in% c(4,12)))
   if(all(theme$fillYearWithNA & all_q_or_m)){
-    tsl <- lapply(tsl,fillUpYearWithNAs)
+    tsl <- lapply(tsl,fill_years_with_nas)
   }
   
   date_range <- manual_date_range

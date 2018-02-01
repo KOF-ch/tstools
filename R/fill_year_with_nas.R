@@ -9,11 +9,11 @@
 #' @importFrom stats start end
 fill_years_with_nas <- function(x, add_periods = 1,
                               fill_up_start = FALSE){
-  UseMethod("fillUpYearWithNAs")
+  UseMethod("fill_years_with_nas")
 }
 
 #' @export
-fillUpYearWithNAs.ts <- function(x, add_periods = 1,
+fill_years_with_nas.ts <- function(x, add_periods = 1,
                               fill_up_start = FALSE){
   frq <- frequency(x)
   de <- frq-end(x)[2]
@@ -33,7 +33,7 @@ fillUpYearWithNAs.ts <- function(x, add_periods = 1,
 }
 
 #' @export
-fillUpYearWithNAs.xts <- function(x, add_periods = 1,
+fill_years_with_nas.xts <- function(x, add_periods = 1,
                                   fill_up_start = FALSE){
   
   stop("xts support for filling up NAs not supported yet.")
@@ -43,7 +43,7 @@ fillUpYearWithNAs.xts <- function(x, add_periods = 1,
 
 
 #' @export
-fillUpYearWithNAs.zoo <- function(x, add_periods = 1,
+fill_years_with_nas.zoo <- function(x, add_periods = 1,
                                   fill_up_start = FALSE){
   
   stop("zoo support for filling up NAs not supported yet.")
