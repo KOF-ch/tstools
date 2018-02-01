@@ -23,7 +23,7 @@ tsBarPlot <- function(tsl,tsr = NULL,
   
   # determine axis but draw an empty plot first so
   # grids can be set up before drawing on them.
-  b_pos <- drawTsBars(tsl,
+  b_pos <- draw_ts_bars(tsl,
                       manual_value_range = value_range,
                       sum_as_line = sum_as_line,
                       no_plot = T)
@@ -46,7 +46,7 @@ tsBarPlot <- function(tsl,tsr = NULL,
   }
 
   par(new = T)
-  b_pos <- drawTsBars(tsl,
+  b_pos <- draw_ts_bars(tsl,
                       manual_value_range = value_range,
                       sum_as_line = sum_as_line)
   

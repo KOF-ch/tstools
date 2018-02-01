@@ -1,5 +1,5 @@
 #' @export
-drawTsBars <- function(tsl, 
+draw_ts_bars <- function(tsl, 
          manual_value_range = NULL,
          manual_date_range = NULL,
          sum_as_line,

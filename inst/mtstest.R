@@ -101,7 +101,7 @@ tsplot(tslist,manual_date_ticks = 2010:2014)
 tsplot(tslist)
 
 
-undebug(drawTsBars)
+undebug(draw_ts_bars)
 
 
 tsplot(tslist[1:3],tsr = reflist,
@@ -130,7 +130,7 @@ tsplot(tslist$ts1,left_as_bar = F,theme = tt)
 
 
 
-undebug(drawTsBars)
+undebug(draw_ts_bars)
 tsplot(tslist[1:3],manual_date_ticks = 2010:2015,left_as_bar = T)
 
 

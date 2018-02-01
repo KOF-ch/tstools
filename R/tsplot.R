@@ -398,7 +398,7 @@ tsplot.list <- function(...,
   
   if(left_as_bar){
     # draw barplot
-    drawTsBars(tsl,
+    draw_ts_bars(tsl,
                group_bar_chart = group_bar_chart,
                theme = theme)
     if(theme$sum_as_line){

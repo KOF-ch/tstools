@@ -11,7 +11,7 @@ noname <- list(ts(runif(30,-30,20),start=c(2010,1),frequency = 4),
                ts(runif(30,0,50),start=c(2010,1),frequency = 4))
 
 undebug(find_group_coords)
-undebug(drawTsBars)
+undebug(draw_ts_bars)
 undebug(tsplot)
 tsplot(noname,left_as_bar = T,
        group_bar_chart = T,
