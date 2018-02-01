@@ -173,3 +173,5 @@ write_ts <- function(tl,
     zip(zip_name, write_name)
   }
 }
+
+utils::globalVariables(c("internal_index", "date_numeric"))
