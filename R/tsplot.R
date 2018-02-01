@@ -451,7 +451,7 @@ tsplot.list <- function(...,
       names(tsr) <- paste0("series_",1:length(tsr))
     }
     
-    addLegend(names(tsl), names(tsr),
+    add_legend(names(tsl), names(tsr),
               theme = theme, left_as_bar = left_as_bar)
   }
   

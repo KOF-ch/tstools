@@ -76,8 +76,8 @@ tsplot(ll,tsr = llr,
 
 
 
-undebug(addLegend)
-addLegend("kofbarometer")
+undebug(add_legend)
+add_legend("kofbarometer")
 
 
 a <- c("a","b","d")
