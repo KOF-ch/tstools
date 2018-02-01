@@ -35,6 +35,12 @@ removed.
   \code{fillupYearWitnNAs} \tab now a synonym for \code{\link{fill_year_with_nas}}\cr
   \code{importTimeSeries} \tab now a synonym for \code{\link{read_ts}}\cr
   \code{initDefaultTheme} \tab now a synonym for \code{\link{default_tsplot_theme}}\cr
+  \code{overlapSortedLists} \tab now a synonym for \code{\link{overlap_sorted_lists}}\cr
+  \code{overlapTslByName} \tab now a synonym for \code{\link{oberlap_ts_list_by_name}}\cr
+  \code{resolveOverlap} \tab now a synonym for \code{\link{resolve_overlap}}\cr
+  \code{stripLeadingNAsFromTs} \tab now a synonym for \code{\link{strip_leading_nas}}\cr
+  \code{stripTrailingNAsFromTs} \tab now a synonym for \code{\link{strip_trailing_nas}}\cr
+  \code{writeTimeSeries} \tab now a synonym for \code{\link{write_ts}}\cr
 }
 }
 
