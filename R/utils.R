@@ -6,7 +6,7 @@
 #' @param v integer vector denoting a period in time
 #' @param f frequency
 #' @export
-computeDecimalTime <- function(v,f){
+compute_decimal_time <- function(v,f){
   multi <- 1/f
   (v[2]-1)*multi + v[1]
 }
