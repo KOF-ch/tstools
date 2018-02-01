@@ -199,7 +199,7 @@ tsplot.list <- function(series,
   # better... 
   all_q_or_m <- all(sapply(series,function(x) frequency(x) %in% c(4,12)))
   if(all(theme$fillYearWithNA & all_q_or_m)){
-    series <- lapply(series,fill_years_with_nas)
+    series <- lapply(series,fill_year_with_nas)
   }
   
   
