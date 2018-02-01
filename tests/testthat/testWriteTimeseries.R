@@ -226,29 +226,29 @@ test_that("Zipping works", {
 })
 
 test_that("imports work", {
-  expect_equal(ts, importTimeSeries(csv_wide_name))
-  expect_equal(ts, importTimeSeries(csv_wide_transposed_name))
-  expect_equal(ts, importTimeSeries(csv_long_name))
-  expect_equal(ts, importTimeSeries(xlsx_wide_name))
-  expect_equal(ts, importTimeSeries(xlsx_wide_transposed_name))
-  expect_equal(ts, importTimeSeries(xlsx_long_name))
-  expect_equal(ts, importTimeSeries(json_read_name))
-  expect_equal(ts, importTimeSeries(zip_read_name))
+  expect_equal(ts, read_ts(csv_wide_name))
+  expect_equal(ts, read_ts(csv_wide_transposed_name))
+  expect_equal(ts, read_ts(csv_long_name))
+  expect_equal(ts, read_ts(xlsx_wide_name))
+  expect_equal(ts, read_ts(xlsx_wide_transposed_name))
+  expect_equal(ts, read_ts(xlsx_long_name))
+  expect_equal(ts, read_ts(json_read_name))
+  expect_equal(ts, read_ts(zip_read_name))
   
   faulty_zip <- "fz.zip"
   message(csv_long_name)
   zip(faulty_zip, c(csv_long_name, csv_wide_name))
-  expect_warning(importTimeSeries(faulty_zip), "Found more than 1 file")
+  expect_warning(read_ts(faulty_zip), "Found more than 1 file")
   unlink(faulty_zip)
 
   temp <- tempfile()
   write("test", temp)
   zip(faulty_zip, temp)
-  expect_error(importTimeSeries(faulty_zip), "Zipped file is not")
+  expect_error(read_ts(faulty_zip), "Zipped file is not")
   unlink(faulty_zip)
   
-  expect_error(importTimeSeries(importTimeSeries(json_read_name, format="jpeg")), "should be one of")
-  expect_error(importTimeSeries("randomfile.txt"), "Could not detect")
+  expect_error(read_ts(read_ts(json_read_name, format="jpeg")), "should be one of")
+  expect_error(read_ts("randomfile.txt"), "Could not detect")
 })
 
 test_that("differing lengths work", {
@@ -276,7 +276,7 @@ test_that("differing lengths work", {
                                  fname = "faulty",
                                  timestamp_file = F),
                  "list contains")
-  read_faulty_ts <- importTimeSeries("faulty.csv")
+  read_faulty_ts <- read_ts("faulty.csv")
   expect_equal(read_faulty_ts, faulty_ts, tolerance = 1e-3)
 })
 

@@ -3,7 +3,7 @@
 #' If importing from a zip file, the archive should contain a single file with the extension .csv, .xlsx or .json.
 #' 
 #' @param file Path to the file to be read
-#' @param format Which file format is the data stored in? If no format is supplied, importTimeSeries will attempt to guess
+#' @param format Which file format is the data stored in? If no format is supplied, read_ts will attempt to guess
 #' from the file extension.
 #' @param sep character seperator for csv files. defaults to ','.
 #' @return A named list of ts objects
@@ -45,14 +45,14 @@ read_ts <- function(file,
   }
   
   switch(format, 
-         "csv" = importTimeSeries.csv(file),
-         "xlsx" = importTimeSeries.xlsx(file),
-         "json" = importTimeSeries.json(file)
+         "csv" = read_ts.csv(file),
+         "xlsx" = read_ts.xlsx(file),
+         "json" = read_ts.json(file)
   )
 }
 
 # Could export these, but no real need.
-importTimeSeries.csv <- function(file, sep = ",") {
+read_ts.csv <- function(file, sep = ",") {
   csv <- fread(file, sep = sep, stringsAsFactors = FALSE, colClasses = "numeric")
   
   if(length(csv) == 3 && length(setdiff(names(csv), c("date", "value", "series"))) == 0) {
@@ -63,7 +63,7 @@ importTimeSeries.csv <- function(file, sep = ",") {
 }
 
 
-importTimeSeries.xlsx <- function(file) {
+read_ts.xlsx <- function(file) {
   xlsx_available <- requireNamespace("openxlsx")
   
   if(!xlsx_available) return(warning("openxlsx not available. Install openxlsx or export to csv."))    
@@ -78,7 +78,7 @@ importTimeSeries.xlsx <- function(file) {
 }
 
 #' @importFrom jsonlite fromJSON
-importTimeSeries.json <- function(file) {
+read_ts.json <- function(file) {
   data <- fromJSON(readLines(file))
   
   lapply(data, json_to_ts)
