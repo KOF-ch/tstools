@@ -403,12 +403,12 @@ tsplot.list <- function(...,
                theme = theme)
     if(theme$sum_as_line){
       reduced <- Reduce("+",tsl)
-      drawSumAsLine(reduced, theme)
+      draw_sum_as_line(reduced, theme)
     }
     
   } else {
     # draw lineplot
-    drawTsLines(tsl,theme=theme)
+    draw_ts_lines(tsl,theme=theme)
   }
   
   # RIGHT PLOT #######################
@@ -432,7 +432,7 @@ tsplot.list <- function(...,
     if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
     if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
     
-    drawTsLines(tsr,theme = tt_r)
+    draw_ts_lines(tsr,theme = tt_r)
     
     # RIGHT Y-Axis
     if(theme$show_right_y_axis){
