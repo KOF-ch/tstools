@@ -15,8 +15,8 @@
 #' ts1 <- 1:30
 #' ts1[c(3,6)] <- NA
 #' ts1 <- ts(ts1,start=c(2000,1),frequency = 4)
-#' start_after_internal_nas(ts1)
-start_after_internal_nas <- function(series){
+#' start_ts_after_internal_nas(ts1)
+start_ts_after_internal_nas <- function(series){
   # returning the series right away saves time
   # if there are no nas
   if(!any(is.na(series))) return(series)

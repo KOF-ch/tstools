@@ -1,16 +1,16 @@
-drawTsLines <- function(x, theme = NULL,
+draw_ts_lines <- function(x, theme = NULL,
                         ...){
-  UseMethod("drawTsLines")
+  UseMethod("draw_ts_lines")
 } 
 
 
-drawTsLines.ts <- function(x, theme = NULL,
+draw_ts_lines.ts <- function(x, theme = NULL,
                            ...){
   
 }
 
 
-drawTsLines.list <- function(x, theme = NULL){
+draw_ts_lines.list <- function(x, theme = NULL){
   for (i in 1:length(x)){
     xx <- as.numeric(time(x[[i]]))
     yy <- x[[i]]
@@ -34,7 +34,7 @@ drawTsLines.list <- function(x, theme = NULL){
 }
 
 #' @importFrom graphics lines
-drawSumAsLine <- function(x, theme = NULL){
+draw_sum_as_line <- function(x, theme = NULL){
   xx <- as.numeric(time(x))
   yy <- x
   frq <- frequency(x)

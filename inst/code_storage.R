@@ -86,11 +86,11 @@ oo <- tsLinePlot(short*20,manual_value_range = c(-90,70))
 
 
 
-b_pos <- drawTsBars(short, manual_value_range = c(-10,10),no_plot = T)
+b_pos <- draw_ts_bars(short, manual_value_range = c(-10,10),no_plot = T)
 y_ticks <- addYAxis(b_pos,y_grd_steps = 4,manual_value_range = c(-10,10))
 addYGrids(y_ticks,theme = tt)
 par(new=T)
-b_pos <- drawTsBars(short, manual_value_range = c(-10,10))
+b_pos <- draw_ts_bars(short, manual_value_range = c(-10,10))
 addXAxis(b_pos)
 
 

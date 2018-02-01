@@ -1,6 +1,5 @@
-#' writeTimeSeries
-#' 
 #' Export a list of time series to a file.
+#' 
 #' @param tl list of time series
 #' @param fname character file name. If set to NULL a standard file name chunk + Sys.Date is used.
 #' @param format character denotes export formats. Defaults to .csv. "csv", "xlsx", "json", "rdata" are available. Spreadsheet formats like csv allow for further optional parameters.
@@ -9,10 +8,10 @@
 #' @param round_digits integer, precision in digits.
 #' @param ... optinal logical arguments such as 'wide','transposed', 'json_pretty', 'zip'.
 #' @importFrom jsonlite toJSON
-#' @import data.table
 #' @importFrom utils zip
+#' @import data.table
 #' @export
-writeTimeSeries <- function(tl,
+write_ts <- function(tl,
                             fname = "timeseriesdb_export",
                             format = "csv",
                             date_format = NULL,

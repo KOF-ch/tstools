@@ -6,7 +6,7 @@
 #' @param v integer vector denoting a period in time
 #' @param f frequency
 #' @export
-computeDecimalTime <- function(v,f){
+compute_decimal_time <- function(v,f){
   multi <- 1/f
   (v[2]-1)*multi + v[1]
 }
@@ -23,7 +23,7 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
     all_ts <- tsl
   }
   
-  all_ts_ext <- lapply(all_ts,fillUpYearWithNAs,fill_up_start = fill_up_start)
+  all_ts_ext <- lapply(all_ts,fill_year_with_nas,fill_up_start = fill_up_start)
   global_x$x_range <- range(unlist(lapply(all_ts_ext,time)))
   
   global_x$min_year <- trunc(global_x$x_range[1])

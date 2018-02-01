@@ -1,11 +1,11 @@
-drawTsBars <- function(x, group_bar_chart = FALSE, theme = NULL,
+draw_ts_bars <- function(x, group_bar_chart = FALSE, theme = NULL,
                        ...){
-  UseMethod("drawTsBars")
+  UseMethod("draw_ts_bars")
 } 
 
 
 #' @importFrom graphics rect
-drawTsBars.ts <- function(x, group_bar_chart = FALSE,
+draw_ts_bars.ts <- function(x, group_bar_chart = FALSE,
                           theme = NULL){
   ts_time <- time(x)
   frq <- frequency(x)
@@ -32,16 +32,16 @@ drawTsBars.ts <- function(x, group_bar_chart = FALSE,
 
 
 #' @importFrom graphics rect
-drawTsBars.list <- function(x,
+draw_ts_bars.list <- function(x,
                             group_bar_chart = FALSE,
                             theme = NULL){
   if(length(x) == 1){
-    drawTsBars(x[[1]],
+    draw_ts_bars(x[[1]],
                group_bar_chart =  group_bar_chart,
                theme = theme)
   } else{
     m <- do.call("cbind",x)
-    drawTsBars(m,
+    draw_ts_bars(m,
                group_bar_chart =  group_bar_chart,
                theme = theme)  
   }
@@ -50,7 +50,7 @@ drawTsBars.list <- function(x,
 
 
 #' @importFrom graphics rect
-drawTsBars.mts <- function(x,
+draw_ts_bars.mts <- function(x,
                            group_bar_chart =  FALSE,
                            theme = NULL){
   if(is.null(group_bar_chart)) group_bar_chart <- FALSE
@@ -74,7 +74,7 @@ drawTsBars.mts <- function(x,
 
   for (i in 1L:NC_POS) {
     if(group_bar_chart){
-      coords <- findGroupCoords(x,theme,i)      
+      coords <- find_group_coords(x,theme,i)      
       rect(coords$xl, coords$yb,
            coords$xr, coords$yt,
            col = theme$bar_fill_color,

@@ -1,4 +1,4 @@
-context("writeTimeseries")
+context("write_ts")
 
 n <- 100
 freq <- 12
@@ -28,7 +28,7 @@ zip_read_name <- paste0(fn, "_", gsub("-","_",Sys.Date()), ".zip")
 
 test_that("CSV wide export works", {
   
-  writeTimeSeries(xts, format="csv", fname=paste0(fn, "_wide"),
+  write_ts(xts, format="csv", fname=paste0(fn, "_wide"),
                   date_format="%Y-%m", wide=TRUE)
   xts_read <- read.csv(csv_wide_name, sep=",", stringsAsFactors=FALSE)
   
@@ -45,7 +45,7 @@ test_that("CSV wide export works", {
 })
 
 test_that("CSV transposed export works", {
-  writeTimeSeries(xts, format="csv",
+  write_ts(xts, format="csv",
                   fname=paste0(fn, "_wide_transposed"),
                   date_format="%Y-%m",
                   wide=TRUE, transpose=TRUE)
@@ -67,7 +67,7 @@ test_that("CSV transposed export works", {
 })
 
 test_that("CSV long export works", {
-  writeTimeSeries(xts, format="csv",
+  write_ts(xts, format="csv",
                   fname=paste0(fn, "_long"),
                   date_format="%Y-%m")
   xts_read <- read.csv(csv_long_name, sep=",",
@@ -89,7 +89,7 @@ test_that("CSV long export works", {
 
 test_that("XLSX wide export works", {
   
-  writeTimeSeries(xts, format = "xlsx",
+  write_ts(xts, format = "xlsx",
                   fname = paste0(fn, "_wide"),
                   date_format = "%Y-%m",
                   wide = TRUE)
@@ -108,7 +108,7 @@ test_that("XLSX wide export works", {
 })
 
 test_that("XLSX transposed export works", {
-  writeTimeSeries(xts, format="xlsx",
+  write_ts(xts, format="xlsx",
                   fname=paste0(fn, "_wide_transposed"),
                   date_format="%Y-%m",
                   wide=TRUE, transpose=TRUE)
@@ -131,7 +131,7 @@ test_that("XLSX transposed export works", {
 
 test_that("XLSX long export works", {
   
-  writeTimeSeries(xts, format="xlsx", fname=paste0(fn, "_long"), date_format="%Y-%m")
+  write_ts(xts, format="xlsx", fname=paste0(fn, "_long"), date_format="%Y-%m")
   xts_read <- openxlsx::read.xlsx(xlsx_long_name)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
@@ -151,7 +151,7 @@ test_that("XLSX long export works", {
 test_that("RData export works", {
   rdata_read_name <- paste0(fn_read, ".RData")
   
-  writeTimeSeries(xts, format="rdata", fname=fn)
+  write_ts(xts, format="rdata", fname=fn)
   load(rdata_read_name)
   
   expect_that(xts, equals(get(fn_read)))
@@ -160,7 +160,7 @@ test_that("RData export works", {
 test_that("Named RData export works", {
   varname <- "test_ts_read"
   
-  writeTimeSeries(xts, format="rdata", fname=fn, rdata_varname=varname)
+  write_ts(xts, format="rdata", fname=fn, rdata_varname=varname)
   load(rdata_read_name)
   
   expect_that(xts, equals(get(varname)))
@@ -168,7 +168,7 @@ test_that("Named RData export works", {
 
 test_that("JSON export works", {
   
-  writeTimeSeries(xts, fname=fn, format="json", date_format="%Y-%m")
+  write_ts(xts, fname=fn, format="json", date_format="%Y-%m")
   fid <- file(json_read_name)
   xts_read <- jsonlite::fromJSON(readLines(fid))
   close(fid)
@@ -187,7 +187,7 @@ test_that("JSON export works", {
 test_that("Pretty JSON export works", {
   json_read_name <- paste0(fn_read, ".json")
   
-  writeTimeSeries(xts, fname=fn, format="json", date_format="%Y-%m", json_pretty=TRUE)
+  write_ts(xts, fname=fn, format="json", date_format="%Y-%m", json_pretty=TRUE)
   fid <- file(json_read_name)
   xts_read <- jsonlite::fromJSON(readLines(fid))
   close(fid)
@@ -205,7 +205,7 @@ test_that("Pretty JSON export works", {
 
 test_that("Zipping works", {
   
-  writeTimeSeries(xts, fname=fn, format="json", date_format="%Y-%m", json_pretty=TRUE, zip=TRUE)
+  write_ts(xts, fname=fn, format="json", date_format="%Y-%m", json_pretty=TRUE, zip=TRUE)
   
   expect_true(file.exists(zip_read_name))
   
@@ -226,29 +226,29 @@ test_that("Zipping works", {
 })
 
 test_that("imports work", {
-  expect_equal(ts, importTimeSeries(csv_wide_name))
-  expect_equal(ts, importTimeSeries(csv_wide_transposed_name))
-  expect_equal(ts, importTimeSeries(csv_long_name))
-  expect_equal(ts, importTimeSeries(xlsx_wide_name))
-  expect_equal(ts, importTimeSeries(xlsx_wide_transposed_name))
-  expect_equal(ts, importTimeSeries(xlsx_long_name))
-  expect_equal(ts, importTimeSeries(json_read_name))
-  expect_equal(ts, importTimeSeries(zip_read_name))
+  expect_equal(ts, read_ts(csv_wide_name))
+  expect_equal(ts, read_ts(csv_wide_transposed_name))
+  expect_equal(ts, read_ts(csv_long_name))
+  expect_equal(ts, read_ts(xlsx_wide_name))
+  expect_equal(ts, read_ts(xlsx_wide_transposed_name))
+  expect_equal(ts, read_ts(xlsx_long_name))
+  expect_equal(ts, read_ts(json_read_name))
+  expect_equal(ts, read_ts(zip_read_name))
   
   faulty_zip <- "fz.zip"
   message(csv_long_name)
   zip(faulty_zip, c(csv_long_name, csv_wide_name))
-  expect_warning(importTimeSeries(faulty_zip), "Found more than 1 file")
+  expect_warning(read_ts(faulty_zip), "Found more than 1 file")
   unlink(faulty_zip)
 
   temp <- tempfile()
   write("test", temp)
   zip(faulty_zip, temp)
-  expect_error(importTimeSeries(faulty_zip), "Zipped file is not")
+  expect_error(read_ts(faulty_zip), "Zipped file is not")
   unlink(faulty_zip)
   
-  expect_error(importTimeSeries(importTimeSeries(json_read_name, format="jpeg")), "should be one of")
-  expect_error(importTimeSeries("randomfile.txt"), "Could not detect")
+  expect_error(read_ts(read_ts(json_read_name, format="jpeg")), "should be one of")
+  expect_error(read_ts("randomfile.txt"), "Could not detect")
 })
 
 test_that("differing lengths work", {
@@ -270,13 +270,13 @@ test_that("differing lengths work", {
                 end = end(faulty_xts$ts2))
   )
   
-  expect_warning(writeTimeSeries(faulty_xts,
+  expect_warning(write_ts(faulty_xts,
                                  format = "csv",
                                  wide = T,
                                  fname = "faulty",
                                  timestamp_file = F),
                  "list contains")
-  read_faulty_ts <- importTimeSeries("faulty.csv")
+  read_faulty_ts <- read_ts("faulty.csv")
   expect_equal(read_faulty_ts, faulty_ts, tolerance = 1e-3)
 })
 

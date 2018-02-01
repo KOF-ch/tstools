@@ -10,8 +10,8 @@ llr <- list(t4 = tsb4)
 noname <- list(ts(runif(30,-30,20),start=c(2010,1),frequency = 4),
                ts(runif(30,0,50),start=c(2010,1),frequency = 4))
 
-undebug(findGroupCoords)
-undebug(drawTsBars)
+undebug(find_group_coords)
+undebug(draw_ts_bars)
 undebug(tsplot)
 tsplot(noname,left_as_bar = T,
        group_bar_chart = T,
@@ -76,8 +76,8 @@ tsplot(ll,tsr = llr,
 
 
 
-undebug(addLegend)
-addLegend("kofbarometer")
+undebug(add_legend)
+add_legend("kofbarometer")
 
 
 a <- c("a","b","d")
