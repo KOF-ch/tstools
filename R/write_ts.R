@@ -8,6 +8,7 @@
 #' @param round_digits integer, precision in digits.
 #' @param ... optinal logical arguments such as 'wide','transposed', 'json_pretty', 'zip'.
 #' @importFrom jsonlite toJSON
+#' @importFrom utils zip
 #' @import data.table
 #' @export
 write_ts <- function(tl,
