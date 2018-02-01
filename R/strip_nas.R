@@ -8,7 +8,7 @@
 #' 
 #' @importFrom stats window
 #' @export 
-strip_leading_nas <- function(s){
+strip_ts_of_leading_nas <- function(s){
   if(!is.na(s[1])){
     s
   } else{
@@ -36,7 +36,7 @@ strip_leading_nas <- function(s){
 #' @rdname strip_nas
 #' @importFrom stats start
 #' @export
-strip_trailing_nas <- function(s){
+strip_ts_of_trailing_nas <- function(s){
   if(is.null(dim(s))){
     ntf <- is.na(s)
   } else{

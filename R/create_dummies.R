@@ -12,8 +12,9 @@
 #' @param dummy_value the alternative value, defaults to 1.
 #' @param frequency integer frequency of the regular time series, defaults to 4 (quarterly).
 #' @author Matthias Bannert
+#' @export
 #' @importFrom stats ts
-create_dummy <- function(end_basic,
+create_dummy_ts <- function(end_basic,
                          dummy_start,
                          dummy_end = NULL,
                          sp = T,

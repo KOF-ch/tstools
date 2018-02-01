@@ -16,9 +16,6 @@
 \alias{writeTimeSeries}
 \alias{tstools-deprecated-package}
 \title{Deprecated function(s) in tstools}
-\usage{
-computeDecimalTime(...)
-}
 \arguments{
 \item{...}{Parameters to be passed to the modern version of the function}
 }
@@ -35,11 +32,11 @@ removed.
   \code{fillupYearWitnNAs} \tab now a synonym for \code{\link{fill_year_with_nas}}\cr
   \code{importTimeSeries} \tab now a synonym for \code{\link{read_ts}}\cr
   \code{initDefaultTheme} \tab now a synonym for \code{\link{default_tsplot_theme}}\cr
-  \code{overlapSortedLists} \tab now a synonym for \code{\link{overlap_sorted_lists}}\cr
+  \code{overlapSortedLists} \tab now a synonym for \code{\link{overlap_sorted_ts_lists}}\cr
   \code{overlapTslByName} \tab now a synonym for \code{\link{overlap_ts_lists_by_name}}\cr
-  \code{resolveOverlap} \tab now a synonym for \code{\link{resolve_overlap}}\cr
-  \code{stripLeadingNAsFromTs} \tab now a synonym for \code{\link{strip_leading_nas}}\cr
-  \code{stripTrailingNAsFromTs} \tab now a synonym for \code{\link{strip_trailing_nas}}\cr
+  \code{resolveOverlap} \tab now a synonym for \code{\link{resolve_ts_overlap}}\cr
+  \code{stripLeadingNAsFromTs} \tab now a synonym for \code{\link{strip_ts_of_leading_nas}}\cr
+  \code{stripTrailingNAsFromTs} \tab now a synonym for \code{\link{strip_ts_of_trailing_nas}}\cr
   \code{writeTimeSeries} \tab now a synonym for \code{\link{write_ts}}\cr
 }
 }
