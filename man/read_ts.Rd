@@ -9,7 +9,7 @@ read_ts(file, format = c("csv", "xlsx", "json", "zip"), sep = ",")
 \arguments{
 \item{file}{Path to the file to be read}
 
-\item{format}{Which file format is the data stored in? If no format is supplied, importTimeSeries will attempt to guess
+\item{format}{Which file format is the data stored in? If no format is supplied, read_ts will attempt to guess
 from the file extension.}
 
 \item{sep}{character seperator for csv files. defaults to ','.}
