@@ -6,7 +6,7 @@
 #' @param chunkA character chunk representing frequencies, defaults to _f4.
 #' @param chunkB character chunk representing frequences, defaults to _f12.
 #' @export
-overlap_ts_list_by_name <- function(listA, listB,
+overlap_ts_lists_by_name <- function(listA, listB,
                              chunkA ="_f4",
                              chunkB = "_f12"){
   nma <- names(listA)
