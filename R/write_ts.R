@@ -67,7 +67,7 @@ write_ts <- function(tl,
         
         index <- seq(nrow(tl_lengths))
         
-        tsdf <- tl_lengths[, .(internal_index = seq(length)), by = index]
+        tsdf <- tl_lengths[, list(internal_index = seq(length)), by = index]
         
         tl_names <- names(tl)
         
