@@ -6,7 +6,7 @@
 #' @param listA list of time series
 #' @param listB list of time series
 #' @export
-overlapSortedLists <- function(listA,listB){
+overlap_sorted_list <- function(listA,listB){
   stopifnot(length(listA) == length(listB))
   concat_list <- lapply(seq_along(listA),function(x){
     out <- tryCatch({resolveOverlap(listA[[x]],listB[[x]])},

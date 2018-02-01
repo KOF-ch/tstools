@@ -57,7 +57,7 @@
 #' @examples 
 #' # create a list
 #' data(KOF)
-#' tt <- initDefaultTheme()
+#' tt <- default_tsplot_theme()
 #' # adjust a single element
 #' tt$highlight_window <- TRUE
 #' # pass the list to tsplot
@@ -69,7 +69,7 @@
 #' @md
 #' @author Matthias Bannert
 #' @export
-initDefaultTheme <- function(){
+default_tsplot_theme <- function(){
   theme <- list()
   theme$margins <- c(5, 4, 3, 3) + 0.1
   theme$fillYearWithNAs <- TRUE

@@ -1,6 +1,5 @@
-#' importTimeSeries
-#'
 #' Import time series data from a file.
+#'
 #' If importing from a zip file, the archive should contain a single file with the extension .csv, .xlsx or .json.
 #' 
 #' @param file Path to the file to be read
@@ -12,7 +11,7 @@
 #' @importFrom data.table fread
 #' @importFrom utils unzip
 #' @export
-importTimeSeries <- function(file,
+read_ts <- function(file,
                              format = c("csv", "xlsx",
                                         "json", "zip"),
                              sep = ",") {

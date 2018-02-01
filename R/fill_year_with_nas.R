@@ -7,7 +7,7 @@
 #' @param fill_up_start logical should start year be filled up? Defaults to FALSE.
 #' @export
 #' @importFrom stats start end
-fillUpYearWithNAs <- function(x, add_periods = 1,
+fill_years_with_nas <- function(x, add_periods = 1,
                               fill_up_start = FALSE){
   UseMethod("fillUpYearWithNAs")
 }

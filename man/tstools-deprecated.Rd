@@ -4,6 +4,16 @@
 \name{tstools-deprecated}
 \alias{tstools-deprecated}
 \alias{computeDecimalTime}
+\alias{concatTs}
+\alias{fillupYearWitnNAs}
+\alias{importTimeSeries}
+\alias{initDefaultTheme}
+\alias{overlapSortedLists}
+\alias{overlapTslByName}
+\alias{resolveOverlap}
+\alias{stripLeadingNAsFromTs}
+\alias{stripTrailingNAsFromTs}
+\alias{writeTimeSeries}
 \alias{tstools-deprecated-package}
 \title{Deprecated function(s) in tstools}
 \usage{
@@ -21,6 +31,10 @@ removed.
 
 \tabular{rl}{
   \code{computeDecimalTime} \tab now a synonym for \code{\link{compute_decimal_time}}\cr
+  \code{concatTs} \tab now a synonym for \code{\link{concat_ts}}\cr
+  \code{fillupYearWitnNAs} \tab now a synonym for \code{\link{fill_year_with_nas}}\cr
+  \code{importTimeSeries} \tab now a synonym for \code{\link{read_ts}}\cr
+  \code{initDefaultTheme} \tab now a synonym for \code{\link{default_tsplot_theme}}\cr
 }
 }
 
