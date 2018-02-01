@@ -10,7 +10,7 @@ llr <- list(t4 = tsb4)
 noname <- list(ts(runif(30,-30,20),start=c(2010,1),frequency = 4),
                ts(runif(30,0,50),start=c(2010,1),frequency = 4))
 
-undebug(findGroupCoords)
+undebug(find_group_coords)
 undebug(drawTsBars)
 undebug(tsplot)
 tsplot(noname,left_as_bar = T,

@@ -1,4 +1,4 @@
-findGroupCoords <- function(x,theme,i){
+find_group_coords <- function(x,theme,i){
   ts_time <- time(x)
   COLS <- ncol(x)
   FRQ <- frequency(x)

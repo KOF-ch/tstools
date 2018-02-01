@@ -74,7 +74,7 @@ drawTsBars.mts <- function(x,
 
   for (i in 1L:NC_POS) {
     if(group_bar_chart){
-      coords <- findGroupCoords(x,theme,i)      
+      coords <- find_group_coords(x,theme,i)      
       rect(coords$xl, coords$yb,
            coords$xr, coords$yt,
            col = theme$bar_fill_color,
