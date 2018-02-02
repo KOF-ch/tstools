@@ -41,7 +41,7 @@ importTimeSeries <- function(...) {
   .Deprecated("read_ts", package="tstools")
   read_ts(...)
 }
-init_tsplot_theme <- function(...) {
+initDefaultTheme <- function(...) {
   .Deprecated("init_tsplot_theme", package="tstools")
   init_tsplot_theme(...)
 }

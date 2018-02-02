@@ -144,7 +144,7 @@ basis. The following draws a line on top of the bars that represents the sum.
 
 ```{r,fig.width = 7,fig.height=6}
 tsl <- list(tsb1,tsb2,tsb3)
-tt <- initDefaultTheme()
+tt <- init_tsplot_theme()
 tt$sum_as_line <- T
 tsplot(tsl,left_as_bar = T,
        manual_value_ticks_l = seq(-40,100, by = 20),
@@ -255,8 +255,6 @@ tsplot(tsb1, tsb2, tsb3,
 ```{r,fig.width = 7,fig.height=6}
 tt$use_box <- T
 tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
-       manual_value_ticks_l = seq(-40,80,by=20),
-       manual_value_ticks_r = seq(-4,8, by=2),
        left_as_bar = T,
        theme = tt,
        auto_legend = F)
@@ -330,11 +328,11 @@ Besides the default .csv, .json, .xlsx, and .RData are available.
 
 ```{r,eval=FALSE}
 data(KOF)
-writeTimeSeries(KOF,"test_export","csv")
+write_ts(KOF,"test_export","csv")
 ```
 
 ```{r,eval=FALSE}
-writeTimeSeries(KOF,"test_export_wide_trans","csv", wide = T, transpose = T)
+write_ts(KOF,"test_export_wide_trans","csv", wide = T, transpose = T)
 ```
 
 *Transpose = T* moves the time to the header (x-axis) and places all variables in rows 
