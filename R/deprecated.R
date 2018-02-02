@@ -7,15 +7,15 @@
 #' @name tstools-deprecated
 #' @param ... Parameters to be passed to the modern version of the function
 #' @docType package
-#' @export  computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries initDefaultTheme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
-#' @aliases computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries initDefaultTheme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
+#' @export  computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries init_tsplot_theme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
+#' @aliases computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries init_tsplot_theme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
 #' @section Details:
 #' \tabular{rl}{
 #'   \code{computeDecimalTime} \tab now a synonym for \code{\link{compute_decimal_time}}\cr
 #'   \code{concatTs} \tab now a synonym for \code{\link{concat_ts}}\cr
 #'   \code{fillupYearWitnNAs} \tab now a synonym for \code{\link{fill_year_with_nas}}\cr
 #'   \code{importTimeSeries} \tab now a synonym for \code{\link{read_ts}}\cr
-#'   \code{initDefaultTheme} \tab now a synonym for \code{\link{init_tsplot_theme}}\cr
+#'   \code{init_tsplot_theme} \tab now a synonym for \code{\link{init_tsplot_theme}}\cr
 #'   \code{overlapSortedLists} \tab now a synonym for \code{\link{overlap_sorted_ts_lists}}\cr
 #'   \code{overlapTslByName} \tab now a synonym for \code{\link{overlap_ts_lists_by_name}}\cr
 #'   \code{resolveOverlap} \tab now a synonym for \code{\link{resolve_ts_overlap}}\cr
@@ -41,7 +41,7 @@ importTimeSeries <- function(...) {
   .Deprecated("read_ts", package="tstools")
   read_ts(...)
 }
-initDefaultTheme <- function(...) {
+init_tsplot_theme <- function(...) {
   .Deprecated("init_tsplot_theme", package="tstools")
   init_tsplot_theme(...)
 }

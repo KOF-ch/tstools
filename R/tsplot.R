@@ -16,7 +16,7 @@
 #' @param manual_date_ticks character vector of manual date ticks.
 #' @param manual_value_ticks_l numeric vector, forcing ticks to the left y-axis 
 #' @param manual_value_ticks_r numeric vector, forcing ticks to the right y-axis 
-#' @param theme list of default plot output parameters. Defaults to NULL, which leads to \code{\link{initDefaultTheme}} being called. Please see the vignette for details about tweaking themes.
+#' @param theme list of default plot output parameters. Defaults to NULL, which leads to \code{\link{init_tsplot_theme}} being called. Please see the vignette for details about tweaking themes.
 #' @param quiet logical suppress output, defaults to TRUE.
 #' @param auto_legend logical should legends be printed automatically, defaults to TRUE.
 #'
@@ -177,7 +177,7 @@ tsplot.list <- function(...,
   
   tsl <- c(...)
   
-  if(is.null(theme)) theme <- initDefaultTheme()
+  if(is.null(theme)) theme <- init_tsplot_theme()
   # thanks to @christophsax for that snippet.
   # I been looking for this for while..
   op <- par(no.readonly = T)

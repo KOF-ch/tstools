@@ -3,7 +3,7 @@
 add_legend <- function(tsln,
                       tsrn = NULL,
                       left_as_bar = F,
-                      theme = initDefaultTheme()){
+                      theme = init_tsplot_theme()){
   par(fig = c(0, 1, 0, 1),
       oma = c(0.2, 3, 2, 1),
       mar = c(0, 0, 0, 0),
