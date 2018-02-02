@@ -169,6 +169,25 @@ tsplot(tsb1, tsb2, tsb3, tsb4,
        left_as_bar = T,
        auto_legend = F)
 ```
+### Grouped bar charts
+
+When different variables got the same scale, but cannot be aggregated
+we want to display time series bars next to each other instead of stacking
+them. In **tstools** stacking is the default but it can easily be tweaked using
+the *group_bar_chart parameter.
+
+```{r,fig.width = 7,fig.height=6}
+tsb1 <- ts(runif(20,-30,20),start=c(2010,1),frequency = 12)
+tsb2 <- ts(runif(20,0,50),start=c(2010,1),frequency = 12)
+tsb3 <- ts(runif(20,0,50),start=c(2010,1),frequency = 12)
+tsplot(tsb1, tsb2, tsb3,
+       left_as_bar = T,
+       group_bar_chart = T,
+       auto_legend = F)
+```
+
+
+
 
 
 ### Multiple Y-axis with different scales (line charts)
