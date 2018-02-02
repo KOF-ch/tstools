@@ -6,6 +6,7 @@
 #' @details 
 #' Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments. I will try to write comments on all params soon. 
 #' The list contains the following elements:
+#'
 #' @param margins integer vector defaults to c(5, 4, 3, 3) + 0.1,
 #' @param fillYearWithNAs logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,
 #' @param line_to_middle logical try to put a line into the middle of the plot. defaults to TRUE.
@@ -143,7 +144,8 @@ init_tsplot_theme <- function(
   subtitle_adj_r = .9,
   legend_intersp_x = 1,
   legend_intersp_y = 1){
-as.list(formals())
+  li <- as.list(formals())
+  lapply(li,eval)
 }
   
 

@@ -2,71 +2,156 @@
 % Please edit documentation in R/themes.R
 \name{init_tsplot_theme}
 \alias{init_tsplot_theme}
-\title{Initiate default theme}
+\title{Initiate Default Theme}
 \usage{
-init_tsplot_theme()
+init_tsplot_theme(margins = c(5, 4, 3, 3) + 0.1, fillYearWithNAs = TRUE,
+  line_to_middle = TRUE, lwd = c(2, 3, 1, 4, 2, 4), lty = 1, xaxs = "i",
+  yaxs = "i", bar_border = "#000000", total_bar_margin_pct = 0.2,
+  bar_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 =
+  "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30
+  = "#e6b3d3"), sum_as_line = FALSE, sum_line_lty = 1, sum_line_lwd = 3,
+  sum_line_color = c(ETH_8_100 = "#007a92", ETH_4_100 = "#72791c", ETH_8_20 =
+  "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2", ETH_5_100 = "#91056a",
+  ETH_4_60 = "#a9af66"), highlight_window = FALSE,
+  highlight_window_freq = 4, highlight_window_start = NA,
+  highlight_window_end = NA, highlight_color = "#e9e9e9", use_box = FALSE,
+  y_las = 2, lwd_ticks_1 = 1.5, lwd_ticks_2 = 1, yearly_ticks = TRUE,
+  quarterly_ticks = TRUE, monthly_ticks = FALSE,
+  tcl_quarterly_tick_tcl = -0.5, tcl_yearly_tick = -0.75,
+  lwd_yearly_ticks = 1.5, lwd_quarterly_ticks = 1, label_pos = "mid",
+  show_left_y_axis = TRUE, show_right_y_axis = TRUE, y_grid_count = c(5,
+  6, 8, 10), show_y_grids = TRUE, y_grid_color = "#CCCCCC",
+  y_grid_count_strict = FALSE, y_tick_margin = 0.15,
+  preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
+  y_range_min_size = NULL, legend_col = 3, title_outer = TRUE,
+  title_adj = 0, title_line = 0.8, title_cex.main = 1,
+  title_transform = NA, subtitle_adj = 0, subtitle_outer = TRUE,
+  subtitle_line = -0.6, subtitle_cex.main = 1,
+  subtitle_transform = "toupper", subtitle_adj_r = 0.9,
+  legend_intersp_x = 1, legend_intersp_y = 1)
+}
+\arguments{
+\item{margins}{integer vector defaults to c(5, 4, 3, 3) + 0.1,}
+
+\item{fillYearWithNAs}{logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,}
+
+\item{line_to_middle}{logical try to put a line into the middle of the plot. defaults to TRUE.}
+
+\item{lwd}{integer vector line width, defaults to c(2,3,1,4,2,4).}
+
+\item{lty}{integer vector line type defaults to 1.}
+
+\item{xaxs}{character axis defintion as in base plot, defaults to "i".}
+
+\item{yaxs}{character axis defintion as in base plot, defaults to "i".}
+
+\item{bar_border}{}
+
+\item{total_bar_margin_pct}{numeric defintion as in base plot, defaults to "i", defaults to .2,}
+
+\item{sum_as_line}{logical should the sum of stacked time series be displayed as a line on top of stacked bar charts. 
+defaults to FALSE,}
+
+\item{sum_line_lty}{integer line type of sum_as_line, defaults to 1.}
+
+\item{sum_line_lwd}{integer line width of sum_as_line, defaults to 3.}
+
+\item{sum_line_color}{character hex color of of sum_as_line, defaults "#91056a".}
+
+\item{highlight_window}{logical should a particular time span be highlighted by different background color. Defaults
+to FALSE.}
+
+\item{highlight_window_freq}{integer frequency of the higlight window defintion, defaults to 4.}
+
+\item{highlight_window_start}{integer vector highlight window start position, defaults to NA.}
+
+\item{highlight_window_end}{integer vector highlight window start position, defaults to NA.,}
+
+\item{highlight_color}{character hex color code of highlight background, defaults to "#e9e9e9".}
+
+\item{use_box}{logical use a box around the plot.}
+
+\item{y_las}{integer, same as base \code{\link{plot}} parameter defaults to 2.}
+
+\item{lwd_ticks_1}{numeric width of type 1 ticks, defaults to 1.5.}
+
+\item{lwd_ticks_2}{numeric width of type 1 ticks, defaults to 1.}
+
+\item{yearly_ticks}{logical, should yearly ticks be shown. Defaults to TRUE.}
+
+\item{quarterly_ticks}{logical, should quarterly ticks be shown. Defaults to TRUE.}
+
+\item{monthly_ticks}{logical, should monthly ticks be shown. Defaults to FALSE.}
+
+\item{tcl_quarterly_tick_tcl}{numeric, same as base \code{\link{plot}} tcl parameter defaults to -.5,}
+
+\item{tcl_yearly_tick}{numeric, same as base \code{\link{plot}} tcl parameter defaults to -.75,}
+
+\item{lwd_yearly_ticks}{numeric, width of yearly ticks, defaults to 1.5.}
+
+\item{lwd_quarterly_ticks}{numeric, width of yearly ticks, defaults to 1.}
+
+\item{label_pos}{character, currently undocumented. sorry. defaults to "mid".}
+
+\item{show_left_y_axis}{logical: should left y axis be shown, defaults to TRUE.}
+
+\item{show_right_y_axis}{logical: should left y axis be shown, defaults to TRUE.}
+
+\item{y_grid_count}{integer vector preferred y grid counts c(5,6,8,10).}
+
+\item{show_y_grids}{logical should y_grids by shown at all, defaults to TRUE.}
+
+\item{y_grid_color}{character hex color of grids. Defaults to gray "#CCCCCC".}
+
+\item{y_grid_count_strict}{logical should we strictly stick to preferred y grid count? Defaults to FALSE.}
+
+\item{y_tick_margin}{numeric, minimal percentage of horizontal grid that needs to be clean, i.e., 
+without lines or bars. Defaults to 0.15 (15 percent).}
+
+\item{preferred_y_gap_sizes}{numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),}
+
+\item{y_range_min_size}{= NULL  ,}
+
+\item{legend_col}{integer number of columns for the legend, defaults to 3.}
+
+\item{title_outer}{logical, currently undocumented. Defaults to TRUE.}
+
+\item{title_adj}{numeric, same as base \code{\link{plot}} parameter, defaults to 0.}
+
+\item{title_line}{numeric same as base \code{\link{plot}} parameter, defaults to .8.}
+
+\item{title_cex.main}{numeric, same as base \code{\link{plot}} parameter defaults to 1}
+
+\item{title_transform}{function to transform the title, defaults to NA.}
+
+\item{subtitle_adj}{numeric same as base \code{\link{plot}} parameter, defaults to 0.}
+
+\item{subtitle_outer}{numeric same as base \code{\link{plot}} parameter, defaults to TRUE}
+
+\item{subtitle_line}{numeric same as base \code{\link{plot}} parameter, defaults to -.6}
+
+\item{subtitle_cex.main}{numeric same as base \code{\link{plot}} parameter, defaults to 1}
+
+\item{subtitle_transform}{function to transform the subtitle, defaults to "toupper",}
+
+\item{subtitle_adj_r}{numeric same as base \code{\link{plot}} parameter, defaults to .9}
+
+\item{legend_intersp_x}{numeric same as base \code{\link{plot}} parameter, defaults to 1}
+
+\item{legend_intersp_y}{numeric same as base \code{\link{plot}} parameter, defaults to 1}
 }
 \description{
-The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them.
+The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
 Hence the init_tsplot_theme function create a fresh list object containing default values for lot of different layout parameters etc. By replacing single elements of the list and passing the entire list to the plot function, single aspects can be tweaked while keeping most defaults. Init defaultTheme does not need any parameters.
 }
 \details{
-Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments. I will try to write comments on all params soon.
+Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments. I will try to write comments on all params soon. 
 The list contains the following elements:
-\itemize{
-\item margins
-\item fillYearWithNAs logical: should a year be filled up with NAs if values do not go until the last period of the last year?
-\item line_colors vector of RGB code strings defaults
-\item line_to_middle
-\item lwd integer vector of line width
-\item lty integer vector of line types, solid, dashed etc. see also \code{\link{par}}.
-\item xaxs
-\item yaxs
-\item bar_border RGB color code string of all bars borders
-\item total_bar_margin_pct share of space left for margins when grouping bar charts
-\item bar_fill_color vector RGB color code strings denoting the fill of (stacked) bar chart elements
-\item sum_as_line
-\item sum_line_color
-\item sum_line_lty
-\item sum_line_lwd
-\item highlight_window logical should a highlight window be used for background?
-\item highlight_window_start integer vector year,period
-\item highlight_window_end integer vector year,period
-\item highlight_color RGB string color, color of the highlight background window
-\item use_box logical: should there be a box around the plot? defaults to FALSE.
-\item y_las
-\item lwd_ticks_1
-\item lwd_ticks_2
-\item yearly_ticks logical: should there be yearly tick marks?
-\item quarterly_ticks logical: should there be quarterly tick marks?
-\item monthly_ticks logical: should there be monthly tick marks?
-\item tcl_quarterly_tick_tcl
-\item tcl_yearly_tick
-\item lwd_yearly_ticks
-\item lwd_quarterly_ticks
-\item label_pos
-\item show_left_y_axis
-\item show_right_y_axis
-\item y_grid_count
-\item show_y_grids
-\item y_grid_color
-\item legend_col
-\item title_outer
-\item title_adj
-\item title_line
-\item title_cex.main
-\item subtitle_adj
-\item subtitle_outer
-\item subtitle_line
-\item subtitle_cex.main
-\item subtitle_transform
-\item subtitle_adj_r
-}
 }
 \examples{
 # create a list
 data(KOF)
-tt <- default_tsplot_theme()
+tt <- init_tsplot_theme()
 # adjust a single element
 tt$highlight_window <- TRUE
 # pass the list to tsplot
