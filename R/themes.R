@@ -69,7 +69,7 @@
 #' @md
 #' @author Matthias Bannert
 #' @export
-default_tsplot_theme <- function(){
+init_tsplot_theme <- function(){
   theme <- list()
   theme$margins <- c(5, 4, 3, 3) + 0.1
   theme$fillYearWithNAs <- TRUE
