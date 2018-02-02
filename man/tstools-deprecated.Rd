@@ -7,7 +7,7 @@
 \alias{concatTs}
 \alias{fillupYearWitnNAs}
 \alias{importTimeSeries}
-\alias{initDefaultTheme}
+\alias{init_tsplot_theme}
 \alias{overlapSortedLists}
 \alias{overlapTslByName}
 \alias{resolveOverlap}
@@ -31,7 +31,7 @@ removed.
   \code{concatTs} \tab now a synonym for \code{\link{concat_ts}}\cr
   \code{fillupYearWitnNAs} \tab now a synonym for \code{\link{fill_year_with_nas}}\cr
   \code{importTimeSeries} \tab now a synonym for \code{\link{read_ts}}\cr
-  \code{initDefaultTheme} \tab now a synonym for \code{\link{init_tsplot_theme}}\cr
+  \code{init_tsplot_theme} \tab now a synonym for \code{\link{init_tsplot_theme}}\cr
   \code{overlapSortedLists} \tab now a synonym for \code{\link{overlap_sorted_ts_lists}}\cr
   \code{overlapTslByName} \tab now a synonym for \code{\link{overlap_ts_lists_by_name}}\cr
   \code{resolveOverlap} \tab now a synonym for \code{\link{resolve_ts_overlap}}\cr

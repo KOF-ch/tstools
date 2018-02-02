@@ -40,7 +40,7 @@ tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = NULL,
 
 \item{manual_value_ticks_r}{numeric vector, forcing ticks to the right y-axis}
 
-\item{theme}{list of default plot output parameters. Defaults to NULL, which leads to \code{\link{initDefaultTheme}} being called. Please see the vignette for details about tweaking themes.}
+\item{theme}{list of default plot output parameters. Defaults to NULL, which leads to \code{\link{init_tsplot_theme}} being called. Please see the vignette for details about tweaking themes.}
 
 \item{quiet}{logical suppress output, defaults to TRUE.}
 

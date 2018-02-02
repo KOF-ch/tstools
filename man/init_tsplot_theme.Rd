@@ -8,7 +8,7 @@ init_tsplot_theme()
 }
 \description{
 The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them.
-Hence the initDefaultTheme function create a fresh list object containing default values for lot of different layout parameters etc. By replacing single elements of the list and passing the entire list to the plot function, single aspects can be tweaked while keeping most defaults. Init defaultTheme does not need any parameters.
+Hence the init_tsplot_theme function create a fresh list object containing default values for lot of different layout parameters etc. By replacing single elements of the list and passing the entire list to the plot function, single aspects can be tweaked while keeping most defaults. Init defaultTheme does not need any parameters.
 }
 \details{
 Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments. I will try to write comments on all params soon.
