@@ -7,7 +7,7 @@
 \alias{concatTs}
 \alias{fillupYearWitnNAs}
 \alias{importTimeSeries}
-\alias{init_tsplot_theme}
+\alias{initDefaultTheme}
 \alias{overlapSortedLists}
 \alias{overlapTslByName}
 \alias{resolveOverlap}
