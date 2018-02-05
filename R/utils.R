@@ -90,7 +90,7 @@ findGapSize <- function(r,tick_count){
 }
 
 
-findTicks <- function(r, true_r, tick_count, preferred_gap_sizes){
+findTicks <- function(r, true_r, tick_count, preferred_gap_sizes, is_bar = FALSE){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
   gaps <- findGapSize(r=r,sort(tick_count))
@@ -104,14 +104,15 @@ findTicks <- function(r, true_r, tick_count, preferred_gap_sizes){
   
   # nudge the generated range around a bit to ensure the series are more or less "centered"
   # i.e. there are no empty ticks
-  lb_too_low <- r[1] > lb + gaps
-  lb[lb_too_low] <- lb[lb_too_low] + gaps[lb_too_low]/2
-  ub[lb_too_low] <- ub[lb_too_low] + gaps[lb_too_low]/2
-  
-  ub_too_high <- r[2] < ub - gaps
-  lb[ub_too_high] <- lb[ub_too_high] - gaps[ub_too_high]/2
-  ub[ub_too_high] <- ub[ub_too_high] - gaps[ub_too_high]/2
-  
+  if(!is_bar) {
+    lb_too_low <- r[1] > lb + gaps
+    lb[lb_too_low] <- lb[lb_too_low] + gaps[lb_too_low]/2
+    ub[lb_too_low] <- ub[lb_too_low] + gaps[lb_too_low]/2
+    
+    ub_too_high <- r[2] < ub - gaps
+    lb[ub_too_high] <- lb[ub_too_high] - gaps[ub_too_high]/2
+    ub[ub_too_high] <- ub[ub_too_high] - gaps[ub_too_high]/2
+  }
   seqs <- list()
   for(i in seq_along(gaps)) {
     seqs[[i]] <- seq(lb[i],ub[i],gaps[i])

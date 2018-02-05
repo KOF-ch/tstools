@@ -251,7 +251,7 @@ tsplot.list <- function(...,
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
-    left_ticks <- do.call(find_ticks_function, list(tsl_r, tsl_r_true, theme$y_grid_count, theme$preferred_y_gap_sizes))
+    left_ticks <- do.call(find_ticks_function, list(tsl_r, tsl_r_true, theme$y_grid_count, theme$preferred_y_gap_sizes, left_as_bar))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
   }
@@ -291,13 +291,15 @@ tsplot.list <- function(...,
         right_ticks <- c(right_ticks, right_ub + right_d)
       }
     }
-    
-    left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
-    
-    if(left_needs_exta_tick_bottom) {
-      left_ticks <- c(left_lb - left_d, left_ticks)
-      if(!is.null(tsr)) {
-        right_ticks <- c(right_lb - right_d, right_ticks)
+  
+    if(!left_as_bar) {
+      left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
+      
+      if(left_needs_exta_tick_bottom) {
+        left_ticks <- c(left_lb - left_d, left_ticks)
+        if(!is.null(tsr)) {
+          right_ticks <- c(right_lb - right_d, right_ticks)
+        }
       }
     }
     
