@@ -6,7 +6,16 @@
 #' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010.
 #' @param timestamp_file If TRUE, the current date will be appended to the file name
 #' @param round_digits integer, precision in digits.
-#' @param ... optinal logical arguments such as 'wide','transposed', 'json_pretty', 'zip'.
+#' @param ... additional arguments used by spedific formats.
+#' @details 
+#' Additional arguments covered by \code{...}
+#' \tabular{lll}{
+#'   \strong{Name} \tab \strong{Effect} \tab \strong{Format(s)} \cr
+#'   \code{wide} \tab Export data in a wide format (one column per series) \tab CSV, XLSX \cr
+#'   \code{transpose} \tab Transpose exported data (one row per series) \tab CSV, XLSX, only if wide = TRUE \cr
+#'   \code{zip} \tab If set to TRUE, the file is compressed into a zip archive after export \tab any \cr
+#'   \code{rdata_varname} \tab The name of the time series list object in the exported RData file \tab rdata \cr
+#' }
 #' @importFrom jsonlite toJSON
 #' @importFrom utils zip
 #' @import data.table

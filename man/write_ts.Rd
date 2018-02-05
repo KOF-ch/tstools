@@ -20,8 +20,18 @@ write_ts(tl, fname = "timeseriesdb_export", format = "csv",
 
 \item{round_digits}{integer, precision in digits.}
 
-\item{...}{optinal logical arguments such as 'wide','transposed', 'json_pretty', 'zip'.}
+\item{...}{additional arguments used by spedific formats.}
 }
 \description{
 Export a list of time series to a file.
+}
+\details{
+Additional arguments covered by \code{...}
+\tabular{lll}{
+  \strong{Name} \tab \strong{Effect} \tab \strong{Format(s)} \cr
+  \code{wide} \tab Export data in a wide format (one column per series) \tab CSV, XLSX \cr
+  \code{transpose} \tab Transpose exported data (one row per series) \tab CSV, XLSX, only if wide = TRUE \cr
+  \code{zip} \tab If set to TRUE, the file is compressed into a zip archive after export \tab any \cr
+  \code{rdata_varname} \tab The name of the time series list object in the exported RData file \tab rdata \cr
+}
 }
