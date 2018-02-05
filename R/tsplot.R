@@ -247,6 +247,7 @@ tsplot.list <- function(...,
   # tsr and tsl have different scales.... 
   # time series left
   if(!is.null(manual_value_ticks_l)){
+    left_ticks <- manual_value_ticks_l
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
@@ -260,6 +261,7 @@ tsplot.list <- function(...,
       if(length(manual_value_ticks_r) != length(left_y$y_ticks)){
         return("When using to manual tick position vectors, both need to be of same length! (Otherwise grids look ugly)")
       }
+      right_ticks <- manual_value_ticks_r
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
