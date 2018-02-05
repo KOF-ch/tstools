@@ -346,7 +346,7 @@ tsplot.list <- function(...,
   
   if(theme$highlight_window){
     if(!any(is.na(theme$highlight_window_start))){
-      xl <- computeDecimalTime(theme$highlight_window_start,
+      xl <- compute_decimal_time(theme$highlight_window_start,
                                theme$highlight_window_freq)
       
     } else{
@@ -354,7 +354,7 @@ tsplot.list <- function(...,
     }
     
     if(!any(is.na(theme$highlight_window_end))){
-      xr <- computeDecimalTime(theme$highlight_window_end,
+      xr <- compute_decimal_time(theme$highlight_window_end,
                                theme$highlight_window_freq)
       
     } else{

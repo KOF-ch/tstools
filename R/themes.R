@@ -9,13 +9,15 @@
 #'
 #' @param margins integer vector defaults to c(5, 4, 3, 3) + 0.1,
 #' @param fillYearWithNAs logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,
+#' @param line_colors character vector of hex colors for 6 lines. 
 #' @param line_to_middle logical try to put a line into the middle of the plot. defaults to TRUE.
 #' @param lwd integer vector line width, defaults to c(2,3,1,4,2,4).
 #' @param lty integer vector line type defaults to 1. 
 #' @param xaxs character axis defintion as in base plot, defaults to "i".
 #' @param yaxs character axis defintion as in base plot, defaults to "i".
-#' @param bar_border 
+#' @param bar_border character hex colors for the border around bars in bar charts. 
 #' @param total_bar_margin_pct numeric defintion as in base plot, defaults to "i", defaults to .2,
+#' @param bar_fill_color character vector of hex colors for 6 time series. 
 #' @param sum_as_line logical should the sum of stacked time series be displayed as a line on top of stacked bar charts. 
 #' defaults to FALSE,
 #' @param sum_line_lty integer line type of sum_as_line, defaults to 1.
@@ -80,6 +82,13 @@
 init_tsplot_theme <- function(
   margins = c(5, 4, 3, 3) + 0.1,
   fillYearWithNAs = TRUE,
+  line_colors = c("ETH_8_100" = "#007a92",
+                         "ETH_4_100" = "#72791c",
+                         "ETH_8_20" = "#cce5eb",
+                         "ETH_5_60" = "#cc67a7",
+                         "ETH_8_60" = "#66b0c2",
+                         "ETH_5_100" = "#91056a",
+                         "ETH_4_60" = "#a9af66"),
   line_to_middle = TRUE,
   lwd = c(2,3,1,4,2,4),
   lty = 1,
