@@ -9,32 +9,31 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
+
 # About tstools
-The *tstools* package provides convenience functions to process, plot and export time series. It aims at time series data stemming from official statistics, respectively macroeconomic data. Hence the package is focused on regular time series of monthly, quarterly or yearly frequency. 
+The *tstools* package provides convenience functions to process, plot and export time series. It aims at users from fields of official statistics and  macroeconomics. The package is focused on regular time series of monthly, quarterly or yearly frequency. As of February 2018, most of the functionality provided by *tstools* deals with plotting and so does this manual.
 
 <!-- Admittedly this a constraint, but being limited to this kind of data also provides the opportunity to choose default parameters and do a lot of parameter guessing. In turn, being able to use defaults and guessed parameters enables quicker specification and less configuration for the user. -->
 
-
 ## Why yet another time series package?
-One of the open source community's biggest gurus, Dirk Eddelbuettel, said it best when being asked whether it would make sense to come up with a new project: ``It's your itch - it's your project.``
-And yes, there were some itches in every day work that needed to be scratched. How about: ``I can't believe it's so disgusting to create simple plots with 2 y-axes of different scales.``, or ``This R thing can't do time series bar charts 'properly' - even Excel can do this. I don't get the hype.``. Or did I mention ``Why isn't the 2010 label in the middle of the year?``? 
-Even the omniscient Doctor Google didn't come up with a satisfactory solution: On the one hand you could find hacky solutions to somehow get one of these plots done with R. On the other hand you could find some of the greatest data visualization gurus arguing how flawed all these kind of plots are and that you should rather go with other ways of showing the information. While the former is not an option for production use, the latter isn't much better if you are not the dictator of your organization (which is unlikely if you're a developer). 
+If you have ever thought (or heard) ``I can't believe it's so disgusting to create simple plots with 2 y-axes of different scales.``, or ``This R thing can't do time series bar charts 'properly' - even Excel can do this. I don't get the hype.`` or ``Why isn't the 2010 label in the middle of the year?`` **tstools** is for you. In other words, whenever the 'business' directly works with code they wonder why, e.g., legends or parts of a plot are not placed automatically where they ought to be. In addition to make interactive plotting more convenient and fun, 
+the main goal of **tstools** is to provide a simple environment for production reports and plots. 
 
-While I do admit some of these graphs have debatable underlying concepts, the real question is: How does other software do it? 
-Defaults and lots of guesses. If you know your users and use cases, you will be fairly good at guessing what they want. Knowing what users want makes your software look good and defintions and functions calls simple. This is exactly the strategy of *tstools*: Aim at regular time series of monthly, quarterly or yearly frequency. Aim at official statisticians and macroeconomists. It's not too difficult to see what these users want and why they want it. Contribution to economic growth in a particular period typically comes from multiple sources which is why stacked bar charts are the state-of-the-art visualization. 
-Yes, there are stacked area charts too, but often growth needs to be shown together with an indicator that is scaled differently. So you might want to have a stacked bar chart that relates to the left y-axis while a line chart indicator relates to the right y-axis? Oh, and did I mention the data is of different frequency and lines should be in the middle of the bar (not at its left end) if they apply to the same period? *tstools* solves all of this domain-specific time series plotting. Plus the package provides several nifty convenience functions to make life of official statisticians a bit easier.
+Instead of claiming that the business is wrong, and placing these things automatically would limit flexibility or that the business' visual concepts are flawed, **tstools** tries to provide a solution that helps economists and establishment statisticians to work and plot with R conveniently. Replace *automatically* with *by default* and you understand how **tstools** essentially works. The package uses R's base plot functionality and sets a plethora of defaults, that in combination with each other make the plots look nifty. All the package does when it comes to plotting, is try to guess what the user wants when they call *tsplot*.
 
+The following sections will show some examples of popular time series plots that used to be hard to get in R: 
 
-## How is tstools different from other time series packages?
-*tstools* is not meant to replace or substitute any other time series package. You still want to use *zoo*, *xts*, *seasonal*, *tempdisagg* and many other useful packages. *tstools* was created to supplement those. It's not implementing any new time series models, it's simply a package that makes every day life with time series in official statistics more convenient. Also *tstools* is designed to work together with the *timeseriesdb* R package which archives, manages and stores time series data in a PostgreSQL database and provides an interface to R. *timeseriesdb* typically returns lists which can be directly processed by tstools. 
-
+- (line) charts with 2 y-axes but matching grids
+- charts with highlighted time spans
+- time series bar charts with negative and positive growth contributions
+- charts with a continous time x-axis
 
 # Graphs
-As of February 2017, most of the functionality provided by *tstools* deals with plotting. *tstools* produces base R plots. Hence all resulting plots can simply be extended by further calls to base R plot functions. Base R plots look rather technical and raw, which is why **tstools** tries to set a ton of useful defaults to make time series plots look nifty from the start. 
+*tstools* produces base R plots. Hence all resulting plots can simply be extended by further calls to base R plot functions. Base R plots look rather technical and raw, which is why **tstools** tries to set a ton of useful defaults to make time series plots look fresh and clean from the start. 
 
 ## Basic usage
 Plotting with *tstools* is easy. There is only one generic plotting function called **tsplot**. Depending on what time series
-objects are passed on to the function the method dispatch chooses the right method automatically and plots the graph. The following sections will walk through several applied plotting examples. Horizontal grids that suit two axes, automatic shifting of series to the middle of the period, colors, line types, filling up started years and many more come as convenient defaults but can be adjusted using *themes*. 
+objects are passed on to the function the method dispatch chooses the right method automatically and plots the graph. The following sections will walk through several applied plotting examples. Horizontal grids that suit two axes, automatic shifting of series to the middle of the period, colors, line types, filling up started years and many other features come as convenient defaults. Defaults can be adjusted using *themes*. 
 
 ### Single time series: line chart
 The most basic example of a time series plot is a time series line chart. The snippet below loads an example 
@@ -75,35 +74,118 @@ or a list of time series:
 tsplot(tslist,auto_legend=F)
 ```
 
+### List of time series: the recommended standard format
+
+The best way to work with **tstools** is to use *named lists of time series* as input 
+for *tsplot*. That way list names are used for labelling. Also lists of time series --
+even if of different frequency -- can easily be processed using *lapply*. 
+
+```{r,fig.width = 7,fig.height=6}
+tsplot(list("Time Series 1" = ts1,
+            "Time Series 2" = ts2))
+```
+
+### Auto-scale grids are there to help you, how to configure them!
+
+The latest release has considerably improved finding suitable scale and grids
+automatically. One improvement is the ability to detect not only the minimum 
+necessary range, but also to check whether some value is so close the x-axis
+that we prefer one more grid for a little extra breathing room. If there's less 
+than 15 percent of the bottom or grid left, *tsplot* automatically adds another
+grid. 
+
+The following example tweaks this 15 percent margin to an exaggerated 30 percent,
+in order to show how an extra grid up top is added because 
+of the KOF$kofbarometer line. At the bottom no additional grid is added because
+all lines are further away from the x-axis than 30 percent of the grid. 
+
+```{r,fig.width = 7,fig.height=6}
+data(KOF)
+tt <- initDefaultTheme()
+tt$y_grid_count_strict <- F
+tt$y_tick_margin <- 0.3
+tsplot(KOF$kofbarometer,
+       tsr = KOF$reference,
+       theme = tt)
+```
+
+### Manual value ticks
+Often you just want to have a fixed scale, e.g., for an index that ranges from 0 to 100. Simply use the ``manual_value_ticks_l`` and ``manual_value_ticks_r`` arguments to specify manual ticks and grids. In case you use 2 y-axes make sure both manual value tick vectors are of the same length. 
+
+
+
+
+
+
 ### Left Y-Axis as (stacked) bar chart
-Economists often want to display time series as bar charts. Most plotting engines
+Sometimes we want to display time series as bar charts. Most plotting engines
 understand bar charts as something that has a categorical x-axis. So even if
-there even you have time on the x-axis, periods are treated as categories
+you have time on the x-axis, periods are treated as categories
 implying that a bar is centered above the category tick for that period. 
-*tstools* treats the x-axis for bar charts as continous as well allowing quarterly
-truly represent an entire quarter. Note that stacked bar charts imply that all
+*tstools* treats the x-axis for bar charts as continous and allows a quarterly series
+to truly represent an entire quarter. Note that stacked bar charts imply that all
 involved series have the same frequency.
+
+```{r,fig.width = 7,fig.height=6}
+tsb1 <- ts(runif(30, -30, 20), start = c(2010, 1), frequency = 4)
+tsb2 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
+tsb3 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
+tsplot(tsb1, tsb2, tsb3,
+       left_as_bar = T,
+       auto_legend = F)
+```
+
+### Sum as line in stacked bar charts, manual value ticks
+
+One of the reasons for using bar charts with time series is
+to add up positive and negative contributions. In this case it is also
+helpful to be able to add the sum of the components to plot on a per period 
+basis. The following draws a line on top of the bars that represents the sum.  
+
+```{r,fig.width = 7,fig.height=6}
+tsl <- list(tsb1,tsb2,tsb3)
+tt <- init_tsplot_theme()
+tt$sum_as_line <- T
+tsplot(tsl,left_as_bar = T,
+       manual_value_ticks_l = seq(-40,100, by = 20),
+       auto_legend = F,
+       theme = tt)
+```
+
+Note that there's a manual value ticks parameter in case you do not want to 
+go with the automatically determined value ticks. 
+
+### Stacked bar charts with different start and end dates
+
+It is even possible now, to produce stacked bar charts from time series
+of different start and end dates.
 
 ```{r,fig.width = 7,fig.height=6}
 tsb1 <- ts(runif(30,-30,20),start=c(2010,1),frequency = 4)
 tsb2 <- ts(runif(30,0,50),start=c(2010,1),frequency = 4)
 tsb3 <- ts(runif(30,0,50),start=c(2010,1),frequency = 4)
-tsplot(tsb1,tsb2,tsb3,left_as_bar = T,
-       manual_value_ticks_l = seq(-40,100,by=20),auto_legend=F)
+tsb4 <- ts(runif(30,-40,10),start=c(2005,1),frequency = 4)
+tsplot(tsb1, tsb2, tsb3, tsb4,
+       left_as_bar = T,
+       auto_legend = F)
 ```
+### Grouped bar charts
 
-Because economists love to add up positive and negative contributions it is 
-helpful to be able to add the sum of the components to plot on a per period 
-basis. Here you go... 
+When different variables got the same scale, but cannot be aggregated
+we want to display time series bars next to each other instead of stacking
+them. In **tstools** stacking is the default but it can easily be tweaked using
+the *group_bar_chart parameter.
 
 ```{r,fig.width = 7,fig.height=6}
-tsl <- list(tsb1,tsb2,tsb3)
-tt <- initDefaultTheme()
-tt$sum_as_line <- T
-tsplot(tsl,left_as_bar = T,
-       manual_value_ticks_l = seq(-40,100,by=20),
-       auto_legend=F,theme = tt)
+tsb1 <- ts(runif(20,-30,20),start=c(2010,1),frequency = 12)
+tsb2 <- ts(runif(20,0,50),start=c(2010,1),frequency = 12)
+tsb3 <- ts(runif(20,0,50),start=c(2010,1),frequency = 12)
+tsplot(tsb1, tsb2, tsb3,
+       left_as_bar = T,
+       group_bar_chart = T,
+       auto_legend = F)
 ```
+
 
 
 
@@ -113,7 +195,7 @@ In order to compare indicators it's covenient in some domains to plot
 two time series of completely different scale, e.g., a growth rate and
 an indicator indexed at 100, to each other. Whenever the absolute level 
 is not overly interesting but rather the lead-lag structure and the
-co-movement 2 Y-axis with different scales are popular. Hence *tsplot*
+co-movement, 2 y-axes with different scales are popular. Hence *tsplot*
 introduces a second argument, *tsr* (time series right), which is an object of
 class ts or a list of time series.
 
@@ -124,7 +206,7 @@ tsplot(KOF$kofbarometer,
 ```
 
 
-### Multiple Y-axis with different scales (bar and line charts)
+### Multiple Y-axes with different scales (bar and line charts)
 Sometimes you want a bar chart on one axis and an line chart on the other. 
 Guess what, *tstools* also has a convenient way of creating these. Simply 
 provide a list of time series to both the ... argument and the tsr argument
@@ -136,10 +218,10 @@ tsb1 <- ts(runif(30,-30,20),start=c(2010,1),frequency = 4)
 tsb2 <- ts(runif(30,0,30),start=c(2010,1),frequency = 4)
 tsb3 <- ts(runif(30,0,30),start=c(2010,1),frequency = 4)
 tsr1 <- ts(runif(30,-4,6),start=c(2010,1),frequency = 4)
-tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
-       manual_value_ticks_l = seq(-40,80,by=20),
-       manual_value_ticks_r = seq(-4,8, by=2),
-       left_as_bar = T,auto_legend=F)
+tsplot(tsb1, tsb2, tsb3,
+       tsr=tsr1,
+       left_as_bar = T,
+       auto_legend=F)
 
 
 ```
@@ -153,23 +235,26 @@ This can be tricky when several time series and multiple axes are involved.
 However, there are countless possibilities and the number of ticks and grids may come to a matter of personal taste in the end. Hence, *tstools* provides not only the flexibility to set grids manually, you can even pass another algorithm implement in you very own R function that gives back a vector of ticks. Simply pass a function to the ``find_ticks_function`` argument. 
 Currently range, and potential tick count are fixed as arguments to these functions, but hopefully passing other sets of arguments will be possible soon.
 
-### Manual value ticks
-Often you just want to have a fixed scale, e.g., for an index that ranges from 0 to 100. Simply use the ``manual_value_ticks_l`` and ``manual_value_ticks_r``
-arguments to specify manual ticks and grids. In case you use 2 y-axes make sure both manual value tick vectors are of the same length. 
-
 
 ## Tweaking the defaults: Themes
 Font size, line color, bar color, grid color, show or not show grid, and a plethora of 
-other options would lead to a ton of parameter. If you had to specify all of those,
+other options would lead to a ton of parameters. If you had to specify all of those,
 it would be time consuming task to create a quick explorative plot. So *tstools*
-suggest many defaults to many parameters and stores these parameters in lists called
-themes. To tweak a default simply initialize the default theme, tweak list element
-you want to tweak and pass the entire theme to the plot. By doing so you can also define 
+suggests many defaults to many parameters and stores these parameters in lists called
+themes. To tweak a default, simply initialize the default theme, tweak a single list element
+and pass the entire theme to  *tsplot*. By doing so you can also define 
 properties of multiple plots just by passing the new theme to the *tsplot* call. 
 
-There way too many options to give an example for each option, but this guide will 
-show examples of the most interesting ones. You can also have a look at `?initDefaultTheme`,
-to see all available options.
+There are way too many options to give an example for each option, but this guide will 
+show examples of the most interesting ones. You may also want to look at `?initDefaultTheme`
+or run the following to see all available options.
+
+```{r}
+def_theme <- initDefaultTheme()
+names(def_theme)
+```
+
+### Highlight windows: mark a period 
 
 Consider the above graph. Let's add a highlight window to mark the fact that
 2016 and 2017 are estimates.
@@ -177,133 +262,99 @@ Consider the above graph. Let's add a highlight window to mark the fact that
 ```{r,fig.width = 7,fig.height=6}
 tt <- initDefaultTheme()
 tt$highlight_window <- T
-tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
-       manual_value_ticks_l = seq(-40,80,by=20),
-       manual_value_ticks_r = seq(-4,8, by=2),
+tsplot(tsb1, tsb2, tsb3,
+       tsr=tsr1,
        left_as_bar = T,
-       theme = tt,auto_legend=F)
-
+       theme = tt,
+       auto_legend = F)
 ```
 
-Get a box... 
+### Or Get a box... 
+
 ```{r,fig.width = 7,fig.height=6}
 tt$use_box <- T
 tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
-       manual_value_ticks_l = seq(-40,80,by=20),
-       manual_value_ticks_r = seq(-4,8, by=2),
        left_as_bar = T,
-       theme = tt,auto_legend=F)
+       theme = tt,
+       auto_legend = F)
 
 ```
 
 
-Change line types...
+### Change line types...
 
 ```{r,fig.width = 7,fig.height=6}
 tt$lty <- c(3,2,1)
 tsplot(tsb1,tsb2,tsb3,
-       manual_value_ticks_l = seq(-40,80,by=20),
-       theme = tt,auto_legend=F)
+       theme = tt,
+       auto_legend = F)
 
 ```
 
-Adjust the highlight window
+### Adjust the highlight window
 
 ```{r,fig.width = 7,fig.height=6}
 tt$highlight_window <- T
 tt$highlight_window_start <- c(2017,1)
 tt$highlight_window_end <- c(2018,1)
 tsplot(tsb1,tsb2,tsb3,
-       manual_value_ticks_l = seq(-40,80, by = 20),
        theme = tt,
        auto_legend = F)
 
-
-
 ```
 
 
+<!-- ## Customizing the plots created by tstools -->
+<!-- Plots generated by *tsplot* are simply a bunch of layers of base R plots. So anything -->
+<!-- that can be done with a base R plot can also done with a time series plot generated  -->
+<!-- by *tsplot*. Here are just some applied examples to show what's possible. -->
 
 
+<!-- ### Want to show a red line to highlight 6? -->
+<!-- ```{r,fig.width = 7,fig.height=6} -->
+<!-- tsplot(tsb1,tsb2,tsb3,tsr=tsr1, -->
+<!--        manual_value_ticks_l = seq(-40,80,by=20), -->
+<!--        manual_value_ticks_r = seq(-4,8, by=2), -->
+<!--        left_as_bar = T,auto_legend=F) -->
+<!-- abline(h=6,col="red") -->
 
-## Write to pdf
-to be documented.
-
-## Customizing the plots created by tstools
-Plots generated by *tsplot* are simply a bunch of layers of base R plots. So anything
-that can be done with a base R plot can also done with a time series plot generated 
-by *tsplot*. Here are just some applied examples to show what's possible.
-
-
-### Want to show a red line to highlight 6?
-```{r,fig.width = 7,fig.height=6}
-tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
-       manual_value_ticks_l = seq(-40,80,by=20),
-       manual_value_ticks_r = seq(-4,8, by=2),
-       left_as_bar = T,auto_legend=F)
-abline(h=6,col="red")
-
-```
+<!-- ``` -->
 
 
-### Add some text to a plot
-```{r,fig.width = 7,fig.height=6}
-tsplot(tsb1,tsb2,tsb3,
-       manual_value_ticks_l = seq(-40,80,by=20),
-       left_as_bar = T,auto_legend=F)
-text(2017.5,-35,"2.3%")
-text(2016.5,-35,"1.3%")
+<!-- ### Add some text to a plot -->
+<!-- ```{r,fig.width = 7,fig.height=6} -->
+<!-- tsplot(tsb1,tsb2,tsb3, -->
+<!--        manual_value_ticks_l = seq(-40,80,by=20), -->
+<!--        left_as_bar = T,auto_legend=F) -->
+<!-- text(2017.5,-35,"2.3%") -->
+<!-- text(2016.5,-35,"1.3%") -->
 
-```
+<!-- ``` -->
 
 
-# Exporting time series to spreadsheets
+# Export lists of time series
 
-Whether or not programmers like it, spreadsheets and Microsoft Excel in 
-particular remain a popular choice when it comes to sharing data. That's 
-why tstools helps export time series data to Excel (.xlsx) and .csv conveniently. 
+The latest release of **tstools** contains a major overhaul of its export 
+functionality. Exporting time series to csv is up to 400 times faster than before, 
+thanks to some profiling sessions and the inclusion of data.table (thanks Matt Dowle for the 
+awesome package). While this may not be that big of an achievement for some, those 
+who exports hundreds of thousands or millions of time series will like it. 
 
-## Export a list of time series
+Besides the default .csv, .json, .xlsx, and .RData are available. 
+.csv allows for wide format and transposed wide format output. 
 
-The function **exportTsList** is well documented and self-explaining. You can check
-parameters and examples by simply typing **?exportTsList**.
-Hence let's focus on a few more advanced feature here. 
+## Csv: long format (default), wide format, transposed wide format.
 
-```{r,eval=F}
+```{r,eval=FALSE}
 data(KOF)
-exportTsList(KOF,
-             fname = "test",
-             xlsx = T,
-             meta_header = c("the world famous KOF Baro","the not-so famous reference"))
+write_ts(KOF,"test_export","csv")
 ```
 
-The code above uses an example dataset provided by **tstools**. The KOF dataset is a list of two
-time series: the KOF Barometer and a reference series. Both series are of monthly frequency. Note,
-that the current version of **exportTsList** only supports exports from lists that contain time
-series of the same frequency. In case you got mixed frequencies, e.g., monthly and quarterly, you 
-need to export to two different spreadsheets. You may provide a file name without file extension.
-In case you do not provide a file name a standard slug plus a date part will be used as the file name. 
-The file extension is will be .xlsx in case xlsx = TRUE and .csv in case xlsx is set to FALSE.
+```{r,eval=FALSE}
+write_ts(KOF,"test_export_wide_trans","csv", wide = T, transpose = T)
+```
 
-**tstools** exports are designed to be machine friendly. I.e., single line headers, no stupid names, UTF-8 encoded. Still in some cases you may want to add an additional headline to provide users with extra meta information. The meta_header argument provides you with an opportunity to do so. Just make sure the vector has as
-many elements as you have time series in your list. 
-
-
-# FAQs
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*Transpose = T* moves the time to the header (x-axis) and places all variables in rows 
+below each other. Transposing data is a good solution if you have a larger amount
+of variables and at max about 200-300 periods. 
 

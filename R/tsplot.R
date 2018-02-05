@@ -1,25 +1,26 @@
-#' Plot time series
+#' Plot Time Series
 #' 
-#' Doc to be expanded later. This just fixes #33.
+#' Conveniently plot time series. 
 #' 
-#' @param ... 
+#' @param ... multiple objects of class ts or a list of time series. All objects passed through the ... parameter relate to the standard left y-axis.
+#' @param tsr list of time series objects of class ts.
+#' @param left_as_bar logical should the series that relate to the left bar be drawn as (stacked) bar charts?
+#' @param group_bar_chart logical should a bar chart be grouped instead of stacked?
+#' @param plot_title character title to be added to the plot
+#' @param plot_subtitle character subtitle to be added to the plot 
+#' @param plot_subtitle_r character second subtitle to be added at the top right
+#' @param find_ticks_function function to compute ticks.
+#' @param fill_up_start logical should the start year be filled up? 
+#' @param overall_xlim integer overall x-axis limits, defaults to NULL. 
+#' @param overall_ylim integer overall y-axis limits, defaults to NULL.
+#' @param manual_date_ticks character vector of manual date ticks.
+#' @param manual_value_ticks_l numeric vector, forcing ticks to the left y-axis 
+#' @param manual_value_ticks_r numeric vector, forcing ticks to the right y-axis 
+#' @param theme list of default plot output parameters. Defaults to NULL, which leads to \code{\link{init_tsplot_theme}} being called. Please see the vignette for details about tweaking themes.
+#' @param quiet logical suppress output, defaults to TRUE.
+#' @param auto_legend logical should legends be printed automatically, defaults to TRUE.
 #'
-#' @param tsr 
-#' @param left_as_bar 
-#' @param group_bar_chart 
-#' @param plot_title 
-#' @param plot_subtitle 
-#' @param plot_subtitle_r 
-#' @param find_ticks_function 
-#' @param fill_up_start 
-#' @param overall_xlim 
-#' @param overall_ylim 
-#' @param manual_date_ticks 
-#' @param manual_value_ticks_l 
-#' @param manual_value_ticks_r 
-#' @param theme 
-#' @param quiet 
-#' @param auto_legend 
+#' @importFrom graphics rect axis box title mtext
 #'
 #' @export
 tsplot <- function(...,
@@ -111,6 +112,48 @@ tsplot.mts <- function(...,
 }
 
 #' @export
+tsplot.zoo <- function(...,
+                       tsr = NULL,
+                       left_as_bar = FALSE,                
+                       group_bar_chart = NULL,
+                       plot_title = NULL,
+                       plot_subtitle = NULL,
+                       plot_subtitle_r = NULL,
+                       find_ticks_function = "findTicks",
+                       fill_up_start = fill_up_start,
+                       overall_xlim = NULL,
+                       overall_ylim = NULL,
+                       manual_date_ticks = NULL,
+                       manual_value_ticks_l = NULL,
+                       manual_value_ticks_r = NULL,
+                       theme = NULL,
+                       quiet = TRUE,
+                       auto_legend = TRUE) {
+  stop("zoo objets are not supported yet. Please convert your data to ts!")
+}
+
+#' @export
+tsplot.xts <- function(...,
+                       tsr = NULL,
+                       left_as_bar = FALSE,                
+                       group_bar_chart = NULL,
+                       plot_title = NULL,
+                       plot_subtitle = NULL,
+                       plot_subtitle_r = NULL,
+                       find_ticks_function = "findTicks",
+                       fill_up_start = fill_up_start,
+                       overall_xlim = NULL,
+                       overall_ylim = NULL,
+                       manual_date_ticks = NULL,
+                       manual_value_ticks_l = NULL,
+                       manual_value_ticks_r = NULL,
+                       theme = NULL,
+                       quiet = TRUE,
+                       auto_legend = TRUE) {
+  stop("xts objects are not supported yet. Please convert your data to ts if possible!")
+}
+
+#' @export
 tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
@@ -134,7 +177,7 @@ tsplot.list <- function(...,
   
   tsl <- c(...)
   
-  if(is.null(theme)) theme <- initDefaultTheme()
+  if(is.null(theme)) theme <- init_tsplot_theme()
   # thanks to @christophsax for that snippet.
   # I been looking for this for while..
   op <- par(no.readonly = T)
@@ -147,8 +190,26 @@ tsplot.list <- function(...,
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
   
-  tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
-  tsl_r_true <- tsl_r
+  if(left_as_bar) {
+    # Combine ts
+    tsmat <- do.call("cbind", tsl)
+    
+    if(!is.null(dim(tsmat)) && dim(tsmat)[2] > 1) {
+      # Set all NAs to 0 so range() works properly
+      tsmat[is.na(tsmat)] <- 0
+      ranges <- apply(tsmat, 1, function(r) {
+        range(c(sum(r[r < 0]), sum(r[r >= 0])))
+      })
+      tsl_r <- c(min(ranges[1,]), max(ranges[2,]))
+    } else {
+      # tsmat is still a single ts
+      tsl_r <- range(tsmat)
+    }
+    tsl_r_true <- tsl_r
+  } else {
+    tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
+    tsl_r_true <- tsl_r
+  }
   
   if(!is.null(theme$y_range_min_size)) {
     # Restrict y range to at least theme$y_range_min_size
@@ -186,12 +247,11 @@ tsplot.list <- function(...,
   # tsr and tsl have different scales.... 
   # time series left
   if(!is.null(manual_value_ticks_l)){
+    left_ticks <- manual_value_ticks_l
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
-    if(left_as_bar) return("Finding ticks automatically when stacking values is not supported yet. Please use manual_value_ticks.")
-    
-    left_ticks <- do.call(find_ticks_function, list(tsl_r, tsl_r_true, theme$y_grid_count, theme$preferred_y_gap_sizes))
+    left_ticks <- do.call(find_ticks_function, list(tsl_r, tsl_r_true, theme$y_grid_count, theme$preferred_y_gap_sizes, left_as_bar))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
   }
@@ -201,6 +261,7 @@ tsplot.list <- function(...,
       if(length(manual_value_ticks_r) != length(left_y$y_ticks)){
         return("When using to manual tick position vectors, both need to be of same length! (Otherwise grids look ugly)")
       }
+      right_ticks <- manual_value_ticks_r
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
@@ -230,13 +291,15 @@ tsplot.list <- function(...,
         right_ticks <- c(right_ticks, right_ub + right_d)
       }
     }
-    
-    left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
-    
-    if(left_needs_exta_tick_bottom) {
-      left_ticks <- c(left_lb - left_d, left_ticks)
-      if(!is.null(tsr)) {
-        right_ticks <- c(right_lb - right_d, right_ticks)
+  
+    if(!left_as_bar) {
+      left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
+      
+      if(left_needs_exta_tick_bottom) {
+        left_ticks <- c(left_lb - left_d, left_ticks)
+        if(!is.null(tsr)) {
+          right_ticks <- c(right_lb - right_d, right_ticks)
+        }
       }
     }
     
@@ -283,7 +346,7 @@ tsplot.list <- function(...,
   
   if(theme$highlight_window){
     if(!any(is.na(theme$highlight_window_start))){
-      xl <- computeDecimalTime(theme$highlight_window_start,
+      xl <- compute_decimal_time(theme$highlight_window_start,
                                theme$highlight_window_freq)
       
     } else{
@@ -291,7 +354,7 @@ tsplot.list <- function(...,
     }
     
     if(!any(is.na(theme$highlight_window_end))){
-      xr <- computeDecimalTime(theme$highlight_window_end,
+      xr <- compute_decimal_time(theme$highlight_window_end,
                                theme$highlight_window_freq)
       
     } else{
@@ -339,17 +402,17 @@ tsplot.list <- function(...,
   
   if(left_as_bar){
     # draw barplot
-    drawTsBars(tsl,
+    draw_ts_bars(tsl,
                group_bar_chart = group_bar_chart,
                theme = theme)
     if(theme$sum_as_line){
       reduced <- Reduce("+",tsl)
-      drawSumAsLine(reduced, theme)
+      draw_sum_as_line(reduced, theme)
     }
     
   } else {
     # draw lineplot
-    drawTsLines(tsl,theme=theme)
+    draw_ts_lines(tsl,theme=theme)
   }
   
   # RIGHT PLOT #######################
@@ -373,7 +436,7 @@ tsplot.list <- function(...,
     if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
     if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
     
-    drawTsLines(tsr,theme = tt_r)
+    draw_ts_lines(tsr,theme = tt_r)
     
     # RIGHT Y-Axis
     if(theme$show_right_y_axis){
@@ -392,7 +455,7 @@ tsplot.list <- function(...,
       names(tsr) <- paste0("series_",1:length(tsr))
     }
     
-    addLegend(names(tsl), names(tsr),
+    add_legend(names(tsl), names(tsr),
               theme = theme, left_as_bar = left_as_bar)
   }
   
@@ -434,7 +497,7 @@ tsplot.list <- function(...,
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
     output <- list(left_range = tsl_r,
-                   right_range = tsl_l)
+                   right_range = tsr_r)
   } 
 }
 

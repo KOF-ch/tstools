@@ -4,6 +4,7 @@
 #' if possible. Design to work with quarterly and monthly data. 
 #' 
 #' @param dframe data.frame input
+#' @param var_cols columns that contain variables as opposed to date index.
 #' @param year_col integer, logical or character vector indicating the year 
 #' position within the data.frame.
 #' @param period_col integer, logical or character vector indicating the period 
@@ -22,26 +23,38 @@
 #' yet_another_col = letters[6:1]
 #' )
 #' df_to_reg_ts(df_missing,c("value","another_value"))
-#' df_to_reg_ts(df_missing, c("value","another_value"), return_ts = F)
+#' df_to_reg_ts(df_missing, c("value","another_value"), return_ts = FALSE)
 #' @export
+#' @importFrom data.table year quarter month
+#' @importFrom stats ts
 df_to_reg_ts <- function(dframe,
                          var_cols,
-                     year_col = "year",
-                     period_col = "month",
-                     freq = 12,
-                     return_ts = T,
-                     by = NULL){
+                         year_col = "year",
+                         period_col = "month",
+                         freq = 12,
+                         return_ts = T,
+                         by = NULL){
   n_vars <- length(var_cols)
   if(!is.null(by)) by_period <- by
   if(freq == 12) by_period <-  "1 month"
   if(freq == 4) by_period <- "1 quarter"
   
-  
-  # sort the data.frame, so all periods within a year are in the right order.
-  d_s <- dframe[order(dframe[,year_col],
-                      dframe[,period_col]),]
-  # append a date column in order to compare with a full date column. 
-  d_s$date <- as.Date(paste(d_s[,year_col], d_s[,period_col], "01",sep = "-"))
+  if("date" %in% names(dframe)) {
+    d_s <- dframe[order(dframe[, "date"]), ]
+    d_s[, year_col] <- year(d_s[, "date"])
+    if(freq == 12) {
+      periods <- month(d_s[, "date"])
+    } else if(freq == 4) {
+      periods <- quarter(d_s[, "date"])
+    }
+    d_s[, period_col] <- periods
+  } else {
+    # sort the data.frame, so all periods within a year are in the right order.
+    d_s <- dframe[order(dframe[,year_col],
+                        dframe[,period_col]),]
+    # append a date column in order to compare with a full date column. 
+    d_s$date <- as.Date(paste(d_s[,year_col], d_s[,period_col], "01",sep = "-"))
+  }
   
   # start and end end date to construct a full date vector
   start_period <- c(d_s[1,year_col], d_s[1,period_col])

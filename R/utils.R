@@ -6,7 +6,7 @@
 #' @param v integer vector denoting a period in time
 #' @param f frequency
 #' @export
-computeDecimalTime <- function(v,f){
+compute_decimal_time <- function(v,f){
   multi <- 1/f
   (v[2]-1)*multi + v[1]
 }
@@ -23,7 +23,7 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
     all_ts <- tsl
   }
   
-  all_ts_ext <- lapply(all_ts,fillUpYearWithNAs,fill_up_start = fill_up_start)
+  all_ts_ext <- lapply(all_ts,fill_year_with_nas,fill_up_start = fill_up_start)
   global_x$x_range <- range(unlist(lapply(all_ts_ext,time)))
   
   global_x$min_year <- trunc(global_x$x_range[1])
@@ -71,7 +71,7 @@ sanitizeTsr <- function(tsr){
   }
 }
 
-
+#' @importFrom graphics abline
 addYGrids <- function(tick_positions,theme){
   for (hl in tick_positions){
     abline(h = hl,
@@ -90,26 +90,29 @@ findGapSize <- function(r,tick_count){
 }
 
 
-findTicks <- function(r, true_r, tick_count, preferred_gap_sizes){
+findTicks <- function(r, true_r, tick_count, preferred_gap_sizes, is_bar = FALSE){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
   gaps <- findGapSize(r=r,sort(tick_count))
   lb <- (r[1] %/% gaps) * gaps
-  d <- ceiling(diff(r))
-  tms <- pmax(1, d %/% gaps)
-  ub <- lb + (tms * gaps)  
+  
+  ub <- lb + ((tick_count - 1) * gaps)  
   
   if(length(tick_count) == 1) {
     ub <- lb + ((tick_count - 1)*gaps)
   }
   
-  # correct algorithm when values are below upper bound
-  ub_too_low <- ub <= true_r[2]
-  while(any(ub_too_low)) {
-    ub[ub_too_low] <- ub[ub_too_low] + gaps[ub_too_low]
-    ub_too_low <- ub <= true_r[2]
+  # nudge the generated range around a bit to ensure the series are more or less "centered"
+  # i.e. there are no empty ticks
+  if(!is_bar) {
+    lb_too_low <- r[1] > lb + gaps
+    lb[lb_too_low] <- lb[lb_too_low] + gaps[lb_too_low]/2
+    ub[lb_too_low] <- ub[lb_too_low] + gaps[lb_too_low]/2
+    
+    ub_too_high <- r[2] < ub - gaps
+    lb[ub_too_high] <- lb[ub_too_high] - gaps[ub_too_high]/2
+    ub[ub_too_high] <- ub[ub_too_high] - gaps[ub_too_high]/2
   }
-  
   seqs <- list()
   for(i in seq_along(gaps)) {
     seqs[[i]] <- seq(lb[i],ub[i],gaps[i])

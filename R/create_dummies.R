@@ -10,9 +10,11 @@
 #' @param start_basic numeric vector of form c(yyyy,p) defining the start of the time series. Defaults to c(1980,1)
 #' @param basic_value default value of the time series, defaults to 0.
 #' @param dummy_value the alternative value, defaults to 1.
-#' @param frequency frequency of the regular time series, defaults to 4 (quarterly).
+#' @param frequency integer frequency of the regular time series, defaults to 4 (quarterly).
 #' @author Matthias Bannert
-create_dummy <- function(end_basic,
+#' @export
+#' @importFrom stats ts
+create_dummy_ts <- function(end_basic,
                          dummy_start,
                          dummy_end = NULL,
                          sp = T,
@@ -21,7 +23,7 @@ create_dummy <- function(end_basic,
                          dummy_value = 1,
                          frequency = 4){
   basic <- ts(basic_value,start_basic,
-              end_basic,frequency = freq)
+              end_basic,frequency = frequency)
   if(is.null(dummy_end)){
     if(sp){
       dummy_end <- dummy_start   
@@ -30,7 +32,7 @@ create_dummy <- function(end_basic,
     }
   } 
   dummy <- ts(dummy_value,dummy_start,
-              dummy_end,frequency = freq)
+              dummy_end,frequency = frequency)
   resolveOverlap(basic,dummy)
   
 }
