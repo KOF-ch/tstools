@@ -7,8 +7,8 @@
 #' @name tstools-deprecated
 #' @param ... Parameters to be passed to the modern version of the function
 #' @docType package
-#' @export  computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries init_tsplot_theme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
-#' @aliases computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries init_tsplot_theme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
+#' @export  computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries initDefaultTheme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
+#' @aliases computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries initDefaultTheme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
 #' @section Details:
 #' \tabular{rl}{
 #'   \code{computeDecimalTime} \tab now a synonym for \code{\link{compute_decimal_time}}\cr
