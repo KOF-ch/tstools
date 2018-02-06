@@ -13,7 +13,7 @@ ts <- list(
   ts2 = as.ts(xts$ts2, start=start(xts$ts2), end=end(xts$ts2))
 )
 
-fn <- "test_ts"
+fn <- file.path(tempdir(), "test_ts")
 fn_read <- paste0(fn, "_",gsub("-","_",Sys.Date()))
 
 csv_wide_name <- paste0(fn, "_wide", "_", gsub("-","_",Sys.Date()), ".csv")
