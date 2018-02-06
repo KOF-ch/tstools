@@ -153,8 +153,10 @@ init_tsplot_theme <- function(
   subtitle_adj_r = .9,
   legend_intersp_x = 1,
   legend_intersp_y = 1){
-  li <- as.list(formals())
-  lapply(li,eval)
+  e <- environment()
+  li <- lapply(names(formals()),get,envir = e)
+  names(li) <- names(formals())
+  li
 }
   
 
