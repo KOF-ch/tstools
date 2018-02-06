@@ -101,7 +101,7 @@ all lines are further away from the x-axis than 30 percent of the grid.
 
 ```{r,fig.width = 7,fig.height=6}
 data(KOF)
-tt <- initDefaultTheme()
+tt <- init_tsplot_theme()
 tt$y_grid_count_strict <- F
 tt$y_tick_margin <- 0.3
 tsplot(KOF$kofbarometer,
@@ -246,11 +246,11 @@ and pass the entire theme to  *tsplot*. By doing so you can also define
 properties of multiple plots just by passing the new theme to the *tsplot* call. 
 
 There are way too many options to give an example for each option, but this guide will 
-show examples of the most interesting ones. You may also want to look at `?initDefaultTheme`
+show examples of the most interesting ones. You may also want to look at `?init_tsplot_theme`
 or run the following to see all available options.
 
 ```{r}
-def_theme <- initDefaultTheme()
+def_theme <- init_tsplot_theme()
 names(def_theme)
 ```
 
@@ -260,7 +260,7 @@ Consider the above graph. Let's add a highlight window to mark the fact that
 2016 and 2017 are estimates.
 
 ```{r,fig.width = 7,fig.height=6}
-tt <- initDefaultTheme()
+tt <- init_tsplot_theme()
 tt$highlight_window <- T
 tsplot(tsb1, tsb2, tsb3,
        tsr=tsr1,
