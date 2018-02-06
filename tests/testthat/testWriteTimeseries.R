@@ -13,7 +13,7 @@ ts <- list(
   ts2 = as.ts(xts$ts2, start=start(xts$ts2), end=end(xts$ts2))
 )
 
-fn <- "test_ts"
+fn <- file.path(tempdir(), "test_ts")
 fn_read <- paste0(fn, "_",gsub("-","_",Sys.Date()))
 
 csv_wide_name <- paste0(fn, "_wide", "_", gsub("-","_",Sys.Date()), ".csv")
@@ -28,8 +28,8 @@ zip_read_name <- paste0(fn, "_", gsub("-","_",Sys.Date()), ".zip")
 
 test_that("CSV wide export works", {
   
-  write_ts(xts, format="csv", fname=paste0(fn, "_wide"),
-                  date_format="%Y-%m", wide=TRUE)
+  write_ts(xts, format="csv", fname = paste0(fn, "_wide"),
+                  date_format="%Y-%m", timestamp_to_fn = T, wide=TRUE)
   xts_read <- read.csv(csv_wide_name, sep=",", stringsAsFactors=FALSE)
   
   expect_that(dim(xts_read), equals(c(n, 3)))
@@ -47,7 +47,7 @@ test_that("CSV wide export works", {
 test_that("CSV transposed export works", {
   write_ts(xts, format="csv",
                   fname=paste0(fn, "_wide_transposed"),
-                  date_format="%Y-%m",
+                  date_format="%Y-%m", timestamp_to_fn = T,
                   wide=TRUE, transpose=TRUE)
   
   xts_read <- read.csv(csv_wide_transposed_name, sep=",", stringsAsFactors = FALSE, header = FALSE)
@@ -69,7 +69,7 @@ test_that("CSV transposed export works", {
 test_that("CSV long export works", {
   write_ts(xts, format="csv",
                   fname=paste0(fn, "_long"),
-                  date_format="%Y-%m")
+           date_format="%Y-%m", timestamp_to_fn = T)
   xts_read <- read.csv(csv_long_name, sep=",",
                        stringsAsFactors = FALSE)
   
@@ -91,7 +91,7 @@ test_that("XLSX wide export works", {
   
   write_ts(xts, format = "xlsx",
                   fname = paste0(fn, "_wide"),
-                  date_format = "%Y-%m",
+                  date_format = "%Y-%m", timestamp_to_fn = T,
                   wide = TRUE)
   xts_read <- openxlsx::read.xlsx(xlsx_wide_name)
   
@@ -110,7 +110,7 @@ test_that("XLSX wide export works", {
 test_that("XLSX transposed export works", {
   write_ts(xts, format="xlsx",
                   fname=paste0(fn, "_wide_transposed"),
-                  date_format="%Y-%m",
+                  date_format="%Y-%m", timestamp_to_fn = T,
                   wide=TRUE, transpose=TRUE)
   
   xts_read <- openxlsx::read.xlsx(xlsx_wide_transposed_name)
@@ -131,7 +131,7 @@ test_that("XLSX transposed export works", {
 
 test_that("XLSX long export works", {
   
-  write_ts(xts, format="xlsx", fname=paste0(fn, "_long"), date_format="%Y-%m")
+  write_ts(xts, format="xlsx", fname=paste0(fn, "_long"), date_format="%Y-%m", timestamp_to_fn = T)
   xts_read <- openxlsx::read.xlsx(xlsx_long_name)
   
   expect_that(dim(xts_read), equals(c(2*n, 3)))
@@ -151,16 +151,19 @@ test_that("XLSX long export works", {
 test_that("RData export works", {
   rdata_read_name <- paste0(fn_read, ".RData")
   
-  write_ts(xts, format="rdata", fname=fn)
+  write_ts(xts, format="rdata", fname=fn,
+           timestamp_to_fn = T)
   load(rdata_read_name)
   
-  expect_that(xts, equals(get(fn_read)))
+  expect_that(xts, equals(get("tslist")))
 })
 
 test_that("Named RData export works", {
   varname <- "test_ts_read"
   
-  write_ts(xts, format="rdata", fname=fn, rdata_varname=varname)
+  write_ts(xts, format="rdata", fname = fn,
+           timestamp_to_fn = T,
+           rdata_varname = varname)
   load(rdata_read_name)
   
   expect_that(xts, equals(get(varname)))
@@ -168,7 +171,7 @@ test_that("Named RData export works", {
 
 test_that("JSON export works", {
   
-  write_ts(xts, fname=fn, format="json", date_format="%Y-%m")
+  write_ts(xts, fname=fn, format="json", date_format="%Y-%m", timestamp_to_fn = T,)
   fid <- file(json_read_name)
   xts_read <- jsonlite::fromJSON(readLines(fid))
   close(fid)
@@ -187,7 +190,7 @@ test_that("JSON export works", {
 test_that("Pretty JSON export works", {
   json_read_name <- paste0(fn_read, ".json")
   
-  write_ts(xts, fname=fn, format="json", date_format="%Y-%m", json_pretty=TRUE)
+  write_ts(xts, fname=fn, format="json", date_format="%Y-%m", timestamp_to_fn = T, json_pretty=TRUE)
   fid <- file(json_read_name)
   xts_read <- jsonlite::fromJSON(readLines(fid))
   close(fid)
@@ -205,7 +208,7 @@ test_that("Pretty JSON export works", {
 
 test_that("Zipping works", {
   
-  write_ts(xts, fname=fn, format="json", date_format="%Y-%m", json_pretty=TRUE, zip=TRUE)
+  write_ts(xts, fname=fn, format="json", date_format="%Y-%m", timestamp_to_fn = T, json_pretty=TRUE, zip=TRUE)
   
   expect_true(file.exists(zip_read_name))
   

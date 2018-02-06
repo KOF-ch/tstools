@@ -65,6 +65,7 @@
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
 #' @param legend_intersp_x numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param legend_intersp_y numeric same as base \code{\link{plot}} parameter, defaults to 1 
+#' @param range_must_not_cross_zero logical automatic range finders are forced to do not find ranges below zero. Defaults to FALSE.
 #' @examples 
 #' # create a list
 #' data(KOF)
@@ -152,7 +153,8 @@ init_tsplot_theme <- function(
   subtitle_transform = "toupper",
   subtitle_adj_r = .9,
   legend_intersp_x = 1,
-  legend_intersp_y = 1){
+  legend_intersp_y = 1,
+  range_must_not_cross_zero = FALSE){
   e <- environment()
   li <- lapply(names(formals()),get,envir = e)
   names(li) <- names(formals())
