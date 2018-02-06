@@ -152,7 +152,8 @@ init_tsplot_theme <- function(
   subtitle_transform = "toupper",
   subtitle_adj_r = .9,
   legend_intersp_x = 1,
-  legend_intersp_y = 1){
+  legend_intersp_y = 1,
+  range_must_not_cross_zero = FALSE){
   e <- environment()
   li <- lapply(names(formals()),get,envir = e)
   names(li) <- names(formals())
