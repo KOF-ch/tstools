@@ -1,9 +1,11 @@
 Package: tstools
 Type: Package
 Version: 0.3.5
-Title: A time series toolbox for official statistics
-Description: The *tstools* package provides convenience functions to process, plot and export time series. It aims at time series data stemming from official statistics, respectively macroeconomic data. Hence the package is focused on regular time series of monthly, quarterly or yearly frequency. The current form of the package focuses on domain-specific graphs such as growth contribution charts with 2 y-axis.
-Author: "Matthias Bannert <bannert@kof.ethz.ch> [aut, cre], Severin Thoeni <thoeni@kof.ethz.ch> [aut]"
+Title: A Time Series Toolbox for Official Statistics
+Description: Plot official statistics' time series conveniently: automatic legends, highlight timespans, stacked bar chars with positive and negative contributions, sum-as-line option, two y-axes with automatic horizontal grids that fit both axes and other popular chart types. 'tstools' comes with a plethora of defaults to let you plot without setting an abundance of parameters first, but gives you the flexibility to tweak the defaults. In addition to charts, 'tstools' provides a super fast, 'data.table' backed time series I/O that allows the user to export / import long format, wide format and transposed wide format data to various file types. 
+Authors@R: c(
+    person("Matthias", "Bannert", , "bannert@kof.ethz.ch", c("aut", "cre")),
+    person("Severin", "Thoeni", , "thoenis@kof.ethz.ch", "aut"))
 Depends:
     R (>= 3.0.0),
     zoo (>= 1.7-12),
@@ -20,7 +22,7 @@ Suggests:
     reshape2,
     openxlsx
 VignetteBuilder: knitr    
-Date: 2016-01-01
+Date: 2018-02-05
 License: GPL-2
 LazyData: true
 Maintainer: 'Matthias Bannert' <bannert@kof.ethz.ch>

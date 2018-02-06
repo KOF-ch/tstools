@@ -1,11 +1,12 @@
 #' Export a list of time series to a file.
 #' 
 #' @param tl list of time series
-#' @param fname character file name. If set to NULL a standard file name chunk + Sys.Date is used.
+#' @param fname character file name. Defaults to NULL, displaying output on console. Set a file name without file extension in order to store a file. Default file names / location are not CRAN compliant which is why the file name defaults to NULL.
 #' @param format character denotes export formats. Defaults to .csv. "csv", "xlsx", "json", "rdata" are available. Spreadsheet formats like csv allow for further optional parameters.
 #' @param date_format character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010.
-#' @param timestamp_file If TRUE, the current date will be appended to the file name
+#' @param timestamp_to_fn If TRUE, the current date will be appended to the file name. Defaults to FALSE.
 #' @param round_digits integer, precision in digits.
+#' @param rdata_varname character name of the list of time series within the store RData. Defaults to "tslist".
 #' @param ... additional arguments used by spedific formats.
 #' @details 
 #' Additional arguments covered by \code{...}
@@ -14,34 +15,34 @@
 #'   \code{wide} \tab Export data in a wide format (one column per series) \tab CSV, XLSX \cr
 #'   \code{transpose} \tab Transpose exported data (one row per series) \tab CSV, XLSX, only if wide = TRUE \cr
 #'   \code{zip} \tab If set to TRUE, the file is compressed into a zip archive after export \tab any \cr
-#'   \code{rdata_varname} \tab The name of the time series list object in the exported RData file \tab rdata \cr
 #' }
 #' @importFrom jsonlite toJSON
 #' @importFrom utils zip
 #' @import data.table
 #' @export
 write_ts <- function(tl,
-                            fname = "timeseriesdb_export",
-                            format = "csv",
-                            date_format = NULL,
-                            timestamp_file = TRUE,
-                            round_digits = NULL,
-                            ...)
+                     fname = NULL,
+                     format = "csv",
+                     date_format = NULL,
+                     timestamp_to_fn = FALSE,
+                     round_digits = NULL,
+                     rdata_varname = "tslist",
+                     ...)
 {
   args <- list(...)
   
   # Match format
   allowed_formats <- c("csv", "xlsx", "json", "rdata")
   format <- match.arg(format, allowed_formats)
-
-  # Timestamp filename
-  if(timestamp_file) {
-    fname <- paste0(fname,"_",gsub("-","_",Sys.Date()))
-  }
   
+  # Timestamp filename
+  if(timestamp_to_fn & !is.null(fname)){
+    fname <- paste(fname,gsub("-","_",Sys.Date()),sep = "_")
+  } 
+
   wide <- ifelse(!is.null(args$wide), args$wide, FALSE)
   transpose <- ifelse(!is.null(args$transpose), args$transpose, FALSE)
-
+  
   # check for format compatability
   if(format %in% c("csv", "xlsx") && wide) {
     ts_lengths <- sapply(tl, length)
@@ -56,17 +57,16 @@ write_ts <- function(tl,
   
   # Export data
   if(format == "rdata") {
-     # Dump list into an empty environment
-     env <- new.env();
-     
-     varname <- ifelse(!is.null(args$rdata_varname), args$rdata_varname, fname)
-     
-     env[[varname]] <- tl;
-     
-     write_name <- paste0(fname, ".RData")
-     
-     # Save said environment
-     save(list=ls(env), file=write_name, envir=env)
+    
+    env <- new.env();
+    env[[rdata_varname]] <- tl;
+    
+    if(is.null(fname)) return(tl)
+    
+    write_name <- paste0(fname, ".RData")
+    
+    
+    save(list = ls(env), file = write_name, envir = env)
   } else {
     nTs <- length(tl)
     
@@ -82,17 +82,17 @@ write_ts <- function(tl,
         tl_names <- names(tl)
         
         tsdf[, `:=`(
-                      freq = frequency(tl[[index]]),
-                      series = tl_names[index],
-                      value = as.numeric(tl[[index]][internal_index]),
-                      date_numeric = as.numeric(time(tl[[index]]))), 
-             by = index]
+          freq = frequency(tl[[index]]),
+          series = tl_names[index],
+          value = as.numeric(tl[[index]][internal_index]),
+          date_numeric = as.numeric(time(tl[[index]]))), 
+          by = index]
         
         tsdf[, date := formatNumericDate(date_numeric, freq, date_format), by = freq]
         
         tsdf[ , `:=`(index = NULL, date_numeric = NULL, freq = NULL, internal_index = NULL)]
         setcolorder(tsdf, c("date", "value", "series"))
-
+        
       } else {
         tsmat <- do.call("cbind", tl)
         dates <- time(tsmat)
@@ -118,7 +118,7 @@ write_ts <- function(tl,
     
     if(format == "json") {
       json_pretty <- ifelse(!is.null(args$json_pretty), args$json_pretty, FALSE) # TODO: getArgs helper?
-    
+      
       # Output an object of arrays of objects { "key": [{"date": time1, "value": value1}, ...], ...}
       jsondf <- lapply(tl, function(x) {
         t <- time(x)
@@ -130,11 +130,13 @@ write_ts <- function(tl,
       })
       json <- toJSON(jsondf, pretty=json_pretty, digits=16)
       
+      if(is.null(fname)) return(jsondf)
+      
       write_name <- paste(fname, "json", sep=".")
       
       # Write json as a "single element CSV" for speed
       fwrite(list(json),
-                         file = write_name,
+             file = write_name,
              quote = FALSE, col.names = FALSE)
       
     } else {
@@ -163,13 +165,16 @@ write_ts <- function(tl,
           stop("XLSX format can not handle more than 1'000'000 rows")
         }
         
+        # need to explicitly call print cause of data.table evaluation
+        if(is.null(fname)) return(print(tsdf))
         write_name <- paste0(fname, ".xlsx")
         openxlsx::write.xlsx(tsdf,
                              paste0(fname,".xlsx"))
         
       } else{
-        write_name <- paste0(fname, ".csv")
+        if(is.null(fname)) return(print(tsdf))
         
+        write_name <- paste0(fname, ".csv")
         fwrite(tsdf, write_name) 
       }
     }
