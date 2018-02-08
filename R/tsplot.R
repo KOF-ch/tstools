@@ -26,7 +26,7 @@
 tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,                    
-                   group_bar_chart = NULL,
+                   group_bar_chart = FALSE,
                    plot_title = NULL,
                    plot_subtitle = NULL,              
                    plot_subtitle_r = NULL,
@@ -47,7 +47,7 @@ tsplot <- function(...,
 tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,                
-                      group_bar_chart = NULL,
+                      group_bar_chart = FALSE,
                       plot_title = NULL,
                       plot_subtitle = NULL,
                       plot_subtitle_r = NULL,
@@ -81,7 +81,7 @@ tsplot.ts <- function(...,
 #' @export
 tsplot.mts <- function(...,
                        tsr = NULL,
-                       left_as_bar = FALSE,                                       group_bar_chart = NULL,
+                       left_as_bar = FALSE,                                       group_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,                                      plot_subtitle_r = NULL,
                        find_ticks_function = "findTicks",
@@ -115,7 +115,7 @@ tsplot.mts <- function(...,
 tsplot.zoo <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                
-                       group_bar_chart = NULL,
+                       group_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -136,7 +136,7 @@ tsplot.zoo <- function(...,
 tsplot.xts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                
-                       group_bar_chart = NULL,
+                       group_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -157,7 +157,7 @@ tsplot.xts <- function(...,
 tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
-                        group_bar_chart = NULL,
+                        group_bar_chart = FALSE,
                         plot_title = NULL,
                         plot_subtitle = NULL,
                         plot_subtitle_r = NULL,
@@ -198,7 +198,11 @@ tsplot.list <- function(...,
       # Set all NAs to 0 so range() works properly
       tsmat[is.na(tsmat)] <- 0
       ranges <- apply(tsmat, 1, function(r) {
-        range(c(sum(r[r < 0]), sum(r[r >= 0])))
+        if(group_bar_chart) {
+          range(r)
+        } else {
+          range(c(sum(r[r < 0]), sum(r[r >= 0])))
+        }
       })
       tsl_r <- c(min(ranges[1,]), max(ranges[2,]))
     } else {
