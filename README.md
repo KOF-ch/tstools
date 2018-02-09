@@ -2,7 +2,7 @@
 
 [![CRAN](https://img.shields.io/cran/l/tstools.svg?style=flat-square)]()
 
-[![CRAN](http://cranlogs.r-pkg.org/badges/grand-total/tstools)]()
+<!-- [![CRAN](http://cranlogs.r-pkg.org/badges/grand-total/tstools)]() -->
 
 
 # tstools
