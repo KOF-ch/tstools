@@ -147,7 +147,7 @@ formatNumericDate <- function(date, freq, date_format = NULL) {
   } else {
     month <- floor(12*(date - year + 1/24)) + 1  # Why "+ 1/24"? Because floating point arithmetic. 12*0.0833333 may not be 12.
     if(is.null(date_format)) {
-      return(sprintf("%d-%d", year, month))
+      return(sprintf("%d-%02d", year, month))
     }
   }
   
