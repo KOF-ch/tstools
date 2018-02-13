@@ -108,9 +108,6 @@ write_ts <- function(tl,
           tsdf <- tsdf[, -"index", with = FALSE]
         }
         
-        # setcolorder(tsdf, c(nTs+1, seq(nTs)))
-        # setnames(tsdf, c("date", names(tl)))
-        
         if(transpose) {
           tsdf <- dcast(melt(tsdf, id.vars = "t", variable.name = "series"), series ~ t)
           names(tsdf)[2:ncol(tsdf)] <- dates_formatted
