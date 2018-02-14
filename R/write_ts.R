@@ -99,7 +99,8 @@ write_ts <- function(tl,
         freq <- frequency(tl[[1]])
         
         tsdf <- as.data.table(tsmat)
-        tsdf[, date := formatNumericDate(dates, freq, date_format)]
+        tsdf[, t := dates]
+        dates_formatted <- formatNumericDate(dates, freq, date_format)
         
         # Then cbinding xts, index is added as a column. We don't want that.
         # Alternatively: suppressWarnings?
@@ -107,11 +108,12 @@ write_ts <- function(tl,
           tsdf <- tsdf[, -"index", with = FALSE]
         }
         
-        setcolorder(tsdf, c(nTs+1, seq(nTs)))
-        setnames(tsdf, c("date", names(tl)))
-        
         if(transpose) {
-          tsdf <- dcast(melt(tsdf, id.vars = "date", variable.name = "series"), series ~ date)
+          tsdf <- dcast(melt(tsdf, id.vars = "t", variable.name = "series"), series ~ t)
+          names(tsdf)[2:ncol(tsdf)] <- dates_formatted
+        } else {
+          tsdf <- cbind(data.table(date = dates_formatted), tsdf)
+          tsdf <- tsdf[, -"t", with = FALSE]
         }
       }
     }
