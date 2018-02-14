@@ -90,7 +90,7 @@ findGapSize <- function(r,tick_count){
 }
 
 
-findTicks <- function(r, true_r, tick_count, preferred_gap_sizes, is_bar = FALSE){
+findTicks <- function(r, tick_count, preferred_gap_sizes, keep_range_sign, is_bar){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
   gaps <- findGapSize(r=r,sort(tick_count))
@@ -105,13 +105,13 @@ findTicks <- function(r, true_r, tick_count, preferred_gap_sizes, is_bar = FALSE
   # nudge the generated range around a bit to ensure the series are more or less "centered"
   # i.e. there are no empty ticks
   if(!is_bar) {
-    lb_too_low <- r[1] > lb + gaps
-    lb[lb_too_low] <- lb[lb_too_low] + gaps[lb_too_low]/2
-    ub[lb_too_low] <- ub[lb_too_low] + gaps[lb_too_low]/2
+    lb_fix <- (r[1] > lb + gaps) & (sign(ub) == sign(ub + gaps/2) | !keep_range_sign)
+    lb[lb_fix] <- lb[lb_fix] + gaps[lb_fix]/2
+    ub[lb_fix] <- ub[lb_fix] + gaps[lb_fix]/2
     
-    ub_too_high <- r[2] < ub - gaps
-    lb[ub_too_high] <- lb[ub_too_high] - gaps[ub_too_high]/2
-    ub[ub_too_high] <- ub[ub_too_high] - gaps[ub_too_high]/2
+    up_fix <- (r[2] < ub - gaps) & (sign(lb) == sign(lb - gaps/2) | !keep_range_sign)
+    lb[up_fix] <- lb[up_fix] - gaps[up_fix]/2
+    ub[up_fix] <- ub[up_fix] - gaps[up_fix]/2
   }
   seqs <- list()
   for(i in seq_along(gaps)) {
@@ -147,7 +147,7 @@ formatNumericDate <- function(date, freq, date_format = NULL) {
   } else {
     month <- floor(12*(date - year + 1/24)) + 1  # Why "+ 1/24"? Because floating point arithmetic. 12*0.0833333 may not be 12.
     if(is.null(date_format)) {
-      return(sprintf("%d-%d", year, month))
+      return(sprintf("%d-%02d", year, month))
     }
   }
   

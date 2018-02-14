@@ -26,7 +26,7 @@
 tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,                    
-                   group_bar_chart = NULL,
+                   group_bar_chart = FALSE,
                    plot_title = NULL,
                    plot_subtitle = NULL,              
                    plot_subtitle_r = NULL,
@@ -47,7 +47,7 @@ tsplot <- function(...,
 tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,                
-                      group_bar_chart = NULL,
+                      group_bar_chart = FALSE,
                       plot_title = NULL,
                       plot_subtitle = NULL,
                       plot_subtitle_r = NULL,
@@ -81,7 +81,7 @@ tsplot.ts <- function(...,
 #' @export
 tsplot.mts <- function(...,
                        tsr = NULL,
-                       left_as_bar = FALSE,                                       group_bar_chart = NULL,
+                       left_as_bar = FALSE,                                       group_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,                                      plot_subtitle_r = NULL,
                        find_ticks_function = "findTicks",
@@ -115,7 +115,7 @@ tsplot.mts <- function(...,
 tsplot.zoo <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                
-                       group_bar_chart = NULL,
+                       group_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -136,7 +136,7 @@ tsplot.zoo <- function(...,
 tsplot.xts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                
-                       group_bar_chart = NULL,
+                       group_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -157,7 +157,7 @@ tsplot.xts <- function(...,
 tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
-                        group_bar_chart = NULL,
+                        group_bar_chart = FALSE,
                         plot_title = NULL,
                         plot_subtitle = NULL,
                         plot_subtitle_r = NULL,
@@ -198,17 +198,19 @@ tsplot.list <- function(...,
       # Set all NAs to 0 so range() works properly
       tsmat[is.na(tsmat)] <- 0
       ranges <- apply(tsmat, 1, function(r) {
-        range(c(sum(r[r < 0]), sum(r[r >= 0])))
+        if(group_bar_chart) {
+          range(r)
+        } else {
+          range(c(sum(r[r < 0]), sum(r[r >= 0])))
+        }
       })
       tsl_r <- c(min(ranges[1,]), max(ranges[2,]))
     } else {
       # tsmat is still a single ts
       tsl_r <- range(tsmat)
     }
-    tsl_r_true <- tsl_r
   } else {
     tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
-    tsl_r_true <- tsl_r
   }
   
   if(!is.null(theme$y_range_min_size)) {
@@ -224,7 +226,6 @@ tsplot.list <- function(...,
   if(!is.null(tsr)) {
     tsr <- sanitizeTsr(tsr)
     tsr_r <- range(unlist(tsr))
-    tsr_r_true <- tsr_r
     
     if(!is.null(theme$y_range_min_size)) {
       tsr_r_size <- diff(tsr_r)
@@ -251,7 +252,7 @@ tsplot.list <- function(...,
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
-    left_ticks <- do.call(find_ticks_function, list(tsl_r, tsl_r_true, theme$y_grid_count, theme$preferred_y_gap_sizes, left_as_bar))
+    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero, left_as_bar))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
   }
@@ -265,9 +266,12 @@ tsplot.list <- function(...,
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
-      right_ticks <- do.call(find_ticks_function, list(tsr_r, tsr_r_true, length(left_ticks), theme$preferred_y_gap_sizes))
+      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero, FALSE))
       right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
+  } else {
+    # define right_ticks anyway to avoid having to check for it further down
+    right_ticks <- 1
   }
   
   if(!theme$y_grid_count_strict) {
@@ -321,12 +325,15 @@ tsplot.list <- function(...,
     
     # Technically we could save ourselves all that correcting if manual ticks are not null.
     # This is just a convenient place to check.
-    if(is.null(manual_value_ticks_l)) {
-      left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
-    }
     
-    if(is.null(manual_value_ticks_r) && !is.null(tsr)) {
-      right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
+    if(!theme$range_must_not_cross_zero || (sign(min(left_ticks)) == sign(max(left_ticks)) && sign(min(right_ticks)) == sign(max(right_ticks)))) {
+      if(is.null(manual_value_ticks_l)) {
+        left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
+      }
+      
+      if(is.null(manual_value_ticks_r) && !is.null(tsr)) {
+        right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
+      }
     }
   }
   

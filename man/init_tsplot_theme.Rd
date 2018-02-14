@@ -30,7 +30,8 @@ init_tsplot_theme(margins = c(5, 4, 3, 3) + 0.1, fillYearWithNAs = TRUE,
   title_transform = NA, subtitle_adj = 0, subtitle_outer = TRUE,
   subtitle_line = -0.6, subtitle_cex.main = 1,
   subtitle_transform = "toupper", subtitle_adj_r = 0.9,
-  legend_intersp_x = 1, legend_intersp_y = 1)
+  legend_intersp_x = 1, legend_intersp_y = 1,
+  range_must_not_cross_zero = FALSE)
 }
 \arguments{
 \item{margins}{integer vector defaults to c(5, 4, 3, 3) + 0.1,}
@@ -145,6 +146,8 @@ without lines or bars. Defaults to 0.15 (15 percent).}
 \item{legend_intersp_x}{numeric same as base \code{\link{plot}} parameter, defaults to 1}
 
 \item{legend_intersp_y}{numeric same as base \code{\link{plot}} parameter, defaults to 1}
+
+\item{range_must_not_cross_zero}{logical automatic range finders are forced to do not find ranges below zero. Defaults to FALSE.}
 }
 \description{
 The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
