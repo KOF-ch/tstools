@@ -4,21 +4,24 @@
 \alias{write_ts}
 \title{Export a list of time series to a file.}
 \usage{
-write_ts(tl, fname = "timeseriesdb_export", format = "csv",
-  date_format = NULL, timestamp_file = TRUE, round_digits = NULL, ...)
+write_ts(tl, fname = NULL, format = "csv", date_format = NULL,
+  timestamp_to_fn = FALSE, round_digits = NULL, rdata_varname = "tslist",
+  ...)
 }
 \arguments{
 \item{tl}{list of time series}
 
-\item{fname}{character file name. If set to NULL a standard file name chunk + Sys.Date is used.}
+\item{fname}{character file name. Defaults to NULL, displaying output on console. Set a file name without file extension in order to store a file. Default file names / location are not CRAN compliant which is why the file name defaults to NULL.}
 
 \item{format}{character denotes export formats. Defaults to .csv. "csv", "xlsx", "json", "rdata" are available. Spreadsheet formats like csv allow for further optional parameters.}
 
 \item{date_format}{character denotes the date format. Defaults to NULL. If set to null the default is used: Jan 2010.}
 
-\item{timestamp_file}{If TRUE, the current date will be appended to the file name}
+\item{timestamp_to_fn}{If TRUE, the current date will be appended to the file name. Defaults to FALSE.}
 
 \item{round_digits}{integer, precision in digits.}
+
+\item{rdata_varname}{character name of the list of time series within the store RData. Defaults to "tslist".}
 
 \item{...}{additional arguments used by spedific formats.}
 }
@@ -32,6 +35,5 @@ Additional arguments covered by \code{...}
   \code{wide} \tab Export data in a wide format (one column per series) \tab CSV, XLSX \cr
   \code{transpose} \tab Transpose exported data (one row per series) \tab CSV, XLSX, only if wide = TRUE \cr
   \code{zip} \tab If set to TRUE, the file is compressed into a zip archive after export \tab any \cr
-  \code{rdata_varname} \tab The name of the time series list object in the exported RData file \tab rdata \cr
 }
 }
