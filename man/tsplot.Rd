@@ -4,7 +4,7 @@
 \alias{tsplot}
 \title{Plot Time Series}
 \usage{
-tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = NULL,
+tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = FALSE,
   plot_title = NULL, plot_subtitle = NULL, plot_subtitle_r = NULL,
   find_ticks_function = "findTicks", fill_up_start = FALSE,
   overall_xlim = NULL, overall_ylim = NULL, manual_date_ticks = NULL,

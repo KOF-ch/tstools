@@ -252,7 +252,7 @@ tsplot.list <- function(...,
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
-    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero, left_as_bar))
+    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
   }
@@ -266,7 +266,7 @@ tsplot.list <- function(...,
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
-      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero, FALSE))
+      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero))
       right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
   } else {
@@ -296,14 +296,12 @@ tsplot.list <- function(...,
       }
     }
   
-    if(!left_as_bar) {
-      left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
-      
-      if(left_needs_exta_tick_bottom) {
-        left_ticks <- c(left_lb - left_d, left_ticks)
-        if(!is.null(tsr)) {
-          right_ticks <- c(right_lb - right_d, right_ticks)
-        }
+    left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
+    
+    if(left_needs_exta_tick_bottom) {
+      left_ticks <- c(left_lb - left_d, left_ticks)
+      if(!is.null(tsr)) {
+        right_ticks <- c(right_lb - right_d, right_ticks)
       }
     }
     
@@ -326,14 +324,16 @@ tsplot.list <- function(...,
     # Technically we could save ourselves all that correcting if manual ticks are not null.
     # This is just a convenient place to check.
     
-    if(!theme$range_must_not_cross_zero || (sign(min(left_ticks)) == sign(max(left_ticks)) && sign(min(right_ticks)) == sign(max(right_ticks)))) {
-      if(is.null(manual_value_ticks_l)) {
-        left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
-      }
-      
-      if(is.null(manual_value_ticks_r) && !is.null(tsr)) {
-        right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
-      }
+    left_sign_ok = sign(left_ticks[1]) == sign(left_y$y_ticks[1]) && sign(max(left_ticks)) == sign(max(left_y$y_ticks))
+    
+    right_sign_ok = is.null(tsr) || (sign(right_ticks[1]) == sign(right_y$y_ticks[1]) && sign(max(right_ticks)) == sign(max(right_y$y_ticks)))
+    
+    if(is.null(manual_value_ticks_l) && (!theme$range_must_not_cross_zero || left_sign_ok)) {
+      left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
+    }
+          
+    if(is.null(manual_value_ticks_r) && !is.null(tsr) && (!theme$range_must_not_cross_zero || right_sign_ok)) {
+      right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
   }
   
