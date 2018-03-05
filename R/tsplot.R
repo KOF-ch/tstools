@@ -176,6 +176,7 @@ tsplot.list <- function(...,
 ){
   
   tsl <- c(...)
+  names(tsl) <- gsub("^tsl.(.*)", "\\1", names(tsl))
   
   if(is.null(theme)) theme <- init_tsplot_theme()
   # thanks to @christophsax for that snippet.
