@@ -48,17 +48,22 @@ add_legend <- function(tsln,
              x.intersp = theme$legend_intersp_x,
              y.intersp = theme$legend_intersp_y)   
     } else {
-      legend("bottomleft", 
-             legend = c(tsln,tsrn),
+      legend("bottomleft",
+             legend = tsln,
              ncol = theme$legend_col,
              bty = "n",
-             border = rep(NA,length(c(tsln,tsrn))),
-             fill = theme$bar_fill_color[1:length(tsln)][1:length(c(tsln,tsrn))],
-             col = theme$legend_col,
-             lty = na.omit(theme$lty[1:length(tsrn)]),
-             lwd = na.omit(theme$lwd[1:length(tsrn)]),
+             border = NA,
+             fill = theme$bar_fill_color[1:length(tsln)],
              x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y) 
+             y.intersp = theme$legend_intersp_y)
+      legend("bottomright",
+             legend = tsrn,
+             bty = "n",
+             border = NA,
+             ncol = theme$legend_col,
+             lty = theme$lty[1:length(tsrn)],
+             lwd = theme$lwd[1:length(tsrn)],
+             col = theme$line_colors[(length(tsln)+1):(length(tsln)+length(tsrn))])
     }
     
   }
