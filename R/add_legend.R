@@ -36,24 +36,42 @@ add_legend <- function(tsln,
     }
     
   } else {
-    lr <- length(c(tsln,tsrn))
+    ll <- length(tsln)
+    lr <- length(tsrn)
+    lb <- length(c(tsln,tsrn))
+    
+    # Make vectors that "wrap around"
+    line_colors <- rep(theme$line_colors, ceiling(lb/length(theme$line_colors)))
+    bar_fill_colors <- rep(theme$bar_fill_color, ceiling(ll/length(theme$bar_fill_color)))
+    lty <- rep(theme$lty, ceiling(lb/length(theme$lty)))
+    lwd <- rep(theme$lwd, ceiling(lb/length(theme$lwd)))
+    
     if(!left_as_bar){
       legend("bottomleft", 
-             legend = c(tsln,tsrn),
+             legend = tsln,
              ncol = theme$legend_col,
              bty = "n",
-             col = na.omit(theme$line_colors[1:lr]),
-             lty = na.omit(theme$lty[1:lr]),
-             lwd = na.omit(theme$lwd[1:lr]),
+             col = na.omit(line_colors[1:ll]),
+             lty = na.omit(lty[1:ll]),
+             lwd = na.omit(lwd[1:ll]),
              x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y)   
+             y.intersp = theme$legend_intersp_y)
+      legend("bottomright", 
+             legend = tsrn,
+             ncol = theme$legend_col,
+             bty = "n",
+             col = na.omit(line_colors[(ll+1):lb]),
+             lty = na.omit(lty[(ll+1):lb]),
+             lwd = na.omit(lwd[(ll+1):lb]),
+             x.intersp = theme$legend_intersp_x,
+             y.intersp = theme$legend_intersp_y)
     } else {
       legend("bottomleft",
              legend = tsln,
              ncol = theme$legend_col,
              bty = "n",
              border = NA,
-             fill = theme$bar_fill_color[1:length(tsln)],
+             fill = bar_fill_colors[1:ll],
              x.intersp = theme$legend_intersp_x,
              y.intersp = theme$legend_intersp_y)
       legend("bottomright",
@@ -61,9 +79,9 @@ add_legend <- function(tsln,
              bty = "n",
              border = NA,
              ncol = theme$legend_col,
-             lty = theme$lty[1:length(tsrn)],
-             lwd = theme$lwd[1:length(tsrn)],
-             col = theme$line_colors[(length(tsln)+1):(length(tsln)+length(tsrn))])
+             lty = lty[1:lr],
+             lwd = lwd[1:lr],
+             col = line_colors[(ll+1):lb])
     }
     
   }
