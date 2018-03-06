@@ -81,7 +81,7 @@ add_legend <- function(tsln,
              ncol = theme$legend_col,
              lty = lty[1:lr],
              lwd = lwd[1:lr],
-             col = line_colors[(ll+1):lb])
+             col = line_colors[1:lr])
     }
     
   }

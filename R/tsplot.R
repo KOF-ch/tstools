@@ -295,7 +295,7 @@ tsplot.list <- function(...,
         right_ticks <- c(right_ticks, right_ub + right_d)
       }
     }
-  
+    
     left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
     
     if(left_needs_exta_tick_bottom) {
@@ -331,7 +331,7 @@ tsplot.list <- function(...,
     if(is.null(manual_value_ticks_l) && (!theme$range_must_not_cross_zero || left_sign_ok)) {
       left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     }
-          
+    
     if(is.null(manual_value_ticks_r) && !is.null(tsr) && (!theme$range_must_not_cross_zero || right_sign_ok)) {
       right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
@@ -354,7 +354,7 @@ tsplot.list <- function(...,
   if(theme$highlight_window){
     if(!any(is.na(theme$highlight_window_start))){
       xl <- compute_decimal_time(theme$highlight_window_start,
-                               theme$highlight_window_freq)
+                                 theme$highlight_window_freq)
       
     } else{
       xl <- global_x$x_range[2]-2
@@ -362,7 +362,7 @@ tsplot.list <- function(...,
     
     if(!any(is.na(theme$highlight_window_end))){
       xr <- compute_decimal_time(theme$highlight_window_end,
-                               theme$highlight_window_freq)
+                                 theme$highlight_window_freq)
       
     } else{
       xr <- global_x$x_range[2]
@@ -410,8 +410,8 @@ tsplot.list <- function(...,
   if(left_as_bar){
     # draw barplot
     draw_ts_bars(tsl,
-               group_bar_chart = group_bar_chart,
-               theme = theme)
+                 group_bar_chart = group_bar_chart,
+                 theme = theme)
     if(theme$sum_as_line){
       reduced <- Reduce("+",tsl)
       draw_sum_as_line(reduced, theme)
@@ -434,14 +434,18 @@ tsplot.list <- function(...,
          yaxs = theme$yaxs,
          xaxs = theme$xaxs
     )
-    total_le <- length(tsl) + length(tsr)
-    start_r <- (total_le - (length(tsr)-1)):total_le
-    
     
     tt_r <- theme
-    tt_r$line_colors <- tt_r$line_colors[start_r]
-    if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
-    if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
+    
+    # Make sure we do not reuse line specs for the right axis (if left is not bars)
+    if(!left_as_bar) {
+      total_le <- length(tsl) + length(tsr)
+      start_r <- (total_le - (length(tsr)-1)):total_le
+      
+      tt_r$line_colors <- tt_r$line_colors[start_r]
+      if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
+      if(!all(is.na(tt_r$lty[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
+    }
     
     draw_ts_lines(tsr,theme = tt_r)
     
@@ -463,7 +467,7 @@ tsplot.list <- function(...,
     }
     
     add_legend(names(tsl), names(tsr),
-              theme = theme, left_as_bar = left_as_bar)
+               theme = theme, left_as_bar = left_as_bar)
   }
   
   # add title and subtitle
