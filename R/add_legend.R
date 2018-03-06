@@ -92,6 +92,21 @@ add_legend <- function(tsln,
     }
     
   }
-
+  
+  
+  if(theme$sum_as_line) {
+    ll <- length(tsln)
+    
+    legend("topleft",
+           legend = c(rep(NA, ceiling(ll/theme$legend_col)), "sum"),
+           bty = "n",
+           border = NA,
+           xpd = NA,
+           inset = c(0, 1.15),
+           col = theme$sum_line_color,
+           lty = c(rep(0, ceiling(ll/theme$legend_col)), theme$sum_line_lty),
+           lwd = theme$sum_line_lwd,
+           seg.len = 0.9)
+  }
   
 }
