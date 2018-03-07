@@ -429,6 +429,7 @@ tsplot.list <- function(...,
     )
     
     tt_r <- theme
+
     # Make sure we do not reuse line specs for the right axis (if left is not bars)
     if(!left_as_bar) {
       total_le <- length(tsl) + length(tsr)
