@@ -178,14 +178,7 @@ tsplot.list <- function(...,
   tsl <- c(...)
   
   if(is.null(theme)) theme <- init_tsplot_theme()
-  # thanks to @christophsax for that snippet.
-  # I been looking for this for while..
-  op <- par(no.readonly = T)
-  par(no.readonly = T,
-      mar = theme$margins)
-  # restore par on exit
-  on.exit(par(op))
-  
+  par(mar = theme$margins)
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
@@ -436,7 +429,7 @@ tsplot.list <- function(...,
     )
     
     tt_r <- theme
-  
+
     # Make sure we do not reuse line specs for the right axis (if left is not bars)
     if(!left_as_bar) {
       total_le <- length(tsl) + length(tsr)
@@ -446,7 +439,7 @@ tsplot.list <- function(...,
       if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
       if(!all(is.na(tt_r$lty[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
     }
-    
+   
     draw_ts_lines(tsr,theme = tt_r)
     
     # RIGHT Y-Axis
