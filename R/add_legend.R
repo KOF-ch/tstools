@@ -103,9 +103,9 @@ add_legend <- function(tsln,
   }
   
   
-  if(theme$sum_as_line) {
+  if(theme$sum_as_line && !is.null(theme$sum_legend)) {
     legend("topleft",
-           legend = c(rep(NA, ceiling(ll/theme$legend_col)), "sum"),
+           legend = c(rep(NA, ceiling(ll/theme$legend_col)), theme$sum_legend),
            bty = "n",
            border = NA,
            xpd = NA,
