@@ -189,10 +189,15 @@ tsplot.list <- function(...,
   
   if(is.na(theme$margins[1])) {
     line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
-    legend_height_in <- strheight(paste(names(tsl), collapse = "\n"))
-    # TODO: Check if tsl exists and if so if its legend is taller
     
-    theme$margins[1] <- (legend_height_in)/(line_height_in*theme$legend_col)
+    legend_height_in <- strheight(paste(names(tsl), collapse = "\n"), units = "inches", cex = theme$legend_intersp_y)
+    if(!is.null(tsr)) {
+      legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches"))
+    }
+    # TODO: theme$legend_intersp_y
+    # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
+    
+    theme$margins[1] <- (legend_height_in)/(line_height_in*theme$legend_col) + theme$legend_margin_top/line_height_in + 1.2
   }
   
   # thanks to @christophsax for that snippet.
