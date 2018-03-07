@@ -6,6 +6,10 @@ add_legend <- function(tsln,
                       theme = init_tsplot_theme()){
   ll <- length(tsln)
   
+  plot_size_in_in <- dev.size()*(par("plt")[c(2, 4)] - par("plt")[c(1, 3)])
+  
+  inset_y <- 1 + theme$legend_margin_top/plot_size_in_in[2]
+  
   # Pop quiz: Why are the legends placed relative to the top? Because then their anchor is at the top
   # and they grow downwards instead of up into the plotting area.
   
@@ -16,7 +20,7 @@ add_legend <- function(tsln,
              ncol = theme$legend_col,
              bty = "n",
              xpd = NA,
-             inset = c(0, 1.15),
+             inset = c(0, inset_y),
              col = na.omit(theme$line_colors[1:ll]),
              lty = na.omit(theme$lty[1:ll]),
              lwd = na.omit(theme$lwd[1:ll]),
@@ -28,14 +32,13 @@ add_legend <- function(tsln,
              ncol = theme$legend_col,
              bty = "n",
              xpd = NA,
-             inset = c(0, 1.15),
+             inset = c(0, inset_y),
              fill = na.omit(theme$bar_fill_color[1:ll]),
              x.intersp = theme$legend_intersp_x,
              y.intersp = theme$legend_intersp_y)  
     }
     
   } else {
-    ll <- length(tsln)
     lr <- length(tsrn)
     lb <- length(c(tsln,tsrn))
     
@@ -51,7 +54,7 @@ add_legend <- function(tsln,
              ncol = theme$legend_col,
              bty = "n",
              xpd = NA,
-             inset = c(0, 1.15),
+             inset = c(0, inset_y),
              col = na.omit(line_colors[1:ll]),
              lty = na.omit(lty[1:ll]),
              lwd = na.omit(lwd[1:ll]),
@@ -62,7 +65,7 @@ add_legend <- function(tsln,
              ncol = theme$legend_col,
              bty = "n",
              xpd = NA,
-             inset = c(0, 1.15),
+             inset = c(0, inset_y),
              col = na.omit(line_colors[(ll+1):lb]),
              lty = na.omit(lty[(ll+1):lb]),
              lwd = na.omit(lwd[(ll+1):lb]),
@@ -75,7 +78,7 @@ add_legend <- function(tsln,
              bty = "n",
              border = NA,
              xpd = NA,
-             inset = c(0, 1.15),
+             inset = c(0, inset_y),
              fill = bar_fill_colors[1:ll],
              x.intersp = theme$legend_intersp_x,
              y.intersp = theme$legend_intersp_y)
@@ -84,7 +87,7 @@ add_legend <- function(tsln,
              bty = "n",
              border = NA,
              xpd = NA,
-             inset = c(0, 1.15),
+             inset = c(0, inset_y),
              ncol = theme$legend_col,
              lty = lty[1:lr],
              lwd = lwd[1:lr],
@@ -95,14 +98,12 @@ add_legend <- function(tsln,
   
   
   if(theme$sum_as_line) {
-    ll <- length(tsln)
-    
     legend("topleft",
            legend = c(rep(NA, ceiling(ll/theme$legend_col)), "sum"),
            bty = "n",
            border = NA,
            xpd = NA,
-           inset = c(0, 1.15),
+           inset = c(0, inset_y),
            col = theme$sum_line_color,
            lty = c(rep(0, ceiling(ll/theme$legend_col)), theme$sum_line_lty),
            lwd = theme$sum_line_lwd,
