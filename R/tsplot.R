@@ -178,6 +178,23 @@ tsplot.list <- function(...,
   tsl <- c(...)
   
   if(is.null(theme)) theme <- init_tsplot_theme()
+  
+  # Set default names for legend if none provided (moved here for measuring margin)
+  if(is.null(names(tsl))){
+    names(tsl) <- paste0("series_",1:length(tsl))
+  }
+  if(is.null(names(tsr)) & !is.null(tsr)){
+    names(tsr) <- paste0("series_",1:length(tsr))
+  }
+  
+  if(is.na(theme$margins[1])) {
+    line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
+    legend_height_in <- strheight(paste(names(tsl), collapse = "\n"))
+    # TODO: Check if tsl exists and if so if its legend is taller
+    
+    theme$margins[1] <- (legend_height_in)/(line_height_in*theme$legend_col)
+  }
+  
   # thanks to @christophsax for that snippet.
   # I been looking for this for while..
   op <- par(no.readonly = T)
@@ -455,13 +472,6 @@ tsplot.list <- function(...,
   
   # add legend
   if(auto_legend){
-    if(is.null(names(tsl))){
-      names(tsl) <- paste0("series_",1:length(tsl))
-    }
-    if(is.null(names(tsr)) & !is.null(tsr)){
-      names(tsr) <- paste0("series_",1:length(tsr))
-    }
-    
     add_legend(names(tsl), names(tsr),
               theme = theme, left_as_bar = left_as_bar)
   }
