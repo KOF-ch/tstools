@@ -178,14 +178,7 @@ tsplot.list <- function(...,
   tsl <- c(...)
   
   if(is.null(theme)) theme <- init_tsplot_theme()
-  # thanks to @christophsax for that snippet.
-  # I been looking for this for while..
-  op <- par(no.readonly = T)
-  par(no.readonly = T,
-      mar = theme$margins)
-  # restore par on exit
-  on.exit(par(op))
-  
+  par(mar = theme$margins)
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
