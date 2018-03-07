@@ -82,7 +82,7 @@
 #' @author Matthias Bannert
 #' @export
 init_tsplot_theme <- function(
-  margins = c(5, 4, 3, 3) + 0.1,
+  margins = c(NA, 4, 3, 3) + 0.1,
   fillYearWithNAs = TRUE,
   line_colors = c("ETH_8_100" = "#a9af66",
                          "ETH_4_100" = "#72791c",

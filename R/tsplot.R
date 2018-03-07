@@ -178,6 +178,27 @@ tsplot.list <- function(...,
   tsl <- c(...)
   
   if(is.null(theme)) theme <- init_tsplot_theme()
+ 
+  # Set default names for legend if none provided (moved here for measuring margin)
+  if(is.null(names(tsl))){
+    names(tsl) <- paste0("series_",1:length(tsl))
+  }
+  if(is.null(names(tsr)) & !is.null(tsr)){
+    names(tsr) <- paste0("series_",1:length(tsr))
+  }
+  
+  if(is.na(theme$margins[1])) {
+    line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
+    
+    legend_height_in <- strheight(paste(names(tsl), collapse = "\n"), units = "inches")
+    if(!is.null(tsr)) {
+      legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches"))
+    }
+    # TODO: theme$legend_intersp_y
+    # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
+    
+    theme$margins[1] <- (legend_height_in)/(line_height_in*theme$legend_col) + theme$legend_margin_top/line_height_in + 1.2
+  }
   par(mar = theme$margins)
   
   cnames <- names(tsl)
@@ -429,7 +450,6 @@ tsplot.list <- function(...,
     )
     
     tt_r <- theme
-
     # Make sure we do not reuse line specs for the right axis (if left is not bars)
     if(!left_as_bar) {
       total_le <- length(tsl) + length(tsr)
@@ -439,7 +459,6 @@ tsplot.list <- function(...,
       if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
       if(!all(is.na(tt_r$lty[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
     }
-   
     draw_ts_lines(tsr,theme = tt_r)
     
     # RIGHT Y-Axis
@@ -452,13 +471,6 @@ tsplot.list <- function(...,
   
   # add legend
   if(auto_legend){
-    if(is.null(names(tsl))){
-      names(tsl) <- paste0("series_",1:length(tsl))
-    }
-    if(is.null(names(tsr)) & !is.null(tsr)){
-      names(tsr) <- paste0("series_",1:length(tsr))
-    }
-    
     add_legend(names(tsl), names(tsr),
                theme = theme, left_as_bar = left_as_bar)
   }
