@@ -52,7 +52,7 @@
 #' @param preferred_y_gap_sizes numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
 #' @param y_range_min_size = NULL  ,
 #' @param legend_col integer number of columns for the legend, defaults to 3.
-#' @param legend_margin_top numeric Distance between bottom of plot and top of legends in inches, defaults to 0.35
+#' @param legend_margin_top numeric Distance between bottom of plot and top of legends in inches, defaults to 0.45
 #' @param title_outer logical, currently undocumented. Defaults to TRUE. 
 #' @param title_adj numeric, same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param title_line numeric same as base \code{\link{plot}} parameter, defaults to .8.
@@ -84,13 +84,13 @@
 init_tsplot_theme <- function(
   margins = c(NA, 4, 3, 3) + 0.1,
   fillYearWithNAs = TRUE,
-  line_colors = c("ETH_8_100" = "#007a92",
+  line_colors = c("ETH_8_100" = "#a9af66",
                          "ETH_4_100" = "#72791c",
                          "ETH_8_20" = "#cce5eb",
                          "ETH_5_60" = "#cc67a7",
                          "ETH_8_60" = "#66b0c2",
                          "ETH_5_100" = "#91056a",
-                         "ETH_4_60" = "#a9af66"),
+                         "ETH_4_60" = "#007a92"),
   line_to_middle = TRUE,
   lwd = c(2,3,1,4,2,4),
   lty = 1,
@@ -142,7 +142,7 @@ init_tsplot_theme <- function(
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,
   legend_col = 1,
-  legend_margin_top = 0.35,
+  legend_margin_top = 0.45,
   title_outer = FALSE,
   title_adj = 0,
   title_line = 1.8,
