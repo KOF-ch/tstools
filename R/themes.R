@@ -52,6 +52,7 @@
 #' @param preferred_y_gap_sizes numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
 #' @param y_range_min_size = NULL  ,
 #' @param legend_col integer number of columns for the legend, defaults to 3.
+#' @param legend_margin_top numeric Distance between bottom of plot and top of legends in inches, defaults to 0.35
 #' @param title_outer logical, currently undocumented. Defaults to TRUE. 
 #' @param title_adj numeric, same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param title_line numeric same as base \code{\link{plot}} parameter, defaults to .8.
@@ -140,15 +141,16 @@ init_tsplot_theme <- function(
   y_tick_margin = 0.15,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,
-  legend_col = 3,
-  title_outer = TRUE,
+  legend_col = 1,
+  legend_margin_top = 0.35,
+  title_outer = FALSE,
   title_adj = 0,
-  title_line = .8,
+  title_line = 1.8,
   title_cex.main = 1,
   title_transform = NA,
   subtitle_adj = 0,
-  subtitle_outer = TRUE,
-  subtitle_line = -.6,
+  subtitle_outer = FALSE,
+  subtitle_line = 0.5,
   subtitle_cex.main = 1,
   subtitle_transform = "toupper",
   subtitle_adj_r = .9,

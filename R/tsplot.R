@@ -178,14 +178,7 @@ tsplot.list <- function(...,
   tsl <- c(...)
   
   if(is.null(theme)) theme <- init_tsplot_theme()
-  # thanks to @christophsax for that snippet.
-  # I been looking for this for while..
-  op <- par(no.readonly = T)
-  par(no.readonly = T,
-      mar = theme$margins)
-  # restore par on exit
-  on.exit(par(op))
-  
+  par(mar = theme$margins)
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
@@ -436,7 +429,6 @@ tsplot.list <- function(...,
     )
     
     tt_r <- theme
-    
     # Make sure we do not reuse line specs for the right axis (if left is not bars)
     if(!left_as_bar) {
       total_le <- length(tsl) + length(tsr)
@@ -446,7 +438,7 @@ tsplot.list <- function(...,
       if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
       if(!all(is.na(tt_r$lty[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
     }
-    
+   
     draw_ts_lines(tsr,theme = tt_r)
     
     # RIGHT Y-Axis
@@ -471,40 +463,8 @@ tsplot.list <- function(...,
   }
   
   # add title and subtitle
-  if(!is.null(plot_title)){
-    if(!any(is.na(theme$title_transform))){
-      plot_title <- do.call(theme$title_transform,
-                            list(plot_title))
-    } 
-    title(main = plot_title, adj = theme$title_adj,
-          line = theme$title_line,
-          outer = theme$title_outer,
-          cex.main = theme$title_cex.main)    
-  }
+  add_title(plot_title, plot_subtitle, plot_subtitle_r, theme)
   
-  if(!is.null(plot_subtitle)){
-    if(!is.null(theme$subtitle_transform)){
-      plot_subtitle <- do.call(theme$subtitle_transform,
-                               list(plot_subtitle))
-    } 
-    mtext(plot_subtitle, adj = theme$title_adj,
-          line = theme$subtitle_line,
-          outer = theme$subtitle_outer,
-          cex = theme$subtitle_cex)    
-  }
-  
-  
-  if(!is.null(plot_subtitle_r)){
-    if(!is.null(theme$subtitle_transform)){
-      plot_subtitle_r <- do.call(theme$subtitle_transform,
-                                 list(plot_subtitle_r))
-    } 
-    mtext(plot_subtitle_r,
-          adj = theme$subtitle_adj_r,
-          line = theme$subtitle_line,
-          outer = theme$subtitle_outer,
-          cex = theme$subtitle_cex)    
-  }
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
     output <- list(left_range = tsl_r,
