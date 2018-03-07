@@ -190,7 +190,7 @@ tsplot.list <- function(...,
   if(is.na(theme$margins[1])) {
     line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
     
-    legend_height_in <- strheight(paste(names(tsl), collapse = "\n"), units = "inches", cex = theme$legend_intersp_y)
+    legend_height_in <- strheight(paste(names(tsl), collapse = "\n"), units = "inches")
     if(!is.null(tsr)) {
       legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches"))
     }
