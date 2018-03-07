@@ -66,8 +66,8 @@
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
 #' @param legend_intersp_x numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param legend_intersp_y numeric same as base \code{\link{plot}} parameter, defaults to 1 
-#' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, default 1
-#' @param range_must_not_cross_zero logical automatic range finders are forced to do not find ranges below zero. Defaults to FALSE.
+#' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1
+#' @param range_must_not_cross_zero logical automatic range finders are forced to do not find ranges below zero. Defaults to TRUE.
 #' @examples 
 #' # create a list
 #' data(KOF)
@@ -158,7 +158,7 @@ init_tsplot_theme <- function(
   legend_intersp_x = 1,
   legend_intersp_y = 1,
   legend_font_size = 1,
-  range_must_not_cross_zero = FALSE){
+  range_must_not_cross_zero = TRUE){
   e <- environment()
   li <- lapply(names(formals()),get,envir = e)
   names(li) <- names(formals())
