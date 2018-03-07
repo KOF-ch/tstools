@@ -180,19 +180,21 @@ tsplot.list <- function(...,
   if(is.null(theme)) theme <- init_tsplot_theme()
  
   # Set default names for legend if none provided (moved here for measuring margin)
+  right_name_start <- 0
   if(is.null(names(tsl))){
     names(tsl) <- paste0("series_",1:length(tsl))
+    right_name_start <- length(tsl)
   }
   if(is.null(names(tsr)) & !is.null(tsr)){
-    names(tsr) <- paste0("series_",1:length(tsr))
+    names(tsr) <- paste0("series_", 1:length(tsr) + right_name_start)
   }
   
   if(is.na(theme$margins[1])) {
     line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
     
-    legend_height_in <- strheight(paste(names(tsl), collapse = "\n"), units = "inches")
+    legend_height_in <- strheight(paste(names(tsl), collapse = "\n"), units = "inches", cex = theme$legend_font_size)
     if(!is.null(tsr)) {
-      legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches"))
+      legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches", cex = theme$legend_font_size))
     }
     # TODO: theme$legend_intersp_y
     # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
