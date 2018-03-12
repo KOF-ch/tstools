@@ -22,7 +22,7 @@ Suggests:
     reshape2,
     openxlsx
 VignetteBuilder: knitr    
-Date: 2018-02-05
+Date: 2018-03-12
 License: GPL-2
 LazyData: true
 Maintainer: 'Matthias Bannert' <bannert@kof.ethz.ch>
