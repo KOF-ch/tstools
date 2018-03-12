@@ -198,7 +198,11 @@ tsplot.list <- function(...,
   if(is.na(theme$margins[1])) {
     line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
     
-    legend_height_in <- strheight(paste(names(tsl), collapse = "\n"), units = "inches", cex = theme$legend_font_size)
+    legend_left <- names(tsl)
+    if(theme$sum_as_line && !is.null(theme$sum_legend)) {
+      legend_left <- c(legend_left, theme$sum_legend)
+    }
+    legend_height_in <- strheight(paste(legend_left, collapse = "\n"), units = "inches", cex = theme$legend_font_size)
     if(!is.null(tsr)) {
       legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches", cex = theme$legend_font_size))
     }

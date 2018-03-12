@@ -20,6 +20,7 @@
 #' @param bar_fill_color character vector of hex colors for 6 time series. 
 #' @param sum_as_line logical should the sum of stacked time series be displayed as a line on top of stacked bar charts. 
 #' defaults to FALSE,
+#' @param sum_legend character Label for the sum line, defaults to "sum". Set to NULL to not label the line at all.
 #' @param sum_line_lty integer line type of sum_as_line, defaults to 1.
 #' @param sum_line_lwd integer line width of sum_as_line, defaults to 3.
 #' @param sum_line_color character hex color of of sum_as_line, defaults "#91056a".
@@ -107,6 +108,7 @@ init_tsplot_theme <- function(
                             ETH5_60 = "#cc67a7",
                             ETH5_30 = "#e6b3d3"),
   sum_as_line = FALSE,
+  sum_legend = "sum",
   sum_line_lty = 1,
   sum_line_lwd = 3,
   sum_line_color = c("ETH_8_100" = "#007a92",
