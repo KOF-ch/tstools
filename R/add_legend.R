@@ -1,4 +1,5 @@
 #' @importFrom graphics par plot legend
+#' @importFrom grDevices dev.size
 #' @importFrom stats na.omit
 add_legend <- function(tsln,
                       tsrn = NULL,

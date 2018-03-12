@@ -20,7 +20,7 @@
 #' @param quiet logical suppress output, defaults to TRUE.
 #' @param auto_legend logical should legends be printed automatically, defaults to TRUE.
 #'
-#' @importFrom graphics rect axis box title mtext
+#' @importFrom graphics rect axis box title mtext strheight
 #'
 #' @export
 tsplot <- function(...,
