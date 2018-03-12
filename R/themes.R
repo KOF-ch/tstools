@@ -85,6 +85,8 @@
 #' @export
 init_tsplot_theme <- function(
   margins = c(NA, 4, 3, 3) + 0.1,
+  auto_bottom_margin = FALSE,
+  default_bottom_margin = 3,
   fillYearWithNAs = TRUE,
   line_colors = c("ETH_8_100" = "#a9af66",
                          "ETH_4_100" = "#72791c",
