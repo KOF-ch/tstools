@@ -190,21 +190,26 @@ tsplot.list <- function(...,
   }
   
   if(is.na(theme$margins[1])) {
-    line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
-    
-    legend_left <- names(tsl)
-    if(theme$sum_as_line && !is.null(theme$sum_legend)) {
-      legend_left <- c(legend_left, theme$sum_legend)
+    if(theme$auto_bottom_margin) {
+      line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
+      
+      legend_left <- names(tsl)
+      if(theme$sum_as_line && !is.null(theme$sum_legend)) {
+        legend_left <- c(legend_left, theme$sum_legend)
+      }
+      legend_height_in <- strheight(paste(legend_left, collapse = "\n"), units = "inches", cex = theme$legend_font_size)
+      if(!is.null(tsr)) {
+        legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches", cex = theme$legend_font_size))
+      }
+      # TODO: theme$legend_intersp_y
+      # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
+      
+      theme$margins[1] <- (legend_height_in)/(line_height_in*theme$legend_col) + theme$legend_margin_top/line_height_in + 1.2
+    } else {
+      theme$margins[1] <- theme$default_bottom_margin
     }
-    legend_height_in <- strheight(paste(legend_left, collapse = "\n"), units = "inches", cex = theme$legend_font_size)
-    if(!is.null(tsr)) {
-      legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches", cex = theme$legend_font_size))
-    }
-    # TODO: theme$legend_intersp_y
-    # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
-    
-    theme$margins[1] <- (legend_height_in)/(line_height_in*theme$legend_col) + theme$legend_margin_top/line_height_in + 1.2
   }
+      
   par(mar = theme$margins)
   
   cnames <- names(tsl)
