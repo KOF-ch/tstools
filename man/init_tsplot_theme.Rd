@@ -4,10 +4,10 @@
 \alias{init_tsplot_theme}
 \title{Initiate Default Theme}
 \usage{
-init_tsplot_theme(margins = c(5, 4, 3, 3) + 0.1, fillYearWithNAs = TRUE,
-  line_colors = c(ETH_8_100 = "#007a92", ETH_4_100 = "#72791c", ETH_8_20 =
+init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1, fillYearWithNAs = TRUE,
+  line_colors = c(ETH_8_100 = "#a9af66", ETH_4_100 = "#72791c", ETH_8_20 =
   "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2", ETH_5_100 = "#91056a",
-  ETH_4_60 = "#a9af66"), line_to_middle = TRUE, lwd = c(2, 3, 1, 4, 2, 4),
+  ETH_4_60 = "#007a92"), line_to_middle = TRUE, lwd = c(2, 3, 1, 4, 2, 4),
   lty = 1, xaxs = "i", yaxs = "i", bar_border = "#000000",
   total_bar_margin_pct = 0.2, bar_fill_color = c(ETH8 = "#007A92", ETH8_60 =
   "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60
@@ -25,13 +25,13 @@ init_tsplot_theme(margins = c(5, 4, 3, 3) + 0.1, fillYearWithNAs = TRUE,
   6, 8, 10), show_y_grids = TRUE, y_grid_color = "#CCCCCC",
   y_grid_count_strict = FALSE, y_tick_margin = 0.15,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
-  y_range_min_size = NULL, legend_col = 3, title_outer = TRUE,
-  title_adj = 0, title_line = 0.8, title_cex.main = 1,
-  title_transform = NA, subtitle_adj = 0, subtitle_outer = TRUE,
-  subtitle_line = -0.6, subtitle_cex.main = 1,
+  y_range_min_size = NULL, legend_col = 1, legend_margin_top = 0.45,
+  title_outer = FALSE, title_adj = 0, title_line = 1.8,
+  title_cex.main = 1, title_transform = NA, subtitle_adj = 0,
+  subtitle_outer = FALSE, subtitle_line = 0.5, subtitle_cex.main = 1,
   subtitle_transform = "toupper", subtitle_adj_r = 0.9,
-  legend_intersp_x = 1, legend_intersp_y = 1,
-  range_must_not_cross_zero = FALSE)
+  legend_intersp_x = 1, legend_intersp_y = 1, legend_font_size = 1,
+  range_must_not_cross_zero = TRUE)
 }
 \arguments{
 \item{margins}{integer vector defaults to c(5, 4, 3, 3) + 0.1,}
@@ -121,6 +121,8 @@ without lines or bars. Defaults to 0.15 (15 percent).}
 
 \item{legend_col}{integer number of columns for the legend, defaults to 3.}
 
+\item{legend_margin_top}{numeric Distance between bottom of plot and top of legends in inches, defaults to 0.45}
+
 \item{title_outer}{logical, currently undocumented. Defaults to TRUE.}
 
 \item{title_adj}{numeric, same as base \code{\link{plot}} parameter, defaults to 0.}
@@ -147,7 +149,9 @@ without lines or bars. Defaults to 0.15 (15 percent).}
 
 \item{legend_intersp_y}{numeric same as base \code{\link{plot}} parameter, defaults to 1}
 
-\item{range_must_not_cross_zero}{logical automatic range finders are forced to do not find ranges below zero. Defaults to FALSE.}
+\item{legend_font_size}{numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1}
+
+\item{range_must_not_cross_zero}{logical automatic range finders are forced to do not find ranges below zero. Defaults to TRUE.}
 }
 \description{
 The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
