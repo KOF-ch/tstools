@@ -186,7 +186,13 @@ tsplot.list <- function(...,
     right_name_start <- length(tsl)
   }
   if(is.null(names(tsr)) & !is.null(tsr)){
-    names(tsr) <- paste0("series_", 1:length(tsr) + right_name_start)
+    if(is.list(tsr)){
+      names(tsr) <- paste0("series_", 1:length(tsr) + right_name_start)  
+    } else{
+      tsr <- list(tsr)
+      names(tsr) <- paste0("series_", right_name_start + 1)  
+    }
+    
   }
   
   if(is.na(theme$margins[1])) {
