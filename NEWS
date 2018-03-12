@@ -1,3 +1,5 @@
+0.3.6: major co-ordination fixes, auto legends fixes. enjoy!
+0.3.5.1: CRAN release
 0.3.4.2: Improvement of tick handling, more automatic determination
 0.3.4: introduced data.table dependency
 0.3.3: speedup writeTimeSeries by optionally using data.table's rbindlist

@@ -1,6 +1,6 @@
 Package: tstools
 Type: Package
-Version: 0.3.5.1
+Version: 0.3.6
 Title: A Time Series Toolbox for Official Statistics
 Description: Plot official statistics' time series conveniently: automatic legends, highlight timespans, stacked bar chars with positive and negative contributions, sum-as-line option, two y-axes with automatic horizontal grids that fit both axes and other popular chart types. 'tstools' comes with a plethora of defaults to let you plot without setting an abundance of parameters first, but gives you the flexibility to tweak the defaults. In addition to charts, 'tstools' provides a super fast, 'data.table' backed time series I/O that allows the user to export / import long format, wide format and transposed wide format data to various file types. 
 Authors@R: c(
@@ -22,7 +22,7 @@ Suggests:
     reshape2,
     openxlsx
 VignetteBuilder: knitr    
-Date: 2018-02-05
+Date: 2018-03-12
 License: GPL-2
 LazyData: true
 Maintainer: 'Matthias Bannert' <bannert@kof.ethz.ch>

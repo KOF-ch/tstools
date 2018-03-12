@@ -20,6 +20,7 @@
 #' @param bar_fill_color character vector of hex colors for 6 time series. 
 #' @param sum_as_line logical should the sum of stacked time series be displayed as a line on top of stacked bar charts. 
 #' defaults to FALSE,
+#' @param sum_legend character Label for the sum line, defaults to "sum". Set to NULL to not label the line at all.
 #' @param sum_line_lty integer line type of sum_as_line, defaults to 1.
 #' @param sum_line_lwd integer line width of sum_as_line, defaults to 3.
 #' @param sum_line_color character hex color of of sum_as_line, defaults "#91056a".
@@ -52,6 +53,7 @@
 #' @param preferred_y_gap_sizes numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
 #' @param y_range_min_size = NULL  ,
 #' @param legend_col integer number of columns for the legend, defaults to 3.
+#' @param legend_margin_top numeric Distance between bottom of plot and top of legends in inches, defaults to 0.45
 #' @param title_outer logical, currently undocumented. Defaults to TRUE. 
 #' @param title_adj numeric, same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param title_line numeric same as base \code{\link{plot}} parameter, defaults to .8.
@@ -65,7 +67,8 @@
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
 #' @param legend_intersp_x numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param legend_intersp_y numeric same as base \code{\link{plot}} parameter, defaults to 1 
-#' @param range_must_not_cross_zero logical automatic range finders are forced to do not find ranges below zero. Defaults to FALSE.
+#' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1
+#' @param range_must_not_cross_zero logical automatic range finders are forced to do not find ranges below zero. Defaults to TRUE.
 #' @examples 
 #' # create a list
 #' data(KOF)
@@ -81,15 +84,17 @@
 #' @author Matthias Bannert
 #' @export
 init_tsplot_theme <- function(
-  margins = c(5, 4, 3, 3) + 0.1,
+  margins = c(NA, 4, 3, 3) + 0.1,
+  auto_bottom_margin = FALSE,
+  default_bottom_margin = 3,
   fillYearWithNAs = TRUE,
-  line_colors = c("ETH_8_100" = "#007a92",
+  line_colors = c("ETH_8_100" = "#a9af66",
                          "ETH_4_100" = "#72791c",
                          "ETH_8_20" = "#cce5eb",
                          "ETH_5_60" = "#cc67a7",
                          "ETH_8_60" = "#66b0c2",
                          "ETH_5_100" = "#91056a",
-                         "ETH_4_60" = "#a9af66"),
+                         "ETH_4_60" = "#007a92"),
   line_to_middle = TRUE,
   lwd = c(2,3,1,4,2,4),
   lty = 1,
@@ -105,6 +110,7 @@ init_tsplot_theme <- function(
                             ETH5_60 = "#cc67a7",
                             ETH5_30 = "#e6b3d3"),
   sum_as_line = FALSE,
+  sum_legend = "sum",
   sum_line_lty = 1,
   sum_line_lwd = 3,
   sum_line_color = c("ETH_8_100" = "#007a92",
@@ -140,21 +146,23 @@ init_tsplot_theme <- function(
   y_tick_margin = 0.15,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,
-  legend_col = 3,
-  title_outer = TRUE,
+  legend_col = 1,
+  legend_margin_top = 0.45,
+  title_outer = FALSE,
   title_adj = 0,
-  title_line = .8,
+  title_line = 1.8,
   title_cex.main = 1,
   title_transform = NA,
   subtitle_adj = 0,
-  subtitle_outer = TRUE,
-  subtitle_line = -.6,
+  subtitle_outer = FALSE,
+  subtitle_line = 0.5,
   subtitle_cex.main = 1,
   subtitle_transform = "toupper",
   subtitle_adj_r = .9,
   legend_intersp_x = 1,
   legend_intersp_y = 1,
-  range_must_not_cross_zero = FALSE){
+  legend_font_size = 1,
+  range_must_not_cross_zero = TRUE){
   e <- environment()
   li <- lapply(names(formals()),get,envir = e)
   names(li) <- names(formals())

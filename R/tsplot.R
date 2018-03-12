@@ -178,14 +178,45 @@ tsplot.list <- function(...,
   tsl <- c(...)
   
   if(is.null(theme)) theme <- init_tsplot_theme()
-  # thanks to @christophsax for that snippet.
-  # I been looking for this for while..
-  op <- par(no.readonly = T)
-  par(no.readonly = T,
-      mar = theme$margins)
-  # restore par on exit
-  on.exit(par(op))
+ 
+  # Set default names for legend if none provided (moved here for measuring margin)
+  right_name_start <- 0
+  if(is.null(names(tsl))){
+    names(tsl) <- paste0("series_",1:length(tsl))
+    right_name_start <- length(tsl)
+  }
+  if(is.null(names(tsr)) & !is.null(tsr)){
+    if(is.list(tsr)){
+      names(tsr) <- paste0("series_", 1:length(tsr) + right_name_start)  
+    } else{
+      tsr <- list(tsr)
+      names(tsr) <- paste0("series_", right_name_start + 1)  
+    }
+    
+  }
   
+  if(is.na(theme$margins[1])) {
+    if(theme$auto_bottom_margin || auto_legend) {
+      line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
+      
+      legend_left <- names(tsl)
+      if(theme$sum_as_line && !is.null(theme$sum_legend)) {
+        legend_left <- c(legend_left, theme$sum_legend)
+      }
+      legend_height_in <- strheight(paste(legend_left, collapse = "\n"), units = "inches", cex = theme$legend_font_size)
+      if(!is.null(tsr)) {
+        legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches", cex = theme$legend_font_size))
+      }
+      # TODO: theme$legend_intersp_y
+      # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
+      
+      theme$margins[1] <- (legend_height_in)/(line_height_in*theme$legend_col) + theme$legend_margin_top/line_height_in + 1.2
+    } else {
+      theme$margins[1] <- theme$default_bottom_margin
+    }
+  }
+      
+  par(mar = theme$margins)
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
@@ -252,7 +283,7 @@ tsplot.list <- function(...,
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
-    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero, left_as_bar))
+    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
   }
@@ -266,7 +297,7 @@ tsplot.list <- function(...,
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
-      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero, FALSE))
+      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero))
       right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
   } else {
@@ -295,15 +326,13 @@ tsplot.list <- function(...,
         right_ticks <- c(right_ticks, right_ub + right_d)
       }
     }
-  
-    if(!left_as_bar) {
-      left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
-      
-      if(left_needs_exta_tick_bottom) {
-        left_ticks <- c(left_lb - left_d, left_ticks)
-        if(!is.null(tsr)) {
-          right_ticks <- c(right_lb - right_d, right_ticks)
-        }
+    
+    left_needs_exta_tick_bottom <- tsl_r[1] < left_lb + left_d*theme$y_tick_margin
+    
+    if(left_needs_exta_tick_bottom) {
+      left_ticks <- c(left_lb - left_d, left_ticks)
+      if(!is.null(tsr)) {
+        right_ticks <- c(right_lb - right_d, right_ticks)
       }
     }
     
@@ -326,14 +355,16 @@ tsplot.list <- function(...,
     # Technically we could save ourselves all that correcting if manual ticks are not null.
     # This is just a convenient place to check.
     
-    if(!theme$range_must_not_cross_zero || (sign(min(left_ticks)) == sign(max(left_ticks)) && sign(min(right_ticks)) == sign(max(right_ticks)))) {
-      if(is.null(manual_value_ticks_l)) {
-        left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
-      }
-      
-      if(is.null(manual_value_ticks_r) && !is.null(tsr)) {
-        right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
-      }
+    left_sign_ok = sign(left_ticks[1]) == sign(left_y$y_ticks[1]) && sign(max(left_ticks)) == sign(max(left_y$y_ticks))
+    
+    right_sign_ok = is.null(tsr) || (sign(right_ticks[1]) == sign(right_y$y_ticks[1]) && sign(max(right_ticks)) == sign(max(right_y$y_ticks)))
+    
+    if(is.null(manual_value_ticks_l) && (!theme$range_must_not_cross_zero || left_sign_ok)) {
+      left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
+    }
+    
+    if(is.null(manual_value_ticks_r) && !is.null(tsr) && (!theme$range_must_not_cross_zero || right_sign_ok)) {
+      right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
   }
   
@@ -354,7 +385,7 @@ tsplot.list <- function(...,
   if(theme$highlight_window){
     if(!any(is.na(theme$highlight_window_start))){
       xl <- compute_decimal_time(theme$highlight_window_start,
-                               theme$highlight_window_freq)
+                                 theme$highlight_window_freq)
       
     } else{
       xl <- global_x$x_range[2]-2
@@ -362,7 +393,7 @@ tsplot.list <- function(...,
     
     if(!any(is.na(theme$highlight_window_end))){
       xr <- compute_decimal_time(theme$highlight_window_end,
-                               theme$highlight_window_freq)
+                                 theme$highlight_window_freq)
       
     } else{
       xr <- global_x$x_range[2]
@@ -410,8 +441,8 @@ tsplot.list <- function(...,
   if(left_as_bar){
     # draw barplot
     draw_ts_bars(tsl,
-               group_bar_chart = group_bar_chart,
-               theme = theme)
+                 group_bar_chart = group_bar_chart,
+                 theme = theme)
     if(theme$sum_as_line){
       reduced <- Reduce("+",tsl)
       draw_sum_as_line(reduced, theme)
@@ -434,15 +465,17 @@ tsplot.list <- function(...,
          yaxs = theme$yaxs,
          xaxs = theme$xaxs
     )
-    total_le <- length(tsl) + length(tsr)
-    start_r <- (total_le - (length(tsr)-1)):total_le
-    
     
     tt_r <- theme
-    tt_r$line_colors <- tt_r$line_colors[start_r]
-    if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
-    if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
-    
+    # Make sure we do not reuse line specs for the right axis (if left is not bars)
+    if(!left_as_bar) {
+      total_le <- length(tsl) + length(tsr)
+      start_r <- (total_le - (length(tsr)-1)):total_le
+      
+      tt_r$line_colors <- tt_r$line_colors[start_r]
+      if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
+      if(!all(is.na(tt_r$lty[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
+    }
     draw_ts_lines(tsr,theme = tt_r)
     
     # RIGHT Y-Axis
@@ -455,52 +488,13 @@ tsplot.list <- function(...,
   
   # add legend
   if(auto_legend){
-    if(is.null(names(tsl))){
-      names(tsl) <- paste0("series_",1:length(tsl))
-    }
-    if(is.null(names(tsr)) & !is.null(tsr)){
-      names(tsr) <- paste0("series_",1:length(tsr))
-    }
-    
     add_legend(names(tsl), names(tsr),
-              theme = theme, left_as_bar = left_as_bar)
+               theme = theme, left_as_bar = left_as_bar)
   }
   
   # add title and subtitle
-  if(!is.null(plot_title)){
-    if(!any(is.na(theme$title_transform))){
-      plot_title <- do.call(theme$title_transform,
-                            list(plot_title))
-    } 
-    title(main = plot_title, adj = theme$title_adj,
-          line = theme$title_line,
-          outer = theme$title_outer,
-          cex.main = theme$title_cex.main)    
-  }
+  add_title(plot_title, plot_subtitle, plot_subtitle_r, theme)
   
-  if(!is.null(plot_subtitle)){
-    if(!is.null(theme$subtitle_transform)){
-      plot_subtitle <- do.call(theme$subtitle_transform,
-                               list(plot_subtitle))
-    } 
-    mtext(plot_subtitle, adj = theme$title_adj,
-          line = theme$subtitle_line,
-          outer = theme$subtitle_outer,
-          cex = theme$subtitle_cex)    
-  }
-  
-  
-  if(!is.null(plot_subtitle_r)){
-    if(!is.null(theme$subtitle_transform)){
-      plot_subtitle_r <- do.call(theme$subtitle_transform,
-                                 list(plot_subtitle_r))
-    } 
-    mtext(plot_subtitle_r,
-          adj = theme$subtitle_adj_r,
-          line = theme$subtitle_line,
-          outer = theme$subtitle_outer,
-          cex = theme$subtitle_cex)    
-  }
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
     output <- list(left_range = tsl_r,
