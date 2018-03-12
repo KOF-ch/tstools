@@ -190,7 +190,7 @@ tsplot.list <- function(...,
   }
   
   if(is.na(theme$margins[1])) {
-    if(theme$auto_bottom_margin) {
+    if(theme$auto_bottom_margin || auto_legend) {
       line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
       
       legend_left <- names(tsl)
