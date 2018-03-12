@@ -8,6 +8,8 @@
 #' The list contains the following elements:
 #'
 #' @param margins integer vector defaults to c(5, 4, 3, 3) + 0.1,
+#' @param auto_bottom_margin logical. Should auto margin be kept even if auto_legend is switched off? Defaults to FALSE.
+#' @param default_bottom_margin integer, standard bottom margin. Defaults to 3.
 #' @param fillYearWithNAs logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,
 #' @param line_colors character vector of hex colors for 6 lines. 
 #' @param line_to_middle logical try to put a line into the middle of the plot. defaults to TRUE.

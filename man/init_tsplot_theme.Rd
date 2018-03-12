@@ -38,6 +38,10 @@ init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1,
 \arguments{
 \item{margins}{integer vector defaults to c(5, 4, 3, 3) + 0.1,}
 
+\item{auto_bottom_margin}{logical. Should auto margin be kept even if auto_legend is switched off? Defaults to FALSE.}
+
+\item{default_bottom_margin}{integer, standard bottom margin. Defaults to 3.}
+
 \item{fillYearWithNAs}{logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,}
 
 \item{line_colors}{character vector of hex colors for 6 lines.}
