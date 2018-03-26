@@ -31,6 +31,15 @@ write_ts <- function(tl,
 {
   args <- list(...)
   
+  if(!is.list(tl)) {
+    stop("tl must be a list object!")
+  }
+  
+  if(is.null(names(tl))) {
+    warning("Unnamed list provided, using index as name!")
+    names(tl) <- seq(1:length(tl))
+  }
+  
   # Match format
   allowed_formats <- c("csv", "xlsx", "json", "rdata")
   format <- match.arg(format, allowed_formats)
