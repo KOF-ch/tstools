@@ -22,12 +22,13 @@ init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1,
   y_las = 2, lwd_ticks_1 = 1.5, lwd_ticks_2 = 1, yearly_ticks = TRUE,
   quarterly_ticks = TRUE, monthly_ticks = FALSE,
   tcl_quarterly_tick_tcl = -0.5, tcl_yearly_tick = -0.75,
-  lwd_yearly_ticks = 1.5, lwd_quarterly_ticks = 1, label_pos = "mid",
-  show_left_y_axis = TRUE, show_right_y_axis = TRUE, y_grid_count = c(5,
-  6, 8, 10), show_y_grids = TRUE, y_grid_color = "#CCCCCC",
-  y_grid_count_strict = FALSE, y_tick_margin = 0.15,
-  preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
-  y_range_min_size = NULL, legend_col = 1, legend_margin_top = 0.45,
+  lwd_yearly_ticks = 1.5, lwd_quarterly_ticks = 1,
+  tck_yearly_ticks = -0.05, tck_quarterly_ticks = -0.04,
+  label_pos = "mid", show_left_y_axis = TRUE, show_right_y_axis = TRUE,
+  y_grid_count = c(5, 6, 8, 10), show_y_grids = TRUE,
+  y_grid_color = "#CCCCCC", y_grid_count_strict = FALSE,
+  y_tick_margin = 0.15, preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1,
+  0.5), y_range_min_size = NULL, legend_col = 1, legend_margin_top = 0.45,
   title_outer = FALSE, title_adj = 0, title_line = 1.8,
   title_cex.main = 1, title_transform = NA, subtitle_adj = 0,
   subtitle_outer = FALSE, subtitle_line = 0.5, subtitle_cex.main = 1,
@@ -101,6 +102,10 @@ to FALSE.}
 \item{lwd_yearly_ticks}{numeric, width of yearly ticks, defaults to 1.5.}
 
 \item{lwd_quarterly_ticks}{numeric, width of yearly ticks, defaults to 1.}
+
+\item{tck_yearly_ticks}{numeric, length of yearly ticks. Suited values range from -0.1 to 0.1, defaults to -0.05.}
+
+\item{tck_quarterly_ticks}{numeric, length of quarterly ticks. See tck_yearly_ticks, defaults to -0.04}
 
 \item{label_pos}{character, currently undocumented. sorry. defaults to "mid".}
 
