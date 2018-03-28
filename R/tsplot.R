@@ -190,11 +190,12 @@ tsplot.list <- function(...,
   if(relative_bar_chart) {
     # Normalize ts
     if(group_bar_chart) {
-      m <- max(unlist(tsl))
-      tsl <- lapply(tsl, '/', m)
+      m <- Reduce('max', tsl)
     } else {
-      
+      sums <- Reduce('+', tsl)
+      m <- max(sums)
     }
+    tsl <- lapply(tsl, '/', m)
   }
  
   # Set default names for legend if none provided (moved here for measuring margin)
