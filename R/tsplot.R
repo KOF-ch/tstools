@@ -187,7 +187,7 @@ tsplot.list <- function(...,
   
   if(is.null(theme)) theme <- init_tsplot_theme()
   
-  if(relative_bar_chart) {
+  if(left_as_bar && relative_bar_chart) {
     # Normalize ts
     if(group_bar_chart) {
       m <- Reduce('max', tsl)
