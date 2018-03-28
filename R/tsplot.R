@@ -27,6 +27,7 @@ tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,                    
                    group_bar_chart = FALSE,
+                   relative_bar_chart = FALSE,
                    plot_title = NULL,
                    plot_subtitle = NULL,              
                    plot_subtitle_r = NULL,
@@ -48,6 +49,7 @@ tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,                
                       group_bar_chart = FALSE,
+                      relative_bar_chart = FALSE,
                       plot_title = NULL,
                       plot_subtitle = NULL,
                       plot_subtitle_r = NULL,
@@ -67,6 +69,7 @@ tsplot.ts <- function(...,
          tsr = tsr,
          left_as_bar = left_as_bar,
          group_bar_chart = group_bar_chart,
+         relative_bar_chart = relative_bar_chart,
          find_ticks_function = find_ticks_function,
          manual_date_ticks = manual_date_ticks,
          quiet = quiet,
@@ -82,6 +85,7 @@ tsplot.ts <- function(...,
 tsplot.mts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                                       group_bar_chart = FALSE,
+                       relative_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,                                      plot_subtitle_r = NULL,
                        find_ticks_function = "findTicks",
@@ -104,6 +108,7 @@ tsplot.mts <- function(...,
            manual_date_ticks = manual_date_ticks,
            left_as_bar = left_as_bar,
            group_bar_chart = group_bar_chart,
+           relative_bar_chart = relative_bar_chart,
            find_ticks_function = find_ticks_function,
            overall_xlim = overall_xlim,
            overall_ylim = overall_ylim,
@@ -116,6 +121,7 @@ tsplot.zoo <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                
                        group_bar_chart = FALSE,
+                       relative_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -137,6 +143,7 @@ tsplot.xts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                
                        group_bar_chart = FALSE,
+                       relative_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -158,6 +165,7 @@ tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
                         group_bar_chart = FALSE,
+                        relative_bar_chart = FALSE,
                         plot_title = NULL,
                         plot_subtitle = NULL,
                         plot_subtitle_r = NULL,
@@ -178,6 +186,16 @@ tsplot.list <- function(...,
   tsl <- c(...)
   
   if(is.null(theme)) theme <- init_tsplot_theme()
+  
+  if(relative_bar_chart) {
+    # Normalize ts
+    if(group_bar_chart) {
+      m <- max(unlist(tsl))
+      tsl <- lapply(tsl, '/', m)
+    } else {
+      
+    }
+  }
  
   # Set default names for legend if none provided (moved here for measuring margin)
   right_name_start <- 0
