@@ -45,7 +45,7 @@ read_ts <- function(file,
   }
   
   switch(format, 
-         "csv" = read_ts.csv(file),
+         "csv" = read_ts.csv(file, sep = sep),
          "xlsx" = read_ts.xlsx(file),
          "json" = read_ts.json(file)
   )
