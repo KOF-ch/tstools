@@ -36,7 +36,11 @@ init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1,
   range_must_not_cross_zero = TRUE)
 }
 \arguments{
-\item{margins}{integer vector defaults to c(5, 4, 3, 3) + 0.1,}
+\item{margins}{integer vector defaults to c(NA, 4, 3, 3) + 0.1. Set margins[1] to NA to automatically determine the bottom margin such that the legend fits (if either auto_legend or auto_bottom_margin are TRUE)}
+
+\item{auto_bottom_margin}{logical Should the bottom margin be automatically calculated? This will be overridden if margins[1] is not NA. Default FALSE}
+
+\item{default_bottom_margin}{numeric The bottom margin to use when margins[1] is NA but neither auto_legend nor auto_bottom_margin are true. Default 3}
 
 \item{fillYearWithNAs}{logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,}
 
