@@ -6,6 +6,7 @@
 #' @param tsr list of time series objects of class ts.
 #' @param left_as_bar logical should the series that relate to the left bar be drawn as (stacked) bar charts?
 #' @param group_bar_chart logical should a bar chart be grouped instead of stacked?
+#' @param relative_bar_chart logical Should time series be normalized such that bars range from 0 to 1?
 #' @param plot_title character title to be added to the plot
 #' @param plot_subtitle character subtitle to be added to the plot 
 #' @param plot_subtitle_r character second subtitle to be added at the top right
@@ -27,6 +28,7 @@ tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,                    
                    group_bar_chart = FALSE,
+                   relative_bar_chart = FALSE,
                    plot_title = NULL,
                    plot_subtitle = NULL,              
                    plot_subtitle_r = NULL,
@@ -48,6 +50,7 @@ tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,                
                       group_bar_chart = FALSE,
+                      relative_bar_chart = FALSE,
                       plot_title = NULL,
                       plot_subtitle = NULL,
                       plot_subtitle_r = NULL,
@@ -67,6 +70,7 @@ tsplot.ts <- function(...,
          tsr = tsr,
          left_as_bar = left_as_bar,
          group_bar_chart = group_bar_chart,
+         relative_bar_chart = relative_bar_chart,
          find_ticks_function = find_ticks_function,
          manual_date_ticks = manual_date_ticks,
          quiet = quiet,
@@ -82,6 +86,7 @@ tsplot.ts <- function(...,
 tsplot.mts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                                       group_bar_chart = FALSE,
+                       relative_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,                                      plot_subtitle_r = NULL,
                        find_ticks_function = "findTicks",
@@ -104,6 +109,7 @@ tsplot.mts <- function(...,
            manual_date_ticks = manual_date_ticks,
            left_as_bar = left_as_bar,
            group_bar_chart = group_bar_chart,
+           relative_bar_chart = relative_bar_chart,
            find_ticks_function = find_ticks_function,
            overall_xlim = overall_xlim,
            overall_ylim = overall_ylim,
@@ -116,6 +122,7 @@ tsplot.zoo <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                
                        group_bar_chart = FALSE,
+                       relative_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -137,6 +144,7 @@ tsplot.xts <- function(...,
                        tsr = NULL,
                        left_as_bar = FALSE,                
                        group_bar_chart = FALSE,
+                       relative_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -158,6 +166,7 @@ tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
                         group_bar_chart = FALSE,
+                        relative_bar_chart = FALSE,
                         plot_title = NULL,
                         plot_subtitle = NULL,
                         plot_subtitle_r = NULL,
@@ -178,6 +187,17 @@ tsplot.list <- function(...,
   tsl <- c(...)
   
   if(is.null(theme)) theme <- init_tsplot_theme()
+  
+  if(left_as_bar && relative_bar_chart) {
+    # Normalize ts
+    if(group_bar_chart) {
+      m <- Reduce('max', tsl)
+    } else {
+      sums <- Reduce('+', tsl)
+      m <- max(sums)
+    }
+    tsl <- lapply(tsl, '/', m)
+  }
  
   # Set default names for legend if none provided (moved here for measuring margin)
   right_name_start <- 0
