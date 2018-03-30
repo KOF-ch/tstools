@@ -43,6 +43,8 @@
 #' @param tcl_yearly_tick numeric, same as base \code{\link{plot}} tcl parameter defaults to -.75,
 #' @param lwd_yearly_ticks numeric, width of yearly ticks, defaults to 1.5.
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
+#' @param tck_yearly_ticks numeric, length of yearly ticks. Suited values range from -0.1 to 0.1, defaults to -0.05.
+#' @param tck_quarterly_ticks numeric, length of quarterly ticks. See tck_yearly_ticks, defaults to -0.04
 #' @param label_pos character, currently undocumented. sorry. defaults to "mid".
 #' @param show_left_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param show_right_y_axis logical: should left y axis be shown, defaults to TRUE.
@@ -138,6 +140,8 @@ init_tsplot_theme <- function(
   tcl_yearly_tick = -.75,
   lwd_yearly_ticks = 1.5,
   lwd_quarterly_ticks = 1,
+  tck_yearly_ticks = -0.05,
+  tck_quarterly_ticks = -0.02,
   label_pos = "mid",
   show_left_y_axis = TRUE,
   show_right_y_axis = TRUE,

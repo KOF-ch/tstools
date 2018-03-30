@@ -430,21 +430,28 @@ tsplot.list <- function(...,
     if(theme$label_pos == "start"){
       axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
            lwd.ticks = theme$lwd_yearly_ticks,
-           tcl = theme$tcl_yearly_tick)    
+           tcl = theme$tcl_yearly_tick,
+           tck = theme$tck_yearly_tick)    
     } else{
       axis(1,global_x$yearly_tick_pos,labels = F,
            lwd.ticks = theme$lwd_yearly_ticks,
-           tcl = theme$tcl_yearly_tick)
+           tcl = theme$tcl_yearly_tick,
+           tck = theme$tck_yearly_tick)
     }
   }
   
   if(theme$quarterly_ticks){
+    overlap <- global_x$quarterly_tick_pos %in% global_x$yearly_tick_pos
+    q_ticks <- global_x$quarterly_tick_pos[!overlap]
+    q_labels <- global_x$year_labels_middle_q[!overlap]
     if(theme$label_pos == "mid"){
-      axis(1,global_x$quarterly_tick_pos,labels = global_x$year_labels_middle_q,
-           lwd.ticks = theme$lwd_quarterly_ticks)    
+      axis(1, q_ticks,labels = q_labels,
+           lwd.ticks = theme$lwd_quarterly_ticks,
+           tck = theme$tck_quarterly_ticks)    
     } else{
-      axis(1,global_x$quarterly_tick_pos,labels = F,
-           lwd.ticks = theme$lwd_quarterly_ticks)
+      axis(1, q_ticks, labels = F,
+           lwd.ticks = theme$lwd_quarterly_ticks,
+           tck = theme$tck_quarterly_ticks)
     }
   }
   
