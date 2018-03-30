@@ -139,7 +139,7 @@ init_tsplot_theme <- function(
   lwd_yearly_ticks = 1.5,
   lwd_quarterly_ticks = 1,
   tck_yearly_ticks = -0.05,
-  tck_quarterly_ticks = -0.04,
+  tck_quarterly_ticks = -0.02,
   label_pos = "mid",
   show_left_y_axis = TRUE,
   show_right_y_axis = TRUE,
