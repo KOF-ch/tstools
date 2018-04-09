@@ -37,7 +37,6 @@
 #' @param yearly_ticks logical, should yearly ticks be shown. Defaults to TRUE.
 #' @param quarterly_ticks logical, should quarterly ticks be shown. Defaults to TRUE.
 #' @param monthly_ticks logical, should monthly ticks be shown. Defaults to FALSE.
-#' @param tcl_yearly_tick numeric, same as base \code{\link{plot}} tcl parameter defaults to -.75,
 #' @param lwd_yearly_ticks numeric, width of yearly ticks, defaults to 1.5.
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
 #' @param tck_yearly_ticks numeric, length of yearly ticks. Suited values range from -0.1 to 0.1, defaults to -0.05.
@@ -130,7 +129,6 @@ init_tsplot_theme <- function(
   yearly_ticks = TRUE,
   quarterly_ticks = TRUE,
   monthly_ticks = FALSE,
-  tcl_yearly_tick = -.75,
   lwd_yearly_ticks = 1.5,
   lwd_quarterly_ticks = 1,
   tck_yearly_ticks = -0.05,
