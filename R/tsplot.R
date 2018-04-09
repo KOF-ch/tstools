@@ -403,6 +403,13 @@ tsplot.list <- function(...,
       xr <- global_x$x_range[2]
     }
     
+    n_start <- length(xl)
+    n_end <- length(xr)
+    
+    if(n_start != n_end) {
+      warning(sprintf("%s highlight start points than end points specified! Dropping excess ones.", ifelse(n_start > n_end, "More", "Fewer")))
+    }
+    
     for(i in seq_along(xl)) {
       rect(xl[i],left_y$y_range[1],xr[i],left_y$y_range[2],
            col = theme$highlight_color,
