@@ -172,7 +172,8 @@ init_tsplot_theme <- function(
   legend_intersp_x = 1,
   legend_intersp_y = 1,
   legend_font_size = 1,
-  range_must_not_cross_zero = TRUE){
+  range_must_not_cross_zero = TRUE,
+  jpeg_quality = 75){
   e <- environment()
   li <- lapply(names(formals()),get,envir = e)
   names(li) <- names(formals())

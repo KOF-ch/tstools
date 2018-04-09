@@ -43,7 +43,11 @@ tsplot <- function(...,
                    manual_ticks_x = NULL,
                    theme = NULL,
                    quiet = TRUE,
-                   auto_legend = TRUE){
+                   auto_legend = TRUE,
+                   output_format = "plot",
+                   filename = "tsplot",
+                   output_dim = c(8, 6),
+                   close_graphics_device = TRUE){
   UseMethod("tsplot")
 } 
 
@@ -66,7 +70,11 @@ tsplot.ts <- function(...,
                       manual_ticks_x = NULL,
                       theme = NULL,
                       quiet = TRUE,
-                      auto_legend = TRUE
+                      auto_legend = TRUE,
+                      output_format = "plot",
+                      filename = "tsplot",
+                      output_dim = c(4, 3),
+                      close_graphics_device = TRUE
 ){
   li <- list(...)
   tsplot(li,
@@ -85,9 +93,13 @@ tsplot.ts <- function(...,
          manual_value_ticks_l = manual_value_ticks_l,
          manual_value_ticks_r = manual_value_ticks_r,
          manual_ticks_x = manual_ticks_x,
-         theme = theme,
          quiet = quiet,
-         auto_legend = auto_legend)
+         auto_legend = auto_legend,
+         theme = theme,
+         output_format = output_format,
+         filename = filename,
+         output_dim = output_dim,
+         close_graphics_device = close_graphics_device)
 }
 
 #' @export
@@ -109,7 +121,11 @@ tsplot.mts <- function(...,
                        manual_ticks_x = NULL,
                        theme = NULL,
                        quiet = TRUE,
-                       auto_legend = TRUE){
+                       auto_legend = TRUE,
+                       output_format = "plot",
+                       filename = "tsplot",
+                       output_dim = c(4, 3),
+                       close_graphics_device = TRUE){
   li <- list(...)
   if(length(li) > 1){
     stop("If you use multivariate time series objects (mts), make sure to pass only one object per axis. Place all time series you want to plot on one y-axis in one mts object or list of time series.")
@@ -138,9 +154,13 @@ create a ts out of a row of a data.frame? Converting to single ts.")
            manual_value_ticks_l = manual_value_ticks_l,
            manual_value_ticks_r = manual_value_ticks_r,
            manual_ticks_x = manual_ticks_x,
-           theme = theme,
            quiet = quiet,
-           auto_legend = auto_legend)
+           auto_legend = auto_legend,
+           theme = theme,
+           output_format = output_format,
+           filename = filename,
+           output_dim = output_dim,
+           close_graphics_device = close_graphics_device)
   }
 }
 
@@ -163,7 +183,11 @@ tsplot.zoo <- function(...,
                        manual_ticks_x = NULL,
                        theme = NULL,
                        quiet = TRUE,
-                       auto_legend = TRUE) {
+                       auto_legend = TRUE,
+                       output_format = "plot",
+                       filename = "tsplot",
+                       output_dim = c(4, 3),
+                       close_graphics_device = TRUE) {
   stop("zoo objets are not supported yet. Please convert your data to ts!")
 }
 
@@ -186,7 +210,11 @@ tsplot.xts <- function(...,
                        manual_ticks_x = NULL,
                        theme = NULL,
                        quiet = TRUE,
-                       auto_legend = TRUE) {
+                       auto_legend = TRUE,
+                       output_format = "plot",
+                       filename = "tsplot",
+                       output_dim = c(4, 3),
+                       close_graphics_device = TRUE) {
   stop("xts objects are not supported yet. Please convert your data to ts if possible!")
 }
 
@@ -209,7 +237,11 @@ tsplot.list <- function(...,
                         manual_ticks_x = NULL,
                         theme = NULL,
                         quiet = TRUE,
-                        auto_legend = TRUE
+                        auto_legend = TRUE,
+                        output_format = "plot",
+                        filename = "tsplot",
+                        output_dim = c(8, 6),
+                        close_graphics_device = TRUE
 ){
   
   tsl <- c(...)
@@ -446,6 +478,27 @@ tsplot.list <- function(...,
   
   # CANVAS OPTIONS END #########################################
   
+  # OPEN CORRECT GRAPHICS DEVICE
+  
+  if(output_format != "plot") {
+    
+    if(!grepl(sprintf("[.]%s$", output_format), filename)) {
+      filename = sprintf("%s.%s", filename, output_format)
+    }
+    
+    if(output_format == "pdf") {
+      pdf(filename, width = output_dim[1], height = output_dim[2])
+    } else if(output_format == "bmp") {
+      bmp(filename, width = output_dim[1], height = output_dim[2])
+    } else if(output_format == "jpeg" || output_format == "jpg") {
+      jpeg(filename, width = output_dim[1], height = output_dim[2], quality = theme$jpeg_quality)
+    } else if(output_format == "png") {
+      tiff(filename, width = output_dim[1], height = output_dim[2])
+    } else if(output_format == "tiff") {
+      
+    }
+  }
+  
   # BASE CANVAS 
   plot(NULL,
        xlim = global_x$x_range,
@@ -591,6 +644,10 @@ tsplot.list <- function(...,
   
   # add title and subtitle
   add_title(plot_title, plot_subtitle, plot_subtitle_r, theme)
+  
+  if(output_format != "plot" && close_graphics_device) {
+    dev.off()
+  }
   
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
