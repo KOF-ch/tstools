@@ -64,6 +64,7 @@
 #' @param subtitle_line numeric same as base \code{\link{plot}} parameter, defaults to -.6
 #' @param subtitle_transform function to transform the subtitle, defaults to "toupper",
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
+#' @param subtitle_cex numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param legend_intersp_x numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param legend_intersp_y numeric same as base \code{\link{plot}} parameter, defaults to 1 
 #' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1
@@ -155,6 +156,7 @@ init_tsplot_theme <- function(
   subtitle_line = 0.5,
   subtitle_transform = "toupper",
   subtitle_adj_r = .9,
+  subtitle_cex = 1,
   legend_intersp_x = 1,
   legend_intersp_y = 1,
   legend_font_size = 1,
