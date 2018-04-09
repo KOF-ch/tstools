@@ -34,12 +34,9 @@
 #' @param highlight_color character hex color code of highlight background, defaults to "#e9e9e9".
 #' @param use_box logical use a box around the plot.
 #' @param y_las integer, same as base \code{\link{plot}} parameter defaults to 2.
-#' @param lwd_ticks_1 numeric width of type 1 ticks, defaults to 1.5.
-#' @param lwd_ticks_2 numeric width of type 1 ticks, defaults to 1.
 #' @param yearly_ticks logical, should yearly ticks be shown. Defaults to TRUE.
 #' @param quarterly_ticks logical, should quarterly ticks be shown. Defaults to TRUE.
 #' @param monthly_ticks logical, should monthly ticks be shown. Defaults to FALSE.
-#' @param tcl_quarterly_tick_tcl numeric, same as base \code{\link{plot}} tcl parameter defaults to -.5,
 #' @param tcl_yearly_tick numeric, same as base \code{\link{plot}} tcl parameter defaults to -.75,
 #' @param lwd_yearly_ticks numeric, width of yearly ticks, defaults to 1.5.
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
@@ -66,7 +63,6 @@
 #' @param subtitle_adj numeric same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param subtitle_outer numeric same as base \code{\link{plot}} parameter, defaults to TRUE
 #' @param subtitle_line numeric same as base \code{\link{plot}} parameter, defaults to -.6
-#' @param subtitle_cex.main numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param subtitle_transform function to transform the subtitle, defaults to "toupper",
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
 #' @param legend_intersp_x numeric same as base \code{\link{plot}} parameter, defaults to 1
@@ -131,12 +127,9 @@ init_tsplot_theme <- function(
   highlight_color = "#e9e9e9",
   use_box = FALSE,
   y_las = 2 ,
-  lwd_ticks_1 = 1.5,
-  lwd_ticks_2 = 1,
   yearly_ticks = TRUE,
   quarterly_ticks = TRUE,
   monthly_ticks = FALSE,
-  tcl_quarterly_tick_tcl = -.5,
   tcl_yearly_tick = -.75,
   lwd_yearly_ticks = 1.5,
   lwd_quarterly_ticks = 1,
@@ -162,7 +155,6 @@ init_tsplot_theme <- function(
   subtitle_adj = 0,
   subtitle_outer = FALSE,
   subtitle_line = 0.5,
-  subtitle_cex.main = 1,
   subtitle_transform = "toupper",
   subtitle_adj_r = .9,
   legend_intersp_x = 1,
