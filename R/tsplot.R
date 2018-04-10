@@ -403,24 +403,38 @@ tsplot.list <- function(...,
   )
   
   if(theme$highlight_window){
-    if(!any(is.na(theme$highlight_window_start))){
-      xl <- compute_decimal_time(theme$highlight_window_start,
-                                 theme$highlight_window_freq)
-      
+    hlw_start <- theme$highlight_window_start
+    if(!any(is.na(hlw_start))){
+      if(!is.list(hlw_start)) {
+        hlw_start <- list(hlw_start)
+      }
+      xl <- sapply(hlw_start, compute_decimal_time, theme$highlight_window_freq)
     } else{
       xl <- global_x$x_range[2]-2
     }
     
-    if(!any(is.na(theme$highlight_window_end))){
-      xr <- compute_decimal_time(theme$highlight_window_end,
-                                 theme$highlight_window_freq)
-      
+    hlw_end <- theme$highlight_window_end
+    if(!any(is.na(hlw_end))){
+      if(!is.list(hlw_end)) {
+        hlw_end <- list(hlw_end)
+      }
+      xr <- sapply(hlw_end, compute_decimal_time, theme$highlight_window_freq) + 1/theme$highlight_window_freq
     } else{
       xr <- global_x$x_range[2]
     }
-    rect(xl,left_y$y_range[1],xr,left_y$y_range[2],
-         col = theme$highlight_color,
-         border = NA)
+    
+    n_start <- length(xl)
+    n_end <- length(xr)
+    
+    if(n_start != n_end) {
+      warning(sprintf("%s highlight start points than end points specified! Dropping excess ones.", ifelse(n_start > n_end, "More", "Fewer")))
+    }
+    
+    for(i in seq_along(xl)) {
+      rect(xl[i],left_y$y_range[1],xr[i],left_y$y_range[2],
+           col = theme$highlight_color,
+           border = NA)
+    }
     
     
   }
