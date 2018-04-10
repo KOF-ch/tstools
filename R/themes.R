@@ -37,11 +37,10 @@
 #' @param yearly_ticks logical, should yearly ticks be shown. Defaults to TRUE.
 #' @param quarterly_ticks logical, should quarterly ticks be shown. Defaults to TRUE.
 #' @param monthly_ticks logical, should monthly ticks be shown. Defaults to FALSE.
-#' @param tcl_yearly_tick numeric, same as base \code{\link{plot}} tcl parameter defaults to -.75,
 #' @param lwd_yearly_ticks numeric, width of yearly ticks, defaults to 1.5.
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
-#' @param tck_yearly_ticks numeric, length of yearly ticks. Suited values range from -0.1 to 0.1, defaults to -0.05.
-#' @param tck_quarterly_ticks numeric, length of quarterly ticks. See tck_yearly_ticks, defaults to -0.04
+#' @param tcl_yearly_ticks numeric, length of yearly ticks. Analogous to \code{cex} for \code{\link{axis}}. defaults to -0.75.
+#' @param tcl_quarterly_ticks numeric, length of quarterly ticks. See tcl_yearly_ticks, defaults to -0.4
 #' @param label_pos character, currently undocumented. sorry. defaults to "mid".
 #' @param show_left_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param show_right_y_axis logical: should left y axis be shown, defaults to TRUE.
@@ -65,6 +64,7 @@
 #' @param subtitle_line numeric same as base \code{\link{plot}} parameter, defaults to -.6
 #' @param subtitle_transform function to transform the subtitle, defaults to "toupper",
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
+#' @param subtitle_cex numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param legend_intersp_x numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param legend_intersp_y numeric same as base \code{\link{plot}} parameter, defaults to 1 
 #' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1
@@ -130,11 +130,10 @@ init_tsplot_theme <- function(
   yearly_ticks = TRUE,
   quarterly_ticks = TRUE,
   monthly_ticks = FALSE,
-  tcl_yearly_tick = -.75,
   lwd_yearly_ticks = 1.5,
   lwd_quarterly_ticks = 1,
-  tck_yearly_ticks = -0.05,
-  tck_quarterly_ticks = -0.02,
+  tcl_yearly_ticks = -0.75,
+  tcl_quarterly_ticks = -0.4,
   label_pos = "mid",
   show_left_y_axis = TRUE,
   show_right_y_axis = TRUE,
@@ -157,6 +156,7 @@ init_tsplot_theme <- function(
   subtitle_line = 0.5,
   subtitle_transform = "toupper",
   subtitle_adj_r = .9,
+  subtitle_cex = 1,
   legend_intersp_x = 1,
   legend_intersp_y = 1,
   legend_font_size = 1,
