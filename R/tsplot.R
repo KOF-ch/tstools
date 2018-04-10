@@ -430,11 +430,11 @@ tsplot.list <- function(...,
     if(theme$label_pos == "start"){
       axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
            lwd.ticks = theme$lwd_yearly_ticks,
-           tck = theme$tck_yearly_tick)    
+           tcl = theme$tcl_yearly_tick)    
     } else{
       axis(1,global_x$yearly_tick_pos,labels = F,
            lwd.ticks = theme$lwd_yearly_ticks,
-           tck = theme$tck_yearly_tick)
+           tcl = theme$tcl_yearly_tick)
     }
   }
   
@@ -445,11 +445,11 @@ tsplot.list <- function(...,
     if(theme$label_pos == "mid"){
       axis(1, q_ticks,labels = q_labels,
            lwd.ticks = theme$lwd_quarterly_ticks,
-           tck = theme$tck_quarterly_ticks)    
+           tcl = theme$tcl_quarterly_ticks)    
     } else{
       axis(1, q_ticks, labels = F,
            lwd.ticks = theme$lwd_quarterly_ticks,
-           tck = theme$tck_quarterly_ticks)
+           tcl = theme$tcl_quarterly_ticks)
     }
   }
   
