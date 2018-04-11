@@ -270,7 +270,27 @@ tsplot.list <- function(...,
   theme$point_symbol <- expand_param(theme, "point_symbol")
   theme$NA_continue_line <- expand_param(theme, "NA_continue_line")
   
+  # OPEN CORRECT GRAPHICS DEVICE
   
+  if(output_format != "plot") {
+    
+    if(!grepl(sprintf("[.]%s$", output_format), filename)) {
+      filename = sprintf("%s.%s", filename, output_format)
+    }
+    
+    if(output_format == "pdf") {
+      pdf(filename, width = output_dim[1], height = output_dim[2])
+    } else if(output_format == "bmp") {
+      bmp(filename, width = output_dim[1], height = output_dim[2])
+    } else if(output_format == "jpeg" || output_format == "jpg") {
+      jpeg(filename, width = output_dim[1], height = output_dim[2], quality = theme$jpeg_quality)
+    } else if(output_format == "png") {
+      tiff(filename, width = output_dim[1], height = output_dim[2])
+    } else if(output_format == "tiff") {
+      
+    }
+  }
+
   if(left_as_bar && relative_bar_chart) {
     # Normalize ts
     if(group_bar_chart) {
@@ -477,27 +497,6 @@ tsplot.list <- function(...,
   
   
   # CANVAS OPTIONS END #########################################
-  
-  # OPEN CORRECT GRAPHICS DEVICE
-  
-  if(output_format != "plot") {
-    
-    if(!grepl(sprintf("[.]%s$", output_format), filename)) {
-      filename = sprintf("%s.%s", filename, output_format)
-    }
-    
-    if(output_format == "pdf") {
-      pdf(filename, width = output_dim[1], height = output_dim[2])
-    } else if(output_format == "bmp") {
-      bmp(filename, width = output_dim[1], height = output_dim[2])
-    } else if(output_format == "jpeg" || output_format == "jpg") {
-      jpeg(filename, width = output_dim[1], height = output_dim[2], quality = theme$jpeg_quality)
-    } else if(output_format == "png") {
-      tiff(filename, width = output_dim[1], height = output_dim[2])
-    } else if(output_format == "tiff") {
-      
-    }
-  }
   
   # BASE CANVAS 
   plot(NULL,
