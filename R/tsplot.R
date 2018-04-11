@@ -186,7 +186,7 @@ tsplot.list <- function(...,
   
   tsl <- c(...)
   
-  if(any(sapply(tsl, length)) == 1) {
+  if(any(sapply(tsl, length) == 1) || (!is.null(tsr) && any(sapply(tsr, length) == 1))) {
     stop("Time series of length 1 are not supported!")
   }
   
