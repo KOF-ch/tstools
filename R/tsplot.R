@@ -186,6 +186,10 @@ tsplot.list <- function(...,
   
   tsl <- c(...)
   
+  if(any(sapply(tsl, length)) == 1) {
+    stop("Time series of length 1 are not supported!")
+  }
+  
   if(is.null(theme)) theme <- init_tsplot_theme()
   
   if(left_as_bar && relative_bar_chart) {
