@@ -15,8 +15,8 @@
 #' @param line_to_middle logical try to put a line into the middle of the plot. defaults to TRUE.
 #' @param lwd integer vector line width, defaults to c(2,3,1,4,2,4).
 #' @param lty integer vector line type defaults to 1. 
-#' @param overplot_points boolean Whether to draw the symbol specified by overplot_symbol at the data points. Default FALSE
-#' @param overplot_symbol integer or character The symbol to use for marking data points. See \code{pch} in \code{?par}
+#' @param overplot_points boolean Whether to draw the symbol specified by overplot_symbol at the data points. Multiple values can be supplied to control overplotting for each individual series Default FALSE
+#' @param overplot_symbol integer or character The symbol to use for marking data points. Multiple values can be supplied to control the symbol for each individual series See \code{pch} in \code{?par}. Default 1:18
 #' @param xaxs character axis defintion as in base plot, defaults to "i".
 #' @param yaxs character axis defintion as in base plot, defaults to "i".
 #' @param bar_border character hex colors for the border around bars in bar charts. 
@@ -101,7 +101,7 @@ init_tsplot_theme <- function(
   lwd = c(2,3,1,4,2,4),
   lty = 1,
   overplot = FALSE,
-  overplot_symbol = 1,
+  overplot_symbol = 1:18,
   xaxs = "i",
   yaxs = "i",
   bar_border = "#000000",
