@@ -27,7 +27,9 @@ draw_ts_lines.list <- function(x, theme = NULL){
                        theme$lwd),
           lty = ifelse(length(theme$lty) > 1,
                        theme$lty[i],
-                       theme$lty)
+                       theme$lty),
+          type = ifelse(theme$overplot, "o", "l"),
+          pch = theme$overplot_symbol
     )
   }
   
