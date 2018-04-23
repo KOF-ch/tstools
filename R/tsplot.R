@@ -215,6 +215,7 @@ tsplot.list <- function(...,
   theme$lty <- expand_param(theme, "lty")
   theme$show_points <- expand_param(theme, "show_points")
   theme$point_symbol <- expand_param(theme, "point_symbol")
+  theme$NA_continue_line <- expand_param(theme, "NA_continue_line")
   
   
   if(left_as_bar && relative_bar_chart) {
@@ -545,6 +546,7 @@ tsplot.list <- function(...,
       tt_r$lty <- tt_r$lty[start_r]
       tt_r$show_points <- tt_r$show_points[start_r]
       tt_r$point_symbol <- tt_r$point_symbol[start_r]
+      tt_r$NA_continue_line <- tt_r$continue_line[start_r]
     }
     draw_ts_lines(tsr,theme = tt_r)
     

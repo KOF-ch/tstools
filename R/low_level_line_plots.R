@@ -24,6 +24,12 @@ draw_ts_lines.list <- function(x, theme = NULL){
       xx <- xx+(1/frq)/2
     }
     
+    if(theme$NA_continue_line[i]) {
+      yy_na <- is.na(yy)
+      xx <- xx[!yy_na]
+      yy <- yy[!yy_na]
+    }
+    
     lines(xx,yy,
           col = theme$line_colors[i],
           lwd = theme$lwd[i],
