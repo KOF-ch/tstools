@@ -4,7 +4,10 @@
 #' Hence the init_tsplot_theme function create a fresh list object containing default values for lot of different layout parameters etc. By replacing single elements of the list and passing the entire list to the plot function, single aspects can be tweaked while keeping most defaults. Init defaultTheme does not need any parameters. 
 #' 
 #' @details 
-#' Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments. I will try to write comments on all params soon. 
+#' Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments.
+#' The per-line parameters (\code{line_colors, lwd, lty, show_points, point_symbol}) are recycled if more time series than elements on the corresponding
+#' theme vectors are supplied. e.g. if four time series are plotted but only two line_colors are supplied, the first and third series have the first color,
+#' while the second and fourth series have the second color.
 #' The list contains the following elements:
 #'
 #' @param margins integer vector defaults to c(NA, 4, 3, 3) + 0.1. Set margins[1] to NA to automatically determine the bottom margin such that the legend fits (if either auto_legend or auto_bottom_margin are TRUE)
@@ -17,6 +20,7 @@
 #' @param lty integer vector line type defaults to 1. 
 #' @param show_points boolean Whether to draw the symbol specified by point_symbol at the data points. Multiple values can be supplied to enable/disable showing points for each individual series Default FALSE
 #' @param point_symbol integer or character The symbol to use for marking data points. Multiple values can be supplied to set the symbol for each individual series See \code{pch} in \code{?par}. Default 1:18
+#' @param NA_continue_line boolean If true, NA values in time series are ignored and a contonuous line is drawn. Multiple values to turn this behavior on/off for indivitual series are supported. Default FALSE
 #' @param xaxs character axis defintion as in base plot, defaults to "i".
 #' @param yaxs character axis defintion as in base plot, defaults to "i".
 #' @param bar_border character hex colors for the border around bars in bar charts. 
@@ -43,7 +47,7 @@
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
 #' @param tcl_yearly_ticks numeric, length of yearly ticks. Analogous to \code{cex} for \code{\link{axis}}. defaults to -0.75.
 #' @param tcl_quarterly_ticks numeric, length of quarterly ticks. See tcl_yearly_ticks, defaults to -0.4
-#' @param label_pos character, currently undocumented. sorry. defaults to "mid".
+#' @param label_pos character, denotes where the x-axis label is at. defaults to "mid", alternative value: "start".
 #' @param show_left_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param show_right_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param y_grid_count integer vector preferred y grid counts c(5,6,8,10).
@@ -102,6 +106,7 @@ init_tsplot_theme <- function(
   lty = 1,
   show_points = FALSE,
   point_symbol = 1:18,
+  NA_continue_line = FALSE,
   xaxs = "i",
   yaxs = "i",
   bar_border = "#000000",

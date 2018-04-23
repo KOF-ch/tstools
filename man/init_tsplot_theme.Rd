@@ -10,14 +10,14 @@ init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1,
   "#72791c", ETH_8_20 = "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2",
   ETH_5_100 = "#91056a", ETH_4_60 = "#007a92"), line_to_middle = TRUE,
   lwd = c(2, 3, 1, 4, 2, 4), lty = 1, show_points = FALSE,
-  point_symbol = 1:18, xaxs = "i", yaxs = "i", bar_border = "#000000",
-  total_bar_margin_pct = 0.2, bar_fill_color = c(ETH8 = "#007A92", ETH8_60 =
-  "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60
-  = "#cc67a7", ETH5_30 = "#e6b3d3"), sum_as_line = FALSE,
-  sum_legend = "sum", sum_line_lty = 1, sum_line_lwd = 3,
-  sum_line_color = c(ETH_8_100 = "#007a92", ETH_4_100 = "#72791c", ETH_8_20 =
-  "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2", ETH_5_100 = "#91056a",
-  ETH_4_60 = "#a9af66"), highlight_window = FALSE,
+  point_symbol = 1:18, NA_continue_line = FALSE, xaxs = "i", yaxs = "i",
+  bar_border = "#000000", total_bar_margin_pct = 0.2,
+  bar_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 =
+  "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30
+  = "#e6b3d3"), sum_as_line = FALSE, sum_legend = "sum", sum_line_lty = 1,
+  sum_line_lwd = 3, sum_line_color = c(ETH_8_100 = "#007a92", ETH_4_100 =
+  "#72791c", ETH_8_20 = "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2",
+  ETH_5_100 = "#91056a", ETH_4_60 = "#a9af66"), highlight_window = FALSE,
   highlight_window_freq = 4, highlight_window_start = NA,
   highlight_window_end = NA, highlight_color = "#e9e9e9", use_box = FALSE,
   y_las = 2, yearly_ticks = TRUE, quarterly_ticks = TRUE,
@@ -59,6 +59,8 @@ init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1,
 \item{show_points}{boolean Whether to draw the symbol specified by point_symbol at the data points. Multiple values can be supplied to enable/disable showing points for each individual series Default FALSE}
 
 \item{point_symbol}{integer or character The symbol to use for marking data points. Multiple values can be supplied to set the symbol for each individual series See \code{pch} in \code{?par}. Default 1:18}
+
+\item{NA_continue_line}{boolean If true, NA values in time series are ignored and a contonuous line is drawn. Multiple values to turn this behavior on/off for indivitual series are supported. Default FALSE}
 
 \item{xaxs}{character axis defintion as in base plot, defaults to "i".}
 
@@ -110,7 +112,7 @@ to FALSE.}
 
 \item{tcl_quarterly_ticks}{numeric, length of quarterly ticks. See tcl_yearly_ticks, defaults to -0.4}
 
-\item{label_pos}{character, currently undocumented. sorry. defaults to "mid".}
+\item{label_pos}{character, denotes where the x-axis label is at. defaults to "mid", alternative value: "start".}
 
 \item{show_left_y_axis}{logical: should left y axis be shown, defaults to TRUE.}
 
@@ -170,7 +172,10 @@ The \code{\link{tsplot}} methods provide a theme argument which is used to pass 
 Hence the init_tsplot_theme function create a fresh list object containing default values for lot of different layout parameters etc. By replacing single elements of the list and passing the entire list to the plot function, single aspects can be tweaked while keeping most defaults. Init defaultTheme does not need any parameters.
 }
 \details{
-Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments. I will try to write comments on all params soon. 
+Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments.
+The per-line parameters (\code{line_colors, lwd, lty, show_points, point_symbol}) are recycled if more time series than elements on the corresponding
+theme vectors are supplied. e.g. if four time series are plotted but only two line_colors are supplied, the first and third series have the first color,
+while the second and fourth series have the second color.
 The list contains the following elements:
 }
 \examples{

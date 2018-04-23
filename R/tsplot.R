@@ -203,6 +203,21 @@ tsplot.list <- function(...,
   
   if(is.null(theme)) theme <- init_tsplot_theme()
   
+  # Expand per-line parameters for recycling
+  total_n_ts <- length(tsl) + length(tsr)
+  expand_param <- function(theme, param_name) {
+    rep(theme[[param_name]], ceiling(total_n_ts/length(theme[[param_name]])))
+  }
+  
+  
+  theme$line_colors <- expand_param(theme, "line_colors")
+  theme$lwd <- expand_param(theme, "lwd")
+  theme$lty <- expand_param(theme, "lty")
+  theme$show_points <- expand_param(theme, "show_points")
+  theme$point_symbol <- expand_param(theme, "point_symbol")
+  theme$NA_continue_line <- expand_param(theme, "NA_continue_line")
+  
+  
   if(left_as_bar && relative_bar_chart) {
     # Normalize ts
     if(group_bar_chart) {
@@ -527,8 +542,11 @@ tsplot.list <- function(...,
       start_r <- (total_le - (length(tsr)-1)):total_le
       
       tt_r$line_colors <- tt_r$line_colors[start_r]
-      if(!all(is.na(tt_r$lwd[start_r]))) tt_r$lwd <- na.omit(tt_r$lwd[start_r])
-      if(!all(is.na(tt_r$lty[start_r]))) tt_r$lty <- na.omit(tt_r$lty[start_r])
+      tt_r$lwd <- tt_r$lwd[start_r]
+      tt_r$lty <- tt_r$lty[start_r]
+      tt_r$show_points <- tt_r$show_points[start_r]
+      tt_r$point_symbol <- tt_r$point_symbol[start_r]
+      tt_r$NA_continue_line <- tt_r$continue_line[start_r]
     }
     draw_ts_lines(tsr,theme = tt_r)
     

@@ -24,16 +24,18 @@ draw_ts_lines.list <- function(x, theme = NULL){
       xx <- xx+(1/frq)/2
     }
     
+    if(theme$NA_continue_line[i]) {
+      yy_na <- is.na(yy)
+      xx <- xx[!yy_na]
+      yy <- yy[!yy_na]
+    }
+    
     lines(xx,yy,
-          col = theme$line_colors[[i]],
-          lwd = ifelse(length(theme$lwd) > 1,
-                       theme$lwd[i],
-                       theme$lwd),
-          lty = ifelse(length(theme$lty) > 1,
-                       theme$lty[i],
-                       theme$lty),
-          type = ifelse(op[i], "o", "l"),
-          pch = ops[i]
+          col = theme$line_colors[i],
+          lwd = theme$lwd[i],
+          lty = theme$lty[i],
+          type = ifelse(theme$show_points[i], "o", "l"),
+          pch = theme$point_symbol[i]
     )
   }
   
