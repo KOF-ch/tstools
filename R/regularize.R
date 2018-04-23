@@ -1,6 +1,6 @@
-#' Turn an Irregular Time Series to a Regular, Yearly ts-Based Series 
+#' Turn an Irregular Time Series to a Regular, ts-Based Series 
 #' 
-#' Adds missing values to turn an irregular time series into a regular one. This function is currently experimental and only works for irregular with gaps of one year or more. 
+#' Adds missing values to turn an irregular time series into a regular one. This function is currently experimental. Only works or target frequencies 1,2,4,12.
 #' 
 #' @param x an irregular time series object of class zoo or xts.
 #' @param df character denoting the interval in date notation. Currently only works for "\%Y".
@@ -11,13 +11,23 @@
 #' library(zoo)
 #' xx <- zoo(ts1,dv)
 #' regularize(xx)
+#' 
+#' dv2 <- c(seq(as.Date("2010-01-01"), length = 20, by = "1 months"))
+#' dv2 <- dv2[c(1:10, 14:20)]
+#' xx2 <- zoo(rnorm(length(dv2)), dv2)
+#' regularize(xx2)
+#' 
+#' @importFrom zoo as.yearmon
 #' @export
 regularize <- function(x, df = "%Y"){
-  reg <- as.numeric(format(index(x), df))
-  full_r <- seq(range(reg)[1],range(reg)[2])
-  full_r[!(full_r %in% reg)]
-  nas <- rep(NA,length(full_r))
-  nas[(full_r %in% reg)] <- x
-  tx <- ts(nas,start = range(full_r)[1],freq = 1)
+  idx <- index(x)
+  # difference in days in order to guess frequency
+  dt <- as.numeric(diff(idx))/365
+  freqs <- c(12, 4, 2, 1)
+  frq <- freqs[which.min(abs(min(dt) - 1/freqs))]
+  full_r <- seq(min(idx), max(idx), by = sprintf("%d months", 12/frq))
+  val <- rep(NA, length(full_r))
+  val[(full_r %in% idx)] <- x
+  tx <- ts(val, start = as.yearmon(min(idx)), freq = frq)
   tx
 }

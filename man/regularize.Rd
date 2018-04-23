@@ -2,7 +2,7 @@
 % Please edit documentation in R/regularize.R
 \name{regularize}
 \alias{regularize}
-\title{Turn an Irregular Time Series to a Regular, Yearly ts-Based Series}
+\title{Turn an Irregular Time Series to a Regular, ts-Based Series}
 \usage{
 regularize(x, df = "\%Y")
 }
@@ -12,7 +12,7 @@ regularize(x, df = "\%Y")
 \item{df}{character denoting the interval in date notation. Currently only works for "\%Y".}
 }
 \description{
-Adds missing values to turn an irregular time series into a regular one. This function is currently experimental and only works for irregular with gaps of one year or more.
+Adds missing values to turn an irregular time series into a regular one. This function is currently experimental. Only works or target frequencies 1,2,4,12.
 }
 \examples{
 ts1 <- rnorm(5)
@@ -21,4 +21,10 @@ seq(as.Date("2018-01-01"), length = 2, by="2 years"))
 library(zoo)
 xx <- zoo(ts1,dv)
 regularize(xx)
+
+dv2 <- c(seq(as.Date("2010-01-01"), length = 20, by = "1 months"))
+dv2 <- dv2[c(1:10, 14:20)]
+xx2 <- zoo(rnorm(length(dv2)), dv2)
+regularize(xx2)
+
 }
