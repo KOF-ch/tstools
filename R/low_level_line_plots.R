@@ -25,15 +25,11 @@ draw_ts_lines.list <- function(x, theme = NULL){
     }
     
     lines(xx,yy,
-          col = theme$line_colors[[i]],
-          lwd = ifelse(length(theme$lwd) > 1,
-                       theme$lwd[i],
-                       theme$lwd),
-          lty = ifelse(length(theme$lty) > 1,
-                       theme$lty[i],
-                       theme$lty),
-          type = ifelse(op[i], "o", "l"),
-          pch = ops[i]
+          col = theme$line_colors[i],
+          lwd = theme$lwd[i],
+          lty = theme$lty[i],
+          type = ifelse(theme$show_points[i], "o", "l"),
+          pch = theme$point_symbol[i]
     )
   }
   

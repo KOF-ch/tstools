@@ -166,7 +166,10 @@ The \code{\link{tsplot}} methods provide a theme argument which is used to pass 
 Hence the init_tsplot_theme function create a fresh list object containing default values for lot of different layout parameters etc. By replacing single elements of the list and passing the entire list to the plot function, single aspects can be tweaked while keeping most defaults. Init defaultTheme does not need any parameters.
 }
 \details{
-Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments. I will try to write comments on all params soon. 
+Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments.
+The per-line parameters (\code{line_colors, lwd, lty, show_points, point_symbol}) are recycled if more time series than elements on the corresponding
+theme vectors are supplied. e.g. if four time series are plotted but only two line_colors are supplied, the first and third series have the first color,
+while the second and fourth series have the second color.
 The list contains the following elements:
 }
 \examples{
