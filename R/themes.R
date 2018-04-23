@@ -7,14 +7,16 @@
 #' Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments. I will try to write comments on all params soon. 
 #' The list contains the following elements:
 #'
-#' @param margins integer vector defaults to c(5, 4, 3, 3) + 0.1,
-#' @param auto_bottom_margin logical. Should auto margin be kept even if auto_legend is switched off? Defaults to FALSE.
-#' @param default_bottom_margin integer, standard bottom margin. Defaults to 3.
+#' @param margins integer vector defaults to c(NA, 4, 3, 3) + 0.1. Set margins[1] to NA to automatically determine the bottom margin such that the legend fits (if either auto_legend or auto_bottom_margin are TRUE)
+#' @param auto_bottom_margin logical Should the bottom margin be automatically calculated? This will be overridden if margins[1] is not NA. Default FALSE 
+#' @param default_bottom_margin numeric The bottom margin to use when margins[1] is NA but neither auto_legend nor auto_bottom_margin are true. Default 3
 #' @param fillYearWithNAs logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,
 #' @param line_colors character vector of hex colors for 6 lines. 
 #' @param line_to_middle logical try to put a line into the middle of the plot. defaults to TRUE.
 #' @param lwd integer vector line width, defaults to c(2,3,1,4,2,4).
 #' @param lty integer vector line type defaults to 1. 
+#' @param show_points boolean Whether to draw the symbol specified by point_symbol at the data points. Multiple values can be supplied to enable/disable showing points for each individual series Default FALSE
+#' @param point_symbol integer or character The symbol to use for marking data points. Multiple values can be supplied to set the symbol for each individual series See \code{pch} in \code{?par}. Default 1:18
 #' @param xaxs character axis defintion as in base plot, defaults to "i".
 #' @param yaxs character axis defintion as in base plot, defaults to "i".
 #' @param bar_border character hex colors for the border around bars in bar charts. 
@@ -34,15 +36,13 @@
 #' @param highlight_color character hex color code of highlight background, defaults to "#e9e9e9".
 #' @param use_box logical use a box around the plot.
 #' @param y_las integer, same as base \code{\link{plot}} parameter defaults to 2.
-#' @param lwd_ticks_1 numeric width of type 1 ticks, defaults to 1.5.
-#' @param lwd_ticks_2 numeric width of type 1 ticks, defaults to 1.
 #' @param yearly_ticks logical, should yearly ticks be shown. Defaults to TRUE.
 #' @param quarterly_ticks logical, should quarterly ticks be shown. Defaults to TRUE.
 #' @param monthly_ticks logical, should monthly ticks be shown. Defaults to FALSE.
-#' @param tcl_quarterly_tick_tcl numeric, same as base \code{\link{plot}} tcl parameter defaults to -.5,
-#' @param tcl_yearly_tick numeric, same as base \code{\link{plot}} tcl parameter defaults to -.75,
 #' @param lwd_yearly_ticks numeric, width of yearly ticks, defaults to 1.5.
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
+#' @param tcl_yearly_ticks numeric, length of yearly ticks. Analogous to \code{cex} for \code{\link{axis}}. defaults to -0.75.
+#' @param tcl_quarterly_ticks numeric, length of quarterly ticks. See tcl_yearly_ticks, defaults to -0.4
 #' @param label_pos character, currently undocumented. sorry. defaults to "mid".
 #' @param show_left_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param show_right_y_axis logical: should left y axis be shown, defaults to TRUE.
@@ -64,9 +64,9 @@
 #' @param subtitle_adj numeric same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param subtitle_outer numeric same as base \code{\link{plot}} parameter, defaults to TRUE
 #' @param subtitle_line numeric same as base \code{\link{plot}} parameter, defaults to -.6
-#' @param subtitle_cex.main numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param subtitle_transform function to transform the subtitle, defaults to "toupper",
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
+#' @param subtitle_cex numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param legend_intersp_x numeric same as base \code{\link{plot}} parameter, defaults to 1
 #' @param legend_intersp_y numeric same as base \code{\link{plot}} parameter, defaults to 1 
 #' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1
@@ -100,6 +100,8 @@ init_tsplot_theme <- function(
   line_to_middle = TRUE,
   lwd = c(2,3,1,4,2,4),
   lty = 1,
+  show_points = FALSE,
+  point_symbol = 1:18,
   xaxs = "i",
   yaxs = "i",
   bar_border = "#000000",
@@ -129,15 +131,13 @@ init_tsplot_theme <- function(
   highlight_color = "#e9e9e9",
   use_box = FALSE,
   y_las = 2 ,
-  lwd_ticks_1 = 1.5,
-  lwd_ticks_2 = 1,
   yearly_ticks = TRUE,
   quarterly_ticks = TRUE,
   monthly_ticks = FALSE,
-  tcl_quarterly_tick_tcl = -.5,
-  tcl_yearly_tick = -.75,
   lwd_yearly_ticks = 1.5,
   lwd_quarterly_ticks = 1,
+  tcl_yearly_ticks = -0.75,
+  tcl_quarterly_ticks = -0.4,
   label_pos = "mid",
   show_left_y_axis = TRUE,
   show_right_y_axis = TRUE,
@@ -158,9 +158,9 @@ init_tsplot_theme <- function(
   subtitle_adj = 0,
   subtitle_outer = FALSE,
   subtitle_line = 0.5,
-  subtitle_cex.main = 1,
   subtitle_transform = "toupper",
   subtitle_adj_r = .9,
+  subtitle_cex = 1,
   legend_intersp_x = 1,
   legend_intersp_y = 1,
   legend_font_size = 1,

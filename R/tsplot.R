@@ -6,6 +6,7 @@
 #' @param tsr list of time series objects of class ts.
 #' @param left_as_bar logical should the series that relate to the left bar be drawn as (stacked) bar charts?
 #' @param group_bar_chart logical should a bar chart be grouped instead of stacked?
+#' @param relative_bar_chart logical Should time series be normalized such that bars range from 0 to 1?
 #' @param plot_title character title to be added to the plot
 #' @param plot_subtitle character subtitle to be added to the plot 
 #' @param plot_subtitle_r character second subtitle to be added at the top right
@@ -27,6 +28,7 @@ tsplot <- function(...,
                    tsr = NULL,
                    left_as_bar = FALSE,                    
                    group_bar_chart = FALSE,
+                   relative_bar_chart = FALSE,
                    plot_title = NULL,
                    plot_subtitle = NULL,              
                    plot_subtitle_r = NULL,
@@ -48,11 +50,12 @@ tsplot.ts <- function(...,
                       tsr = NULL,
                       left_as_bar = FALSE,                
                       group_bar_chart = FALSE,
+                      relative_bar_chart = FALSE,
                       plot_title = NULL,
                       plot_subtitle = NULL,
                       plot_subtitle_r = NULL,
                       find_ticks_function = "findTicks",
-                      fill_up_start = fill_up_start,
+                      fill_up_start = FALSE,
                       overall_xlim = NULL,
                       overall_ylim = NULL,
                       manual_date_ticks = NULL,
@@ -67,25 +70,33 @@ tsplot.ts <- function(...,
          tsr = tsr,
          left_as_bar = left_as_bar,
          group_bar_chart = group_bar_chart,
+         relative_bar_chart = relative_bar_chart,
+         plot_title = plot_title,
+         plot_subtitle = plot_subtitle,
+         plot_subtitle_r = plot_subtitle_r,
          find_ticks_function = find_ticks_function,
+         fill_up_start = fill_up_start,
          manual_date_ticks = manual_date_ticks,
-         quiet = quiet,
-         auto_legend = auto_legend,
          overall_xlim = overall_xlim,
          overall_ylim = overall_ylim,
          manual_value_ticks_l = manual_value_ticks_l,
          manual_value_ticks_r = manual_value_ticks_r,
-         theme = theme)
+         theme = theme,
+         quiet = quiet,
+         auto_legend = auto_legend)
 }
 
 #' @export
 tsplot.mts <- function(...,
                        tsr = NULL,
-                       left_as_bar = FALSE,                                       group_bar_chart = FALSE,
+                       left_as_bar = FALSE,
+                       group_bar_chart = FALSE,
+                       relative_bar_chart = FALSE,
                        plot_title = NULL,
-                       plot_subtitle = NULL,                                      plot_subtitle_r = NULL,
+                       plot_subtitle = NULL,
+                       plot_subtitle_r = NULL,
                        find_ticks_function = "findTicks",
-                       fill_up_start = NULL,
+                       fill_up_start = FALSE,
                        overall_xlim = NULL,
                        overall_ylim = NULL,
                        manual_date_ticks = NULL,
@@ -100,27 +111,36 @@ tsplot.mts <- function(...,
   } else{
     tsplot(as.list(li[[1]]),
            tsr = tsr,
-           fill_up_start = fill_up_start,
-           manual_date_ticks = manual_date_ticks,
            left_as_bar = left_as_bar,
            group_bar_chart = group_bar_chart,
+           relative_bar_chart = relative_bar_chart,
+           plot_title = plot_title,
+           plot_subtitle = plot_subtitle,
+           plot_subtitle_r = plot_subtitle_r,
            find_ticks_function = find_ticks_function,
+           fill_up_start = fill_up_start,
            overall_xlim = overall_xlim,
            overall_ylim = overall_ylim,
-           theme = theme)
+           manual_date_ticks = manual_date_ticks,
+           manual_value_ticks_l = manual_value_ticks_l,
+           manual_value_ticks_r = manual_value_ticks_r,
+           theme = theme,
+           quiet = quiet,
+           auto_legend = auto_legend)
   }
 }
 
 #' @export
 tsplot.zoo <- function(...,
                        tsr = NULL,
-                       left_as_bar = FALSE,                
+                       left_as_bar = FALSE,
                        group_bar_chart = FALSE,
+                       relative_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
                        find_ticks_function = "findTicks",
-                       fill_up_start = fill_up_start,
+                       fill_up_start = FALSE,
                        overall_xlim = NULL,
                        overall_ylim = NULL,
                        manual_date_ticks = NULL,
@@ -135,13 +155,14 @@ tsplot.zoo <- function(...,
 #' @export
 tsplot.xts <- function(...,
                        tsr = NULL,
-                       left_as_bar = FALSE,                
+                       left_as_bar = FALSE,
                        group_bar_chart = FALSE,
+                       relative_bar_chart = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
                        find_ticks_function = "findTicks",
-                       fill_up_start = fill_up_start,
+                       fill_up_start = FALSE,
                        overall_xlim = NULL,
                        overall_ylim = NULL,
                        manual_date_ticks = NULL,
@@ -158,13 +179,12 @@ tsplot.list <- function(...,
                         tsr = NULL,
                         left_as_bar = FALSE,
                         group_bar_chart = FALSE,
+                        relative_bar_chart = FALSE,
                         plot_title = NULL,
                         plot_subtitle = NULL,
                         plot_subtitle_r = NULL,
                         find_ticks_function = "findTicks",
-                        tick_function_args = list(tsl_r,
-                                                  theme$y_grid_count),
-                        fill_up_start = F,
+                        fill_up_start = FALSE,
                         overall_xlim = NULL,
                         overall_ylim = NULL,
                         manual_date_ticks = NULL,
@@ -177,7 +197,22 @@ tsplot.list <- function(...,
   
   tsl <- c(...)
   
+  if(any(sapply(tsl, length) == 1) || (!is.null(tsr) && any(sapply(tsr, length) == 1))) {
+    stop("Time series of length 1 are not supported!")
+  }
+  
   if(is.null(theme)) theme <- init_tsplot_theme()
+  
+  if(left_as_bar && relative_bar_chart) {
+    # Normalize ts
+    if(group_bar_chart) {
+      m <- Reduce('max', tsl)
+    } else {
+      sums <- Reduce('+', tsl)
+      m <- max(sums)
+    }
+    tsl <- lapply(tsl, '/', m)
+  }
  
   # Set default names for legend if none provided (moved here for measuring margin)
   right_name_start <- 0
@@ -383,24 +418,38 @@ tsplot.list <- function(...,
   )
   
   if(theme$highlight_window){
-    if(!any(is.na(theme$highlight_window_start))){
-      xl <- compute_decimal_time(theme$highlight_window_start,
-                                 theme$highlight_window_freq)
-      
+    hlw_start <- theme$highlight_window_start
+    if(!any(is.na(hlw_start))){
+      if(!is.list(hlw_start)) {
+        hlw_start <- list(hlw_start)
+      }
+      xl <- sapply(hlw_start, compute_decimal_time, theme$highlight_window_freq)
     } else{
       xl <- global_x$x_range[2]-2
     }
     
-    if(!any(is.na(theme$highlight_window_end))){
-      xr <- compute_decimal_time(theme$highlight_window_end,
-                                 theme$highlight_window_freq)
-      
+    hlw_end <- theme$highlight_window_end
+    if(!any(is.na(hlw_end))){
+      if(!is.list(hlw_end)) {
+        hlw_end <- list(hlw_end)
+      }
+      xr <- sapply(hlw_end, compute_decimal_time, theme$highlight_window_freq) + 1/theme$highlight_window_freq
     } else{
       xr <- global_x$x_range[2]
     }
-    rect(xl,left_y$y_range[1],xr,left_y$y_range[2],
-         col = theme$highlight_color,
-         border = NA)
+    
+    n_start <- length(xl)
+    n_end <- length(xr)
+    
+    if(n_start != n_end) {
+      warning(sprintf("%s highlight start points than end points specified! Dropping excess ones.", ifelse(n_start > n_end, "More", "Fewer")))
+    }
+    
+    for(i in seq_along(xl)) {
+      rect(xl[i],left_y$y_range[1],xr[i],left_y$y_range[2],
+           col = theme$highlight_color,
+           border = NA)
+    }
     
     
   }
@@ -419,12 +468,17 @@ tsplot.list <- function(...,
   }
   
   if(theme$quarterly_ticks){
+    overlap <- global_x$quarterly_tick_pos %in% global_x$yearly_tick_pos
+    q_ticks <- global_x$quarterly_tick_pos[!overlap]
+    q_labels <- global_x$year_labels_middle_q[!overlap]
     if(theme$label_pos == "mid"){
-      axis(1,global_x$quarterly_tick_pos,labels = global_x$year_labels_middle_q,
-           lwd.ticks = theme$lwd_quarterly_ticks)    
+      axis(1, q_ticks,labels = q_labels,
+           lwd.ticks = theme$lwd_quarterly_ticks,
+           tcl = theme$tcl_quarterly_ticks)    
     } else{
-      axis(1,global_x$quarterly_tick_pos,labels = F,
-           lwd.ticks = theme$lwd_quarterly_ticks)
+      axis(1, q_ticks, labels = F,
+           lwd.ticks = theme$lwd_quarterly_ticks,
+           tcl = theme$tcl_quarterly_ticks)
     }
   }
   

@@ -11,8 +11,13 @@ json_to_ts <- function(json_data) {
   }
 }
 
+#' Transform a long format data.frame of time series to a tslist
+#' 
+#' The data.frame must have three columns "date", "value" and "series" (identifying the time series)
+#' @param data data.frame The data.frame to be transformed 
 #' @importFrom data.table dcast
 #' @importFrom zoo na.trim
+#' @export
 long_to_ts <- function(data) {
   data_dt <- as.data.table(data)
   
@@ -41,8 +46,14 @@ long_to_ts <- function(data) {
 
 utils::globalVariables(c("date_zoo", "series", "ts_object", "value","frq"))
 
+#' Transform a wide format data.frame into a tslist
+#' 
+#' The time series in the data.frame may be stored either rowwise or columnswise.
+#' The identifying column must be called date (for columnwise) or series (for rowwise)
+#' @param data data.frame The data.frame to be transformed
 #' @importFrom xts xts
 #' @importFrom zoo as.yearqtr as.yearmon
+#' @export
 wide_to_ts <- function(data) {
   if(!("date" %in% names(data))) {
     # Data was written in transposed format

@@ -11,7 +11,11 @@ draw_ts_lines.ts <- function(x, theme = NULL,
 
 
 draw_ts_lines.list <- function(x, theme = NULL){
-  for (i in 1:length(x)){
+  nts <- length(x)
+  op <- rep(theme$show_points, ceiling(nts/length(theme$show_points)))
+  ops <- rep(theme$point_symbol, ceiling(nts/length(theme$point_symbol)))
+  
+  for (i in 1:nts) {
     xx <- as.numeric(time(x[[i]]))
     yy <- x[[i]]
     frq <- frequency(x[[i]])
@@ -27,7 +31,9 @@ draw_ts_lines.list <- function(x, theme = NULL){
                        theme$lwd),
           lty = ifelse(length(theme$lty) > 1,
                        theme$lty[i],
-                       theme$lty)
+                       theme$lty),
+          type = ifelse(op[i], "o", "l"),
+          pch = ops[i]
     )
   }
   
