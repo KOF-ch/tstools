@@ -197,6 +197,10 @@ tsplot.list <- function(...,
   
   tsl <- c(...)
   
+  if(inherits(tsr, "ts")) {
+    tsr <- list(tsr)
+  }
+  
   if(any(sapply(tsl, length) == 1) || (!is.null(tsr) && any(sapply(tsr, length) == 1))) {
     stop("Time series of length 1 are not supported!")
   }
@@ -546,7 +550,7 @@ tsplot.list <- function(...,
       tt_r$lty <- tt_r$lty[start_r]
       tt_r$show_points <- tt_r$show_points[start_r]
       tt_r$point_symbol <- tt_r$point_symbol[start_r]
-      tt_r$NA_continue_line <- tt_r$continue_line[start_r]
+      tt_r$NA_continue_line <- tt_r$NA_continue_line[start_r]
     }
     draw_ts_lines(tsr,theme = tt_r)
     
