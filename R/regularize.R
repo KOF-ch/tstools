@@ -3,7 +3,6 @@
 #' Adds missing values to turn an irregular time series into a regular one. This function is currently experimental. Only works or target frequencies 1,2,4,12.
 #' 
 #' @param x an irregular time series object of class zoo or xts.
-#' @param df character denoting the interval in date notation. Currently only works for "\%Y".
 #' @examples 
 #' ts1 <- rnorm(5)
 #' dv <- c(seq(as.Date("2010-01-01"), length = 3, by="3 years"),
@@ -19,7 +18,7 @@
 #' 
 #' @importFrom zoo as.yearmon
 #' @export
-regularize <- function(x, df = "%Y"){
+regularize <- function(x){
   idx <- index(x)
   # difference in days in order to guess frequency
   dt <- as.numeric(diff(idx))/365
