@@ -47,7 +47,7 @@
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
 #' @param tcl_yearly_ticks numeric, length of yearly ticks. Analogous to \code{cex} for \code{\link{axis}}. defaults to -0.75.
 #' @param tcl_quarterly_ticks numeric, length of quarterly ticks. See tcl_yearly_ticks, defaults to -0.4
-#' @param label_pos character, currently undocumented. sorry. defaults to "mid".
+#' @param label_pos character, denotes where the x-axis label is at. defaults to "mid", alternative value: "start".
 #' @param show_left_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param show_right_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param y_grid_count integer vector preferred y grid counts c(5,6,8,10).

@@ -108,7 +108,7 @@ to FALSE.}
 
 \item{tcl_quarterly_ticks}{numeric, length of quarterly ticks. See tcl_yearly_ticks, defaults to -0.4}
 
-\item{label_pos}{character, currently undocumented. sorry. defaults to "mid".}
+\item{label_pos}{character, denotes where the x-axis label is at. defaults to "mid", alternative value: "start".}
 
 \item{show_left_y_axis}{logical: should left y axis be shown, defaults to TRUE.}
 
