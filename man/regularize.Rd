@@ -4,12 +4,10 @@
 \alias{regularize}
 \title{Turn an Irregular Time Series to a Regular, ts-Based Series}
 \usage{
-regularize(x, df = "\%Y")
+regularize(x)
 }
 \arguments{
 \item{x}{an irregular time series object of class zoo or xts.}
-
-\item{df}{character denoting the interval in date notation. Currently only works for "\%Y".}
 }
 \description{
 Adds missing values to turn an irregular time series into a regular one. This function is currently experimental. Only works or target frequencies 1,2,4,12.
