@@ -51,8 +51,15 @@ A list of ts objects
 Useful for development or generating easily reproducible examples
 }
 \details{
-Except for n, all parameters accept either a single value or a vector of values. If a single value is
+Except for n and ts_names, all parameters accept either a single value or a vector of values. If a single value is
 supplied, that value is used for all time series being generated. If a vector is supplied, its values
 will be used for the corresponding series (e.g. starts[1] is used for the first series, starts[2] for
 the second and so on). Vectors are recycled if n is larger than their length.
+
+If a ts_names vector is supplied, it must have length n and must not contain duplicates.
+}
+\examples{
+generate_random_ts()
+
+generate_random_ts(n = 3, ranges_min = c(-10, 0, 10), ranges_max = 20, starts = 2011)
 }

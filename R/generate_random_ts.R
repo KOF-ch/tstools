@@ -20,15 +20,20 @@
 #' @param frequency_shift_after After what fraction of the ts to shift frequencies
 #'
 #' @details 
-#' Except for n, all parameters accept either a single value or a vector of values. If a single value is
+#' Except for n and ts_names, all parameters accept either a single value or a vector of values. If a single value is
 #' supplied, that value is used for all time series being generated. If a vector is supplied, its values
 #' will be used for the corresponding series (e.g. starts[1] is used for the first series, starts[2] for
 #' the second and so on). Vectors are recycled if n is larger than their length.
+#' 
+#' If a ts_names vector is supplied, it must have length n and must not contain duplicates.
 #'
 #' @return A list of ts objects
 #' @export
 #'
 #' @examples
+#' generate_random_ts()
+#' 
+#' generate_random_ts(n = 3, ranges_min = c(-10, 0, 10), ranges_max = 20, starts = 2011)
 generate_random_ts <- function(n = 1,
                                lengths = 36,
                                starts = 1988,
@@ -49,6 +54,14 @@ generate_random_ts <- function(n = 1,
   if(any(frequency_shifts & frequencies != 12)) {
     # may also determine locaton of error for bettar feedback
     stop("Frequency shift only supported if frequency is 12!")
+  }
+  
+  if(length(ts_names) < n) {
+    stop("Too few ts_names supplied!")
+  }
+  
+  if(any(duplicated(ts_names))) {
+    stop("Duplicate ts_names detected!")
   }
   
   set.seed(seed)
