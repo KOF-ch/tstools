@@ -25,7 +25,7 @@ init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1,
   tcl_yearly_ticks = -0.75, tcl_quarterly_ticks = -0.4, label_pos = "mid",
   show_left_y_axis = TRUE, show_right_y_axis = TRUE, y_grid_count = c(5,
   6, 8, 10), show_y_grids = TRUE, y_grid_color = "#CCCCCC",
-  y_grid_count_strict = FALSE, y_tick_margin = 0.15,
+  y_grid_count_strict = FALSE, y_tick_margin = 0.15, x_tick_dt = 1,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL, legend_col = 1, legend_margin_top = 0.45,
   title_outer = FALSE, title_adj = 0, title_line = 1.8,
@@ -124,6 +124,9 @@ to FALSE.}
 
 \item{y_tick_margin}{numeric, minimal percentage of horizontal grid that needs to be clean, i.e., 
 without lines or bars. Defaults to 0.15 (15 percent).}
+
+\item{x_tick_dt}{numeric The distance between ticks on the x axis in years. The first tick will always be at the
+start of the plotted time series. Defaults to 1}
 
 \item{preferred_y_gap_sizes}{numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),}
 
