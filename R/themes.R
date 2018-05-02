@@ -151,6 +151,7 @@ init_tsplot_theme <- function(
   y_grid_color = "#CCCCCC",
   y_grid_count_strict = FALSE,
   y_tick_margin = 0.15,
+  x_tick_dt = 1,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,
   legend_col = 1,

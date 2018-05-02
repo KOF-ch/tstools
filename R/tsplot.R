@@ -39,6 +39,7 @@ tsplot <- function(...,
                    manual_date_ticks = NULL,
                    manual_value_ticks_l = NULL,
                    manual_value_ticks_r = NULL,
+                   manual_ticks_x = NULL,
                    theme = NULL,
                    quiet = TRUE,
                    auto_legend = TRUE){
@@ -61,6 +62,7 @@ tsplot.ts <- function(...,
                       manual_date_ticks = NULL,
                       manual_value_ticks_l = NULL,
                       manual_value_ticks_r = NULL,
+                      manual_ticks_x = NULL,
                       theme = NULL,
                       quiet = TRUE,
                       auto_legend = TRUE
@@ -81,6 +83,7 @@ tsplot.ts <- function(...,
          overall_ylim = overall_ylim,
          manual_value_ticks_l = manual_value_ticks_l,
          manual_value_ticks_r = manual_value_ticks_r,
+         manual_ticks_x = manual_ticks_x,
          theme = theme,
          quiet = quiet,
          auto_legend = auto_legend)
@@ -102,6 +105,7 @@ tsplot.mts <- function(...,
                        manual_date_ticks = NULL,
                        manual_value_ticks_l = NULL,
                        manual_value_ticks_r = NULL,
+                       manual_ticks_x = NULL,
                        theme = NULL,
                        quiet = TRUE,
                        auto_legend = TRUE){
@@ -124,6 +128,7 @@ tsplot.mts <- function(...,
            manual_date_ticks = manual_date_ticks,
            manual_value_ticks_l = manual_value_ticks_l,
            manual_value_ticks_r = manual_value_ticks_r,
+           manual_ticks_x = manual_ticks_x,
            theme = theme,
            quiet = quiet,
            auto_legend = auto_legend)
@@ -146,6 +151,7 @@ tsplot.zoo <- function(...,
                        manual_date_ticks = NULL,
                        manual_value_ticks_l = NULL,
                        manual_value_ticks_r = NULL,
+                       manual_ticks_x = NULL,
                        theme = NULL,
                        quiet = TRUE,
                        auto_legend = TRUE) {
@@ -168,6 +174,7 @@ tsplot.xts <- function(...,
                        manual_date_ticks = NULL,
                        manual_value_ticks_l = NULL,
                        manual_value_ticks_r = NULL,
+                       manual_ticks_x = NULL,
                        theme = NULL,
                        quiet = TRUE,
                        auto_legend = TRUE) {
@@ -190,6 +197,7 @@ tsplot.list <- function(...,
                         manual_date_ticks = NULL,
                         manual_value_ticks_l = NULL,
                         manual_value_ticks_r = NULL,
+                        manual_ticks_x = NULL,
                         theme = NULL,
                         quiet = TRUE,
                         auto_legend = TRUE
@@ -327,7 +335,7 @@ tsplot.list <- function(...,
   
   # CANVAS OPTIONS START #########################################
   # so far manual date ticks are ignored.
-  global_x <- getGlobalXInfo(tsl,tsr,fill_up_start = fill_up_start)
+  global_x <- getGlobalXInfo(tsl,tsr,fill_up_start = fill_up_start, theme$x_tick_dt, manual_ticks_x)
   
   # y can't be global in the first place, cause 
   # tsr and tsl have different scales.... 
@@ -475,7 +483,7 @@ tsplot.list <- function(...,
   
   # Global X-Axis ###################
   if(theme$yearly_ticks){
-    if(theme$label_pos == "start"){
+    if(theme$label_pos == "start" || theme$x_tick_dt != 1 || !is.null(manual_ticks_x)){
       axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
            lwd.ticks = theme$lwd_yearly_ticks,
            tcl = theme$tcl_yearly_tick)    
@@ -486,7 +494,7 @@ tsplot.list <- function(...,
     }
   }
   
-  if(theme$quarterly_ticks){
+  if(theme$quarterly_ticks && theme$x_tick_dt == 1 && is.null(manual_ticks_x)){
     overlap <- global_x$quarterly_tick_pos %in% global_x$yearly_tick_pos
     q_ticks <- global_x$quarterly_tick_pos[!overlap]
     q_labels <- global_x$year_labels_middle_q[!overlap]

@@ -14,7 +14,7 @@ compute_decimal_time <- function(v,f){
 
 # function is called by tsplot, do not need to export
 # it but let's write a minimal comment on what it does.
-getGlobalXInfo <- function(tsl,tsr,fill_up_start){
+getGlobalXInfo <- function(tsl, tsr, fill_up_start, dt, manual_ticks){
   global_x <- list()
   
   if(!is.null(tsr)){
@@ -23,32 +23,43 @@ getGlobalXInfo <- function(tsl,tsr,fill_up_start){
     all_ts <- tsl
   }
   
-  all_ts_ext <- lapply(all_ts,fill_year_with_nas,fill_up_start = fill_up_start)
-  global_x$x_range <- range(unlist(lapply(all_ts_ext,time)))
+  if(is.null(manual_ticks)) {
+    all_ts_ext <- lapply(all_ts,fill_year_with_nas,fill_up_start = fill_up_start)
+    global_x$x_range <- range(unlist(lapply(all_ts_ext,time)))
+    # Yearly tick positions
+    global_x$yearly_tick_pos <- seq(global_x$x_range[1], global_x$x_range[2] + dt, dt)
+    
+    # labels
+    global_x$year_labels_start <- seq(global_x$x_range[1], global_x$x_range[2] + dt, dt)
+  } else {
+    global_x$x_range <- range(manual_ticks)
+    global_x$yearly_tick_pos <- manual_ticks
+    global_x$year_labels_start <- manual_ticks
+  }
   
   global_x$min_year <- trunc(global_x$x_range[1])
   global_x$max_year <- trunc(global_x$x_range[2])
   
-  # Yearly tick positions
-  global_x$yearly_tick_pos <- global_x$min_year:global_x$max_year
-  global_x$quarterly_tick_pos <- seq(from = global_x$min_year,
-                                     to = global_x$max_year,
-                                     by = .25)
-  global_x$monthly_tick_pos <- seq(from = global_x$min_year,
-                                   to = global_x$max_year,
-                                   by = 1/12)
-  
-  # labels
-  global_x$year_labels_start <- global_x$min_year:global_x$max_year
-  global_x$year_labels_middle_q <- ifelse(global_x$quarterly_tick_pos -
-                                          floor(global_x$quarterly_tick_pos) == 0.5,
-                                        as.character(floor(global_x$quarterly_tick_pos)),
-                                        NA)
-  global_x$year_labels_middle_m <- ifelse(global_x$monthly_tick_pos -
-                                          floor(global_x$monthly_tick_pos) == 0.5,
-                                        as.character(floor(global_x$monthly_tick_pos)),
-                                        NA)
-                                        
+  if(dt == 1) {
+    global_x$quarterly_tick_pos <- seq(from = global_x$min_year,
+                                       to = global_x$max_year,
+                                       by = .25)
+    # global_x$monthly_tick_pos <- seq(from = global_x$min_year,
+    #                                  to = global_x$max_year,
+    #                                  by = 1/12)
+    global_x$year_labels_middle_q <- ifelse(global_x$quarterly_tick_pos -
+                                            floor(global_x$quarterly_tick_pos) == 0.5,
+                                          as.character(floor(global_x$quarterly_tick_pos)),
+                                          NA)
+    # global_x$year_labels_middle_m <- ifelse(global_x$monthly_tick_pos -
+    #                                       floor(global_x$monthly_tick_pos) == 0.5,
+    #                                     as.character(floor(global_x$monthly_tick_pos)),
+    #                                      NA)
+  } else {
+    global_x$quarterly_tick_pos <- NA
+    global_x$year_labels_middle_q <- NA
+  }
+                                          
   global_x
 }
 
