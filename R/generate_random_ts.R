@@ -14,8 +14,8 @@
 #' @param random_NAs Whether or not to introcude NA values at random positions in the ts
 #' @param random_NA_proportions The fraction of values to be replaced with NAs if random_NAs is TRUE for the series
 #' @param normally_distributed Use normal distribution instead of uniform
-#' @param normal_means The means to use (if normally_distributed == TRUE)
-#' @param normal_sds The sds to use (if normally_distributed == TRUE)
+#' @param normal_means The means to use for normal distribution. Ignored unless normally_distributed is set to TRUE.
+#' @param normal_sds The sds to use for normal distribution. Ignored unless normally_distributed is set to TRUE.
 #' @param frequency_shifts Introduce frequency shifts (from 4 to 12) in the ts
 #' @param frequency_shift_after After what fraction of the ts to shift frequencies
 #'

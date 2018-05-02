@@ -36,9 +36,9 @@ generate_random_ts(n = 1, lengths = 36, starts = 1988, frequencies = 12,
 
 \item{normally_distributed}{Use normal distribution instead of uniform}
 
-\item{normal_means}{The means to use (if normally_distributed == TRUE)}
+\item{normal_means}{The means to use for normal distribution. Ignored unless normally_distributed is set to TRUE.}
 
-\item{normal_sds}{The sds to use (if normally_distributed == TRUE)}
+\item{normal_sds}{The sds to use for normal distribution. Ignored unless normally_distributed is set to TRUE.}
 
 \item{frequency_shifts}{Introduce frequency shifts (from 4 to 12) in the ts}
 
