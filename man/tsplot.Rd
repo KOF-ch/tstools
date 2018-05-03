@@ -7,8 +7,7 @@
 tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = FALSE,
   relative_bar_chart = FALSE, plot_title = NULL, plot_subtitle = NULL,
   plot_subtitle_r = NULL, find_ticks_function = "findTicks",
-  fill_up_start = FALSE, overall_xlim = NULL, overall_ylim = NULL,
-  manual_date_ticks = NULL, manual_value_ticks_l = NULL,
+  fill_up_start = FALSE, manual_value_ticks_l = NULL,
   manual_value_ticks_r = NULL, manual_ticks_x = NULL, theme = NULL,
   quiet = TRUE, auto_legend = TRUE)
 }
@@ -32,12 +31,6 @@ tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = FALSE,
 \item{find_ticks_function}{function to compute ticks.}
 
 \item{fill_up_start}{logical should the start year be filled up?}
-
-\item{overall_xlim}{integer overall x-axis limits, defaults to NULL.}
-
-\item{overall_ylim}{integer overall y-axis limits, defaults to NULL.}
-
-\item{manual_date_ticks}{character vector of manual date ticks.}
 
 \item{manual_value_ticks_l}{numeric vector, forcing ticks to the left y-axis}
 
