@@ -37,7 +37,10 @@ strip_ts_of_leading_nas <- function(s){
 #' @importFrom stats start
 #' @export
 strip_ts_of_trailing_nas <- function(s){
-  if(is.null(dim(s))){
+   if (!is.na(s[1])) {
+        s
+    } else {
+      if(is.null(dim(s))){
     ntf <- is.na(s)
   } else{
     ntf <- apply(s,1,function(x) all(is.na(x)))
@@ -54,5 +57,7 @@ strip_ts_of_trailing_nas <- function(s){
       ts(s[-rmv,],start = start(s),frequency = frequency(s))  
     }
     
-  }
+  }    
+    }
+  
 }  
