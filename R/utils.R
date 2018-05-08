@@ -135,13 +135,13 @@ findTicks <- function(r, tick_count, preferred_gap_sizes, preserve_sign = FALSE)
     
     # If one or more ranges with the desired gap size exist
     # return the one with the least number of ticks
-    if(any(by_gs)) {
+    if(any(by_gs) && range(seqs[[min(by_gs)]]) >= r) {
       return(seqs[[min(by_gs)]])
     }
   }
   
   # No pretty gaps found
-  w <- which.max((lb-r[1]) + (r[2]-ub))
+  w <- which.max(abs((lb-r[1]) + (r[2]-ub)))
   seqs[[w]]
 }
 
