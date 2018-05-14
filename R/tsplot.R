@@ -114,7 +114,15 @@ tsplot.mts <- function(...,
   if(length(li) > 1){
     stop("If you use multivariate time series objects (mts), make sure to pass only one object per axis. Place all time series you want to plot on one y-axis in one mts object or list of time series.")
   } else{
-    tsplot(as.list(li[[1]]),
+    data <- li[[1]]
+    
+    if(nrow(data) == 1) {
+      warning("mts contains only a single row! This means it contains multiple time series of length 1, did you
+create a ts out of a row of a data.frame? Converting to single ts.")
+      data <- ts(data[1, ], start = start(data), frequency = frequency(data))
+    }
+    
+    tsplot(as.list(data),
            tsr = tsr,
            left_as_bar = left_as_bar,
            group_bar_chart = group_bar_chart,
