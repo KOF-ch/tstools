@@ -80,7 +80,7 @@ sanitizeTsr <- function(tsr){
     stop("Time series object to be plotted on the right axis, 
          has to be either of class ts, mts or list.")
   }
-}
+  }
 
 #' @importFrom graphics abline
 addYGrids <- function(tick_positions,theme){
@@ -115,14 +115,14 @@ findTicks <- function(r, tick_count, preferred_gap_sizes, preserve_sign = FALSE)
   
   # nudge the generated range around a bit to ensure the series are more or less "centered"
   # i.e. there are no empty ticks
-  lb_too_low <- r[1] > lb + gaps & (!preserve_sign | sign(lb) == sign(lb + gaps/2))
+  lb_too_low <- r[1] > lb + gaps & (!preserve_sign | (sign(ub) == sign(ub + gaps/2) && sign(lb) == sign(lb + gaps/2)))
   lb[lb_too_low] <- lb[lb_too_low] + gaps[lb_too_low]/2
   ub[lb_too_low] <- ub[lb_too_low] + gaps[lb_too_low]/2
   
-  ub_too_high <- r[2] < ub - gaps & (!preserve_sign | sign(ub) == sign(ub - gaps/2))
+  ub_too_high <- r[2] < ub - gaps & (!preserve_sign | (sign(ub) == sign(ub - gaps/2) && sign(lb) == sign(lb - gaps/2)))
   lb[ub_too_high] <- lb[ub_too_high] - gaps[ub_too_high]/2
   ub[ub_too_high] <- ub[ub_too_high] - gaps[ub_too_high]/2
-
+  
   seqs <- list()
   for(i in seq_along(gaps)) {
     seqs[[i]] <- seq(lb[i],ub[i],gaps[i])
