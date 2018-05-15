@@ -303,6 +303,10 @@ tsplot.list <- function(...,
       # tsmat is still a single ts
       tsl_r <- range(tsmat)
     }
+    
+    # Ensure 0 is part of the range when plotting bars
+    tsl_r[1] <- min(tsl_r[1], 0)
+    tsl_r[2] <- max(0, tsl_r[2])
   } else {
     tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
   }
