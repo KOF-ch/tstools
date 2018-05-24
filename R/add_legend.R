@@ -2,6 +2,7 @@
 #' @importFrom stats na.omit
 add_legend <- function(tsln,
                       tsrn = NULL,
+                      ci_names,
                       left_as_bar = F,
                       theme = init_tsplot_theme()){
   ll <- length(tsln)
