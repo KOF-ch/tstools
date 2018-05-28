@@ -35,7 +35,16 @@ add_legend <- function(tsln,
   pch_l[is_ci_l] <- 15
   col_l <- rep(NA, n_tot_l)
   col_l[!is_ci_l] <- theme$line_colors[1:ll]
-  col_l[is_ci_l] <- "green"
+  
+  ci_color_indices_l <- cumsum(!is_ci_l)[is_ci_l]
+  ci_legend_colors_l <- c()
+  left_ci_colors <- theme$ci_colors[1:ll]
+  for(i in unique(ci_color_indices_l)) {
+    ci_legend_colors_l <- c(ci_legend_colors_l, getCiLegendColors(left_ci_colors[i], sum(ci_color_indices_l == i), theme$ci_alpha))
+  }
+  
+  col_l[is_ci_l] <- ci_legend_colors_l #namedColor2Hex(theme$ci_colors[1:ll], theme$ci_alpha)[]  # Get color at index 1 for all CI belonging to the 
+                                                                      # 1st series etc.
   lty_l <- rep(0, n_tot_l)
   lty_l[!is_ci_l] <- theme$lty[1:ll]
   lwd_l <- rep(0, n_tot_l)
@@ -47,12 +56,20 @@ add_legend <- function(tsln,
   pch_r <- rep(NA, n_tot_r)
   pch_r[is_ci_r] <- 15
   col_r <- rep(NA, n_tot_r)
-  col_r[!is_ci_r] <- theme$line_colors[ifelse(left_as_bar, 1:ll, (ll+1):lb)]
-  col_r[is_ci_l] <- "green"
+  col_r[!is_ci_r] <- theme$line_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
+  
+  ci_color_indices_r <- cumsum(!is_ci_r)[is_ci_r]
+  ci_legend_colors_r <- c()
+  right_ci_colors <- theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
+  for(i in unique(ci_color_indices_r)) {
+    ci_legend_colors_r <- c(ci_legend_colors_r, getCiLegendColors(right_ci_colors[i], sum(ci_color_indices_r == i), theme$ci_alpha))
+  }
+  
+  col_r[is_ci_l] <- ci_legend_colors_r #namedColor2Hex(theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)], theme$ci_alpha)[cumsum(!is_ci_r)[is_ci_r]]
   lty_r <- rep(0, n_tot_r)
-  lty_r[!is_ci_r] <- theme$lty[ifelse(left_as_bar, 1:ll, (ll+1):lb)]
+  lty_r[!is_ci_r] <- theme$lty[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
   lwd_r <- rep(0, n_tot_r)
-  lwd_r[!is_ci_r] <- theme$lwd[ifelse(left_as_bar, 1:ll, (ll+1):lb)]
+  lwd_r[!is_ci_r] <- theme$lwd[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
   
   # Pop quiz: Why are the legends placed relative to the top? Because then their anchor is at the top
   # and they grow downwards instead of up into the plotting area.
@@ -60,15 +77,16 @@ add_legend <- function(tsln,
   if(is.null(tsrn)){
     if(!left_as_bar){
       legend("topleft", 
-             legend = tsln,
+             legend = legend_l,
              ncol = theme$legend_col,
              bty = "n",
              xpd = NA,
              cex = theme$legend_font_size,
              inset = c(0, inset_y),
-             col = na.omit(theme$line_colors[1:ll]),
-             lty = na.omit(theme$lty[1:ll]),
-             lwd = na.omit(theme$lwd[1:ll]),
+             col = col_l,
+             lty = lty_l,
+             lwd = lwd_l,
+             pch = pch_l,
              x.intersp = theme$legend_intersp_x,
              y.intersp = theme$legend_intersp_y)    
     } else {
@@ -121,20 +139,21 @@ add_legend <- function(tsln,
              xpd = NA,
              cex = theme$legend_font_size,
              inset = c(0, inset_y),
-             fill = bar_fill_colors[1:ll],
+             fill = theme$bar_fill_colors[1:ll],
              x.intersp = theme$legend_intersp_x,
              y.intersp = theme$legend_intersp_y)
       legend("topright",
-             legend = tsrn,
+             legend = legend_r,
              bty = "n",
              border = NA,
              xpd = NA,
              cex = theme$legend_font_size,
              inset = c(0, inset_y),
              ncol = theme$legend_col,
-             lty = lty[1:lr],
-             lwd = lwd[1:lr],
-             col = line_colors[1:lr])
+             col = col_r,
+             lty = lty_r,
+             lwd = lwd_r,
+             pch = pch_r)
     }
     
   }

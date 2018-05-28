@@ -551,6 +551,8 @@ tsplot.list <- function(...,
   }
   
   # Draw all confidence bands here (so they don't overlap lines later)
+  # Or should they be drawn left first, then right as before? cf especially with left_as_bar == TRUE and 
+  # CI somewhere in the middle of the series. How common a case is that though?
   if(!left_as_bar) {
     par(new = TRUE)
     plot(NULL,
