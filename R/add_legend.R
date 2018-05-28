@@ -93,6 +93,7 @@ add_legend <- function(tsln,
              lty = lty_l,
              lwd = lwd_l,
              pch = pch_l,
+             pt.cex = 2,
              x.intersp = theme$legend_intersp_x,
              y.intersp = theme$legend_intersp_y)    
     } else {
@@ -121,6 +122,7 @@ add_legend <- function(tsln,
              lty = lty_l,
              lwd = lwd_l,
              pch = pch_l,
+             pt.cex = 2,
              x.intersp = theme$legend_intersp_x,
              y.intersp = theme$legend_intersp_y)
       legend("topright", 
@@ -134,6 +136,7 @@ add_legend <- function(tsln,
              lty = lty_r,
              lwd = lwd_r,
              pch = pch_r,
+             pt.cex = 2,
              x.intersp = theme$legend_intersp_x,
              y.intersp = theme$legend_intersp_y)
     } else {
@@ -159,7 +162,8 @@ add_legend <- function(tsln,
              col = col_r,
              lty = lty_r,
              lwd = lwd_r,
-             pch = pch_r)
+             pch = pch_r,
+             pt.cex = 2)
     }
     
   }
