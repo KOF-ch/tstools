@@ -110,7 +110,7 @@ init_tsplot_theme <- function(
   point_symbol = 1:18,
   NA_continue_line = FALSE,
   ci_colors = line_colors,
-  ci_alpha = "33",
+  ci_alpha = "44",
   xaxs = "i",
   yaxs = "i",
   bar_border = "#000000",
