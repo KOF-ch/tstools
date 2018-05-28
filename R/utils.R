@@ -164,3 +164,28 @@ formatNumericDate <- function(date, freq, date_format = NULL) {
   format(as.Date(sprintf("%d-%d-01", year, month)), date_format)
 }
 
+namedColor2Hex <- function(color, alpha = NULL) {
+  if(is.numeric(alpha)) {
+    if(floor(alpha) == alpha) {
+      alpha <- as.hexmode(alpha)  
+    } else {
+      alpha <- as.hexmode(floor(256*alpha))
+    }
+  }
+
+  known_colors <- color %in% colors()
+  
+  color[known_colors] <- paste0("#", apply(
+    as.character(
+      as.hexmode(
+        col2rgb(color[known_colors])
+      )
+    ), 2, paste, collapse = ""
+  ))
+  
+  no_alpha <- nchar(color) < 9
+  
+  color[no_alpha] <- paste0(color[no_alpha], alpha)
+  
+  color
+}
