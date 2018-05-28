@@ -276,9 +276,19 @@ tsplot.list <- function(...,
       if(theme$sum_as_line && !is.null(theme$sum_legend)) {
         legend_left <- c(legend_left, theme$sum_legend)
       }
+      
+      if(!left_as_bar) {
+        legend_left <- c(legend_left, names(ci[[names(ci) %in% names(tsl)]]))
+      }
+      
+      legend_right <- names(tsr)
+      if(!is.null(tsr)) {
+        legend_right <- c(names(tsr), names(ci[[names(ci) %in% names(tsr)]]))
+      }
+      
       legend_height_in <- strheight(paste(legend_left, collapse = "\n"), units = "inches", cex = theme$legend_font_size)
       if(!is.null(tsr)) {
-        legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches", cex = theme$legend_font_size))
+        legend_height_in <- max(legend_height_in, strheight(paste(legend_right, collapse = "\n"), units = "inches", cex = theme$legend_font_size))
       }
       # TODO: theme$legend_intersp_y
       # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
