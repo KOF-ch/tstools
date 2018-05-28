@@ -646,9 +646,10 @@ tsplot.list <- function(...,
   
   # add legend
   if(auto_legend){
-    ci_names <- sapply(names(ci), function(x) {
+    ci_names <- lapply(names(ci), function(x) {
       paste0(names(ci[[x]]), "% ci for ", x)
     })
+    names(ci_names) <- names(ci)
     
     add_legend(names(tsl), names(tsr), ci_names,
                theme = theme, left_as_bar = left_as_bar)
