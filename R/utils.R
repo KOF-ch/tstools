@@ -107,10 +107,10 @@ findTicks <- function(r, tick_count, preferred_gap_sizes, preserve_sign = FALSE)
   gaps <- findGapSize(r=r,sort(tick_count))
   lb <- (r[1] %/% gaps) * gaps
   
-  ub <- lb + ((tick_count - 1) * gaps)  
+  ub <- lb + (tick_count * gaps)  
   
   if(length(tick_count) == 1) {
-    ub <- lb + ((tick_count - 1)*gaps)
+    ub <- lb + (tick_count*gaps)
   }
   
   # nudge the generated range around a bit to ensure the series are more or less "centered"
