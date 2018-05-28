@@ -40,7 +40,10 @@ add_legend <- function(tsln,
   ci_legend_colors_l <- c()
   left_ci_colors <- theme$ci_colors[1:ll]
   for(i in unique(ci_color_indices_l)) {
-    ci_legend_colors_l <- c(ci_legend_colors_l, getCiLegendColors(left_ci_colors[i], sum(ci_color_indices_l == i), theme$ci_alpha))
+    ci_legend_colors_l <- c(
+      ci_legend_colors_l,
+      rev(getCiLegendColors(left_ci_colors[i], sum(ci_color_indices_l == i), theme$ci_alpha))[order(ci_names[[tsln[i]]])]
+    )
   }
   
   col_l[is_ci_l] <- ci_legend_colors_l #namedColor2Hex(theme$ci_colors[1:ll], theme$ci_alpha)[]  # Get color at index 1 for all CI belonging to the 
@@ -62,7 +65,10 @@ add_legend <- function(tsln,
   ci_legend_colors_r <- c()
   right_ci_colors <- theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
   for(i in unique(ci_color_indices_r)) {
-    ci_legend_colors_r <- c(ci_legend_colors_r, getCiLegendColors(right_ci_colors[i], sum(ci_color_indices_r == i), theme$ci_alpha))
+    ci_legend_colors_r <- c(
+      ci_legend_colors_r, 
+      rev(getCiLegendColors(right_ci_colors[i], sum(ci_color_indices_r == i), theme$ci_alpha))[order(ci_names[[tslr[i]]])]
+    )
   }
   
   col_r[is_ci_l] <- ci_legend_colors_r #namedColor2Hex(theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)], theme$ci_alpha)[cumsum(!is_ci_r)[is_ci_r]]
