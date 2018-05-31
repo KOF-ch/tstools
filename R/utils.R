@@ -148,6 +148,8 @@ findTicks <- function(r, tick_count, preferred_gap_sizes, round_ticks = FALSE, p
   if(round_ticks) {
     out <- floor(out)
   }
+  
+  out
 }
 
 formatNumericDate <- function(date, freq, date_format = NULL) {
