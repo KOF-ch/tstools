@@ -358,7 +358,7 @@ tsplot.list <- function(...,
     left_y <- list(y_range = range(manual_value_ticks_l),
                    y_ticks = manual_value_ticks_l)  
   } else{
-    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero))
+    left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes, theme$y_tick_force_integers, theme$range_must_not_cross_zero))
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
     # return("Only works with manual value ticks...")
   }
@@ -372,7 +372,7 @@ tsplot.list <- function(...,
       right_y <- list(y_range = range(manual_value_ticks_r),
                       y_ticks = manual_value_ticks_r)  
     } else {
-      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme$preferred_y_gap_sizes, theme$range_must_not_cross_zero))
+      right_ticks <- do.call(find_ticks_function, list(tsr_r, length(left_ticks), theme$preferred_y_gap_sizes, theme$y_tick_force_integers, theme$range_must_not_cross_zero))
       right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
     }
   } else {

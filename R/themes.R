@@ -56,6 +56,7 @@
 #' @param y_grid_count_strict logical should we strictly stick to preferred y grid count? Defaults to FALSE. 
 #' @param y_tick_margin numeric, minimal percentage of horizontal grid that needs to be clean, i.e., 
 #' without lines or bars. Defaults to 0.15 (15 percent).
+#' @param y_tick_force_integers logical Should y ticks be forced (rounded down) to whole numbers? Default FALSE
 #' @param x_tick_dt numeric The distance between ticks on the x axis in years. The first tick will always be at the
 #' start of the plotted time series. Defaults to 1
 #' @param preferred_y_gap_sizes numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
@@ -153,6 +154,7 @@ init_tsplot_theme <- function(
   y_grid_color = "#CCCCCC",
   y_grid_count_strict = FALSE,
   y_tick_margin = 0.15,
+  y_tick_force_integers = FALSE,
   x_tick_dt = 1,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,

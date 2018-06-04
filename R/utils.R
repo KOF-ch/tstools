@@ -101,16 +101,16 @@ findGapSize <- function(r,tick_count){
 }
 
 
-findTicks <- function(r, tick_count, preferred_gap_sizes, preserve_sign = FALSE){
+findTicks <- function(r, tick_count, preferred_gap_sizes, round_ticks = FALSE, preserve_sign = FALSE){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
   gaps <- findGapSize(r=r,sort(tick_count))
   lb <- (r[1] %/% gaps) * gaps
   
-  ub <- lb + ((tick_count - 1) * gaps)  
+  ub <- lb + (tick_count * gaps)  
   
   if(length(tick_count) == 1) {
-    ub <- lb + ((tick_count - 1)*gaps)
+    ub <- lb + (tick_count*gaps)
   }
   
   # nudge the generated range around a bit to ensure the series are more or less "centered"
@@ -128,6 +128,10 @@ findTicks <- function(r, tick_count, preferred_gap_sizes, preserve_sign = FALSE)
     seqs[[i]] <- seq(lb[i],ub[i],gaps[i])
   }
   
+  # First take any best fitting range
+  w <- which.max((lb-r[1]) + (r[2]-ub))
+  out <- seqs[[w]]
+  
   # Try to select a reasonably pretty gap size
   preferred_gap_sizes <- sort(preferred_gap_sizes, decreasing = TRUE)
   for(gs in preferred_gap_sizes) {
@@ -136,13 +140,16 @@ findTicks <- function(r, tick_count, preferred_gap_sizes, preserve_sign = FALSE)
     # If one or more ranges with the desired gap size exist
     # return the one with the least number of ticks
     if(any(by_gs)) {
-      return(seqs[[min(by_gs)]])
+      out <- seqs[[min(by_gs)]]
+      break
     }
   }
   
-  # No pretty gaps found
-  w <- which.max((lb-r[1]) + (r[2]-ub))
-  seqs[[w]]
+  if(round_ticks) {
+    out <- floor(out)
+  }
+  
+  out
 }
 
 formatNumericDate <- function(date, freq, date_format = NULL) {
