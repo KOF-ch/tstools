@@ -112,6 +112,40 @@ tsplot(KOF$kofbarometer,
 ### Manual value ticks
 Often you just want to have a fixed scale, e.g., for an index that ranges from 0 to 100. Simply use the ``manual_value_ticks_l`` and ``manual_value_ticks_r`` arguments to specify manual ticks and grids. In case you use 2 y-axes make sure both manual value tick vectors are of the same length. 
 
+### Fan Charts: Plotting Confidence Intervals
+
+With tstools' tsplot function you can assign confidence intervals to every 
+time series line. Simply choose the line and confidence level and define an upper
+and lower bound ts object to draw shaded confidence bounds around a respective series. 
+A confidence interval definition is basically a nested list. For the sake of clear
+code, it is recommended to define the CI list separately like so: 
+
+```{r}
+
+# load example data
+data(KOF)
+
+# Define confidence intervals
+ci <- list(
+  "KOF Barometer" = list(
+    "80" = list(
+      lb = KOF$baro_lo_80,
+      ub = KOF$baro_hi_80),
+    "95" = list(
+      lb = KOF$baro_lo_95,
+      ub = KOF$baro_hi_95
+    )))
+
+tsplot(list("KOF Barometer" = KOF$baro_point_fc),
+       ci = ci)
+
+
+```
+
+The KOF data example dataset contains an auto.arima point forecast of the KOF Barometer
+as well as upper and lower bound at the 80% and 95% confidence level. Notice that 
+tsplot does no forecasting or estimation of confidence bands, it simply takes time series as upper 
+and lower bounds and assign them to a particular series. Thus it's agnostic of the estimation method. 
 
 
 
