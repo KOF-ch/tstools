@@ -21,18 +21,6 @@ library(kofbts)
 library(openxlsx)
 
 
-library(zoo)
-library(tempdisagg)
-library(RDatastream)
-library(dplyr)
-
-# Functions
-source("lib/convFunctions.R")
-source("lib/dbConnect.R")
-
-# Load Parameters
-source("import/import_settings_old.R")
-source("lib/vjagraph_parameters.R")
 vja_settings <- read.xlsx("/Volumes/mtec_kof_rdata_1/forecasting/settings/vja.xlsx",
                           colNames = F, rowNames = T)
 
@@ -52,6 +40,7 @@ settings <- list(
 )
 
 vja_current <- paste0("vja", format(date_current, "%y%q"))
+vja_current <- "vja181"
 vja_previous <- paste0("vja", format(date_current-0.25, "%y%q"))
 horizon <- as.integer(vja_settings["horizon",1])
 last_forecast_date <- vja_settings["last_date",1]
