@@ -123,19 +123,19 @@ tt <- init_tsplot_theme()
 tt$highlight_window <- T
 tt$line_colors <- kof_lines
 tt$bar_fill_color <- kof_bars
-tt$lty <- c(1,5,2,4,6,5,1,4,2,6)
+#tt$lty <- c(1,5,2,4,6,5,1,4,2,6)
 tt$subtitle_transform <- NULL
 tt$highlight_window_end <- c(settings$horizon+4,1)
 # tt$highlight_color <- c("eth_8_20" = "#cce5eb")
-tt$use_box <- T
-tt$margins <- c(6.1,2.6,3.1,3.1)
-tt$title_cex.main <- c(1.0)
-tt$subtitle_cex.main <- c(1.0)
-tt$legend_cex <- c(1)
+#tt$use_box <- T
+#tt$margins <- c(6.1,2.6,3.1,3.1)
+#tt$title_cex.main <- c(1.0)
+#tt$subtitle_cex.main <- c(1.0)
+#tt$legend_cex <- c(1)
 tt$use_box = F
-tt$legend_col <- 2
-tt$lwd <- c(2,3,2,4,2,3,2,4)
-tt$sum_line_lwd <- 2
+#tt$legend_col <- 2
+#tt$lwd <- c(2,3,2,4,2,3,2,4)
+#tt$sum_line_lwd <- 2
 tt$sum_line_color <- "#000000"
 
 tt_y <- tt_q <- tt_m <- tt
@@ -176,12 +176,12 @@ ts <- list("CHF / EUR" = window(tslist[[paste("ch.kof",vja_current,"chfeur", sep
 
 pdf("devisenkursprognose.pdf", width=10.08, height=7.08)
 
-tt_m$margins <- c(6.1,2.6,2.1,3.1) # No subtitle, so graph has to be taller
+#tt_m$margins <- c(6.1,2.6,2.1,3.1) # No subtitle, so graph has to be taller
 tsplot(ts,  
        #theme=tt_m,
        manual_value_ticks_l = seq(0.6,1.6, by=0.2),
        plot_title = "Devisenkurse mit Prognose")
-tt_m$margins <- c(6.1,2.6,3.1,3.1)
+#tt_m$margins <- c(6.1,2.6,3.1,3.1)
 
 dev.off()
 
