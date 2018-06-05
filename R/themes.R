@@ -187,8 +187,10 @@ scale_theme_param_for_print <- function(value, dims) {
 #' @export
 init_tsplot_print_theme <- function(
   output_dim = c(4, 3),
+  title_cex.main = scale_theme_param_for_print(1, output_dim),
   lwd = scale_theme_param_for_print(c(2,3,1,4,2,4), output_dim),
   ...){
   init_tsplot_theme(lwd = lwd,
+                    title_cex.main = title_cex.main,
                              ...)
 }

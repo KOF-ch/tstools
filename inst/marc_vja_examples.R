@@ -150,7 +150,6 @@ tsplot(ts[1], tsr = ts[2],
        manual_value_ticks_r = seq(80,120, by=5),
        plot_title = "Reales BIP und KOF Konjunkturbarometer",
        plot_subtitle = paste0("BIP ab ", bip_naming, ": Schätzung/Prognose KOF"),
-       output_dim = c(4, 3),
        output_format = "pdf",
        filename = "realesBIPundBaro")
 tt_m$legend_col <- 2
@@ -171,7 +170,6 @@ tsplot(ts,
        #theme=tt_m,
        manual_value_ticks_l = seq(0.6,1.6, by=0.2),
        plot_title = "Devisenkurse mit Prognose",
-       output_dim = c(4, 3),
        output_format = "pdf",
        filename = "DevisenmitPrognose")
 #tt_m$margins <- c(6.1,2.6,3.1,3.1)
@@ -190,7 +188,6 @@ tsplot(ts[2:7],  # Missing: Sum_as_line funktion von Matthias. Falls GDP Line ei
        manual_value_ticks_l = seq(-3,5, by=1),
        plot_title = "Wachstumsbeiträge BIP: Produktionsseitig",
        plot_subtitle = "(in PP des BIP)",
-       output_dim = c(4, 3),
        output_format = "pdf",
        filename = "WachstumsbeiträgeBIPProduktionsseitig")
 tt_y$sum_as_line <- F
@@ -213,7 +210,6 @@ tsplot(ts[1:2], tsr=ts[3],
        manual_value_ticks_r = seq(-2,6, by=1),
        plot_title = "Schweizer Warenexporte und ihr Umfeld",
        plot_subtitle = "(annualisierte Veränderung gegenüber Vorquartal, in %)",
-       output_dim = c(4, 3),
        output_format = "pdf",
        filename = "WarenexporteundUmfeld")
 tt$legend_col <- 2
