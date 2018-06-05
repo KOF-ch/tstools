@@ -4,18 +4,20 @@
 \alias{tsplot}
 \title{Plot Time Series}
 \usage{
-tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = FALSE,
-  relative_bar_chart = FALSE, plot_title = NULL, plot_subtitle = NULL,
-  plot_subtitle_r = NULL, find_ticks_function = "findTicks",
-  fill_up_start = FALSE, overall_xlim = NULL, overall_ylim = NULL,
-  manual_date_ticks = NULL, manual_value_ticks_l = NULL,
-  manual_value_ticks_r = NULL, manual_ticks_x = NULL, theme = NULL,
-  quiet = TRUE, auto_legend = TRUE)
+tsplot(..., tsr = NULL, ci = NULL, left_as_bar = FALSE,
+  group_bar_chart = FALSE, relative_bar_chart = FALSE, plot_title = NULL,
+  plot_subtitle = NULL, plot_subtitle_r = NULL,
+  find_ticks_function = "findTicks", fill_up_start = FALSE,
+  overall_xlim = NULL, overall_ylim = NULL, manual_date_ticks = NULL,
+  manual_value_ticks_l = NULL, manual_value_ticks_r = NULL,
+  manual_ticks_x = NULL, theme = NULL, quiet = TRUE, auto_legend = TRUE)
 }
 \arguments{
 \item{...}{multiple objects of class ts or a list of time series. All objects passed through the ... parameter relate to the standard left y-axis.}
 
 \item{tsr}{list of time series objects of class ts.}
+
+\item{ci}{list of confidence intervals for time series}
 
 \item{left_as_bar}{logical should the series that relate to the left bar be drawn as (stacked) bar charts?}
 
@@ -53,4 +55,19 @@ tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = FALSE,
 }
 \description{
 Conveniently plot time series.
+}
+\details{
+The ci parameter is a 3-level list of the form
+list(
+ ts1 = list(
+  ci_value_1 = list(
+   ub = upper_bound_ts_object,
+   lb = lower_bound_ts_object
+  ),
+  ...
+ ),
+ ...
+)
+
+See \code{vignette("tstools")} for details.
 }

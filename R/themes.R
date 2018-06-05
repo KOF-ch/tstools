@@ -21,6 +21,8 @@
 #' @param show_points boolean Whether to draw the symbol specified by point_symbol at the data points. Multiple values can be supplied to enable/disable showing points for each individual series Default FALSE
 #' @param point_symbol integer or character The symbol to use for marking data points. Multiple values can be supplied to set the symbol for each individual series See \code{pch} in \code{?par}. Default 1:18
 #' @param NA_continue_line boolean If true, NA values in time series are ignored and a contonuous line is drawn. Multiple values to turn this behavior on/off for indivitual series are supported. Default FALSE
+#' @param ci_colors Named colors or hex values Colors of the confidence interval bands
+#' @param ci_alpha Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands
 #' @param xaxs character axis defintion as in base plot, defaults to "i".
 #' @param yaxs character axis defintion as in base plot, defaults to "i".
 #' @param bar_border character hex colors for the border around bars in bar charts. 

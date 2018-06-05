@@ -4,6 +4,7 @@
 #' 
 #' @param ... multiple objects of class ts or a list of time series. All objects passed through the ... parameter relate to the standard left y-axis.
 #' @param tsr list of time series objects of class ts.
+#' @param ci list of confidence intervals for time series
 #' @param left_as_bar logical should the series that relate to the left bar be drawn as (stacked) bar charts?
 #' @param group_bar_chart logical should a bar chart be grouped instead of stacked?
 #' @param relative_bar_chart logical Should time series be normalized such that bars range from 0 to 1?
@@ -22,7 +23,22 @@
 #' @param quiet logical suppress output, defaults to TRUE.
 #' @param auto_legend logical should legends be printed automatically, defaults to TRUE.
 #'
-#' @importFrom graphics rect axis box title mtext
+#' @details 
+#' The ci parameter is a 3-level list of the form
+#' list(
+#'  ts1 = list(
+#'   ci_value_1 = list(
+#'    ub = upper_bound_ts_object,
+#'    lb = lower_bound_ts_object
+#'   ),
+#'   ...
+#'  ),
+#'  ...
+#' )
+#'
+#' See \code{vignette("tstools")} for details.
+#'
+#' @importFrom graphics rect axis box title mtext strheight
 #'
 #' @export
 tsplot <- function(...,

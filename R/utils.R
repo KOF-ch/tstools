@@ -183,6 +183,7 @@ alpha2Hex <- function(alpha) {
   }
 }
 
+#' @importFrom grDevices colors col2rgb rgb
 namedColor2Hex <- function(color, alpha = NULL) {
   if(is.numeric(alpha)) {
     alpha <- alpha2Hex(alpha)
@@ -199,8 +200,21 @@ namedColor2Hex <- function(color, alpha = NULL) {
   color
 }
 
+
+#' Helper to calculate ci colors for legends
+#' 
+#' @param color The color of the ci band
+#' @param n The number if ci bands
+#' @param alpha The alpha/transparency of the ci band
+#' 
+#' @details 
+#' Color may be specified as either a named color or a hex value
+#' Transparency may be specified as a hex value, number 0-255 or number 0-1
+#' 
 #' @return A vector of non-transparent colors that result from
 #' oberlaying color over pure white 1:n times
+#' 
+#' @importFrom grDevices col2rgb rgb
 getCiLegendColors <- function(color, n = 1, alpha = NULL) {
   colorRGBA <- col2rgb(color, alpha = TRUE)
   colorRGB <- colorRGBA[1:3,1]

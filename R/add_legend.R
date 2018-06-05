@@ -1,6 +1,7 @@
 # TODO: Order ci by value, for the pretties
 
 #' @importFrom graphics par plot legend
+#' @importFrom grDevices dev.size
 #' @importFrom stats na.omit
 add_legend <- function(tsln,
                       tsrn = NULL,
@@ -67,7 +68,7 @@ add_legend <- function(tsln,
   for(i in unique(ci_color_indices_r)) {
     ci_legend_colors_r <- c(
       ci_legend_colors_r, 
-      rev(getCiLegendColors(right_ci_colors[i], sum(ci_color_indices_r == i), theme$ci_alpha))[order(ci_names[[tslr[i]]])]
+      rev(getCiLegendColors(right_ci_colors[i], sum(ci_color_indices_r == i), theme$ci_alpha))[order(ci_names[[tsrn[i]]])]
     )
   }
   

@@ -60,6 +60,10 @@ init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1,
 
 \item{NA_continue_line}{boolean If true, NA values in time series are ignored and a contonuous line is drawn. Multiple values to turn this behavior on/off for indivitual series are supported. Default FALSE}
 
+\item{ci_colors}{Named colors or hex values Colors of the confidence interval bands}
+
+\item{ci_alpha}{Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands}
+
 \item{xaxs}{character axis defintion as in base plot, defaults to "i".}
 
 \item{yaxs}{character axis defintion as in base plot, defaults to "i".}

@@ -1,3 +1,4 @@
+#' @importFrom graphics polygon
 draw_ts_ci <- function(ci, theme) {
   if(!is.null(ci)) {
     ci_colors <- namedColor2Hex(theme$ci_colors, theme$ci_alpha)
