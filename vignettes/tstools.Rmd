@@ -120,7 +120,7 @@ and lower bound ts object to draw shaded confidence bounds around a respective s
 A confidence interval definition is basically a nested list. For the sake of clear
 code, it is recommended to define the CI list separately like so: 
 
-```{r}
+```{r,fig.width = 7,fig.height=6}
 
 # load example data
 data(KOF)
