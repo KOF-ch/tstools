@@ -171,3 +171,51 @@ formatNumericDate <- function(date, freq, date_format = NULL) {
   format(as.Date(sprintf("%d-%d-01", year, month)), date_format)
 }
 
+alpha2Hex <- function(alpha) {
+  if(is.character(alpha)) {
+    return(alpha)
+  }
+  
+  if(floor(alpha) == alpha) {
+    alpha <- as.hexmode(alpha)  
+  } else {
+    alpha <- as.hexmode(floor(256*alpha))
+  }
+}
+
+namedColor2Hex <- function(color, alpha = NULL) {
+  if(is.numeric(alpha)) {
+    alpha <- alpha2Hex(alpha)
+  }
+
+  known_colors <- color %in% colors()
+  
+  color[known_colors] <- rgb(t(col2rgb(color[known_colors])), maxColorValue = 255)
+  
+  no_alpha <- nchar(color) < 9
+  
+  color[no_alpha] <- paste0(color[no_alpha], alpha)
+  
+  color
+}
+
+#' @return A vector of non-transparent colors that result from
+#' oberlaying color over pure white 1:n times
+getCiLegendColors <- function(color, n = 1, alpha = NULL) {
+  colorRGBA <- col2rgb(color, alpha = TRUE)
+  colorRGB <- colorRGBA[1:3,1]
+  
+  alpha <- ifelse(is.null(alpha), colorRGBA["alpha", 1], as.numeric(paste0("0x", alpha2Hex(alpha))))/256
+  
+  out <- c()
+  
+  ca <- colorRGB
+  cb <- col2rgb("white")
+  
+  for(i in seq(n)) {
+    cb <- alpha*ca + (1 - alpha)*cb
+    out[i] <- rgb(t(round(cb)), maxColorValue = 255) #paste(as.hexmode(floor(cb)), collapse = "")
+  }
+  
+  out
+}

@@ -27,6 +27,7 @@
 #' @export
 tsplot <- function(...,
                    tsr = NULL,
+                   ci = NULL,
                    left_as_bar = FALSE,                    
                    group_bar_chart = FALSE,
                    relative_bar_chart = FALSE,
@@ -50,6 +51,7 @@ tsplot <- function(...,
 #' @export
 tsplot.ts <- function(...,
                       tsr = NULL,
+                      ci = NULL,
                       left_as_bar = FALSE,                
                       group_bar_chart = FALSE,
                       relative_bar_chart = FALSE,
@@ -71,6 +73,7 @@ tsplot.ts <- function(...,
   li <- list(...)
   tsplot(li,
          tsr = tsr,
+         ci = ci,
          left_as_bar = left_as_bar,
          group_bar_chart = group_bar_chart,
          relative_bar_chart = relative_bar_chart,
@@ -93,6 +96,7 @@ tsplot.ts <- function(...,
 #' @export
 tsplot.mts <- function(...,
                        tsr = NULL,
+                       ci = NULL,
                        left_as_bar = FALSE,
                        group_bar_chart = FALSE,
                        relative_bar_chart = FALSE,
@@ -124,6 +128,7 @@ create a ts out of a row of a data.frame? Converting to single ts.")
     
     tsplot(as.list(data),
            tsr = tsr,
+           ci = ci,
            left_as_bar = left_as_bar,
            group_bar_chart = group_bar_chart,
            relative_bar_chart = relative_bar_chart,
@@ -147,6 +152,7 @@ create a ts out of a row of a data.frame? Converting to single ts.")
 #' @export
 tsplot.zoo <- function(...,
                        tsr = NULL,
+                       ci = NULL,
                        left_as_bar = FALSE,
                        group_bar_chart = FALSE,
                        relative_bar_chart = FALSE,
@@ -170,6 +176,7 @@ tsplot.zoo <- function(...,
 #' @export
 tsplot.xts <- function(...,
                        tsr = NULL,
+                       ci = NULL,
                        left_as_bar = FALSE,
                        group_bar_chart = FALSE,
                        relative_bar_chart = FALSE,
@@ -193,6 +200,7 @@ tsplot.xts <- function(...,
 #' @export
 tsplot.list <- function(...,
                         tsr = NULL,
+                        ci = NULL,
                         left_as_bar = FALSE,
                         group_bar_chart = FALSE,
                         relative_bar_chart = FALSE,
@@ -237,6 +245,7 @@ tsplot.list <- function(...,
   theme$show_points <- expand_param(theme, "show_points")
   theme$point_symbol <- expand_param(theme, "point_symbol")
   theme$NA_continue_line <- expand_param(theme, "NA_continue_line")
+  theme$ci_colors <- expand_param(theme, "ci_colors")
   
   
   if(left_as_bar && relative_bar_chart) {
@@ -274,9 +283,19 @@ tsplot.list <- function(...,
       if(theme$sum_as_line && !is.null(theme$sum_legend)) {
         legend_left <- c(legend_left, theme$sum_legend)
       }
+      
+      if(!left_as_bar) {
+        legend_left <- c(legend_left, names(ci[[names(ci) %in% names(tsl)]]))
+      }
+      
+      legend_right <- names(tsr)
+      if(!is.null(tsr)) {
+        legend_right <- c(names(tsr), names(ci[[names(ci) %in% names(tsr)]]))
+      }
+      
       legend_height_in <- strheight(paste(legend_left, collapse = "\n"), units = "inches", cex = theme$legend_font_size)
       if(!is.null(tsr)) {
-        legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches", cex = theme$legend_font_size))
+        legend_height_in <- max(legend_height_in, strheight(paste(legend_right, collapse = "\n"), units = "inches", cex = theme$legend_font_size))
       }
       # TODO: theme$legend_intersp_y
       # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
@@ -316,7 +335,8 @@ tsplot.list <- function(...,
     tsl_r[1] <- min(tsl_r[1], 0)
     tsl_r[2] <- max(0, tsl_r[2])
   } else {
-    tsl_r <- range(as.numeric(unlist(tsl)),na.rm = T)
+    # Determine range of tsl plus any potential confidence bands
+    tsl_r <- range(as.numeric(unlist(c(tsl, ci[names(tsl)]))),na.rm = T)
   }
   
   if(!is.null(theme$y_range_min_size)) {
@@ -331,7 +351,7 @@ tsplot.list <- function(...,
   
   if(!is.null(tsr)) {
     tsr <- sanitizeTsr(tsr)
-    tsr_r <- range(unlist(tsr))
+    tsr_r <- range(unlist(c(tsr, ci[names(tsr)])))
     
     if(!is.null(theme$y_range_min_size)) {
       tsr_r_size <- diff(tsr_r)
@@ -522,6 +542,22 @@ tsplot.list <- function(...,
     }
   }
   
+  # Split theme into left/right
+  tt_r <- theme
+  # Make sure we do not reuse line specs for the right axis (if left is not bars)
+  if(!left_as_bar) {
+    total_le <- length(tsl) + length(tsr)
+    start_r <- (total_le - (length(tsr)-1)):total_le
+    
+    tt_r$line_colors <- tt_r$line_colors[start_r]
+    tt_r$lwd <- tt_r$lwd[start_r]
+    tt_r$lty <- tt_r$lty[start_r]
+    tt_r$show_points <- tt_r$show_points[start_r]
+    tt_r$point_symbol <- tt_r$point_symbol[start_r]
+    tt_r$NA_continue_line <- tt_r$NA_continue_line[start_r]
+    tt_r$ci_colors <- tt_r$ci_colors[start_r]
+  }
+  
   # LEFT Y-AXIS
   if(theme$show_left_y_axis){
     axis(2,left_y$y_ticks,las = theme$y_las)
@@ -531,6 +567,51 @@ tsplot.list <- function(...,
     addYGrids(left_y$y_ticks,theme = theme)
   }
   
+  # Draw all confidence bands here (so they don't overlap lines later)
+  # Or should they be drawn left first, then right as before? cf especially with left_as_bar == TRUE and 
+  # CI somewhere in the middle of the series. How common a case is that though?
+  if(!left_as_bar) {
+    par(new = TRUE)
+    plot(NULL,
+         xlim = global_x$x_range,
+         ylim = left_y$y_range,
+         axes = F,
+         xlab = "",
+         ylab = "",
+         xaxs = theme$xaxs,
+         yaxs = theme$yaxs
+    )
+    
+    ci_left <- ci[names(tsl)]
+    draw_ts_ci(ci_left, theme)
+  }
+  
+  if(!is.null(tsr)) {
+    par(new = TRUE)
+    plot(NULL,
+         xlim = global_x$x_range,
+         ylim = right_y$y_range,
+         axes = F,
+         xlab = "",
+         ylab = "",
+         yaxs = theme$yaxs,
+         xaxs = theme$xaxs
+    )
+    
+    ci_right <- ci[names(tsr)]
+    draw_ts_ci(ci_right, tt_r)
+  }
+  
+  par(new = TRUE)
+  plot(NULL,
+       xlim = global_x$x_range,
+       ylim = left_y$y_range,
+       axes = F,
+       xlab = "",
+       ylab = "",
+       xaxs = theme$xaxs,
+       yaxs = theme$yaxs
+  )
   
   if(left_as_bar){
     # draw barplot
@@ -560,19 +641,6 @@ tsplot.list <- function(...,
          xaxs = theme$xaxs
     )
     
-    tt_r <- theme
-    # Make sure we do not reuse line specs for the right axis (if left is not bars)
-    if(!left_as_bar) {
-      total_le <- length(tsl) + length(tsr)
-      start_r <- (total_le - (length(tsr)-1)):total_le
-      
-      tt_r$line_colors <- tt_r$line_colors[start_r]
-      tt_r$lwd <- tt_r$lwd[start_r]
-      tt_r$lty <- tt_r$lty[start_r]
-      tt_r$show_points <- tt_r$show_points[start_r]
-      tt_r$point_symbol <- tt_r$point_symbol[start_r]
-      tt_r$NA_continue_line <- tt_r$NA_continue_line[start_r]
-    }
     draw_ts_lines(tsr,theme = tt_r)
     
     # RIGHT Y-Axis
@@ -585,7 +653,12 @@ tsplot.list <- function(...,
   
   # add legend
   if(auto_legend){
-    add_legend(names(tsl), names(tsr),
+    ci_names <- lapply(names(ci), function(x) {
+      paste0(names(ci[[x]]), "% ci for ", x)
+    })
+    names(ci_names) <- names(ci)
+    
+    add_legend(names(tsl), names(tsr), ci_names,
                theme = theme, left_as_bar = left_as_bar)
   }
   

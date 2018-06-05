@@ -10,14 +10,15 @@ init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1,
   "#72791c", ETH_8_20 = "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2",
   ETH_5_100 = "#91056a", ETH_4_60 = "#007a92"), line_to_middle = TRUE,
   lwd = c(2, 3, 1, 4, 2, 4), lty = 1, show_points = FALSE,
-  point_symbol = 1:18, NA_continue_line = FALSE, xaxs = "i", yaxs = "i",
-  bar_border = "#000000", total_bar_margin_pct = 0.2,
-  bar_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 =
-  "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30
-  = "#e6b3d3"), sum_as_line = FALSE, sum_legend = "sum", sum_line_lty = 1,
-  sum_line_lwd = 3, sum_line_color = c(ETH_8_100 = "#007a92", ETH_4_100 =
-  "#72791c", ETH_8_20 = "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2",
-  ETH_5_100 = "#91056a", ETH_4_60 = "#a9af66"), highlight_window = FALSE,
+  point_symbol = 1:18, NA_continue_line = FALSE, ci_colors = line_colors,
+  ci_alpha = "44", xaxs = "i", yaxs = "i", bar_border = "#000000",
+  total_bar_margin_pct = 0.2, bar_fill_color = c(ETH8 = "#007A92", ETH8_60 =
+  "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60
+  = "#cc67a7", ETH5_30 = "#e6b3d3"), sum_as_line = FALSE,
+  sum_legend = "sum", sum_line_lty = 1, sum_line_lwd = 3,
+  sum_line_color = c(ETH_8_100 = "#007a92", ETH_4_100 = "#72791c", ETH_8_20 =
+  "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2", ETH_5_100 = "#91056a",
+  ETH_4_60 = "#a9af66"), highlight_window = FALSE,
   highlight_window_freq = 4, highlight_window_start = NA,
   highlight_window_end = NA, highlight_color = "#e9e9e9", use_box = FALSE,
   y_las = 2, yearly_ticks = TRUE, quarterly_ticks = TRUE,
