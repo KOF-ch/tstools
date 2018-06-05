@@ -46,7 +46,6 @@ tsplot <- function(...,
                    auto_legend = TRUE,
                    output_format = "plot",
                    filename = "tsplot",
-                   output_dim = c(8, 6),
                    close_graphics_device = TRUE){
   UseMethod("tsplot")
 } 
@@ -73,7 +72,6 @@ tsplot.ts <- function(...,
                       auto_legend = TRUE,
                       output_format = "plot",
                       filename = "tsplot",
-                      output_dim = c(4, 3),
                       close_graphics_device = TRUE
 ){
   li <- list(...)
@@ -98,7 +96,6 @@ tsplot.ts <- function(...,
          theme = theme,
          output_format = output_format,
          filename = filename,
-         output_dim = output_dim,
          close_graphics_device = close_graphics_device)
 }
 
@@ -124,7 +121,6 @@ tsplot.mts <- function(...,
                        auto_legend = TRUE,
                        output_format = "plot",
                        filename = "tsplot",
-                       output_dim = c(4, 3),
                        close_graphics_device = TRUE){
   li <- list(...)
   if(length(li) > 1){
@@ -159,7 +155,6 @@ create a ts out of a row of a data.frame? Converting to single ts.")
            theme = theme,
            output_format = output_format,
            filename = filename,
-           output_dim = output_dim,
            close_graphics_device = close_graphics_device)
   }
 }
@@ -186,7 +181,6 @@ tsplot.zoo <- function(...,
                        auto_legend = TRUE,
                        output_format = "plot",
                        filename = "tsplot",
-                       output_dim = c(4, 3),
                        close_graphics_device = TRUE) {
   stop("zoo objets are not supported yet. Please convert your data to ts!")
 }
@@ -213,7 +207,6 @@ tsplot.xts <- function(...,
                        auto_legend = TRUE,
                        output_format = "plot",
                        filename = "tsplot",
-                       output_dim = c(4, 3),
                        close_graphics_device = TRUE) {
   stop("xts objects are not supported yet. Please convert your data to ts if possible!")
 }
@@ -240,7 +233,6 @@ tsplot.list <- function(...,
                         auto_legend = TRUE,
                         output_format = "plot",
                         filename = "tsplot",
-                        output_dim = c(8, 6),
                         close_graphics_device = TRUE
 ){
   
@@ -254,7 +246,13 @@ tsplot.list <- function(...,
     stop("Time series of length 1 are not supported!")
   }
   
-  if(is.null(theme)) theme <- init_tsplot_theme()
+  if(is.null(theme)) {
+    if(output_format != "plot") {
+      theme <- init_tsplot_print_theme()
+    } else {
+      theme <- init_tsplot_theme()
+    }
+  }
   
   # Expand per-line parameters for recycling
   total_n_ts <- length(tsl) + length(tsr)
@@ -278,14 +276,16 @@ tsplot.list <- function(...,
       filename = sprintf("%s.%s", filename, output_format)
     }
     
+    output_dim <- theme$output_dim
+    
     if(output_format == "pdf") {
       pdf(filename, width = output_dim[1], height = output_dim[2])
     } else if(output_format == "bmp") {
-      bmp(filename, width = output_dim[1], height = output_dim[2])
+      bmp(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution)
     } else if(output_format == "jpeg" || output_format == "jpg") {
-      jpeg(filename, width = output_dim[1], height = output_dim[2], quality = theme$jpeg_quality)
+      jpeg(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution, quality = theme$jpeg_quality)
     } else if(output_format == "png") {
-      tiff(filename, width = output_dim[1], height = output_dim[2])
+      png(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution)
     } else if(output_format == "tiff") {
       
     }
