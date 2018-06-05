@@ -320,6 +320,7 @@ tsplot.list <- function(...,
   
   if(is.na(theme$margins[1])) {
     if(theme$auto_bottom_margin || auto_legend) {
+      # TODO: Is not lheight what we want here? Also look at the constant +1.2 down there vvv
       line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
       
       legend_left <- names(tsl)
@@ -339,7 +340,7 @@ tsplot.list <- function(...,
     }
   }
       
-  par(mar = theme$margins)
+  par(mar = theme$margins, ps = theme$pointsize)
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 

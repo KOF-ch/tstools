@@ -77,6 +77,7 @@
 #' @param legend_intersp_y numeric same as base \code{\link{plot}} parameter, defaults to 1 
 #' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1
 #' @param range_must_not_cross_zero logical automatic range finders are forced to do not find ranges below zero. Defaults to TRUE.
+#' @param pointsize Numeric Point size of text, in 1/72 of an inch
 #' @examples 
 #' # create a list
 #' data(KOF)
@@ -175,7 +176,8 @@ init_tsplot_theme <- function(
   range_must_not_cross_zero = TRUE,
   jpeg_quality = 75,
   resolution = 72,
-  output_dim = c(4, 3)){
+  output_dim = c(4, 3),
+  pointsize = 12){
   as.list(environment())[names(formals())]
 }
 
@@ -187,10 +189,10 @@ scale_theme_param_for_print <- function(value, dims) {
 #' @export
 init_tsplot_print_theme <- function(
   output_dim = c(4, 3),
-  title_cex.main = scale_theme_param_for_print(1, output_dim),
+  pointsize = scale_theme_param_for_print(12, output_dim),
   lwd = scale_theme_param_for_print(c(2,3,1,4,2,4), output_dim),
   ...){
   init_tsplot_theme(lwd = lwd,
-                    title_cex.main = title_cex.main,
+                    pointsize = pointsize,
                              ...)
 }
