@@ -551,10 +551,12 @@ tsplot.list <- function(...,
   if(theme$yearly_ticks){
     if(theme$label_pos == "start" || theme$x_tick_dt != 1 || !is.null(manual_ticks_x)){
       axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
+           lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_yearly_ticks,
            tcl = theme$tcl_yearly_tick)    
     } else{
       axis(1,global_x$yearly_tick_pos,labels = F,
+           lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_yearly_ticks,
            tcl = theme$tcl_yearly_tick)
     }
@@ -566,10 +568,12 @@ tsplot.list <- function(...,
     q_labels <- global_x$year_labels_middle_q[!overlap]
     if(theme$label_pos == "mid"){
       axis(1, q_ticks,labels = q_labels,
+           lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_quarterly_ticks,
            tcl = theme$tcl_quarterly_ticks)    
     } else{
       axis(1, q_ticks, labels = F,
+           lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_quarterly_ticks,
            tcl = theme$tcl_quarterly_ticks)
     }
@@ -577,7 +581,9 @@ tsplot.list <- function(...,
   
   # LEFT Y-AXIS
   if(theme$show_left_y_axis){
-    axis(2,left_y$y_ticks,las = theme$y_las)
+    axis(2,left_y$y_ticks,las = theme$y_las,
+         lwd = theme$lwd_y_axis,
+         lwd.ticks = theme$lwd_y_ticks, tcl = theme$tcl_y_ticks)
   }
   
   if(theme$show_y_grids){

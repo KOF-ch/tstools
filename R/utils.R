@@ -86,7 +86,8 @@ sanitizeTsr <- function(tsr){
 addYGrids <- function(tick_positions,theme){
   for (hl in tick_positions[2:length(tick_positions)]){
     abline(h = hl,
-           col = theme$y_grid_color)
+           col = theme$y_grid_color,
+           lwd = theme$lwd_y_ticks)
   } 
 }
 
