@@ -189,10 +189,16 @@ scale_theme_param_for_print <- function(value, dims) {
 #' @export
 init_tsplot_print_theme <- function(
   output_dim = c(4, 3),
-  pointsize = scale_theme_param_for_print(12, output_dim),
   lwd = scale_theme_param_for_print(c(2,3,1,4,2,4), output_dim),
+  sum_line_lwd = scale_theme_param_for_print(3, output_dim),
+  lwd_yearly_ticks = scale_theme_param_for_print(1.5, output_dim),
+  lwd_quarterly_ticks = scale_theme_param_for_print(1, output_dim),
+  pointsize = scale_theme_param_for_print(12, output_dim),
   ...){
   init_tsplot_theme(lwd = lwd,
+                    sum_line_lwd = sum_line_lwd,
+                    lwd_yearly_ticks = lwd_yearly_ticks,
+                    lwd_quarterly_ticks = lwd_quarterly_ticks,
                     pointsize = pointsize,
                              ...)
 }
