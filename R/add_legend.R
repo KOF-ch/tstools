@@ -9,7 +9,7 @@ add_legend <- function(tsln,
   plot_size_in_in <- dev.size()*(par("plt")[c(2, 4)] - par("plt")[c(1, 3)])
   dev_size <- dev.size()
   
-  inset_y <- 0.98 + (plot_size_in_in[1]*theme$legend_margin_top)/(100*dev_size[1]) #/plot_size_in_in[2]
+  inset_y <- 1.04 + (plot_size_in_in[1]*theme$legend_margin_top)/(100*dev_size[1]) #/plot_size_in_in[2]
   
   # Pop quiz: Why are the legends placed relative to the top? Because then their anchor is at the top
   # and they grow downwards instead of up into the plotting area.

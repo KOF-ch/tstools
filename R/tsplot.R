@@ -329,21 +329,14 @@ tsplot.list <- function(...,
   
   if(is.na(margins[1])) {
     if(theme$auto_bottom_margin || auto_legend) {
-      # TODO: Is not lheight what we want here? Also look at the constant +1.2 down there vvv
-      line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
       
-      legend_left <- names(tsl)
-      if(theme$sum_as_line && !is.null(theme$sum_legend)) {
-        legend_left <- c(legend_left, theme$sum_legend)
-      }
-      legend_height_in <- strheight(paste(legend_left, collapse = "\n"), units = "inches", cex = theme$legend_font_size)
-      if(!is.null(tsr)) {
-        legend_height_in <- max(legend_height_in, strheight(paste(names(tsr), collapse = "\n"), units = "inches", cex = theme$legend_font_size))
-      }
+      line_height_in_in <- strheight("Aa", units = "inches", cex = theme$legend_font_size)
+      
+      n_legend_lines <- max(length(tsl), length(tsr))
+      
       # TODO: theme$legend_intersp_y
       # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
-      
-      margins[1] <- 100*legend_height_in/(theme$legend_col*dev.size()[2]) + theme$legend_margin_top
+      margins[1] <- 100*line_height_in_in*ceiling(n_legend_lines/(theme$legend_col*dev.size()[2])) + theme$legend_margin_top
     } else {
       margins[1] <- theme$default_bottom_margin
     }
