@@ -296,7 +296,9 @@ tsplot.list <- function(...,
   }
 
   # Set pointsize and mex pars 
-  par(ps = theme$pointsize,  mex = scale_theme_param_for_print(1, dev.size()))
+  par(ps = theme$pointsize,
+      mex = scale_theme_param_for_print(1, dev.size()),
+      lwd = scale_theme_param_for_print(1, dev.size()))
   
   if(left_as_bar && relative_bar_chart) {
     # Normalize ts
