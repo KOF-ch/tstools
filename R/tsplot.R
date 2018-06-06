@@ -579,15 +579,15 @@ tsplot.list <- function(...,
     }
   }
   
+  if(theme$show_y_grids){
+    addYGrids(left_y$y_ticks, global_x$x_range, theme = theme)
+  }
+  
   # LEFT Y-AXIS
   if(theme$show_left_y_axis){
     axis(2,left_y$y_ticks,las = theme$y_las,
          lwd = theme$lwd_y_axis,
          lwd.ticks = theme$lwd_y_ticks, tcl = theme$tcl_y_ticks)
-  }
-  
-  if(theme$show_y_grids){
-    addYGrids(left_y$y_ticks,theme = theme)
   }
   
   

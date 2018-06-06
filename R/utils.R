@@ -82,12 +82,14 @@ sanitizeTsr <- function(tsr){
   }
   }
 
-#' @importFrom graphics abline
-addYGrids <- function(tick_positions,theme){
+#' @importFrom graphics lines
+addYGrids <- function(tick_positions, xlim, theme){
   for (hl in tick_positions[2:length(tick_positions)]){
-    abline(h = hl,
+    lines( x = xlim,
+           y = c(hl, hl),
            col = theme$y_grid_color,
-           lwd = theme$lwd_y_ticks)
+           lwd = theme$lwd_y_ticks,
+           xpd = TRUE)
   } 
 }
 
