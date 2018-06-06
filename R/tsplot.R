@@ -272,6 +272,10 @@ tsplot.list <- function(...,
   
   if(output_format != "plot") {
     
+    if(close_graphics_device) {
+      on.exit(dev.off())
+    }
+    
     if(!grepl(sprintf("[.]%s$", output_format), filename)) {
       filename = sprintf("%s.%s", filename, output_format)
     }
@@ -658,10 +662,6 @@ tsplot.list <- function(...,
   
   # add title and subtitle
   add_title(plot_title, plot_subtitle, plot_subtitle_r, theme)
-  
-  if(output_format != "plot" && close_graphics_device) {
-    dev.off()
-  }
   
   # return axes and tick info, as well as theme maybe? 
   if(!quiet){
