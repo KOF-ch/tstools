@@ -291,6 +291,9 @@ tsplot.list <- function(...,
     }
   }
 
+  # Set pointsize and mex pars 
+  par(ps = theme$pointsize,  mex = scale_theme_param_for_print(1, dev.size()))
+  
   if(left_as_bar && relative_bar_chart) {
     # Normalize ts
     if(group_bar_chart) {
@@ -301,7 +304,7 @@ tsplot.list <- function(...,
     }
     tsl <- lapply(tsl, '/', m)
   }
- 
+  
   # Set default names for legend if none provided (moved here for measuring margin)
   right_name_start <- 0
   if(is.null(names(tsl))){
@@ -340,7 +343,7 @@ tsplot.list <- function(...,
     }
   }
       
-  par(mar = theme$margins, ps = theme$pointsize,  mex = scale_theme_param_for_print(1, dev.size()))
+  par(mar = theme$margins)
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 

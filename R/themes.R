@@ -162,7 +162,7 @@ init_tsplot_theme <- function(
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,
   legend_col = 1,
-  legend_margin_top = 0.45,
+  legend_margin_top = 10,
   title_outer = FALSE,
   title_adj = 0,
   title_line = 1.8,
