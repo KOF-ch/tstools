@@ -73,8 +73,8 @@
 #' @param subtitle_transform function to transform the subtitle, defaults to "toupper",
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
 #' @param subtitle_cex numeric same as base \code{\link{plot}} parameter, defaults to 1
-#' @param legend_intersp_x numeric same as base \code{\link{plot}} parameter, defaults to 1
-#' @param legend_intersp_y numeric same as base \code{\link{plot}} parameter, defaults to 1 
+#' @param legend_intersp_x numeric same as base \code{\link{legend}} parameter, defaults to 1
+#' @param legend_intersp_y numeric same as base \code{\link{legend}} parameter, defaults to 1 
 #' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1
 #' @param range_must_not_cross_zero logical automatic range finders are forced to do not find ranges below zero. Defaults to TRUE.
 #' @param pointsize Numeric Point size of text, in 1/72 of an inch
@@ -200,6 +200,7 @@ init_tsplot_print_theme <- function(
   lwd_quarterly_ticks = scale_theme_param_for_print(1, output_dim),
   lwd_y_axis = scale_theme_param_for_print(1.5, output_dim),
   lwd_y_ticks = scale_theme_param_for_print(1.5, output_dim),
+  legend_intersp_y = scale_theme_param_for_print(1, output_dim),
   pointsize = scale_theme_param_for_print(12, output_dim),
   ...){
   init_tsplot_theme(lwd = lwd,
@@ -209,6 +210,7 @@ init_tsplot_print_theme <- function(
                     lwd_quarterly_ticks = lwd_quarterly_ticks,
                     lwd_y_axis = lwd_y_axis,
                     lwd_y_ticks = lwd_y_ticks,
+                    legend_intersp_y = legend_intersp_y,
                     pointsize = pointsize,
                              ...)
 }
