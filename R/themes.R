@@ -138,6 +138,7 @@ init_tsplot_theme <- function(
   highlight_window_end = NA,
   highlight_color = "#e9e9e9",
   use_box = FALSE,
+  lwd_box = 1.5,
   y_las = 2 ,
   yearly_ticks = TRUE,
   quarterly_ticks = TRUE,
@@ -195,6 +196,7 @@ init_tsplot_print_theme <- function(
   output_dim = c(4, 3),
   lwd = scale_theme_param_for_print(c(2,3,1,4,2,4), output_dim),
   sum_line_lwd = scale_theme_param_for_print(3, output_dim),
+  lwd_box = scale_theme_param_for_print(1.5, output_dim),
   lwd_x_axis = scale_theme_param_for_print(1.5, output_dim),
   lwd_yearly_ticks = scale_theme_param_for_print(1.5, output_dim),
   lwd_quarterly_ticks = scale_theme_param_for_print(1, output_dim),
@@ -205,6 +207,7 @@ init_tsplot_print_theme <- function(
   ...){
   init_tsplot_theme(lwd = lwd,
                     sum_line_lwd = sum_line_lwd,
+                    lwd_box = lwd_box,
                     lwd_x_axis = lwd_x_axis,
                     lwd_yearly_ticks = lwd_yearly_ticks,
                     lwd_quarterly_ticks = lwd_quarterly_ticks,

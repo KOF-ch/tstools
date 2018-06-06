@@ -652,7 +652,9 @@ tsplot.list <- function(...,
     }
   }
   
-  if(theme$use_box) box()
+  if(theme$use_box) {
+    box(lwd = theme$lwd_box)
+  }
   
   # add legend
   if(auto_legend){
