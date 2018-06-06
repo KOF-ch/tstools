@@ -321,7 +321,9 @@ tsplot.list <- function(...,
     
   }
   
-  if(is.na(theme$margins[1])) {
+  margins <- theme$margins
+  
+  if(is.na(margins[1])) {
     if(theme$auto_bottom_margin || auto_legend) {
       # TODO: Is not lheight what we want here? Also look at the constant +1.2 down there vvv
       line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
@@ -337,13 +339,16 @@ tsplot.list <- function(...,
       # TODO: theme$legend_intersp_y
       # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
       
-      theme$margins[1] <- (legend_height_in)/(line_height_in*theme$legend_col) + theme$legend_margin_top/line_height_in + 1.2
+      margins[1] <- 100*legend_height_in/(theme$legend_col*dev.size()[2]) + theme$legend_margin_top
     } else {
-      theme$margins[1] <- theme$default_bottom_margin
+      margins[1] <- theme$default_bottom_margin
     }
   }
       
-  par(mar = theme$margins)
+  margins[c(1, 3)] <- margins[c(1, 3)]*dev.size()[2]/100
+  margins[c(2, 4)] <- margins[c(2, 4)]*dev.size()[1]/100
+  
+  par(mai = margins)
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
