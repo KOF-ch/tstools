@@ -340,7 +340,7 @@ tsplot.list <- function(...,
     }
   }
       
-  par(mar = theme$margins, ps = theme$pointsize)
+  par(mar = theme$margins, ps = theme$pointsize,  mex = scale_theme_param_for_print(1, dev.size()))
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
