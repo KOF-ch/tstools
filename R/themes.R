@@ -163,7 +163,7 @@ init_tsplot_theme <- function(
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,
   legend_col = 1,
-  legend_margin_top = 10,
+  legend_margin_top = 5,
   title_outer = FALSE,
   title_adj = 0,
   title_line = 1.8,
@@ -178,6 +178,7 @@ init_tsplot_theme <- function(
   legend_intersp_x = 1,
   legend_intersp_y = 1,
   legend_font_size = 1,
+  legend_seg.len = 2,
   range_must_not_cross_zero = TRUE,
   jpeg_quality = 75,
   resolution = 72,
@@ -187,8 +188,8 @@ init_tsplot_theme <- function(
 }
 
 scale_theme_param_for_print <- function(value, dims) {
-  constant <- 8
-  (dims[1]/8)*value
+  constant <- 6
+  (dims[2]/constant)*value
 }
 
 #' @export
@@ -203,6 +204,7 @@ init_tsplot_print_theme <- function(
   lwd_y_axis = scale_theme_param_for_print(1.5, output_dim),
   lwd_y_ticks = scale_theme_param_for_print(1.5, output_dim),
   legend_intersp_y = scale_theme_param_for_print(1, output_dim),
+  legend_seg.len = scale_theme_param_for_print(2, output_dim),
   pointsize = scale_theme_param_for_print(12, output_dim),
   ...){
   init_tsplot_theme(lwd = lwd,
@@ -214,6 +216,8 @@ init_tsplot_print_theme <- function(
                     lwd_y_axis = lwd_y_axis,
                     lwd_y_ticks = lwd_y_ticks,
                     legend_intersp_y = legend_intersp_y,
+                    legend_seg.len = legend_seg.len,
                     pointsize = pointsize,
+                    output_dim = output_dim,
                              ...)
 }

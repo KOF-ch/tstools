@@ -10,7 +10,8 @@ tsplot(..., tsr = NULL, left_as_bar = FALSE, group_bar_chart = FALSE,
   fill_up_start = FALSE, overall_xlim = NULL, overall_ylim = NULL,
   manual_date_ticks = NULL, manual_value_ticks_l = NULL,
   manual_value_ticks_r = NULL, manual_ticks_x = NULL, theme = NULL,
-  quiet = TRUE, auto_legend = TRUE)
+  quiet = TRUE, auto_legend = TRUE, output_format = "plot",
+  filename = "tsplot", close_graphics_device = TRUE)
 }
 \arguments{
 \item{...}{multiple objects of class ts or a list of time series. All objects passed through the ... parameter relate to the standard left y-axis.}

@@ -271,11 +271,6 @@ tsplot.list <- function(...,
   # OPEN CORRECT GRAPHICS DEVICE
   
   if(output_format != "plot") {
-    
-    if(close_graphics_device) {
-      on.exit(dev.off())
-    }
-    
     if(!grepl(sprintf("[.]%s$", output_format), filename)) {
       filename = sprintf("%s.%s", filename, output_format)
     }
@@ -292,6 +287,10 @@ tsplot.list <- function(...,
       png(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution)
     } else if(output_format == "tiff") {
       
+    }
+    
+    if(close_graphics_device) {
+      on.exit(dev.off())
     }
   }
 
@@ -332,13 +331,13 @@ tsplot.list <- function(...,
   if(is.na(margins[1])) {
     if(theme$auto_bottom_margin || auto_legend) {
       
-      line_height_in_in <- strheight("Aa", units = "inches", cex = theme$legend_font_size)
+      line_height_in_in <- strheight("\n", units = "inches", cex = theme$legend_font_size)
       
-      n_legend_lines <- max(length(tsl), length(tsr))
+      n_legend_lines <- max(length(tsl) + (left_as_bar && theme$sum_legend && theme$sum_as_line), length(tsr))
       
       # TODO: theme$legend_intersp_y
       # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
-      margins[1] <- 100*line_height_in_in*ceiling(n_legend_lines/(theme$legend_col*dev.size()[2])) + theme$legend_margin_top
+      margins[1] <- 100*line_height_in_in*ceiling(n_legend_lines/theme$legend_col)/dev.size()[2] + theme$legend_margin_top
     } else {
       margins[1] <- theme$default_bottom_margin
     }

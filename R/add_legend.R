@@ -9,7 +9,7 @@ add_legend <- function(tsln,
   plot_size_in_in <- dev.size()*(par("plt")[c(2, 4)] - par("plt")[c(1, 3)])
   dev_size <- dev.size()
   
-  inset_y <- 1.04 + (plot_size_in_in[1]*theme$legend_margin_top)/(100*dev_size[1]) #/plot_size_in_in[2]
+  inset_y <- 0.98 + (plot_size_in_in[1]*theme$legend_margin_top)/(100*dev_size[2]) #/plot_size_in_in[2]
   
   # Pop quiz: Why are the legends placed relative to the top? Because then their anchor is at the top
   # and they grow downwards instead of up into the plotting area.
@@ -27,7 +27,8 @@ add_legend <- function(tsln,
              lty = na.omit(theme$lty[1:ll]),
              lwd = na.omit(theme$lwd[1:ll]),
              x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y)    
+             y.intersp = theme$legend_intersp_y,
+             seg.len = theme$legend_seg.len)    
     } else {
       legend("topleft", 
              legend = tsln,
@@ -63,7 +64,8 @@ add_legend <- function(tsln,
              lty = na.omit(lty[1:ll]),
              lwd = na.omit(lwd[1:ll]),
              x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y)
+             y.intersp = theme$legend_intersp_y,
+             seg.len = theme$legend_seg.len)
       legend("topright", 
              legend = tsrn,
              ncol = theme$legend_col,
@@ -75,7 +77,8 @@ add_legend <- function(tsln,
              lty = na.omit(lty[(ll+1):lb]),
              lwd = na.omit(lwd[(ll+1):lb]),
              x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y)
+             y.intersp = theme$legend_intersp_y,
+             seg.len = theme$legend_seg.len)
     } else {
       legend("topleft",
              legend = tsln,
@@ -98,7 +101,8 @@ add_legend <- function(tsln,
              ncol = theme$legend_col,
              lty = lty[1:lr],
              lwd = lwd[1:lr],
-             col = line_colors[1:lr])
+             col = line_colors[1:lr],
+             seg.len = theme$legend_seg.len)
     }
     
   }
@@ -115,7 +119,7 @@ add_legend <- function(tsln,
            col = theme$sum_line_color,
            lty = c(rep(0, ceiling(ll/theme$legend_col)), theme$sum_line_lty),
            lwd = theme$sum_line_lwd,
-           seg.len = 0.9)
+           seg.len = theme$legend_seg.len)
   }
   
 }

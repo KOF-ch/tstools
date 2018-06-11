@@ -16,7 +16,8 @@ annpct <- function(x){
 # Options
 options(scipen=999) # No scientific notation
 
-library(tstools)
+#library(tstools)
+devtools::load_all()
 library(kofbts)
 library(openxlsx)
 
@@ -108,7 +109,7 @@ kof_bars <- c("eth_8_100" = "#007a92",
 
 
 # Theme for monthly and quarterly frequency
-tt <- init_tsplot_print_theme()
+tt <- init_tsplot_print_theme(output_dim = c(4, 3), title_cex.main = 1.05, subtitle_cex = 1.05)
 tt$highlight_window <- T
 tt$line_colors <- kof_lines
 tt$bar_fill_color <- kof_bars
@@ -167,7 +168,7 @@ ts <- list("CHF / EUR" = window(tslist[[paste("ch.kof",vja_current,"chfeur", sep
 
 #tt_m$margins <- c(6.1,2.6,2.1,3.1) # No subtitle, so graph has to be taller
 tsplot(ts,  
-       #theme=tt_m,
+       theme=tt_m,
        manual_value_ticks_l = seq(0.6,1.6, by=0.2),
        plot_title = "Devisenkurse mit Prognose",
        output_format = "pdf",
