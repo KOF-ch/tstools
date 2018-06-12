@@ -333,7 +333,7 @@ tsplot.list <- function(...,
       
       line_height_in_in <- strheight("\n", units = "inches", cex = theme$legend_font_size)
       
-      n_legend_lines <- max(length(tsl) + (left_as_bar && theme$sum_legend && theme$sum_as_line), length(tsr))
+      n_legend_lines <- max(length(tsl) + (left_as_bar && theme$sum_as_line), length(tsr))
       
       # TODO: theme$legend_intersp_y
       # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
