@@ -8,13 +8,13 @@ add_legend <- function(tsln,
                       ci_names,
                       left_as_bar = F,
                       theme = init_tsplot_theme()){
+  # Grab the number of legends
   ll <- length(tsln)
   lr <- length(tsrn)
   lb <- length(c(tsln,tsrn))
   
-  
+  # Calculate how far below the top edge of the plot to place the legend
   plot_size_in_in <- dev.size()*(par("plt")[c(2, 4)] - par("plt")[c(1, 3)])
-  
   inset_y <- 0.98 + theme$legend_margin_top/(100*plot_size_in_in[2])
 
   # Make vectors that "wrap around"
@@ -23,20 +23,30 @@ add_legend <- function(tsln,
   theme$lty <- rep(theme$lty, ceiling(lb/length(theme$lty)))
   theme$lwd <- rep(theme$lwd, ceiling(lb/length(theme$lwd)))
   
+  # Helper to insert ci legends at the correct positions
   splice_ci_names <- function(ts_names) {
     unlist(lapply(ts_names, function(x) {
       c(x, ci_names[[x]])
     }))
   }
   
+  # Insert ci legends (if any)
   legend_l <- splice_ci_names(tsln)
   n_tot_l <- length(legend_l)
+  
+  # Initialize legend pch, col, lty and lwd with the theme parameters
+  # where there are ts and ci band params where there are those
   is_ci_l <- !(legend_l %in% tsln)
-  pch_l <- rep(NA, n_tot_l)
+  pch_l <- rep(ifelse(left_as_bar, 15, NA), n_tot_l)
   pch_l[is_ci_l] <- 15
   col_l <- rep(NA, n_tot_l)
   col_l[!is_ci_l] <- theme$line_colors[1:ll]
+  lty_l <- rep(0, n_tot_l)
+  lty_l[!is_ci_l] <- theme$lty[1:ll]
+  lwd_l <- rep(0, n_tot_l)
+  lwd_l[!is_ci_l] <- theme$lwd[1:ll]
   
+  # Set the legend colors of the ci bands 
   ci_color_indices_l <- cumsum(!is_ci_l)[is_ci_l]
   ci_legend_colors_l <- c()
   left_ci_colors <- theme$ci_colors[1:ll]
@@ -47,148 +57,81 @@ add_legend <- function(tsln,
     )
   }
   
-  col_l[is_ci_l] <- ci_legend_colors_l #namedColor2Hex(theme$ci_colors[1:ll], theme$ci_alpha)[]  # Get color at index 1 for all CI belonging to the 
-                                                                      # 1st series etc.
-  lty_l <- rep(0, n_tot_l)
-  lty_l[!is_ci_l] <- theme$lty[1:ll]
-  lwd_l <- rep(0, n_tot_l)
-  lwd_l[!is_ci_l] <- theme$lwd[1:ll]
-  
-  legend_r <- splice_ci_names(tsrn)
-  n_tot_r <- length(legend_r)
-  is_ci_r <- !(legend_r %in% tsrn)
-  pch_r <- rep(NA, n_tot_r)
-  pch_r[is_ci_r] <- 15
-  col_r <- rep(NA, n_tot_r)
-  col_r[!is_ci_r] <- theme$line_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
-  
-  ci_color_indices_r <- cumsum(!is_ci_r)[is_ci_r]
-  ci_legend_colors_r <- c()
-  right_ci_colors <- theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
-  for(i in unique(ci_color_indices_r)) {
-    ci_legend_colors_r <- c(
-      ci_legend_colors_r, 
-      rev(getCiLegendColors(right_ci_colors[i], sum(ci_color_indices_r == i), theme$ci_alpha))[order(ci_names[[tsrn[i]]])]
-    )
+  # If left as bar, do not draw lines in the legend
+  if(left_as_bar) {
+    col_l[!is_ci_l] <- theme$bar_fill_color[1:ll]
+    lty_l[!is_ci_l] <- 0
+    
+    # Add sum line legend if necessary
+    if(theme$sum_as_line && !is.null(theme$sum_legend)) {
+      legend_l <- c(legend_l, theme$sum_legend)
+      lty_l <- c(lty_l, theme$sum_line_lty)
+      lwd_l <- c(lwd_l, theme$sum_line_lwd)
+      col_l <- c(col_l, theme$sum_line_color)
+      pch_l <- c(pch_l, NA)
+    }
   }
-  
-  col_r[is_ci_l] <- ci_legend_colors_r #namedColor2Hex(theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)], theme$ci_alpha)[cumsum(!is_ci_r)[is_ci_r]]
-  lty_r <- rep(0, n_tot_r)
-  lty_r[!is_ci_r] <- theme$lty[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
-  lwd_r <- rep(0, n_tot_r)
-  lwd_r[!is_ci_r] <- theme$lwd[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
   
   # Pop quiz: Why are the legends placed relative to the top? Because then their anchor is at the top
   # and they grow downwards instead of up into the plotting area.
+
+  # Draw the legends
+  legend("topleft", 
+         legend = legend_l,
+         ncol = theme$legend_col,
+         bty = "n",
+         xpd = NA,
+         cex = theme$legend_font_size,
+         inset = c(0, inset_y),
+         col = col_l,
+         lty = lty_l,
+         lwd = lwd_l,
+         pch = pch_l,
+         pt.cex = scale_theme_param_for_print(2, dev.size()),
+         x.intersp = theme$legend_intersp_x,
+         y.intersp = theme$legend_intersp_y,
+         seg.len = theme$legend_seg.len)
   
-  if(is.null(tsrn)){
-    if(!left_as_bar){
-      legend("topleft", 
-             legend = legend_l,
-             ncol = theme$legend_col,
-             bty = "n",
-             xpd = NA,
-             cex = theme$legend_font_size,
-             inset = c(0, inset_y),
-             col = col_l,
-             lty = lty_l,
-             lwd = lwd_l,
-             pch = pch_l,
-             pt.cex = scale_theme_param_for_print(2, dev.size()),
-             x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y,
-             seg.len = theme$legend_seg.len)    
-    } else {
-      legend("topleft", 
-             legend = tsln,
-             ncol = theme$legend_col,
-             bty = "n",
-             xpd = NA,
-             cex = theme$legend_font_size,
-             inset = c(0, inset_y),
-             fill = na.omit(theme$bar_fill_color[1:ll]),
-             pt.cex = scale_theme_param_for_print(2, dev.size()),
-             x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y)  
+  # Repeat the above steps (minus sum line) for the right series (if any)
+  if(!is.null(tsrn)) {
+    legend_r <- splice_ci_names(tsrn)
+    n_tot_r <- length(legend_r)
+    is_ci_r <- !(legend_r %in% tsrn)
+    pch_r <- rep(NA, n_tot_r)
+    pch_r[is_ci_r] <- 15
+    col_r <- rep(NA, n_tot_r)
+    col_r[!is_ci_r] <- theme$line_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
+    
+    ci_color_indices_r <- cumsum(!is_ci_r)[is_ci_r]
+    ci_legend_colors_r <- c()
+    right_ci_colors <- theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
+    for(i in unique(ci_color_indices_r)) {
+      ci_legend_colors_r <- c(
+        ci_legend_colors_r, 
+        rev(getCiLegendColors(right_ci_colors[i], sum(ci_color_indices_r == i), theme$ci_alpha))[order(ci_names[[tsrn[i]]])]
+      )
     }
     
-  } else {
-    if(!left_as_bar){
-      legend("topleft", 
-             legend = legend_l,
-             ncol = theme$legend_col,
-             bty = "n",
-             xpd = NA,
-             cex = theme$legend_font_size,
-             inset = c(0, inset_y),
-             col = col_l,
-             lty = lty_l,
-             lwd = lwd_l,
-             pch = pch_l,
-             pt.cex = scale_theme_param_for_print(2, dev.size()),
-             x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y,
-             seg.len = theme$legend_seg.len)
-      legend("topright", 
-             legend = legend_r,
-             ncol = theme$legend_col,
-             bty = "n",
-             xpd = NA,
-             cex = theme$legend_font_size,
-             inset = c(0, inset_y),
-             col = col_r,
-             lty = lty_r,
-             lwd = lwd_r,
-             pch = pch_r,
-             pt.cex = scale_theme_param_for_print(2, dev.size()),
-             x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y,
-             seg.len = theme$legend_seg.len)
-    } else {
-      legend("topleft",
-             legend = tsln,
-             ncol = theme$legend_col,
-             bty = "n",
-             border = NA,
-             xpd = NA,
-             cex = theme$legend_font_size,
-             inset = c(0, inset_y),
-             pch = 15,
-             col = theme$bar_fill_colors[1:ll],
-             pt.cex = scale_theme_param_for_print(2, dev.size()),
-             x.intersp = theme$legend_intersp_x,
-             y.intersp = theme$legend_intersp_y)
-      legend("topright",
-             legend = legend_r,
-             bty = "n",
-             border = NA,
-             xpd = NA,
-             cex = theme$legend_font_size,
-             inset = c(0, inset_y),
-             ncol = theme$legend_col,
-             col = col_r,
-             lty = lty_r,
-             lwd = lwd_r,
-             pch = pch_r,
-             pt.cex = scale_theme_param_for_print(2, dev.size()),
-             seg.len = theme$legend_seg.len)
-    }
+    col_r[is_ci_l] <- ci_legend_colors_r #namedColor2Hex(theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)], theme$ci_alpha)[cumsum(!is_ci_r)[is_ci_r]]
+    lty_r <- rep(0, n_tot_r)
+    lty_r[!is_ci_r] <- theme$lty[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
+    lwd_r <- rep(0, n_tot_r)
+    lwd_r[!is_ci_r] <- theme$lwd[ifelse(left_as_bar, 1:lr, (ll+1):lb)]
     
-  }
-  
-  
-  if(theme$sum_as_line && !is.null(theme$sum_legend)) {
-    legend("topleft",
-           legend = c(rep(NA, ceiling(ll/theme$legend_col)), theme$sum_legend),
+    legend("topright", 
+           legend = legend_r,
+           ncol = theme$legend_col,
            bty = "n",
-           border = NA,
            xpd = NA,
            cex = theme$legend_font_size,
            inset = c(0, inset_y),
-           col = theme$sum_line_color,
-           lty = c(rep(0, ceiling(ll/theme$legend_col)), theme$sum_line_lty),
-           lwd = theme$sum_line_lwd,
+           col = col_r,
+           lty = lty_r,
+           lwd = lwd_r,
+           pch = pch_r,
+           pt.cex = scale_theme_param_for_print(2, dev.size()),
+           x.intersp = theme$legend_intersp_x,
+           y.intersp = theme$legend_intersp_y,
            seg.len = theme$legend_seg.len)
   }
-  
 }
