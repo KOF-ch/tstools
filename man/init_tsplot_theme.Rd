@@ -10,14 +10,15 @@ init_tsplot_theme(margins = c(NA, 10, 10, 5), auto_bottom_margin = FALSE,
   "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2", ETH_5_100 = "#91056a",
   ETH_4_60 = "#007a92"), line_to_middle = TRUE, lwd = c(2, 3, 1, 4, 2, 4),
   lty = 1, show_points = FALSE, point_symbol = 1:18,
-  NA_continue_line = FALSE, xaxs = "i", yaxs = "i",
-  bar_border = "#000000", total_bar_margin_pct = 0.2,
-  bar_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 =
-  "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30
-  = "#e6b3d3"), sum_as_line = FALSE, sum_legend = "sum", sum_line_lty = 1,
-  sum_line_lwd = 3, sum_line_color = c(ETH_8_100 = "#007a92", ETH_4_100 =
-  "#72791c", ETH_8_20 = "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2",
-  ETH_5_100 = "#91056a", ETH_4_60 = "#a9af66"), highlight_window = FALSE,
+  NA_continue_line = FALSE, ci_colors = line_colors, ci_alpha = "44",
+  xaxs = "i", yaxs = "i", bar_border = "#000000",
+  total_bar_margin_pct = 0.2, bar_fill_color = c(ETH8 = "#007A92", ETH8_60 =
+  "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60
+  = "#cc67a7", ETH5_30 = "#e6b3d3"), sum_as_line = FALSE,
+  sum_legend = "sum", sum_line_lty = 1, sum_line_lwd = 3,
+  sum_line_color = c(ETH_8_100 = "#007a92", ETH_4_100 = "#72791c", ETH_8_20 =
+  "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2", ETH_5_100 = "#91056a",
+  ETH_4_60 = "#a9af66"), highlight_window = FALSE,
   highlight_window_freq = 4, highlight_window_start = NA,
   highlight_window_end = NA, highlight_color = "#e9e9e9", use_box = FALSE,
   lwd_box = 1.5, y_las = 2, yearly_ticks = TRUE, quarterly_ticks = TRUE,
@@ -27,16 +28,17 @@ init_tsplot_theme(margins = c(NA, 10, 10, 5), auto_bottom_margin = FALSE,
   tcl_y_ticks = -0.75, label_pos = "mid", show_left_y_axis = TRUE,
   show_right_y_axis = TRUE, y_grid_count = c(5, 6, 8, 10),
   show_y_grids = TRUE, y_grid_color = "#CCCCCC",
-  y_grid_count_strict = FALSE, y_tick_margin = 0.15, x_tick_dt = 1,
+  y_grid_count_strict = FALSE, y_tick_margin = 0.15,
+  y_tick_force_integers = FALSE, x_tick_dt = 1,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
-  y_range_min_size = NULL, legend_col = 1, legend_margin_top = 10,
+  y_range_min_size = NULL, legend_col = 1, legend_margin_top = 5,
   title_outer = FALSE, title_adj = 0, title_line = 1.8,
   title_cex.main = 1, title_transform = NA, subtitle_adj = 0,
   subtitle_outer = FALSE, subtitle_line = 0.5,
   subtitle_transform = "toupper", subtitle_adj_r = 0.9, subtitle_cex = 1,
   legend_intersp_x = 1, legend_intersp_y = 1, legend_font_size = 1,
-  range_must_not_cross_zero = TRUE, jpeg_quality = 75, resolution = 72,
-  output_dim = c(4, 3), pointsize = 12)
+  legend_seg.len = 2, range_must_not_cross_zero = TRUE, jpeg_quality = 75,
+  resolution = 72, output_dim = c(4, 3), pointsize = 12)
 }
 \arguments{
 \item{margins}{integer vector defaults to c(NA, 4, 3, 3) + 0.1. Set margins[1] to NA to automatically determine the bottom margin such that the legend fits (if either auto_legend or auto_bottom_margin are TRUE)}
@@ -60,6 +62,10 @@ init_tsplot_theme(margins = c(NA, 10, 10, 5), auto_bottom_margin = FALSE,
 \item{point_symbol}{integer or character The symbol to use for marking data points. Multiple values can be supplied to set the symbol for each individual series See \code{pch} in \code{?par}. Default 1:18}
 
 \item{NA_continue_line}{boolean If true, NA values in time series are ignored and a contonuous line is drawn. Multiple values to turn this behavior on/off for indivitual series are supported. Default FALSE}
+
+\item{ci_colors}{Named colors or hex values Colors of the confidence interval bands}
+
+\item{ci_alpha}{Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands}
 
 \item{xaxs}{character axis defintion as in base plot, defaults to "i".}
 
@@ -127,6 +133,8 @@ to FALSE.}
 
 \item{y_tick_margin}{numeric, minimal percentage of horizontal grid that needs to be clean, i.e., 
 without lines or bars. Defaults to 0.15 (15 percent).}
+
+\item{y_tick_force_integers}{logical Should y ticks be forced (rounded down) to whole numbers? Default FALSE}
 
 \item{x_tick_dt}{numeric The distance between ticks on the x axis in years. The first tick will always be at the
 start of the plotted time series. Defaults to 1}

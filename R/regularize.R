@@ -16,7 +16,7 @@
 #' xx2 <- zoo(rnorm(length(dv2)), dv2)
 #' regularize(xx2)
 #' 
-#' @importFrom zoo as.yearmon
+#' @importFrom zoo as.yearmon index
 #' @export
 regularize <- function(x){
   idx <- index(x)
@@ -27,6 +27,6 @@ regularize <- function(x){
   full_r <- seq(min(idx), max(idx), by = sprintf("%d months", 12/frq))
   val <- rep(NA, length(full_r))
   val[(full_r %in% idx)] <- x
-  tx <- ts(val, start = as.yearmon(min(idx)), freq = frq)
+  tx <- ts(val, start = as.yearmon(min(idx)), frequency = frq)
   tx
 }

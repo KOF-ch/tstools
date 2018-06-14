@@ -21,6 +21,8 @@
 #' @param show_points boolean Whether to draw the symbol specified by point_symbol at the data points. Multiple values can be supplied to enable/disable showing points for each individual series Default FALSE
 #' @param point_symbol integer or character The symbol to use for marking data points. Multiple values can be supplied to set the symbol for each individual series See \code{pch} in \code{?par}. Default 1:18
 #' @param NA_continue_line boolean If true, NA values in time series are ignored and a contonuous line is drawn. Multiple values to turn this behavior on/off for indivitual series are supported. Default FALSE
+#' @param ci_colors Named colors or hex values Colors of the confidence interval bands
+#' @param ci_alpha Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands
 #' @param xaxs character axis defintion as in base plot, defaults to "i".
 #' @param yaxs character axis defintion as in base plot, defaults to "i".
 #' @param bar_border character hex colors for the border around bars in bar charts. 
@@ -56,6 +58,7 @@
 #' @param y_grid_count_strict logical should we strictly stick to preferred y grid count? Defaults to FALSE. 
 #' @param y_tick_margin numeric, minimal percentage of horizontal grid that needs to be clean, i.e., 
 #' without lines or bars. Defaults to 0.15 (15 percent).
+#' @param y_tick_force_integers logical Should y ticks be forced (rounded down) to whole numbers? Default FALSE
 #' @param x_tick_dt numeric The distance between ticks on the x axis in years. The first tick will always be at the
 #' start of the plotted time series. Defaults to 1
 #' @param preferred_y_gap_sizes numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
@@ -110,6 +113,8 @@ init_tsplot_theme <- function(
   show_points = FALSE,
   point_symbol = 1:18,
   NA_continue_line = FALSE,
+  ci_colors = line_colors,
+  ci_alpha = "44",
   xaxs = "i",
   yaxs = "i",
   bar_border = "#000000",
@@ -159,6 +164,7 @@ init_tsplot_theme <- function(
   y_grid_color = "#CCCCCC",
   y_grid_count_strict = FALSE,
   y_tick_margin = 0.15,
+  y_tick_force_integers = FALSE,
   x_tick_dt = 1,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,

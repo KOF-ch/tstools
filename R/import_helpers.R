@@ -44,7 +44,7 @@ long_to_ts <- function(data) {
   tslist
 }
 
-utils::globalVariables(c("date_zoo", "series", "ts_object", "value"))
+utils::globalVariables(c("date_zoo", "series", "ts_object", "value", "frq"))
 
 #' Transform a wide format data.frame into a tslist
 #' 

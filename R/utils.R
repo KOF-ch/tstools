@@ -104,7 +104,7 @@ findGapSize <- function(r,tick_count){
 }
 
 
-findTicks <- function(r, tick_count, preferred_gap_sizes, preserve_sign = FALSE){
+findTicks <- function(r, tick_count, preferred_gap_sizes, round_ticks = FALSE, preserve_sign = FALSE){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
   gaps <- findGapSize(r=r,sort(tick_count))
@@ -131,6 +131,10 @@ findTicks <- function(r, tick_count, preferred_gap_sizes, preserve_sign = FALSE)
     seqs[[i]] <- seq(lb[i],ub[i],gaps[i])
   }
   
+  # First take any best fitting range
+  w <- which.max((lb-r[1]) + (r[2]-ub))
+  out <- seqs[[w]]
+  
   # Try to select a reasonably pretty gap size
   preferred_gap_sizes <- sort(preferred_gap_sizes, decreasing = TRUE)
   for(gs in preferred_gap_sizes) {
@@ -139,13 +143,16 @@ findTicks <- function(r, tick_count, preferred_gap_sizes, preserve_sign = FALSE)
     # If one or more ranges with the desired gap size exist
     # return the one with the least number of ticks
     if(any(by_gs)) {
-      return(seqs[[min(by_gs)]])
+      out <- seqs[[min(by_gs)]]
+      break
     }
   }
   
-  # No pretty gaps found
-  w <- which.max((lb-r[1]) + (r[2]-ub))
-  seqs[[w]]
+  if(round_ticks) {
+    out <- floor(out)
+  }
+  
+  out
 }
 
 formatNumericDate <- function(date, freq, date_format = NULL) {
@@ -167,3 +174,65 @@ formatNumericDate <- function(date, freq, date_format = NULL) {
   format(as.Date(sprintf("%d-%d-01", year, month)), date_format)
 }
 
+alpha2Hex <- function(alpha) {
+  if(is.character(alpha)) {
+    return(alpha)
+  }
+  
+  if(floor(alpha) == alpha) {
+    alpha <- as.hexmode(alpha)  
+  } else {
+    alpha <- as.hexmode(floor(256*alpha))
+  }
+}
+
+#' @importFrom grDevices colors col2rgb rgb
+namedColor2Hex <- function(color, alpha = NULL) {
+  if(is.numeric(alpha)) {
+    alpha <- alpha2Hex(alpha)
+  }
+
+  known_colors <- color %in% colors()
+  
+  color[known_colors] <- rgb(t(col2rgb(color[known_colors])), maxColorValue = 255)
+  
+  no_alpha <- nchar(color) < 9
+  
+  color[no_alpha] <- paste0(color[no_alpha], alpha)
+  
+  color
+}
+
+
+#' Helper to calculate ci colors for legends
+#' 
+#' @param color The color of the ci band
+#' @param n The number if ci bands
+#' @param alpha The alpha/transparency of the ci band
+#' 
+#' @details 
+#' Color may be specified as either a named color or a hex value
+#' Transparency may be specified as a hex value, number 0-255 or number 0-1
+#' 
+#' @return A vector of non-transparent colors that result from
+#' oberlaying color over pure white 1:n times
+#' 
+#' @importFrom grDevices col2rgb rgb
+getCiLegendColors <- function(color, n = 1, alpha = NULL) {
+  colorRGBA <- col2rgb(color, alpha = TRUE)
+  colorRGB <- colorRGBA[1:3,1]
+  
+  alpha <- ifelse(is.null(alpha), colorRGBA["alpha", 1], as.numeric(paste0("0x", alpha2Hex(alpha))))/256
+  
+  out <- c()
+  
+  ca <- colorRGB
+  cb <- col2rgb("white")
+  
+  for(i in seq(n)) {
+    cb <- alpha*ca + (1 - alpha)*cb
+    out[i] <- rgb(t(round(cb)), maxColorValue = 255) #paste(as.hexmode(floor(cb)), collapse = "")
+  }
+  
+  out
+}

@@ -28,6 +28,8 @@
 #' If a ts_names vector is supplied, it must have length n and must not contain duplicates.
 #'
 #' @return A list of ts objects
+#' 
+#' @importFrom stats rnorm runif
 #' @export
 #'
 #' @examples
