@@ -716,7 +716,9 @@ tsplot.list <- function(...,
     
     # RIGHT Y-Axis
     if(theme$show_right_y_axis){
-      axis(4,right_y$y_ticks,las = theme$y_las)
+      axis(4,right_y$y_ticks,las = theme$y_las,
+           lwd = theme$lwd_y_axis,
+           lwd.ticks = theme$lwd_y_ticks, tcl = theme$tcl_y_ticks)
     }
   }
   
