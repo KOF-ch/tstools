@@ -4,7 +4,9 @@ read_swissdata <- function(path, key_columns) {
   raw <- data.table::fread(path)
   key_columns <- c("structure","trans","price.adj","seas")
   
-#  raw[,ts_key := paste(deparse(substitute(key_coumns)),sep=".")]
+  raw[,ts_key := do.call(paste,
+                         c(dataset,.SD,sep=".")),
+                         .SDcols = key_columns]
 }
 
 
