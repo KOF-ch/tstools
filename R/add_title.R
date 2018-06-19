@@ -10,13 +10,17 @@ add_title <- function(plot_title, plot_subtitle, plot_subtitle_r, theme) {
           cex.main = theme$title_cex.main)    
   }
   
+  # See R source src/library/graphics/src/graphics.c:3325
+  # where they add a ("visually tuned") offset to the mtext line
+  sub_line <- theme$subtitle_line - 0.2/par("mex")
+  
   if(!is.null(plot_subtitle)){
     if(!is.null(theme$subtitle_transform)){
       plot_subtitle <- do.call(theme$subtitle_transform,
                                list(plot_subtitle))
-    } 
-    mtext(plot_subtitle, adj = theme$title_adj,
-          line = theme$subtitle_line,
+    }
+    mtext(plot_subtitle, adj = theme$subtitle_adj,
+          line = sub_line,
           outer = theme$subtitle_outer,
           cex = theme$subtitle_cex)    
   }
@@ -29,7 +33,7 @@ add_title <- function(plot_title, plot_subtitle, plot_subtitle_r, theme) {
     } 
     mtext(plot_subtitle_r,
           adj = theme$subtitle_adj_r,
-          line = theme$subtitle_line,
+          line = sub_line,
           outer = theme$subtitle_outer,
           cex = theme$subtitle_cex)    
   }
