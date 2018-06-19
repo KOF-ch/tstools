@@ -14,8 +14,7 @@ add_legend <- function(tsln,
   lb <- length(c(tsln,tsrn))
   
   # Calculate how far below the top edge of the plot to place the legend
-  plot_size_in_in <- dev.size()*(par("plt")[c(2, 4)] - par("plt")[c(1, 3)])
-  inset_y <- 0.98 + theme$legend_margin_top/(100*plot_size_in_in[2])
+  inset_y <- 0.98 + theme$legend_margin_top/100
 
   # Make vectors that "wrap around"
   theme$line_colors <- rep(theme$line_colors, ceiling(lb/length(theme$line_colors)))
