@@ -585,12 +585,14 @@ tsplot.list <- function(...,
       axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
            lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_yearly_ticks,
-           tcl = theme$tcl_yearly_tick)    
+           tcl = theme$tcl_yearly_tick,
+           padj = theme$x_tick_padj)    
     } else{
       axis(1,global_x$yearly_tick_pos,labels = F,
            lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_yearly_ticks,
-           tcl = theme$tcl_yearly_tick)
+           tcl = theme$tcl_yearly_tick,
+           padj = theme$x_tick_padj)
     }
   }
   
@@ -602,12 +604,14 @@ tsplot.list <- function(...,
       axis(1, q_ticks,labels = q_labels,
            lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_quarterly_ticks,
-           tcl = theme$tcl_quarterly_ticks)    
+           tcl = theme$tcl_quarterly_ticks,
+           padj = theme$x_tick_padj)    
     } else{
       axis(1, q_ticks, labels = F,
            lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_quarterly_ticks,
-           tcl = theme$tcl_quarterly_ticks)
+           tcl = theme$tcl_quarterly_ticks,
+           padj = theme$x_tick_padj)
     }
   }
   
