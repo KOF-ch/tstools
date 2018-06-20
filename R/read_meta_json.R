@@ -1,6 +1,13 @@
 read_meta_json <- function(keys, locale) {
   # read metadata json from DB
 
+  ###################
+  # DEV STUFFSES
+  ###################
+  meta <- yaml::read_yaml("C:/dev/R_repos/swissdata/wd/ch.bfs.besta/ch.bfs.besta.yaml")
+  locale <- "de"
+  keys_without_prefix <- keys
+  
   # Get "set global" metadata
   out <- meta[c("title", "source.name", "source.url", "units", "aggregate", "details", "utc.updated")]
   
@@ -23,7 +30,7 @@ read_meta_json <- function(keys, locale) {
   dim_names <- lapply(meta$labels$dimnames, get_localized)
   
   # Split key suffix into chunks for getting metadata
-  chunks <- unlist(strsplit(key_without_prefix, "\\."))
+  chunks <- unlist(strsplit(keys_without_prefix, "\\."))
   
   n <- length(chunks)
   
@@ -36,21 +43,27 @@ read_meta_json <- function(keys, locale) {
   })
 
   # convert map to a labelled matrix
-  map <- matrix(unlist(map), nrow = length(chunks))
+  map <- matrix(unlist(map), nrow = n)
   rownames(map) <- chunks
   colnames(map) <- names(meta$hierarchy)
   map[map == TRUE] <- 1
   
   # Loop over map columnwise, removing items where the column (dimension) has
   # multiple candidate chunks
-  for(i in 1:length(chunks)) {
+  for(i in 1:n) {
     rs <- rowSums(map)
     cs <- colSums(map)
-    for(j in 1:length(chunks)) {
+    for(j in 1:n) {
       # We need to remove items (no 1-1 mapping yet)
       if(cs[j] > 1) {
         # Find all rows where it's safe to remove 1s from the jth column
-        ind <- map[,j] > 0 & rs > 1
+        ind <- map[, j] > 0 & rs > 1
+        
+        # Ensure we keep at least one
+        if(sum(ind) > 1) {
+          first_one <- min(which(map[, j] == 1))
+          ind[first_one] <- FALSE
+        }
         
         # Set all to 0
         map[which(ind), j] <- 0
@@ -66,7 +79,7 @@ read_meta_json <- function(keys, locale) {
   dims_localized <- unlist(dim_names[dims])
   chunks2 <- rownames(map)
   
-  for(i in 1:length(chunks)) {
+  for(i in 1:n) {
     out[dims_localized[i]] <- meta$labels[[dims[i]]][chunks2[which(map[,i] > 0)]]
   }
 
@@ -79,7 +92,6 @@ read_meta_json <- function(keys, locale) {
 # DEV STUFF
 ####
 
-meta <- yaml::read_yaml("C:/dev/R_repos/swissdata/wd/ch.bfs.besta/ch.bfs.besta.yaml")
-locale <- "de"
+
 keys <- "ch.bfs.besta.3.59.1"
 key_without_prefix <- "3.59.1"
