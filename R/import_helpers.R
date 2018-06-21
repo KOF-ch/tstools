@@ -22,6 +22,17 @@ long_to_ts <- function(data) {
   data_dt <- as.data.table(data)
   
   data_dt[, `:=`(date_zoo = as.numeric(as.yearmon(date)), frq = 12), by = series]
+  
+  # Strip series consisting only of NAs
+  empty_series <- data_dt[, .(is_empty = all(is.na(value))), by = series]
+  
+  if(empty_series[, any(is_empty)]) {
+    warning(sprintf("Some series contained only NAs and were stripped:\n%s",
+                    paste(empty_series[is_empty == TRUE, series], collapse = "\n")))
+  }
+  
+  data_dt <- data_dt[!(series %in% empty_series[is_empty == TRUE, series])]
+  
   data_dt[is.na(date_zoo), `:=`(date_zoo = as.numeric(as.yearqtr(date)), frq = 4)]
   
   dt_of_lists <- data_dt[, {
