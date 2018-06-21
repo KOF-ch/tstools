@@ -6,6 +6,9 @@
 #' @param path character full path to dataset.
 #' @param key_columns character vector specifying all columns that should be
 #' part of the key. 
+#' @details 
+#' The order of dimensions in key_columns determines their order in the key
+#' The resulting ts_key will be of the form <swissdata-set-name>.<instance of key_columns[1]>...
 #' @examples 
 #' ds_location <- system.file("example_data/ch.seco.css.csv",package = "tstools")
 #' tslist <- read_swissdata(ds_location,"idx_type")
@@ -13,11 +16,12 @@
 #' @importFrom data.table fread
 #' @export
 read_swissdata <- function(path, key_columns) {
-  dataset <- gsub("(.+wd\\/)(.+)(\\/.+)","\\2",path)
+  dataset <- gsub("\\.csv","",basename(path))
   raw <- fread(path)
-  raw[,ts_key := do.call(paste,
-                         c(dataset,.SD,sep=".")),
-                         .SDcols = key_columns]
+  raw[, series := do.call(paste,
+                          c(dataset,.SD,sep=".")),
+      .SDcols = key_columns]
+  long_to_ts(raw[, .(series, date, value)])
 }
 
 

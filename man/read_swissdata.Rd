@@ -16,6 +16,10 @@ part of the key.}
 Read data from swissdata compliant .csv files and 
 turn them into a list of time series.
 }
+\details{
+The order of dimensions in key_columns determines their order in the key
+The resulting ts_key will be of the form <swissdata-set-name>.<instance of key_columns[1]>...
+}
 \examples{
 ds_location <- system.file("example_data/ch.seco.css.csv",package = "tstools")
 tslist <- read_swissdata(ds_location,"idx_type")
