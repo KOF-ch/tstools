@@ -21,8 +21,6 @@ json_to_ts <- function(json_data) {
 long_to_ts <- function(data) {
   data_dt <- as.data.table(data)
   
-  data_dt[, `:=`(date_zoo = as.numeric(as.yearmon(date)), frq = 12), by = series]
-  
   # Strip series consisting only of NAs
   empty_series <- data_dt[, .(is_empty = all(is.na(value))), by = series]
   
@@ -32,6 +30,8 @@ long_to_ts <- function(data) {
   }
   
   data_dt <- data_dt[!(series %in% empty_series[is_empty == TRUE, series])]
+  
+  data_dt[, `:=`(date_zoo = as.numeric(as.yearmon(date)), frq = 12), by = series]
   
   data_dt[is.na(date_zoo), `:=`(date_zoo = as.numeric(as.yearqtr(date)), frq = 4)]
   
