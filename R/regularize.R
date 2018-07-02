@@ -27,6 +27,6 @@ regularize <- function(x){
   full_r <- seq(min(idx), max(idx), by = sprintf("%d months", 12/frq))
   val <- rep(NA, length(full_r))
   val[(full_r %in% idx)] <- x
-  tx <- ts(val, start = as.yearmon(min(idx)), freq = frq)
+  tx <- ts(val, start = as.yearmon(min(idx)), frequency = frq)
   tx
 }

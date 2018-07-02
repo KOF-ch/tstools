@@ -17,6 +17,7 @@
 #' aa <- tsqm(tsq)
 #' m_to_q(set_month_to_NA(aa))
 #' 
+#' @importFrom zoo index
 #' @export
 set_month_to_NA <- function(series, keep_month = c(1,4,7,10)){
   # get the index of the keep periods
