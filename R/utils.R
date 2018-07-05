@@ -32,7 +32,7 @@ getGlobalXInfo <- function(tsl, tsr, fill_up, fill_up_start, dt, manual_ticks){
     
     # Set the lower bound to correspond with a quarterly tick, for pretties
     global_x$x_range[1] <- trunc(global_x$x_range[1]*4)/4
-    global_x$x_range[2] <- trunc(global_x$x_range[2]*4 + 0.25)/4
+    global_x$x_range[2] <- trunc(global_x$x_range[2]*4 + 0.76)/4
     
     # Yearly tick positions
     global_x$yearly_tick_pos <- seq(floor(global_x$x_range[1]), global_x$x_range[2] + dt, dt)
