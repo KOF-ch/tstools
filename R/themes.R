@@ -44,7 +44,6 @@
 #' @param y_las integer, same as base \code{\link{plot}} parameter defaults to 2.
 #' @param yearly_ticks logical, should yearly ticks be shown. Defaults to TRUE.
 #' @param quarterly_ticks logical, should quarterly ticks be shown. Defaults to TRUE.
-#' @param monthly_ticks logical, should monthly ticks be shown. Defaults to FALSE.
 #' @param lwd_yearly_ticks numeric, width of yearly ticks, defaults to 1.5.
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
 #' @param tcl_yearly_ticks numeric, length of yearly ticks. Analogous to \code{cex} for \code{\link{axis}}. defaults to -0.75.
@@ -145,7 +144,6 @@ init_tsplot_theme <- function(
   y_las = 2 ,
   yearly_ticks = TRUE,
   quarterly_ticks = TRUE,
-  monthly_ticks = FALSE,
   lwd_yearly_ticks = 1.5,
   lwd_quarterly_ticks = 1,
   tcl_yearly_ticks = -0.75,
