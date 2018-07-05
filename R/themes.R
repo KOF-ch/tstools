@@ -14,6 +14,7 @@
 #' @param auto_bottom_margin logical Should the bottom margin be automatically calculated? This will be overridden if margins[1] is not NA. Default FALSE 
 #' @param default_bottom_margin numeric The bottom margin to use when margins[1] is NA but neither auto_legend nor auto_bottom_margin are true. Default 3
 #' @param fill_year_with_nas logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,
+#' @param fill_up_start logical shoule the start of the year also be filled? Has no effect if fill_year_with_nas == FALSE. Default FALSE
 #' @param line_colors character vector of hex colors for 6 lines. 
 #' @param line_to_middle logical try to put a line into the middle of the plot. defaults to TRUE.
 #' @param lwd integer vector line width, defaults to c(2,3,1,4,2,4).
@@ -99,6 +100,7 @@ init_tsplot_theme <- function(
   auto_bottom_margin = FALSE,
   default_bottom_margin = 3,
   fill_year_with_nas = TRUE,
+  fill_up_start = FALSE,
   line_colors = c("ETH_8_100" = "#a9af66",
                          "ETH_4_100" = "#72791c",
                          "ETH_8_20" = "#cce5eb",
