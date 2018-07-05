@@ -26,8 +26,12 @@ getGlobalXInfo <- function(tsl, tsr, fill_up_start, dt, manual_ticks){
   if(is.null(manual_ticks)) {
     all_ts_ext <- lapply(all_ts,fill_year_with_nas,fill_up_start = fill_up_start)
     global_x$x_range <- range(unlist(lapply(all_ts_ext,time)))
+    
+    # Set the lower bound to correspond with a quarterly tick, for pretties
+    global_x$x_range[1] <- trunc(global_x$x_range[1]*4)/4
+    
     # Yearly tick positions
-    global_x$yearly_tick_pos <- seq(global_x$x_range[1], global_x$x_range[2] + dt, dt)
+    global_x$yearly_tick_pos <- seq(floor(global_x$x_range[1]), global_x$x_range[2] + dt, dt)
     
     # labels
     global_x$year_labels_start <- seq(global_x$x_range[1], global_x$x_range[2] + dt, dt)
