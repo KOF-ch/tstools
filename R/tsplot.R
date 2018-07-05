@@ -384,7 +384,7 @@ tsplot.list <- function(...,
   
   # CANVAS OPTIONS START #########################################
   # so far manual date ticks are ignored.
-  global_x <- getGlobalXInfo(tsl,tsr,fill_up_start = fill_up_start, theme$x_tick_dt, manual_ticks_x)
+  global_x <- getGlobalXInfo(tsl,tsr, fill_up = theme$fill_year_with_nas, fill_up_start = fill_up_start, theme$x_tick_dt, manual_ticks_x)
   
   # y can't be global in the first place, cause 
   # tsr and tsl have different scales.... 
