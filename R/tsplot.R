@@ -300,19 +300,20 @@ tsplot.list <- function(...,
       filename = sprintf("%s.%s", filename, output_format)
     }
     
-    output_dim <- theme$output_dim
+    output_dim <- `if`(theme$output_wide, c(5+1/3, 3), c(4, 3))
     
     if(output_format == "pdf") {
       pdf(filename, width = output_dim[1], height = output_dim[2])
-    } else if(output_format == "bmp") {
-      bmp(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution)
-    } else if(output_format == "jpeg" || output_format == "jpg") {
-      jpeg(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution, quality = theme$jpeg_quality)
-    } else if(output_format == "png") {
-      png(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution)
-    } else if(output_format == "tiff") {
-      
     }
+    # } else if(output_format == "bmp") {
+    #   bmp(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution)
+    # } else if(output_format == "jpeg" || output_format == "jpg") {
+    #   jpeg(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution, quality = theme$jpeg_quality)
+    # } else if(output_format == "png") {
+    #   png(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution)
+    # } else if(output_format == "tiff") {
+    #   
+    # }
     
     if(close_graphics_device) {
       on.exit(dev.off())
@@ -321,8 +322,8 @@ tsplot.list <- function(...,
 
   # Set pointsize and mex pars 
   par(ps = theme$pointsize,
-      mex = scale_theme_param_for_print(1, dev.size()),
-      lwd = scale_theme_param_for_print(1, dev.size()))
+      mex = ifelse(output_format == "plot", 1, scale_theme_param_for_print(1, dev.size())),
+      lwd = ifelse(output_format == "plot", 1, scale_theme_param_for_print(1, dev.size())))
   
   if(left_as_bar && relative_bar_chart) {
     # Normalize ts
