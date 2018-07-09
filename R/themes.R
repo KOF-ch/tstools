@@ -61,7 +61,6 @@
 #' @param y_tick_force_integers logical Should y ticks be forced (rounded down) to whole numbers? Default FALSE
 #' @param x_tick_dt numeric The distance between ticks on the x axis in years. The first tick will always be at the
 #' start of the plotted time series. Defaults to 1
-#' @param x_tick_padj Vertical alignment of x ticks
 #' @param preferred_y_gap_sizes numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
 #' @param y_range_min_size = NULL  ,
 #' @param legend_col integer number of columns for the legend, defaults to 3.
@@ -168,7 +167,6 @@ init_tsplot_theme <- function(
   y_tick_margin = 0.15,
   y_tick_force_integers = FALSE,
   x_tick_dt = 1,
-  x_tick_padj = 1,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,
   legend_col = 1,
@@ -217,7 +215,6 @@ init_tsplot_print_theme <- function(
   legend_square_size = scale_theme_param_for_print(2, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
   legend_seg.len = scale_theme_param_for_print(2, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
   pointsize = scale_theme_param_for_print(12, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  x_tick_padj = -2,
   ...){
   init_tsplot_theme(lwd = lwd,
                     sum_line_lwd = sum_line_lwd,
@@ -232,6 +229,5 @@ init_tsplot_print_theme <- function(
                     legend_seg.len = legend_seg.len,
                     pointsize = pointsize,
                     output_wide = output_wide,
-                    x_tick_padj = x_tick_padj,
                              ...)
 }
