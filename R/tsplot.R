@@ -300,7 +300,7 @@ tsplot.list <- function(...,
       filename = sprintf("%s.%s", filename, output_format)
     }
     
-    output_dim <- `if`(theme$output_wide, c(5+1/3, 3), c(4, 3))
+    output_dim <- `if`(theme$output_wide, c(10+2/3, 3), c(8, 6))
     
     if(output_format == "pdf") {
       pdf(filename, width = output_dim[1], height = output_dim[2])

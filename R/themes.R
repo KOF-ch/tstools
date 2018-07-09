@@ -97,7 +97,7 @@
 #' @author Matthias Bannert
 #' @export
 init_tsplot_theme <- function(
-  margins = c(NA, 10, 10, 5),
+  margins = c(NA, 10, 17, 5),
   auto_bottom_margin = FALSE,
   default_bottom_margin = 15,
   fillYearWithNAs = TRUE,
@@ -203,20 +203,23 @@ scale_theme_param_for_print <- function(value, dims) {
 #' @export
 init_tsplot_print_theme <- function(
   output_wide = FALSE,
-  lwd = scale_theme_param_for_print(c(2,3,1,4,2,4),  `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  sum_line_lwd = scale_theme_param_for_print(3, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  lwd_box = scale_theme_param_for_print(1.5, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  lwd_x_axis = scale_theme_param_for_print(1.5, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  lwd_yearly_ticks = scale_theme_param_for_print(1.5, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  lwd_quarterly_ticks = scale_theme_param_for_print(1, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  lwd_y_axis = scale_theme_param_for_print(1.5, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  lwd_y_ticks = scale_theme_param_for_print(1.5, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  legend_intersp_y = scale_theme_param_for_print(1, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  legend_square_size = scale_theme_param_for_print(2, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  legend_seg.len = scale_theme_param_for_print(2, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
-  pointsize = scale_theme_param_for_print(12, `if`(output_wide, c(5+1/3, 3), c(4, 3))),
+  margins = c(NA, 10, 10, 5),
+  lwd = scale_theme_param_for_print(c(2,3,1,4,2,4),  `if`(output_wide, c(10+2/3), c(8, 6))),
+  sum_line_lwd = scale_theme_param_for_print(3, `if`(output_wide, c(10+2/3), c(8, 6))),
+  lwd_box = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3), c(8, 6))),
+  lwd_x_axis = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3), c(8, 6))),
+  lwd_yearly_ticks = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3), c(8, 6))),
+  lwd_quarterly_ticks = scale_theme_param_for_print(1, `if`(output_wide, c(10+2/3), c(8, 6))),
+  lwd_y_axis = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3), c(8, 6))),
+  lwd_y_ticks = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3), c(8, 6))),
+  legend_intersp_y = scale_theme_param_for_print(1, `if`(output_wide, c(10+2/3), c(8, 6))),
+  legend_square_size = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3), c(8, 6))),
+  legend_seg.len = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3), c(8, 6))),
+  pointsize = scale_theme_param_for_print(12, `if`(output_wide, c(10+2/3), c(8, 6))),
   ...){
-  init_tsplot_theme(lwd = lwd,
+  init_tsplot_theme(
+                    margins = margins,
+                    lwd = lwd,
                     sum_line_lwd = sum_line_lwd,
                     lwd_box = lwd_box,
                     lwd_x_axis = lwd_x_axis,
