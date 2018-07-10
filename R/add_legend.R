@@ -59,6 +59,8 @@ add_legend <- function(tsln,
     )
   }
   
+  col_l[is_ci_l] <- ci_legend_colors_l
+  
   # If left as bar, do not draw lines in the legend
   if(left_as_bar) {
     col_l[!is_ci_l] <- theme$bar_fill_color[1:ll]
