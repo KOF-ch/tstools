@@ -14,7 +14,7 @@ compute_decimal_time <- function(v,f){
 
 # function is called by tsplot, do not need to export
 # it but let's write a minimal comment on what it does.
-getGlobalXInfo <- function(tsl, tsr, fill_up_start, dt, manual_ticks){
+getGlobalXInfo <- function(tsl, tsr, fill_up, fill_up_start, dt, manual_ticks){
   global_x <- list()
   
   if(!is.null(tsr)){
@@ -24,10 +24,18 @@ getGlobalXInfo <- function(tsl, tsr, fill_up_start, dt, manual_ticks){
   }
   
   if(is.null(manual_ticks)) {
-    all_ts_ext <- lapply(all_ts,fill_year_with_nas,fill_up_start = fill_up_start)
-    global_x$x_range <- range(unlist(lapply(all_ts_ext,time)))
+    if(fill_up) {
+      all_ts <- lapply(all_ts,fill_year_with_nas,fill_up_start = fill_up_start)
+    }
+    
+    global_x$x_range <- range(unlist(lapply(all_ts,time)))
+    
+    # Set the lower bound to correspond with a quarterly tick, for pretties
+    global_x$x_range[1] <- trunc(global_x$x_range[1]*4)/4
+    global_x$x_range[2] <- trunc(global_x$x_range[2]*4 + 0.76)/4
+    
     # Yearly tick positions
-    global_x$yearly_tick_pos <- seq(global_x$x_range[1], global_x$x_range[2] + dt, dt)
+    global_x$yearly_tick_pos <- seq(floor(global_x$x_range[1]), global_x$x_range[2] + dt, dt)
     
     # labels
     global_x$year_labels_start <- seq(global_x$x_range[1], global_x$x_range[2] + dt, dt)
@@ -38,7 +46,7 @@ getGlobalXInfo <- function(tsl, tsr, fill_up_start, dt, manual_ticks){
   }
   
   global_x$min_year <- trunc(global_x$x_range[1])
-  global_x$max_year <- trunc(global_x$x_range[2])
+  global_x$max_year <- trunc(global_x$x_range[2])+1
   
   if(dt == 1) {
     global_x$quarterly_tick_pos <- seq(from = global_x$min_year,
