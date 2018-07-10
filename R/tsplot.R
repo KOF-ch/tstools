@@ -357,18 +357,23 @@ tsplot.list <- function(...,
   if(is.na(margins[1])) {
     if(theme$auto_bottom_margin || auto_legend) {
       
-      line_height_in_in <- strheight("\n", units = "inches", cex = theme$legend_font_size)
+      n_legends <- max(length(tsl) + (left_as_bar && theme$sum_as_line), length(tsr))
+      n_legend_lines <- ceiling(n_legends/theme$legend_col)
       
-      n_legend_lines <- max(length(tsl) + (left_as_bar && theme$sum_as_line), length(tsr))
-    
+      # strheight only really considers the number of newlines in the text to be measured
+      legend_height_in_in <- strheight(
+        paste(rep("\n", n_legend_lines - 1), collapse = ""),
+        units = "inches",
+        cex = theme$legend_font_size)
+      
       # TODO: theme$legend_intersp_y
       # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
-      margins[1] <- 100*line_height_in_in*ceiling(n_legend_lines/theme$legend_col)/dev.size()[2] + theme$legend_margin_top
+      margins[1] <- 100*legend_height_in_in/dev.size()[2] + theme$legend_margin_top + 8 # => space used up by x-ticks
     } else {
       margins[1] <- theme$default_bottom_margin
     }
   }
-      
+  
   margins[c(1, 3)] <- margins[c(1, 3)]*dev.size()[2]/100
   margins[c(2, 4)] <- margins[c(2, 4)]*dev.size()[1]/100
   
