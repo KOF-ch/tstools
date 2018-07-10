@@ -172,6 +172,7 @@ init_tsplot_theme <- function(
   legend_col = 1,
   legend_square_size = 2,
   legend_margin_top = 12,
+  legend_margin_bottom = 5,
   title_outer = FALSE,
   title_adj = 0,
   title_line = 1.8,
@@ -215,6 +216,7 @@ init_tsplot_print_theme <- function(
   legend_intersp_y = scale_theme_param_for_print(1, `if`(output_wide, c(10+2/3), c(8, 6))),
   legend_square_size = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3), c(8, 6))),
   legend_margin_top = 6,
+  legend_margin_bottom = 3,
   legend_seg.len = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3), c(8, 6))),
   pointsize = scale_theme_param_for_print(12, `if`(output_wide, c(10+2/3), c(8, 6))),
   ...){
@@ -231,6 +233,7 @@ init_tsplot_print_theme <- function(
                     legend_intersp_y = legend_intersp_y,
                     legend_square_size = legend_square_size,
                     legend_margin_top = legend_margin_top,
+                    legend_margin_bottom = legend_margin_bottom,
                     legend_seg.len = legend_seg.len,
                     pointsize = pointsize,
                     output_wide = output_wide,

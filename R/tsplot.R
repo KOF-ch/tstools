@@ -366,9 +366,13 @@ tsplot.list <- function(...,
         units = "inches",
         cex = theme$legend_font_size)
       
+      single_line_height_in_in <- strheight("", units = "inches", cex = par("cex"))
+      
       # TODO: theme$legend_intersp_y
       # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
-      margins[1] <- 100*legend_height_in_in/dev.size()[2] + theme$legend_margin_top + 8 # => space used up by x-ticks
+      
+      # Add the height of a single line to account for the x ticks (more or less)
+      margins[1] <- 100*(single_line_height_in_in + legend_height_in_in)/dev.size()[2] + theme$legend_margin_top + theme$legend_margin_bottom
     } else {
       margins[1] <- theme$default_bottom_margin
     }
