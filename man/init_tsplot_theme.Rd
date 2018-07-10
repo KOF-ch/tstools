@@ -22,7 +22,7 @@ init_tsplot_theme(margins = c(NA, 4, 3, 3) + 0.1,
   highlight_window_freq = 4, highlight_window_start = NA,
   highlight_window_end = NA, highlight_color = "#e9e9e9", use_box = FALSE,
   y_las = 2, yearly_ticks = TRUE, quarterly_ticks = TRUE,
-  monthly_ticks = FALSE, lwd_yearly_ticks = 1.5, lwd_quarterly_ticks = 1,
+  lwd_yearly_ticks = 1.5, lwd_quarterly_ticks = 1,
   tcl_yearly_ticks = -0.75, tcl_quarterly_ticks = -0.4, label_pos = "mid",
   show_left_y_axis = TRUE, show_right_y_axis = TRUE, y_grid_count = c(5,
   6, 8, 10), show_y_grids = TRUE, y_grid_color = "#CCCCCC",
@@ -103,8 +103,6 @@ to FALSE.}
 \item{yearly_ticks}{logical, should yearly ticks be shown. Defaults to TRUE.}
 
 \item{quarterly_ticks}{logical, should quarterly ticks be shown. Defaults to TRUE.}
-
-\item{monthly_ticks}{logical, should monthly ticks be shown. Defaults to FALSE.}
 
 \item{lwd_yearly_ticks}{numeric, width of yearly ticks, defaults to 1.5.}
 
