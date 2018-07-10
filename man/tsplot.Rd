@@ -7,8 +7,8 @@
 tsplot(..., tsr = NULL, ci = NULL, left_as_bar = FALSE,
   group_bar_chart = FALSE, relative_bar_chart = FALSE, plot_title = NULL,
   plot_subtitle = NULL, plot_subtitle_r = NULL,
-  find_ticks_function = "findTicks", fill_up_start = FALSE,
-  overall_xlim = NULL, overall_ylim = NULL, manual_date_ticks = NULL,
+  find_ticks_function = "findTicks", overall_xlim = NULL,
+  overall_ylim = NULL, manual_date_ticks = NULL,
   manual_value_ticks_l = NULL, manual_value_ticks_r = NULL,
   manual_ticks_x = NULL, theme = NULL, quiet = TRUE, auto_legend = TRUE,
   output_format = "plot", filename = "tsplot",
@@ -35,8 +35,6 @@ tsplot(..., tsr = NULL, ci = NULL, left_as_bar = FALSE,
 
 \item{find_ticks_function}{function to compute ticks.}
 
-\item{fill_up_start}{logical should the start year be filled up?}
-
 \item{overall_xlim}{integer overall x-axis limits, defaults to NULL.}
 
 \item{overall_ylim}{integer overall y-axis limits, defaults to NULL.}
@@ -54,6 +52,8 @@ tsplot(..., tsr = NULL, ci = NULL, left_as_bar = FALSE,
 \item{quiet}{logical suppress output, defaults to TRUE.}
 
 \item{auto_legend}{logical should legends be printed automatically, defaults to TRUE.}
+
+\item{fill_up_start}{logical should the start year be filled up?}
 }
 \description{
 Conveniently plot time series.
