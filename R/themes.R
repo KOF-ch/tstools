@@ -176,6 +176,7 @@ init_tsplot_theme <- function(
   legend_square_size = 2,
   legend_margin_top = 12,
   legend_margin_bottom = 5,
+  legend_all_left = FALSE,
   title_outer = FALSE,
   title_adj = 0,
   title_line = 1.8,

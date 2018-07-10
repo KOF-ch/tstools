@@ -76,6 +76,44 @@ add_legend <- function(tsln,
     }
   }
   
+  
+  # initialize right legend params
+  
+  legend_r <- splice_ci_names(tsrn)
+  n_tot_r <- length(legend_r)
+  is_ci_r <- !(legend_r %in% tsrn)
+  pch_r <- rep(NA, n_tot_r)
+  pch_r[is_ci_r] <- 15
+  col_r <- rep(NA, n_tot_r)
+  col_r[!is_ci_r] <- theme$line_colors[`if`(left_as_bar, 1:lr, (ll+1):lb)]
+  
+  ci_color_indices_r <- cumsum(!is_ci_r)[is_ci_r]
+  ci_legend_colors_r <- c()
+  right_ci_colors <- theme$ci_colors[`if`(left_as_bar, 1:lr, (ll+1):lb)]
+  for(i in unique(ci_color_indices_r)) {
+    ci_legend_colors_r <- c(
+      ci_legend_colors_r, 
+      rev(getCiLegendColors(right_ci_colors[i], sum(ci_color_indices_r == i), theme$ci_alpha))[order(ci_names[[tsrn[i]]])]
+    )
+  }
+  
+  col_r[is_ci_l] <- ci_legend_colors_r #namedColor2Hex(theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)], theme$ci_alpha)[cumsum(!is_ci_r)[is_ci_r]]
+  lty_r <- rep(0, n_tot_r)
+  lty_r[!is_ci_r] <- theme$lty[`if`(left_as_bar, 1:lr, (ll+1):lb)]
+  lwd_r <- rep(0, n_tot_r)
+  lwd_r[!is_ci_r] <- theme$lwd[`if`(left_as_bar, 1:lr, (ll+1):lb)]
+  
+  
+  # Merge left and right legends if desired
+  if(theme$legend_all_left) {
+    legend_l <- c(legend_l, legend_r)
+    col_l <- c(col_l, col_r)
+    lty_l <- c(lty_l, lty_r)
+    lwd_l <- c(lwd_l, lwd_r)
+    pch_l <- c(pch_l, pch_r)
+  }
+  
+  
   # Pop quiz: Why are the legends placed relative to the top? Because then their anchor is at the top
   # and they grow downwards instead of up into the plotting area.
 
@@ -97,31 +135,7 @@ add_legend <- function(tsln,
          seg.len = theme$legend_seg.len)
   
   # Repeat the above steps (minus sum line) for the right series (if any)
-  if(!is.null(tsrn)) {
-    legend_r <- splice_ci_names(tsrn)
-    n_tot_r <- length(legend_r)
-    is_ci_r <- !(legend_r %in% tsrn)
-    pch_r <- rep(NA, n_tot_r)
-    pch_r[is_ci_r] <- 15
-    col_r <- rep(NA, n_tot_r)
-    col_r[!is_ci_r] <- theme$line_colors[`if`(left_as_bar, 1:lr, (ll+1):lb)]
-    
-    ci_color_indices_r <- cumsum(!is_ci_r)[is_ci_r]
-    ci_legend_colors_r <- c()
-    right_ci_colors <- theme$ci_colors[`if`(left_as_bar, 1:lr, (ll+1):lb)]
-    for(i in unique(ci_color_indices_r)) {
-      ci_legend_colors_r <- c(
-        ci_legend_colors_r, 
-        rev(getCiLegendColors(right_ci_colors[i], sum(ci_color_indices_r == i), theme$ci_alpha))[order(ci_names[[tsrn[i]]])]
-      )
-    }
-    
-    col_r[is_ci_l] <- ci_legend_colors_r #namedColor2Hex(theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)], theme$ci_alpha)[cumsum(!is_ci_r)[is_ci_r]]
-    lty_r <- rep(0, n_tot_r)
-    lty_r[!is_ci_r] <- theme$lty[`if`(left_as_bar, 1:lr, (ll+1):lb)]
-    lwd_r <- rep(0, n_tot_r)
-    lwd_r[!is_ci_r] <- theme$lwd[`if`(left_as_bar, 1:lr, (ll+1):lb)]
-    
+  if(!is.null(tsrn) && !theme$legend_all_left) {
     legend("topright", 
            legend = legend_r,
            ncol = theme$legend_col,
