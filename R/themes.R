@@ -65,7 +65,9 @@
 #' @param preferred_y_gap_sizes numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
 #' @param y_range_min_size = NULL  ,
 #' @param legend_col integer number of columns for the legend, defaults to 3.
-#' @param legend_margin_top numeric Distance between bottom of plot and top of legends in inches, defaults to 0.45
+#' @param legend_bar_size numeric The size of the squares denoting bar colors in the legend. Default 2
+#' @param legend_margin_top numeric Distance between bottom of plot and top of legends % of device height, defaults to 12
+#' @param legend_margin_bottom numeric Distande between bottom of legend and bottom of graphic in % of device height, default 5
 #' @param title_outer logical, currently undocumented. Defaults to TRUE. 
 #' @param title_adj numeric, same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param title_line numeric same as base \code{\link{plot}} parameter, defaults to .8.
@@ -77,10 +79,11 @@
 #' @param subtitle_transform function to transform the subtitle, defaults to "toupper",
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
 #' @param subtitle_cex numeric same as base \code{\link{plot}} parameter, defaults to 1
-#' @param legend_intersp_x numeric same as base \code{\link{plot}} parameter, defaults to 1
-#' @param legend_intersp_y numeric same as base \code{\link{plot}} parameter, defaults to 1 
+#' @param legend_intersp_x numeric same as base \code{\link{legend}} parameter, defaults to 1
+#' @param legend_intersp_y numeric same as base \code{\link{legend}} parameter, defaults to 1 
 #' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1
 #' @param range_must_not_cross_zero logical automatic range finders are forced to do not find ranges below zero. Defaults to TRUE.
+#' @param pointsize Numeric Point size of text, in 1/72 of an inch
 #' @examples 
 #' # create a list
 #' data(KOF)
@@ -96,9 +99,9 @@
 #' @author Matthias Bannert
 #' @export
 init_tsplot_theme <- function(
-  margins = c(NA, 4, 3, 3) + 0.1,
+  margins = c(NA, 7, 12, 7),
   auto_bottom_margin = FALSE,
-  default_bottom_margin = 3,
+  default_bottom_margin = 15,
   fill_year_with_nas = TRUE,
   fill_up_start = FALSE,
   line_colors = c("ETH_8_100" = "#a9af66",
@@ -145,13 +148,18 @@ init_tsplot_theme <- function(
   highlight_window_end = NA,
   highlight_color = "#e9e9e9",
   use_box = FALSE,
+  lwd_box = 1.5,
   y_las = 2 ,
   yearly_ticks = TRUE,
   quarterly_ticks = TRUE,
+  lwd_x_axis = 1.5,
   lwd_yearly_ticks = 1.5,
   lwd_quarterly_ticks = 1,
   tcl_yearly_ticks = -0.75,
   tcl_quarterly_ticks = -0.4,
+  lwd_y_axis = 1.5,
+  lwd_y_ticks = 1.5,
+  tcl_y_ticks = -0.75,
   label_pos = "mid",
   show_left_y_axis = TRUE,
   show_right_y_axis = TRUE,
@@ -165,7 +173,9 @@ init_tsplot_theme <- function(
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,
   legend_col = 1,
-  legend_margin_top = 0.45,
+  legend_square_size = 2,
+  legend_margin_top = 12,
+  legend_margin_bottom = 5,
   title_outer = FALSE,
   title_adj = 0,
   title_line = 1.8,
@@ -180,11 +190,55 @@ init_tsplot_theme <- function(
   legend_intersp_x = 1,
   legend_intersp_y = 1,
   legend_font_size = 1,
-  range_must_not_cross_zero = TRUE){
-  e <- environment()
-  li <- lapply(names(formals()),get,envir = e)
-  names(li) <- names(formals())
-  li
+  legend_seg.len = 2,
+  range_must_not_cross_zero = TRUE,
+  jpeg_quality = 75,
+  resolution = 72,
+  output_wide = FALSE,
+  pointsize = 12){
+  as.list(environment())[names(formals())]
 }
-  
 
+scale_theme_param_for_print <- function(value, dims) {
+  constant <- 6
+  (dims[2]/constant)*value
+}
+
+#' @export
+init_tsplot_print_theme <- function(
+  output_wide = FALSE,
+  margins = c(NA, 10/`if`(output_wide, 1+1/3, 1), 10, 7/`if`(output_wide, 1+1/3, 1)),
+  lwd = scale_theme_param_for_print(c(2,3,1,4,2,4),  `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  sum_line_lwd = scale_theme_param_for_print(3, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  lwd_box = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  lwd_x_axis = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  lwd_yearly_ticks = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  lwd_quarterly_ticks = scale_theme_param_for_print(1, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  lwd_y_axis = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  lwd_y_ticks = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  legend_intersp_y = scale_theme_param_for_print(1, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  legend_square_size = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  legend_margin_top = 6,
+  legend_margin_bottom = 3,
+  legend_seg.len = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  pointsize = scale_theme_param_for_print(12, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  ...){
+  init_tsplot_theme(
+                    margins = margins,
+                    lwd = lwd,
+                    sum_line_lwd = sum_line_lwd,
+                    lwd_box = lwd_box,
+                    lwd_x_axis = lwd_x_axis,
+                    lwd_yearly_ticks = lwd_yearly_ticks,
+                    lwd_quarterly_ticks = lwd_quarterly_ticks,
+                    lwd_y_axis = lwd_y_axis,
+                    lwd_y_ticks = lwd_y_ticks,
+                    legend_intersp_y = legend_intersp_y,
+                    legend_square_size = legend_square_size,
+                    legend_margin_top = legend_margin_top,
+                    legend_margin_bottom = legend_margin_bottom,
+                    legend_seg.len = legend_seg.len,
+                    pointsize = pointsize,
+                    output_wide = output_wide,
+                             ...)
+}

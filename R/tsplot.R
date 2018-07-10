@@ -59,7 +59,10 @@ tsplot <- function(...,
                    manual_ticks_x = NULL,
                    theme = NULL,
                    quiet = TRUE,
-                   auto_legend = TRUE){
+                   auto_legend = TRUE,
+                   output_format = "plot",
+                   filename = "tsplot",
+                   close_graphics_device = TRUE){
   UseMethod("tsplot")
 } 
 
@@ -82,7 +85,10 @@ tsplot.ts <- function(...,
                       manual_ticks_x = NULL,
                       theme = NULL,
                       quiet = TRUE,
-                      auto_legend = TRUE
+                      auto_legend = TRUE,
+                      output_format = "plot",
+                      filename = "tsplot",
+                      close_graphics_device = TRUE
 ){
   li <- list(...)
   tsplot(li,
@@ -101,9 +107,12 @@ tsplot.ts <- function(...,
          manual_value_ticks_l = manual_value_ticks_l,
          manual_value_ticks_r = manual_value_ticks_r,
          manual_ticks_x = manual_ticks_x,
-         theme = theme,
          quiet = quiet,
-         auto_legend = auto_legend)
+         auto_legend = auto_legend,
+         theme = theme,
+         output_format = output_format,
+         filename = filename,
+         close_graphics_device = close_graphics_device)
 }
 
 #' @export
@@ -125,7 +134,10 @@ tsplot.mts <- function(...,
                        manual_ticks_x = NULL,
                        theme = NULL,
                        quiet = TRUE,
-                       auto_legend = TRUE){
+                       auto_legend = TRUE,
+                       output_format = "plot",
+                       filename = "tsplot",
+                       close_graphics_device = TRUE){
   li <- list(...)
   if(length(li) > 1){
     stop("If you use multivariate time series objects (mts), make sure to pass only one object per axis. Place all time series you want to plot on one y-axis in one mts object or list of time series.")
@@ -154,9 +166,12 @@ create a ts out of a row of a data.frame? Converting to single ts.")
            manual_value_ticks_l = manual_value_ticks_l,
            manual_value_ticks_r = manual_value_ticks_r,
            manual_ticks_x = manual_ticks_x,
-           theme = theme,
            quiet = quiet,
-           auto_legend = auto_legend)
+           auto_legend = auto_legend,
+           theme = theme,
+           output_format = output_format,
+           filename = filename,
+           close_graphics_device = close_graphics_device)
   }
 }
 
@@ -179,7 +194,10 @@ tsplot.zoo <- function(...,
                        manual_ticks_x = NULL,
                        theme = NULL,
                        quiet = TRUE,
-                       auto_legend = TRUE) {
+                       auto_legend = TRUE,
+                       output_format = "plot",
+                       filename = "tsplot",
+                       close_graphics_device = TRUE) {
   stop("zoo objets are not supported yet. Please convert your data to ts!")
 }
 
@@ -202,7 +220,10 @@ tsplot.xts <- function(...,
                        manual_ticks_x = NULL,
                        theme = NULL,
                        quiet = TRUE,
-                       auto_legend = TRUE) {
+                       auto_legend = TRUE,
+                       output_format = "plot",
+                       filename = "tsplot",
+                       close_graphics_device = TRUE) {
   stop("xts objects are not supported yet. Please convert your data to ts if possible!")
 }
 
@@ -225,7 +246,10 @@ tsplot.list <- function(...,
                         manual_ticks_x = NULL,
                         theme = NULL,
                         quiet = TRUE,
-                        auto_legend = TRUE
+                        auto_legend = TRUE,
+                        output_format = "plot",
+                        filename = "tsplot",
+                        close_graphics_device = TRUE
 ){
   
   tsl <- c(...)
@@ -238,7 +262,13 @@ tsplot.list <- function(...,
     stop("Time series of length 1 are not supported!")
   }
   
-  if(is.null(theme)) theme <- init_tsplot_theme()
+  if(is.null(theme)) {
+    if(output_format != "plot") {
+      theme <- init_tsplot_print_theme()
+    } else {
+      theme <- init_tsplot_theme()
+    }
+  }
   
   # Expand per-line parameters for recycling
   total_n_ts <- length(tsl) + length(tsr)
@@ -255,6 +285,37 @@ tsplot.list <- function(...,
   theme$NA_continue_line <- expand_param(theme, "NA_continue_line")
   theme$ci_colors <- expand_param(theme, "ci_colors")
   
+  # OPEN CORRECT GRAPHICS DEVICE
+  
+  if(output_format != "plot") {
+    if(!grepl(sprintf("[.]%s$", output_format), filename)) {
+      filename = sprintf("%s.%s", filename, output_format)
+    }
+    
+    output_dim <- `if`(theme$output_wide, c(10+2/3, 6), c(8, 6))
+    
+    if(output_format == "pdf") {
+      pdf(filename, width = output_dim[1], height = output_dim[2])
+    }
+    # } else if(output_format == "bmp") {
+    #   bmp(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution)
+    # } else if(output_format == "jpeg" || output_format == "jpg") {
+    #   jpeg(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution, quality = theme$jpeg_quality)
+    # } else if(output_format == "png") {
+    #   png(filename, width = output_dim[1], height = output_dim[2], units = "in", res = theme$resolution)
+    # } else if(output_format == "tiff") {
+    #   
+    # }
+    
+    if(close_graphics_device) {
+      on.exit(dev.off())
+    }
+  }
+
+  # Set pointsize and mex pars 
+  par(ps = theme$pointsize,
+      mex = ifelse(output_format == "plot", 1, scale_theme_param_for_print(1, dev.size())),
+      lwd = ifelse(output_format == "plot", 1, scale_theme_param_for_print(1, dev.size())))
   
   if(left_as_bar && relative_bar_chart) {
     # Normalize ts
@@ -266,7 +327,7 @@ tsplot.list <- function(...,
     }
     tsl <- lapply(tsl, '/', m)
   }
- 
+  
   # Set default names for legend if none provided (moved here for measuring margin)
   right_name_start <- 0
   if(is.null(names(tsl))){
@@ -283,38 +344,42 @@ tsplot.list <- function(...,
     
   }
   
-  if(is.na(theme$margins[1])) {
+  margins <- theme$margins
+  
+  if(is.na(margins[1])) {
     if(theme$auto_bottom_margin || auto_legend) {
-      line_height_in <- par("csi") # Miami. YEEEAAAAAAHHHHH!
       
-      legend_left <- names(tsl)
-      if(theme$sum_as_line && !is.null(theme$sum_legend)) {
-        legend_left <- c(legend_left, theme$sum_legend)
-      }
+      n_ci_l <- `if`(any(names(tsl) %in% names(ci)), sum(sapply(ci[names(tsl)], length)), 0)
+      n_ci_r <- `if`(any(names(tsr) %in% names(ci)), sum(sapply(ci[names(tsr)], length)), 0)
       
-      if(!left_as_bar) {
-        legend_left <- c(legend_left, names(ci[[names(ci) %in% names(tsl)]]))
-      }
+      n_legends <- max(
+        length(tsl) + n_ci_l + (left_as_bar && theme$sum_as_line), 
+        length(tsr) + n_ci_r
+      )
+      n_legend_lines <- ceiling(n_legends/theme$legend_col)
       
-      legend_right <- names(tsr)
-      if(!is.null(tsr)) {
-        legend_right <- c(names(tsr), names(ci[[names(ci) %in% names(tsr)]]))
-      }
+      # strheight only really considers the number of newlines in the text to be measured
+      legend_height_in_in <- strheight(
+        paste(rep("\n", n_legend_lines - 1), collapse = ""),
+        units = "inches",
+        cex = theme$legend_font_size)
       
-      legend_height_in <- strheight(paste(legend_left, collapse = "\n"), units = "inches", cex = theme$legend_font_size)
-      if(!is.null(tsr)) {
-        legend_height_in <- max(legend_height_in, strheight(paste(legend_right, collapse = "\n"), units = "inches", cex = theme$legend_font_size))
-      }
+      single_line_height_in_in <- strheight("", units = "inches", cex = par("cex"))
+      
       # TODO: theme$legend_intersp_y
       # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
       
-      theme$margins[1] <- (legend_height_in)/(line_height_in*theme$legend_col) + theme$legend_margin_top/line_height_in + 1.2
+      # Add the height of a single line to account for the x ticks (more or less)
+      margins[1] <- 100*(single_line_height_in_in + legend_height_in_in)/dev.size()[2] + theme$legend_margin_top + theme$legend_margin_bottom
     } else {
-      theme$margins[1] <- theme$default_bottom_margin
+      margins[1] <- theme$default_bottom_margin
     }
   }
-      
-  par(mar = theme$margins)
+  
+  margins[c(1, 3)] <- margins[c(1, 3)]*dev.size()[2]/100
+  margins[c(2, 4)] <- margins[c(2, 4)]*dev.size()[1]/100
+  
+  par(mai = margins)
   
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
@@ -526,10 +591,13 @@ tsplot.list <- function(...,
   if(theme$yearly_ticks){
     if(theme$label_pos == "start" || theme$x_tick_dt != 1 || !is.null(manual_ticks_x)){
       axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
+           lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_yearly_ticks,
-           tcl = theme$tcl_yearly_tick)    
+           tcl = theme$tcl_yearly_tick,
+           padj = 0)    
     } else{
       axis(1,global_x$yearly_tick_pos,labels = F,
+           lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_yearly_ticks,
            tcl = theme$tcl_yearly_tick)
     }
@@ -541,15 +609,21 @@ tsplot.list <- function(...,
     q_labels <- global_x$year_labels_middle_q[!overlap]
     if(theme$label_pos == "mid"){
       axis(1, q_ticks,labels = q_labels,
+           lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_quarterly_ticks,
-           tcl = theme$tcl_quarterly_ticks)    
+           tcl = theme$tcl_quarterly_ticks,
+           padj = 0)    
     } else{
       axis(1, q_ticks, labels = F,
+           lwd = theme$lwd_x_axis,
            lwd.ticks = theme$lwd_quarterly_ticks,
            tcl = theme$tcl_quarterly_ticks)
     }
   }
   
+  if(theme$show_y_grids){
+    addYGrids(left_y$y_ticks, global_x$x_range, theme = theme)
+  }
   # Split theme into left/right
   tt_r <- theme
   # Make sure we do not reuse line specs for the right axis (if left is not bars)
@@ -565,14 +639,13 @@ tsplot.list <- function(...,
     tt_r$NA_continue_line <- tt_r$NA_continue_line[start_r]
     tt_r$ci_colors <- tt_r$ci_colors[start_r]
   }
+
   
   # LEFT Y-AXIS
   if(theme$show_left_y_axis){
-    axis(2,left_y$y_ticks,las = theme$y_las)
-  }
-  
-  if(theme$show_y_grids){
-    addYGrids(left_y$y_ticks,theme = theme)
+    axis(2,left_y$y_ticks,las = theme$y_las,
+         lwd = theme$lwd_y_axis,
+         lwd.ticks = theme$lwd_y_ticks, tcl = theme$tcl_y_ticks)
   }
   
   # Draw all confidence bands here (so they don't overlap lines later)
@@ -653,11 +726,15 @@ tsplot.list <- function(...,
     
     # RIGHT Y-Axis
     if(theme$show_right_y_axis){
-      axis(4,right_y$y_ticks,las = theme$y_las)
+      axis(4,right_y$y_ticks,las = theme$y_las,
+           lwd = theme$lwd_y_axis,
+           lwd.ticks = theme$lwd_y_ticks, tcl = theme$tcl_y_ticks)
     }
   }
   
-  if(theme$use_box) box()
+  if(theme$use_box) {
+    box(lwd = theme$lwd_box)
+  }
   
   # add legend
   if(auto_legend){

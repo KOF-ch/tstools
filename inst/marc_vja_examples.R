@@ -16,12 +16,13 @@ annpct <- function(x){
 # Options
 options(scipen=999) # No scientific notation
 
-library(tstools)
+#library(tstools)
+devtools::load_all()
 library(kofbts)
 library(openxlsx)
 
 
-vja_settings <- read.xlsx("/Volumes/mtec_kof_rdata_1/forecasting/settings/vja.xlsx",
+vja_settings <- read.xlsx("inst/vja.xlsx",
                           colNames = F, rowNames = T)
 
 date_current <- as.yearqtr(paste0(vja_settings["year",1]," Q",vja_settings["quarter",1]))
@@ -108,11 +109,11 @@ kof_bars <- c("eth_8_100" = "#007a92",
 
 
 # Theme for monthly and quarterly frequency
-tt <- init_tsplot_theme()
+tt <- init_tsplot_print_theme(output_dim = c(4, 3), title_cex.main = 1.05, subtitle_cex = 1.05)
 tt$highlight_window <- T
 tt$line_colors <- kof_lines
 tt$bar_fill_color <- kof_bars
-#tt$lty <- c(1,5,2,4,6,5,1,4,2,6)
+tt$lty <- c(1,5,2,4,6,5,1,4,2,6)
 tt$subtitle_transform <- NULL
 tt$highlight_window_end <- c(settings$horizon+4,1)
 # tt$highlight_color <- c("eth_8_20" = "#cce5eb")
@@ -149,7 +150,9 @@ tsplot(ts[1], tsr = ts[2],
        manual_value_ticks_l = seq(-2,6, by=1),
        manual_value_ticks_r = seq(80,120, by=5),
        plot_title = "Reales BIP und KOF Konjunkturbarometer",
-       plot_subtitle = paste0("BIP ab ", bip_naming, ": Schätzung/Prognose KOF"))
+       plot_subtitle = paste0("BIP ab ", bip_naming, ": Schätzung/Prognose KOF"),
+       output_format = "pdf",
+       filename = "realesBIPundBaro")
 tt_m$legend_col <- 2
 
 
@@ -163,16 +166,14 @@ ts <- list("CHF / EUR" = window(tslist[[paste("ch.kof",vja_current,"chfeur", sep
            "CHF / USD" =window(tslist[[paste("ch.kof",vja_current,"chfusd", sep = ".")]], start= graph_start1, end=c(horizon, 12)))
 
 
-pdf("devisenkursprognose.pdf", width=10.08, height=7.08)
-
 #tt_m$margins <- c(6.1,2.6,2.1,3.1) # No subtitle, so graph has to be taller
 tsplot(ts,  
-       #theme=tt_m,
+       theme=tt_m,
        manual_value_ticks_l = seq(0.6,1.6, by=0.2),
-       plot_title = "Devisenkurse mit Prognose")
+       plot_title = "Devisenkurse mit Prognose",
+       output_format = "pdf",
+       filename = "DevisenmitPrognose")
 #tt_m$margins <- c(6.1,2.6,3.1,3.1)
-
-dev.off()
 
 
 # Wachstumsbeiträge BIP: Produktionsseitig
@@ -187,7 +188,9 @@ tsplot(ts[2:7],  # Missing: Sum_as_line funktion von Matthias. Falls GDP Line ei
        left_as_bar = T,
        manual_value_ticks_l = seq(-3,5, by=1),
        plot_title = "Wachstumsbeiträge BIP: Produktionsseitig",
-       plot_subtitle = "(in PP des BIP)")
+       plot_subtitle = "(in PP des BIP)",
+       output_format = "pdf",
+       filename = "WachstumsbeiträgeBIPProduktionsseitig")
 tt_y$sum_as_line <- F
 
 
@@ -207,7 +210,9 @@ tsplot(ts[1:2], tsr=ts[3],
        manual_value_ticks_l = seq(-50,30, by=10),
        manual_value_ticks_r = seq(-2,6, by=1),
        plot_title = "Schweizer Warenexporte und ihr Umfeld",
-       plot_subtitle = "(annualisierte Veränderung gegenüber Vorquartal, in %)")
+       plot_subtitle = "(annualisierte Veränderung gegenüber Vorquartal, in %)",
+       output_format = "pdf",
+       filename = "WarenexporteundUmfeld")
 tt$legend_col <- 2
 
 
