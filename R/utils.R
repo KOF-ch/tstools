@@ -112,14 +112,11 @@ findGapSize <- function(r,tick_count){
 findTicks <- function(r, tick_count, preferred_gap_sizes, round_ticks = FALSE, preserve_sign = FALSE){
   # potential tick count needs to sorted otherwise, 
   # automatic selection of
+  gap_count <- tick_count-1
   gaps <- findGapSize(r=r,sort(tick_count))
   lb <- (r[1] %/% gaps) * gaps
   
-  ub <- lb + (tick_count * gaps)  
-  
-  if(length(tick_count) == 1) {
-    ub <- lb + (tick_count*gaps)
-  }
+  ub <- lb + (gap_count * gaps)  
   
   # nudge the generated range around a bit to ensure the series are more or less "centered"
   # i.e. there are no empty ticks
