@@ -98,7 +98,7 @@
 #' @author Matthias Bannert
 #' @export
 init_tsplot_theme <- function(
-  margins = c(NA, 10, 17, 5),
+  margins = c(NA, 7, 12, 7),
   auto_bottom_margin = FALSE,
   default_bottom_margin = 15,
   fillYearWithNAs = TRUE,
@@ -205,7 +205,7 @@ scale_theme_param_for_print <- function(value, dims) {
 #' @export
 init_tsplot_print_theme <- function(
   output_wide = FALSE,
-  margins = c(NA, 10/`if`(output_wide, 1+1/3, 1), 10, 5/`if`(output_wide, 1+1/3, 1)),
+  margins = c(NA, 10/`if`(output_wide, 1+1/3, 1), 10, 7/`if`(output_wide, 1+1/3, 1)),
   lwd = scale_theme_param_for_print(c(2,3,1,4,2,4),  `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   sum_line_lwd = scale_theme_param_for_print(3, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   lwd_box = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
