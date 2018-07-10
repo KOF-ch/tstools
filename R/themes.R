@@ -13,7 +13,8 @@
 #' @param margins integer vector defaults to c(NA, 4, 3, 3) + 0.1. Set margins[1] to NA to automatically determine the bottom margin such that the legend fits (if either auto_legend or auto_bottom_margin are TRUE)
 #' @param auto_bottom_margin logical Should the bottom margin be automatically calculated? This will be overridden if margins[1] is not NA. Default FALSE 
 #' @param default_bottom_margin numeric The bottom margin to use when margins[1] is NA but neither auto_legend nor auto_bottom_margin are true. Default 3
-#' @param fillYearWithNAs logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,
+#' @param fill_year_with_nas logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,
+#' @param fill_up_start logical shoule the start of the year also be filled? Has no effect if fill_year_with_nas == FALSE. Default FALSE
 #' @param line_colors character vector of hex colors for 6 lines. 
 #' @param line_to_middle logical try to put a line into the middle of the plot. defaults to TRUE.
 #' @param lwd integer vector line width, defaults to c(2,3,1,4,2,4).
@@ -28,6 +29,7 @@
 #' @param bar_border character hex colors for the border around bars in bar charts. 
 #' @param total_bar_margin_pct numeric defintion as in base plot, defaults to "i", defaults to .2,
 #' @param bar_fill_color character vector of hex colors for 6 time series. 
+#' @param bar_border_lwd numeric The line width of the borders of bars in barplots. Default 1
 #' @param sum_as_line logical should the sum of stacked time series be displayed as a line on top of stacked bar charts. 
 #' defaults to FALSE,
 #' @param sum_legend character Label for the sum line, defaults to "sum". Set to NULL to not label the line at all.
@@ -44,7 +46,6 @@
 #' @param y_las integer, same as base \code{\link{plot}} parameter defaults to 2.
 #' @param yearly_ticks logical, should yearly ticks be shown. Defaults to TRUE.
 #' @param quarterly_ticks logical, should quarterly ticks be shown. Defaults to TRUE.
-#' @param monthly_ticks logical, should monthly ticks be shown. Defaults to FALSE.
 #' @param lwd_yearly_ticks numeric, width of yearly ticks, defaults to 1.5.
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
 #' @param tcl_yearly_ticks numeric, length of yearly ticks. Analogous to \code{cex} for \code{\link{axis}}. defaults to -0.75.
@@ -101,7 +102,8 @@ init_tsplot_theme <- function(
   margins = c(NA, 7, 12, 7),
   auto_bottom_margin = FALSE,
   default_bottom_margin = 15,
-  fillYearWithNAs = TRUE,
+  fill_year_with_nas = TRUE,
+  fill_up_start = FALSE,
   line_colors = c("ETH_8_100" = "#a9af66",
                          "ETH_4_100" = "#72791c",
                          "ETH_8_20" = "#cce5eb",
@@ -128,6 +130,7 @@ init_tsplot_theme <- function(
                             ETH5 = "#91056a",
                             ETH5_60 = "#cc67a7",
                             ETH5_30 = "#e6b3d3"),
+  bar_border_lwd = 1,
   sum_as_line = FALSE,
   sum_legend = "sum",
   sum_line_lty = 1,
@@ -149,7 +152,6 @@ init_tsplot_theme <- function(
   y_las = 2 ,
   yearly_ticks = TRUE,
   quarterly_ticks = TRUE,
-  monthly_ticks = FALSE,
   lwd_x_axis = 1.5,
   lwd_yearly_ticks = 1.5,
   lwd_quarterly_ticks = 1,

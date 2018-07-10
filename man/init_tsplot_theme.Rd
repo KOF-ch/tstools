@@ -14,20 +14,18 @@ init_tsplot_theme(margins = c(NA, 10, 10, 5), auto_bottom_margin = FALSE,
   xaxs = "i", yaxs = "i", bar_border = "#000000",
   total_bar_margin_pct = 0.2, bar_fill_color = c(ETH8 = "#007A92", ETH8_60 =
   "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60
-  = "#cc67a7", ETH5_30 = "#e6b3d3"), sum_as_line = FALSE,
-  sum_legend = "sum", sum_line_lty = 1, sum_line_lwd = 3,
-  sum_line_color = c(ETH_8_100 = "#007a92", ETH_4_100 = "#72791c", ETH_8_20 =
-  "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2", ETH_5_100 = "#91056a",
-  ETH_4_60 = "#a9af66"), highlight_window = FALSE,
+  = "#cc67a7", ETH5_30 = "#e6b3d3"), bar_border_lwd = 1,
+  sum_as_line = FALSE, sum_legend = "sum", sum_line_lty = 1,
+  sum_line_lwd = 3, sum_line_color = c(ETH_8_100 = "#007a92", ETH_4_100 =
+  "#72791c", ETH_8_20 = "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2",
+  ETH_5_100 = "#91056a", ETH_4_60 = "#a9af66"), highlight_window = FALSE,
   highlight_window_freq = 4, highlight_window_start = NA,
   highlight_window_end = NA, highlight_color = "#e9e9e9", use_box = FALSE,
-  lwd_box = 1.5, y_las = 2, yearly_ticks = TRUE, quarterly_ticks = TRUE,
-  monthly_ticks = FALSE, lwd_x_axis = 1.5, lwd_yearly_ticks = 1.5,
-  lwd_quarterly_ticks = 1, tcl_yearly_ticks = -0.75,
-  tcl_quarterly_ticks = -0.4, lwd_y_axis = 1.5, lwd_y_ticks = 1.5,
-  tcl_y_ticks = -0.75, label_pos = "mid", show_left_y_axis = TRUE,
-  show_right_y_axis = TRUE, y_grid_count = c(5, 6, 8, 10),
-  show_y_grids = TRUE, y_grid_color = "#CCCCCC",
+  y_las = 2, yearly_ticks = TRUE, quarterly_ticks = TRUE,
+  lwd_yearly_ticks = 1.5, lwd_quarterly_ticks = 1,
+  tcl_yearly_ticks = -0.75, tcl_quarterly_ticks = -0.4, label_pos = "mid",
+  show_left_y_axis = TRUE, show_right_y_axis = TRUE, y_grid_count = c(5,
+  6, 8, 10), show_y_grids = TRUE, y_grid_color = "#CCCCCC",
   y_grid_count_strict = FALSE, y_tick_margin = 0.15,
   y_tick_force_integers = FALSE, x_tick_dt = 1,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
@@ -77,6 +75,8 @@ init_tsplot_theme(margins = c(NA, 10, 10, 5), auto_bottom_margin = FALSE,
 
 \item{bar_fill_color}{character vector of hex colors for 6 time series.}
 
+\item{bar_border_lwd}{numeric The line width of the borders of bars in barplots. Default 1}
+
 \item{sum_as_line}{logical should the sum of stacked time series be displayed as a line on top of stacked bar charts. 
 defaults to FALSE,}
 
@@ -106,8 +106,6 @@ to FALSE.}
 \item{yearly_ticks}{logical, should yearly ticks be shown. Defaults to TRUE.}
 
 \item{quarterly_ticks}{logical, should quarterly ticks be shown. Defaults to TRUE.}
-
-\item{monthly_ticks}{logical, should monthly ticks be shown. Defaults to FALSE.}
 
 \item{lwd_yearly_ticks}{numeric, width of yearly ticks, defaults to 1.5.}
 
