@@ -29,6 +29,7 @@
 #' @param bar_border character hex colors for the border around bars in bar charts. 
 #' @param total_bar_margin_pct numeric defintion as in base plot, defaults to "i", defaults to .2,
 #' @param bar_fill_color character vector of hex colors for 6 time series. 
+#' @param bar_border_lwd numeric The line width of the borders of bars in barplots. Default 1
 #' @param sum_as_line logical should the sum of stacked time series be displayed as a line on top of stacked bar charts. 
 #' defaults to FALSE,
 #' @param sum_legend character Label for the sum line, defaults to "sum". Set to NULL to not label the line at all.
@@ -126,6 +127,7 @@ init_tsplot_theme <- function(
                             ETH5 = "#91056a",
                             ETH5_60 = "#cc67a7",
                             ETH5_30 = "#e6b3d3"),
+  bar_border_lwd = 1,
   sum_as_line = FALSE,
   sum_legend = "sum",
   sum_line_lty = 1,
