@@ -357,7 +357,13 @@ tsplot.list <- function(...,
   if(is.na(margins[1])) {
     if(theme$auto_bottom_margin || auto_legend) {
       
-      n_legends <- max(length(tsl) + (left_as_bar && theme$sum_as_line), length(tsr))
+      n_ci_l <- `if`(any(names(tsl) %in% names(ci)), sum(sapply(ci[names(tsl)], length)), 0)
+      n_ci_r <- `if`(any(names(tsr) %in% names(ci)), sum(sapply(ci[names(tsr)], length)), 0)
+      
+      n_legends <- max(
+        length(tsl) + n_ci_l + (left_as_bar && theme$sum_as_line), 
+        length(tsr) + n_ci_r
+      )
       n_legend_lines <- ceiling(n_legends/theme$legend_col)
       
       # strheight only really considers the number of newlines in the text to be measured
