@@ -15,6 +15,8 @@ add_legend <- function(tsln,
   
   # Calculate how far below the top edge of the plot to place the legend
   plt <- par("plt")
+  
+  # theme$legend_margin_top is specified in % of device height so we need to scale it to % of plot height here
   inset_y <- 1 + theme$legend_margin_top/(100*(plt[4] - plt[3]))
 
   # Make vectors that "wrap around"
