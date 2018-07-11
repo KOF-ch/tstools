@@ -349,18 +349,28 @@ tsplot.list <- function(...,
   if(is.na(margins[1])) {
     if(theme$auto_bottom_margin || auto_legend) {
       
-      n_ci_l <- `if`(any(names(tsl) %in% names(ci)), sum(sapply(ci[names(tsl)], length)), 0)
-      n_ci_r <- `if`(any(names(tsr) %in% names(ci)), sum(sapply(ci[names(tsr)], length)), 0)
+      length_l <- length(tsl)
+      length_r <- length(tsr)
+      
+      names_l <- names(tsl)
+      names_r <- names(tsr)
+      
+      n_ci_l <- `if`(any(names_l %in% names(ci)), sum(sapply(ci[names_l], length)), 0)
+      n_ci_r <- `if`(any(names_r %in% names(ci)), sum(sapply(ci[names_r], length)), 0)
+      
+      n_newline_l <- max(lengths(regmatches(names_l, gregexpr("\n", names_l))))
+      n_newline_r <- `if`(is.null(tsr), 0, max(lengths(regmatches(names_r, gregexpr("\n", names_r)))))
       
       n_legends_l_r <- c(
-        length(tsl) + n_ci_l + (left_as_bar && theme$sum_as_line), 
-        length(tsr) + n_ci_r
-      ) 
+        # Add length_x*n_legend_x since the height of all legend entries is determined by the tallest one
+        length_l + n_ci_l + (left_as_bar && theme$sum_as_line) + length_l*n_newline_l, 
+        length_r + n_ci_r + length_r*n_newline_r
+      )
       
       if(theme$legend_all_left) {
         n_legends <- sum(n_legends_l_r)
       } else {
-        n_legends <- max(n_legends_l_r)  
+        n_legends <- max(n_legends_l_r)
       }
       
       n_legend_lines <- ceiling(n_legends/theme$legend_col)
@@ -374,7 +384,6 @@ tsplot.list <- function(...,
       single_line_height_in_in <- strheight("", units = "inches", cex = par("cex"))
       
       # TODO: theme$legend_intersp_y
-      # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
       
       # Add the height of a single line to account for the x ticks (more or less)
       margins[1] <- 100*(single_line_height_in_in + legend_height_in_in)/dev.size()[2] + theme$legend_margin_top + theme$legend_margin_bottom
