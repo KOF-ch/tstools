@@ -367,23 +367,26 @@ tsplot.list <- function(...,
         length_r + n_ci_r + length_r*n_newline_r
       )
       
+      bigger_legend <- 1
       if(theme$legend_all_left) {
         n_legends <- sum(n_legends_l_r)
       } else {
         n_legends <- max(n_legends_l_r)
+        bigger_legend <- which.max(n_legends_l_r)
       }
       
       n_legend_lines <- ceiling(n_legends/theme$legend_col)
+      n_legend_entries <- `if`(bigger_legend == 1, length_l, length_r)
       
       # strheight only really considers the number of newlines in the text to be measured
       legend_height_in_in <- strheight(
         paste(rep("\n", n_legend_lines - 1), collapse = ""),
         units = "inches",
-        cex = theme$legend_font_size)
+        cex = theme$legend_font_size) + 
+        # space between legends
+        (n_legend_entries - 1)*theme$legend_font_size*(theme$legend_intersp_y - 1)*par("cin")[2]
       
       single_line_height_in_in <- strheight("", units = "inches", cex = par("cex"))
-      
-      # TODO: theme$legend_intersp_y
       
       # Add the height of a single line to account for the x ticks (more or less)
       margins[1] <- 100*(single_line_height_in_in + legend_height_in_in)/dev.size()[2] + theme$legend_margin_top + theme$legend_margin_bottom
