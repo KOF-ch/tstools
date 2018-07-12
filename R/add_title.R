@@ -6,7 +6,6 @@ add_title <- function(plot_title, plot_subtitle, plot_subtitle_r, theme) {
     } 
     title(main = plot_title, adj = theme$title_adj,
           line = theme$title_line,
-          outer = theme$title_outer,
           cex.main = theme$title_cex.main)    
   }
   
@@ -21,7 +20,6 @@ add_title <- function(plot_title, plot_subtitle, plot_subtitle_r, theme) {
     }
     mtext(plot_subtitle, adj = theme$subtitle_adj,
           line = sub_line,
-          outer = theme$subtitle_outer,
           cex = theme$subtitle_cex)    
   }
   
@@ -34,7 +32,6 @@ add_title <- function(plot_title, plot_subtitle, plot_subtitle_r, theme) {
     mtext(plot_subtitle_r,
           adj = theme$subtitle_adj_r,
           line = sub_line,
-          outer = theme$subtitle_outer,
           cex = theme$subtitle_cex)    
   }
 }

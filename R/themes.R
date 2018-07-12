@@ -68,13 +68,11 @@
 #' @param legend_bar_size numeric The size of the squares denoting bar colors in the legend. Default 2
 #' @param legend_margin_top numeric Distance between bottom of plot and top of legends % of device height, defaults to 12
 #' @param legend_margin_bottom numeric Distande between bottom of legend and bottom of graphic in % of device height, default 5
-#' @param title_outer logical, currently undocumented. Defaults to TRUE. 
 #' @param title_adj numeric, same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param title_line numeric same as base \code{\link{plot}} parameter, defaults to .8.
 #' @param title_cex.main numeric, same as base \code{\link{plot}} parameter defaults to 1
 #' @param title_transform function to transform the title, defaults to NA.
 #' @param subtitle_adj numeric same as base \code{\link{plot}} parameter, defaults to 0.
-#' @param subtitle_outer numeric same as base \code{\link{plot}} parameter, defaults to TRUE
 #' @param subtitle_line numeric same as base \code{\link{plot}} parameter, defaults to -.6
 #' @param subtitle_transform function to transform the subtitle, defaults to "toupper",
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
@@ -176,13 +174,11 @@ init_tsplot_theme <- function(
   legend_square_size = 2,
   legend_margin_top = 12,
   legend_margin_bottom = 5,
-  title_outer = FALSE,
   title_adj = 0,
   title_line = 1.8,
   title_cex.main = 1,
   title_transform = NA,
   subtitle_adj = 0,
-  subtitle_outer = FALSE,
   subtitle_line = 0.5,
   subtitle_transform = "toupper",
   subtitle_adj_r = .9,
