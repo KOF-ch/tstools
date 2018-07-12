@@ -21,7 +21,7 @@ read_swissdata <- function(path, key_columns) {
   raw[, series := do.call(paste,
                           c(dataset,.SD,sep=".")),
       .SDcols = key_columns]
-  long_to_ts(raw[, .(series, date, value)])
+  long_to_ts(raw[, list(series, date, value)])
 }
 
 
