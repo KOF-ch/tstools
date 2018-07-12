@@ -4,7 +4,7 @@
 #' and return an R list. 
 #' 
 #' @param path character file path to swissdata yaml file.
-#'@importFrom yaml yaml.load
+#'@importFrom yaml yaml.load_file
 #'@export
 read_swissdata_meta <- function(path){
   dataset <- gsub("\\.yaml","",basename(path))
