@@ -459,8 +459,8 @@ tsplot.list <- function(...,
                    y_ticks = manual_value_ticks_l)  
   } else{
     left_ticks <- do.call(find_ticks_function, list(tsl_r, theme$y_grid_count, theme$preferred_y_gap_sizes, theme$y_tick_force_integers, theme$range_must_not_cross_zero))
+   
     left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
-    # return("Only works with manual value ticks...")
   }
   # time series right 
   if(!is.null(tsr)){
@@ -534,12 +534,52 @@ tsplot.list <- function(...,
     
     right_sign_ok = is.null(tsr) || (sign(right_ticks[1]) == sign(right_y$y_ticks[1]) && sign(max(right_ticks)) == sign(max(right_y$y_ticks)))
     
+    range_l <- range(left_ticks)
+    gap_size_l <- diff(left_ticks)[1]
+    
+    lb_too_low <- tsl_r[1] > range_l[1] + gap_size_l
+    ub_too_high <- tsl_r[2] < range_l[2] - gap_size_l
+
     if(is.null(manual_value_ticks_l) && (!theme$range_must_not_cross_zero || left_sign_ok)) {
-      left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
+      if(lb_too_low) {
+        
+        # To trigger this:
+        # tsplot(generate_random_ts(1, ranges_max = 2.5, seed = 2), left_as_bar = TRUE)
+        
+        # Move the range by half a tick
+        range_l <- range_l + gap_size_l / 2
+        # Add another tick outside of the range so the axis line goes all the way to the edge
+        left_ticks <- c(left_ticks, max(left_ticks) + gap_size_l)
+      }
+      
+      if(ub_too_high) {
+       
+        # To trigger this:
+        # tsplot(generate_random_ts(1, ranges_max = 2), left_as_bar = TRUE)
+        
+        range_l <- range_l - gap_size_l / 2
+        left_ticks <- c(left_ticks[1] - gap_size_l, left_ticks)
+      }
+      
+      left_y <- list(y_range = range(range_l), y_ticks = left_ticks)
     }
     
     if(is.null(manual_value_ticks_r) && !is.null(tsr) && (!theme$range_must_not_cross_zero || right_sign_ok)) {
-      right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
+      range_r <- range(right_ticks)
+      
+      gap_size_r <- diff(right_ticks)[1]
+      
+      if(lb_too_low) {
+        range_r <- range_r + gap_size_r / 2
+        right_ticks <- c(right_ticks, max(right_ticks) + gap_size_r)
+      }
+      
+      if(ub_too_high) {
+        range_r <- range_r - gap_size_r / 2
+        right_ticks <- c(right_ticks[1] - gap_size_r, right_ticks)
+      }
+      
+      right_y <- list(y_range = range_r, y_ticks = right_ticks)
     }
   }
   
@@ -629,7 +669,10 @@ tsplot.list <- function(...,
   }
   
   if(theme$show_y_grids){
-    addYGrids(left_y$y_ticks, global_x$x_range, theme = theme)
+    grid_lines <- left_y$y_ticks
+    usr <- par("usr")
+    grid_lines <- grid_lines[grid_lines > usr[3] & grid_lines <= usr[4]]
+    addYGrids(grid_lines, global_x$x_range, theme = theme)
   }
   # Split theme into left/right
   tt_r <- theme
