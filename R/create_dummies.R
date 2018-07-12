@@ -33,6 +33,6 @@ create_dummy_ts <- function(end_basic,
   } 
   dummy <- ts(dummy_value,dummy_start,
               dummy_end,frequency = frequency)
-  resolveOverlap(basic,dummy)
+  resolve_ts_overlap(basic,dummy)
   
 }
