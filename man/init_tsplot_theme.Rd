@@ -2,6 +2,7 @@
 % Please edit documentation in R/themes.R
 \name{init_tsplot_theme}
 \alias{init_tsplot_theme}
+\alias{init_tsplot_print_theme}
 \title{Initiate Default Theme}
 \usage{
 init_tsplot_theme(margins = c(NA, 7, 12, 7), auto_bottom_margin = FALSE,
@@ -30,15 +31,37 @@ init_tsplot_theme(margins = c(NA, 7, 12, 7), auto_bottom_margin = FALSE,
   y_grid_count_strict = FALSE, y_tick_margin = 0.15,
   y_tick_force_integers = FALSE, x_tick_dt = 1,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
-  y_range_min_size = NULL, legend_col = 1, legend_square_size = 2,
-  legend_margin_top = 12, legend_margin_bottom = 5, title_outer = FALSE,
-  title_adj = 0, title_line = 1.8, title_cex.main = 1,
-  title_transform = NA, subtitle_adj = 0, subtitle_outer = FALSE,
-  subtitle_line = 0.5, subtitle_transform = "toupper",
-  subtitle_adj_r = 0.9, subtitle_cex = 1, legend_intersp_x = 1,
-  legend_intersp_y = 1, legend_font_size = 1, legend_seg.len = 2,
-  range_must_not_cross_zero = TRUE, jpeg_quality = 75, resolution = 72,
+  y_range_min_size = NULL, legend_col = 1, legend_box_size = 2,
+  legend_margin_top = 12, legend_margin_bottom = 5,
+  legend_all_left = FALSE, title_outer = FALSE, title_adj = 0,
+  title_line = 1.8, title_cex.main = 1, title_transform = NA,
+  subtitle_adj = 0, subtitle_outer = FALSE, subtitle_line = 0.5,
+  subtitle_transform = "toupper", subtitle_adj_r = 0.9, subtitle_cex = 1,
+  legend_intersp_x = 1, legend_intersp_y = 1, legend_font_size = 1,
+  legend_seg.len = 2, range_must_not_cross_zero = TRUE,
   output_wide = FALSE, pointsize = 12)
+
+init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
+  (output_wide) 1 + 1/3 else 1, 10, 7/if (output_wide) 1 + 1/3 else 1),
+  lwd = scale_theme_param_for_print(c(2, 3, 1, 4, 2, 4), if (output_wide) c(10
+  + 2/3, 6) else c(8, 6)), sum_line_lwd = scale_theme_param_for_print(3, if
+  (output_wide) c(10 + 2/3, 6) else c(8, 6)),
+  lwd_box = scale_theme_param_for_print(1.5, if (output_wide) c(10 + 2/3, 6)
+  else c(8, 6)), lwd_x_axis = scale_theme_param_for_print(1.5, if
+  (output_wide) c(10 + 2/3, 6) else c(8, 6)),
+  lwd_yearly_ticks = scale_theme_param_for_print(1.5, if (output_wide) c(10 +
+  2/3, 6) else c(8, 6)), lwd_quarterly_ticks = scale_theme_param_for_print(1,
+  if (output_wide) c(10 + 2/3, 6) else c(8, 6)),
+  lwd_y_axis = scale_theme_param_for_print(1.5, if (output_wide) c(10 + 2/3,
+  6) else c(8, 6)), lwd_y_ticks = scale_theme_param_for_print(1.5, if
+  (output_wide) c(10 + 2/3, 6) else c(8, 6)),
+  legend_intersp_y = scale_theme_param_for_print(1, if (output_wide) c(10 +
+  2/3, 6) else c(8, 6)), legend_box_size = scale_theme_param_for_print(2, if
+  (output_wide) c(10 + 2/3, 6) else c(8, 6)), legend_margin_top = 6,
+  legend_margin_bottom = 3, legend_seg.len = scale_theme_param_for_print(2,
+  if (output_wide) c(10 + 2/3, 6) else c(8, 6)),
+  pointsize = scale_theme_param_for_print(12, if (output_wide) c(10 + 2/3, 6)
+  else c(8, 6)), ...)
 }
 \arguments{
 \item{margins}{integer vector defaults to c(NA, 4, 3, 3) + 0.1. Set margins[1] to NA to automatically determine the bottom margin such that the legend fits (if either auto_legend or auto_bottom_margin are TRUE)}
@@ -105,11 +128,15 @@ to FALSE.}
 
 \item{use_box}{logical use a box around the plot.}
 
+\item{lwd_box}{numeric Line width of the box around the plot. Default 1.5}
+
 \item{y_las}{integer, same as base \code{\link{plot}} parameter defaults to 2.}
 
 \item{yearly_ticks}{logical, should yearly ticks be shown. Defaults to TRUE.}
 
 \item{quarterly_ticks}{logical, should quarterly ticks be shown. Defaults to TRUE.}
+
+\item{lwd_x_axis}{numeric The line width of the x axis. Default 1.5}
 
 \item{lwd_yearly_ticks}{numeric, width of yearly ticks, defaults to 1.5.}
 
@@ -118,6 +145,12 @@ to FALSE.}
 \item{tcl_yearly_ticks}{numeric, length of yearly ticks. Analogous to \code{cex} for \code{\link{axis}}. defaults to -0.75.}
 
 \item{tcl_quarterly_ticks}{numeric, length of quarterly ticks. See tcl_yearly_ticks, defaults to -0.4}
+
+\item{lwd_y_axis}{numeric The line width of the y axis. Default 1.5}
+
+\item{lwd_y_ticks}{numeric Line width of the y ticks. Default 1.5}
+
+\item{tcl_y_ticks}{numeric Length of y ticks, see \code{tcl_yearly_ticks}. Default -0.75}
 
 \item{label_pos}{character, denotes where the x-axis label is at. defaults to "mid", alternative value: "start".}
 
@@ -147,9 +180,13 @@ start of the plotted time series. Defaults to 1}
 
 \item{legend_col}{integer number of columns for the legend, defaults to 3.}
 
-\item{legend_margin_top}{numeric Distance between bottom of plot and top of legends % of device height, defaults to 12}
+\item{legend_box_size}{numeric The size of the squares denoting bar colors in the legend. Default 2}
 
-\item{legend_margin_bottom}{numeric Distande between bottom of legend and bottom of graphic in % of device height, default 5}
+\item{legend_margin_top}{numeric Distance between bottom of plot and top of legends \% of device height, defaults to 12}
+
+\item{legend_margin_bottom}{numeric Distance between bottom of legend and bottom of graphic in \% of device height, default 5}
+
+\item{legend_all_left}{logical Should all legend entries be drawn on the left side of the plot? Default FALSE}
 
 \item{title_outer}{logical, currently undocumented. Defaults to TRUE.}
 
@@ -163,7 +200,7 @@ start of the plotted time series. Defaults to 1}
 
 \item{subtitle_adj}{numeric same as base \code{\link{plot}} parameter, defaults to 0.}
 
-\item{subtitle_outer}{numeric same as base \code{\link{plot}} parameter, defaults to TRUE}
+\item{subtitle_outer}{logical same as base \code{\link{plot}} parameter, defaults to TRUE}
 
 \item{subtitle_line}{numeric same as base \code{\link{plot}} parameter, defaults to -.6}
 
@@ -179,15 +216,22 @@ start of the plotted time series. Defaults to 1}
 
 \item{legend_font_size}{numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1}
 
+\item{legend_seg.len}{numeric Length of the line segments in the legend. Default 2}
+
 \item{range_must_not_cross_zero}{logical automatic range finders are forced to do not find ranges below zero. Defaults to TRUE.}
+
+\item{output_wide}{logical Should the output file be in a wide format (16:9) or (4:3)? Only if output_format is not "plot". Default FALSE}
 
 \item{pointsize}{Numeric Point size of text, in 1/72 of an inch}
 
-\item{legend_bar_size}{numeric The size of the squares denoting bar colors in the legend. Default 2}
+\item{...}{All the other arguments to \code{init_tsplot_thene}}
 }
 \description{
 The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
 Hence the init_tsplot_theme function create a fresh list object containing default values for lot of different layout parameters etc. By replacing single elements of the list and passing the entire list to the plot function, single aspects can be tweaked while keeping most defaults. Init defaultTheme does not need any parameters.
+
+This function provides sensible defaults for margins, font size, line width etc. scaled to
+the dimensions of the output file.
 }
 \details{
 Themes are essentially list that contain \code{\link{par}} parameters. Below all items are listed, some of them with comments.

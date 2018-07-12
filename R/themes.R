@@ -43,13 +43,18 @@
 #' @param highlight_window_end integer vector highlight window start position, defaults to NA.,
 #' @param highlight_color character hex color code of highlight background, defaults to "#e9e9e9".
 #' @param use_box logical use a box around the plot.
+#' @param lwd_box numeric Line width of the box around the plot. Default 1.5
 #' @param y_las integer, same as base \code{\link{plot}} parameter defaults to 2.
 #' @param yearly_ticks logical, should yearly ticks be shown. Defaults to TRUE.
 #' @param quarterly_ticks logical, should quarterly ticks be shown. Defaults to TRUE.
 #' @param lwd_yearly_ticks numeric, width of yearly ticks, defaults to 1.5.
 #' @param lwd_quarterly_ticks numeric, width of yearly ticks, defaults to 1.
 #' @param tcl_yearly_ticks numeric, length of yearly ticks. Analogous to \code{cex} for \code{\link{axis}}. defaults to -0.75.
+#' @param lwd_y_ticks numeric Line width of the y ticks. Default 1.5
+#' @param tcl_y_ticks numeric Length of y ticks, see \code{tcl_yearly_ticks}. Default -0.75
 #' @param tcl_quarterly_ticks numeric, length of quarterly ticks. See tcl_yearly_ticks, defaults to -0.4
+#' @param lwd_y_axis numeric The line width of the y axis. Default 1.5
+#' @param lwd_x_axis numeric The line width of the x axis. Default 1.5
 #' @param label_pos character, denotes where the x-axis label is at. defaults to "mid", alternative value: "start".
 #' @param show_left_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param show_right_y_axis logical: should left y axis be shown, defaults to TRUE.
@@ -65,16 +70,17 @@
 #' @param preferred_y_gap_sizes numeric c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
 #' @param y_range_min_size = NULL  ,
 #' @param legend_col integer number of columns for the legend, defaults to 3.
-#' @param legend_bar_size numeric The size of the squares denoting bar colors in the legend. Default 2
-#' @param legend_margin_top numeric Distance between bottom of plot and top of legends % of device height, defaults to 12
-#' @param legend_margin_bottom numeric Distande between bottom of legend and bottom of graphic in % of device height, default 5
+#' @param legend_box_size numeric The size of the squares denoting bar colors in the legend. Default 2
+#' @param legend_margin_top numeric Distance between bottom of plot and top of legends \% of device height, defaults to 12
+#' @param legend_margin_bottom numeric Distance between bottom of legend and bottom of graphic in \% of device height, default 5
+#' @param legend_all_left logical Should all legend entries be drawn on the left side of the plot? Default FALSE
 #' @param title_outer logical, currently undocumented. Defaults to TRUE. 
 #' @param title_adj numeric, same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param title_line numeric same as base \code{\link{plot}} parameter, defaults to .8.
 #' @param title_cex.main numeric, same as base \code{\link{plot}} parameter defaults to 1
 #' @param title_transform function to transform the title, defaults to NA.
 #' @param subtitle_adj numeric same as base \code{\link{plot}} parameter, defaults to 0.
-#' @param subtitle_outer numeric same as base \code{\link{plot}} parameter, defaults to TRUE
+#' @param subtitle_outer logical same as base \code{\link{plot}} parameter, defaults to TRUE
 #' @param subtitle_line numeric same as base \code{\link{plot}} parameter, defaults to -.6
 #' @param subtitle_transform function to transform the subtitle, defaults to "toupper",
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
@@ -82,7 +88,9 @@
 #' @param legend_intersp_x numeric same as base \code{\link{legend}} parameter, defaults to 1
 #' @param legend_intersp_y numeric same as base \code{\link{legend}} parameter, defaults to 1 
 #' @param legend_font_size numeric passed on to the \code{cex} parameter of \code{\link{legend}}, defaults to 1
+#' @param legend_seg.len numeric Length of the line segments in the legend. Default 2
 #' @param range_must_not_cross_zero logical automatic range finders are forced to do not find ranges below zero. Defaults to TRUE.
+#' @param output_wide logical Should the output file be in a wide format (16:9) or (4:3)? Only if output_format is not "plot". Default FALSE
 #' @param pointsize Numeric Point size of text, in 1/72 of an inch
 #' @examples 
 #' # create a list
@@ -173,7 +181,7 @@ init_tsplot_theme <- function(
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL,
   legend_col = 1,
-  legend_square_size = 2,
+  legend_box_size = 2,
   legend_margin_top = 12,
   legend_margin_bottom = 5,
   legend_all_left = FALSE,
@@ -193,8 +201,6 @@ init_tsplot_theme <- function(
   legend_font_size = 1,
   legend_seg.len = 2,
   range_must_not_cross_zero = TRUE,
-  jpeg_quality = 75,
-  resolution = 72,
   output_wide = FALSE,
   pointsize = 12){
   as.list(environment())[names(formals())]
@@ -205,6 +211,15 @@ scale_theme_param_for_print <- function(value, dims) {
   (dims[2]/constant)*value
 }
 
+#' Initialize a tsplot theme with parameters scaled to device size
+#' 
+#' This function provides sensible defaults for margins, font size, line width etc. scaled to
+#' the dimensions of the output file.
+#' 
+#' @param ... All the other arguments to \code{init_tsplot_thene}
+#' 
+#' @rdname init_tsplot_theme
+#' 
 #' @export
 init_tsplot_print_theme <- function(
   output_wide = FALSE,
@@ -218,7 +233,7 @@ init_tsplot_print_theme <- function(
   lwd_y_axis = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   lwd_y_ticks = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   legend_intersp_y = scale_theme_param_for_print(1, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
-  legend_square_size = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
+  legend_box_size = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   legend_margin_top = 6,
   legend_margin_bottom = 3,
   legend_seg.len = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
@@ -235,7 +250,7 @@ init_tsplot_print_theme <- function(
                     lwd_y_axis = lwd_y_axis,
                     lwd_y_ticks = lwd_y_ticks,
                     legend_intersp_y = legend_intersp_y,
-                    legend_square_size = legend_square_size,
+                    legend_box_size = legend_box_size,
                     legend_margin_top = legend_margin_top,
                     legend_margin_bottom = legend_margin_bottom,
                     legend_seg.len = legend_seg.len,

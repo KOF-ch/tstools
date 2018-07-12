@@ -12,7 +12,6 @@
 #' @param plot_subtitle character subtitle to be added to the plot 
 #' @param plot_subtitle_r character second subtitle to be added at the top right
 #' @param find_ticks_function function to compute ticks.
-#' @param fill_up_start logical should the start year be filled up? 
 #' @param overall_xlim integer overall x-axis limits, defaults to NULL. 
 #' @param overall_ylim integer overall y-axis limits, defaults to NULL.
 #' @param manual_date_ticks character vector of manual date ticks.
@@ -22,6 +21,9 @@
 #' @param theme list of default plot output parameters. Defaults to NULL, which leads to \code{\link{init_tsplot_theme}} being called. Please see the vignette for details about tweaking themes.
 #' @param quiet logical suppress output, defaults to TRUE.
 #' @param auto_legend logical should legends be printed automatically, defaults to TRUE.
+#' @param output_format character Should the plot be drawn on screen or written to a file? Possible values are "plot" for screen output and "pdf". Default "plot"
+#' @param filename character Path to the file to be written if \code{output_format} is "pdf". Default "tsplot.pdf"
+#' @param close_graphics_device logical Should the graphics device of the output file be closed after \code{tsplot}? Set this to FALSE to be able to make modifications to the plot after \code{tsplot} finishes. Default TRUE
 #'
 #' @details 
 #' The ci parameter is a 3-level list of the form
@@ -39,6 +41,7 @@
 #' See \code{vignette("tstools")} for details.
 #'
 #' @importFrom graphics rect axis box title mtext strheight
+#' @importFrom grDevices dev.off pdf
 #'
 #' @export
 tsplot <- function(...,
