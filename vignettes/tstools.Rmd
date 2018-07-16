@@ -1,12 +1,12 @@
 ---
 title: "tstools"
-subtitle: "A time series toolbox for official statistics"
+subtitle: "A Time Series Toolbox for Official Statistics"
 author: "Matthias Bannert"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  \VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
+  \VignetteIndexEntry{A Time Series Toolbox for Official Statistics}
+  \VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
