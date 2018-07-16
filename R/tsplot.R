@@ -685,7 +685,7 @@ tsplot.list <- function(...,
          yaxs = theme$yaxs
     )
     
-    ci_left <- ci[names(tsl)]
+    ci_left <- ci[names(ci) %in% names(tsl)]
     draw_ts_ci(ci_left, theme)
   }
   
@@ -701,7 +701,7 @@ tsplot.list <- function(...,
          xaxs = theme$xaxs
     )
     
-    ci_right <- ci[names(tsr)]
+    ci_right <- ci[names(ci) %in% names(tsr)]
     draw_ts_ci(ci_right, tt_r)
   }
   
