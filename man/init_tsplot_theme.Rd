@@ -31,14 +31,14 @@ init_tsplot_theme(margins = c(NA, 7, 12, 7), auto_bottom_margin = FALSE,
   y_tick_force_integers = FALSE, x_tick_dt = 1,
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   y_range_min_size = NULL, legend_col = 1, legend_square_size = 2,
-  legend_margin_top = 12, legend_margin_bottom = 5, title_outer = FALSE,
-  title_adj = 0, title_line = 1.8, title_cex.main = 1,
-  title_transform = NA, subtitle_adj = 0, subtitle_outer = FALSE,
-  subtitle_line = 0.5, subtitle_transform = "toupper",
-  subtitle_adj_r = 0.9, subtitle_cex = 1, legend_intersp_x = 1,
-  legend_intersp_y = 1, legend_font_size = 1, legend_seg.len = 2,
-  range_must_not_cross_zero = TRUE, jpeg_quality = 75, resolution = 72,
-  output_wide = FALSE, pointsize = 12)
+  legend_margin_top = 12, legend_margin_bottom = 5,
+  legend_all_left = FALSE, title_outer = FALSE, title_adj = 0,
+  title_line = 8, title_cex.main = 1, title_transform = NA,
+  subtitle_adj = 0, subtitle_outer = FALSE, subtitle_line = 2,
+  subtitle_transform = "toupper", subtitle_adj_r = 0.9, subtitle_cex = 1,
+  legend_intersp_x = 1, legend_intersp_y = 1, legend_font_size = 1,
+  legend_seg.len = 2, range_must_not_cross_zero = TRUE, jpeg_quality = 75,
+  resolution = 72, output_wide = FALSE, pointsize = 12)
 }
 \arguments{
 \item{margins}{integer vector defaults to c(NA, 4, 3, 3) + 0.1. Set margins[1] to NA to automatically determine the bottom margin such that the legend fits (if either auto_legend or auto_bottom_margin are TRUE)}
@@ -155,8 +155,6 @@ start of the plotted time series. Defaults to 1}
 
 \item{title_adj}{numeric, same as base \code{\link{plot}} parameter, defaults to 0.}
 
-\item{title_line}{numeric same as base \code{\link{plot}} parameter, defaults to .8.}
-
 \item{title_cex.main}{numeric, same as base \code{\link{plot}} parameter defaults to 1}
 
 \item{title_transform}{function to transform the title, defaults to NA.}
@@ -164,8 +162,6 @@ start of the plotted time series. Defaults to 1}
 \item{subtitle_adj}{numeric same as base \code{\link{plot}} parameter, defaults to 0.}
 
 \item{subtitle_outer}{numeric same as base \code{\link{plot}} parameter, defaults to TRUE}
-
-\item{subtitle_line}{numeric same as base \code{\link{plot}} parameter, defaults to -.6}
 
 \item{subtitle_transform}{function to transform the subtitle, defaults to "toupper",}
 
@@ -184,6 +180,10 @@ start of the plotted time series. Defaults to 1}
 \item{pointsize}{Numeric Point size of text, in 1/72 of an inch}
 
 \item{legend_bar_size}{numeric The size of the squares denoting bar colors in the legend. Default 2}
+
+\item{title_margin}{numeric How far above the plot the title is placed in % of the device height. Default 8}
+
+\item{subtitle_margin}{numeric How far above the plot the subtitles are placed in % of the device height. Default 2}
 }
 \description{
 The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
