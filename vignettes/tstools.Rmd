@@ -5,9 +5,9 @@ author: "Matthias Bannert"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  \VignetteIndexEntry{A Time Series Toolbox for Official Statistics}
-  \VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+  %\VignetteIndexEntry{A Time Series Toolbox for Official Statistics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
 ---
 
 # About tstools

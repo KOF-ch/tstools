@@ -28,12 +28,12 @@ init_tsplot_theme(auto_bottom_margin = FALSE, bar_border = "#000000",
   quarterly_ticks = TRUE, range_must_not_cross_zero = TRUE,
   show_left_y_axis = TRUE, show_points = FALSE, show_right_y_axis = TRUE,
   show_y_grids = TRUE, subtitle_adj = 0, subtitle_adj_r = 0.9,
-  subtitle_cex = 1, subtitle_line = 0.5, subtitle_outer = FALSE,
+  subtitle_cex = 1, subtitle_margin = 2, subtitle_outer = FALSE,
   subtitle_transform = "toupper", sum_as_line = FALSE, sum_legend = "sum",
   sum_line_color = c(ETH_8_100 = "#007a92"), sum_line_lty = 1,
   sum_line_lwd = 3, tcl_quarterly_ticks = -0.4, tcl_y_ticks = -0.75,
   tcl_yearly_ticks = -0.75, title_adj = 0, title_cex.main = 1,
-  title_line = 1.8, title_outer = FALSE, title_transform = NA,
+  title_margin = 8, title_outer = FALSE, title_transform = NA,
   total_bar_margin_pct = 0.2, use_box = FALSE, x_tick_dt = 1,
   xaxs = "i", y_grid_color = "#CCCCCC", y_grid_count = c(5, 6, 8, 10),
   y_grid_count_strict = FALSE, y_las = 2, y_range_min_size = NULL,
@@ -61,7 +61,6 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
   if (output_wide) c(10 + 2/3, 6) else c(8, 6)),
   pointsize = scale_theme_param_for_print(12, if (output_wide) c(10 + 2/3, 6)
   else c(8, 6)), ...)
-
 }
 \arguments{
 \item{auto_bottom_margin}{logical Should the bottom margin be automatically calculated? This will be overridden if margins[1] is not NA. Default FALSE}
@@ -160,9 +159,9 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 
 \item{subtitle_adj_r}{numeric same as base \code{\link{plot}} parameter, defaults to .9}
 
-\item{subtitle_cex}{numeric same as base \code{\link{plot}} parameter, defaults to 1}
+\item{subtitle_cex}{numeric same as base \code{\link{plot}} parameter, defaults to 1.}
 
-\item{subtitle_line}{numeric same as base \code{\link{plot}} parameter, defaults to -.6}
+\item{subtitle_margin}{numeric How far above the plot the title is placed in \% of the device height. Defaults to 2.}
 
 \item{subtitle_outer}{logical same as base \code{\link{plot}} parameter, defaults to TRUE}
 
@@ -188,10 +187,9 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 
 \item{title_cex.main}{numeric, same as base \code{\link{plot}} parameter defaults to 1}
 
-\item{title_line}{numeric same as base \code{\link{plot}} parameter, defaults to .8.}
+\item{title_margin}{numeric How far above the plot the title is placed in \% of the device height. Default 8}
 
 \item{title_outer}{logical, currently undocumented. Defaults to TRUE.}
-
 
 \item{title_transform}{function to transform the title, defaults to NA.}
 
@@ -199,13 +197,9 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 
 \item{use_box}{logical use a box around the plot.}
 
-
-\item{subtitle_transform}{function to transform the subtitle, defaults to "toupper",}
-
 \item{x_tick_dt}{numeric The distance between ticks on the x axis in years. The first tick will always be at the start of the plotted time series. Defaults to 1.}
 
 \item{xaxs}{character axis defintion as in base plot, defaults to "i".}
-
 
 \item{y_grid_color}{character hex color of grids. Defaults to gray "#CCCCCC".}
 
@@ -223,11 +217,9 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 
 \item{yaxs}{character axis defintion as in base plot, defaults to "i".}
 
-
 \item{yearly_ticks}{logical, should yearly ticks be shown. Defaults to TRUE.}
 
 \item{...}{All the other arguments to \code{init_tsplot_thene}}
-
 }
 \description{
 The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
