@@ -7,7 +7,7 @@
 #' @param ci list of confidence intervals for time series
 #' @param left_as_bar logical should the series that relate to the left bar be drawn as (stacked) bar charts?
 #' @param group_bar_chart logical should a bar chart be grouped instead of stacked?
-#' @param relative_bar_chart logical Should time series be normalized such that bars range from 0 to 1?
+#' @param relative_bar_chart logical Should time series be normalized such that bars range from 0 to 1? Defaults to FALSE. That way every sub bar (time series) is related to the global max. Hence do not expect every single bar to reach 1. This works for stacked and grouped charts and does not change anything but the scale of the chart. 
 #' @param plot_title character title to be added to the plot
 #' @param plot_subtitle character subtitle to be added to the plot 
 #' @param plot_subtitle_r character second subtitle to be added at the top right

@@ -25,7 +25,7 @@ tsplot(..., tsr = NULL, ci = NULL, left_as_bar = FALSE,
 
 \item{group_bar_chart}{logical should a bar chart be grouped instead of stacked?}
 
-\item{relative_bar_chart}{logical Should time series be normalized such that bars range from 0 to 1?}
+\item{relative_bar_chart}{logical Should time series be normalized such that bars range from 0 to 1? Defaults to FALSE. That way every sub bar (time series) is related to the global max. Hence do not expect every single bar to reach 1. This works for stacked and grouped charts and does not change anything but the scale of the chart.}
 
 \item{plot_title}{character title to be added to the plot}
 
