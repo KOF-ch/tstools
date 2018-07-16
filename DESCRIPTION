@@ -26,9 +26,9 @@ Date: 2018-07-16
 License: GPL-2
 LazyData: true
 Maintainer: Matthias Bannert <bannert@kof.ethz.ch>
-RoxygenNote: 6.0.1
 NeedsCompilation: no
 Packaged: 2018-04-24 11:21:04 UTC; mbannert
 Author: Matthias Bannert [aut, cre],
   Severin Thoeni [aut]
 RoxygenNote: 6.0.1
+
