@@ -19,6 +19,7 @@
 #' 
 #' @importFrom zoo index
 #' @export
+#' @importFrom zoo index
 set_month_to_NA <- function(series, keep_month = c(1,4,7,10)){
   # get the index of the keep periods
   # in order to replace the non-keep month with NA

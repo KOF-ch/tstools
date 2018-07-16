@@ -16,7 +16,7 @@
 #' xx2 <- zoo(rnorm(length(dv2)), dv2)
 #' regularize(xx2)
 #' 
-#' @importFrom zoo as.yearmon
+#' @importFrom zoo as.yearmon index
 #' @export
 regularize <- function(x){
   idx <- index(x)

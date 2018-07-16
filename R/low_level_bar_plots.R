@@ -19,12 +19,14 @@ draw_ts_bars.ts <- function(x, group_bar_chart = FALSE,
        ts_time+1/frq,
        neg_0,
        border = theme$bar_border,
+       lwd = theme$bar_border_lwd,
        col = theme$bar_fill_color[1])
   
   rect(ts_time,pos_0,
             ts_time+1/frq,
             0,
             border = theme$bar_border,
+            lwd = theme$bar_border_lwd,
             col = theme$bar_fill_color[1])
   
   
@@ -78,6 +80,7 @@ draw_ts_bars.mts <- function(x,
       rect(coords$xl, coords$yb,
            coords$xr, coords$yt,
            col = theme$bar_fill_color,
+           lwd = theme$bar_border_lwd,
            border = theme$bar_border
            )
     } else{
@@ -86,6 +89,7 @@ draw_ts_bars.mts <- function(x,
            ts_time[i]+1/frq,
            h_pos[-1,i],
            col = theme$bar_fill_color[1:NR_POS],
+           lwd = theme$bar_border_lwd,
            border = theme$bar_border
       )    
     }
@@ -103,6 +107,7 @@ draw_ts_bars.mts <- function(x,
            ts_time[i]+1/frq,
            h_neg[-1,i],
            col = theme$bar_fill_color[1:NR_POS],
+           lwd = theme$bar_border_lwd,
            border = theme$bar_border
       )  
     }
