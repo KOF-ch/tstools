@@ -10,7 +10,7 @@ add_title <- function(plot_title, plot_subtitle, plot_subtitle_r, theme) {
     # because reasons I guess.
     dev_size <- dev.size()
     title_line_height <- strheight("\n", units = "inches", cex = theme$title_cex.main) - strheight("", units = "inches", cex = theme$title_cex.main)
-    title_line <- (theme$title_line*dev_size[2])/(100*title_line_height)
+    title_line <- (theme$title_margin*dev_size[2])/(100*title_line_height)
     
     title(main = plot_title, adj = theme$title_adj,
           line = title_line,
@@ -20,7 +20,7 @@ add_title <- function(plot_title, plot_subtitle, plot_subtitle_r, theme) {
   
   # Transform subtitle line from % of device height to "lines outside the plot"
   sub_line_height <- strheight("\n", units = "inches", cex = theme$subtitle_cex) - strheight("", units = "inches", cex = theme$subtitle_cex)
-  sub_line <- (theme$subtitle_line*dev_size[2])/(100*sub_line_height)
+  sub_line <- (theme$subtitle_margin*dev_size[2])/(100*sub_line_height)
   
   # See R source src/library/graphics/src/graphics.c:3325
   # where they add a ("visually tuned") offset to the mtext line
