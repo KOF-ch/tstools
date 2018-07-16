@@ -57,8 +57,8 @@
 #' @param show_y_grids logical should y_grids by shown at all, defaults to TRUE.
 #' @param subtitle_adj numeric same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
-#' @param subtitle_cex numeric same as base \code{\link{plot}} parameter, defaults to 1
-#' @param subtitle_line numeric same as base \code{\link{plot}} parameter, defaults to -.6
+#' @param subtitle_cex numeric same as base \code{\link{plot}} parameter, defaults to 1.
+#' @param subtitle_margin numeric How far above the plot the title is placed in % of the device height. Defaults to 2.
 #' @param subtitle_outer logical same as base \code{\link{plot}} parameter, defaults to TRUE
 #' @param subtitle_transform function to transform the subtitle, defaults to "toupper",
 #' @param sum_as_line logical should the sum of stacked time series be displayed as a line on top of stacked bar charts. Defaults to FALSE,
@@ -71,7 +71,7 @@
 #' @param tcl_yearly_ticks numeric, length of yearly ticks. Analogous to \code{cex} for \code{\link{axis}}. defaults to -0.75.
 #' @param title_adj numeric, same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param title_cex.main numeric, same as base \code{\link{plot}} parameter defaults to 1
-#' @param title_line numeric same as base \code{\link{plot}} parameter, defaults to .8.
+#' @param title_margin numeric How far above the plot the title is placed in % of the device height. Default 8
 #' @param title_outer logical, currently undocumented. Defaults to TRUE. 
 #' @param title_transform function to transform the title, defaults to NA.
 #' @param total_bar_margin_pct numeric defintion as in base plot, defaults to "i", defaults to .2,
@@ -163,7 +163,7 @@ init_tsplot_theme <- function(
   subtitle_adj = 0,
   subtitle_adj_r = .9,
   subtitle_cex = 1,
-  subtitle_line = 0.5,
+  subtitle_margin = 2,
   subtitle_outer = FALSE,
   subtitle_transform = "toupper",
   sum_as_line = FALSE,
@@ -176,7 +176,7 @@ init_tsplot_theme <- function(
   tcl_yearly_ticks = -0.75,
   title_adj = 0,
   title_cex.main = 1,
-  title_line = 1.8,
+  title_line = 8,
   title_outer = FALSE,
   title_transform = NA,
   total_bar_margin_pct = .2,

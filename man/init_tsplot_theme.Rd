@@ -61,6 +61,7 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
   if (output_wide) c(10 + 2/3, 6) else c(8, 6)),
   pointsize = scale_theme_param_for_print(12, if (output_wide) c(10 + 2/3, 6)
   else c(8, 6)), ...)
+
 }
 \arguments{
 \item{auto_bottom_margin}{logical Should the bottom margin be automatically calculated? This will be overridden if margins[1] is not NA. Default FALSE}
@@ -191,15 +192,20 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 
 \item{title_outer}{logical, currently undocumented. Defaults to TRUE.}
 
+
 \item{title_transform}{function to transform the title, defaults to NA.}
 
 \item{total_bar_margin_pct}{numeric defintion as in base plot, defaults to "i", defaults to .2,}
 
 \item{use_box}{logical use a box around the plot.}
 
+
+\item{subtitle_transform}{function to transform the subtitle, defaults to "toupper",}
+
 \item{x_tick_dt}{numeric The distance between ticks on the x axis in years. The first tick will always be at the start of the plotted time series. Defaults to 1.}
 
 \item{xaxs}{character axis defintion as in base plot, defaults to "i".}
+
 
 \item{y_grid_color}{character hex color of grids. Defaults to gray "#CCCCCC".}
 
@@ -217,9 +223,11 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 
 \item{yaxs}{character axis defintion as in base plot, defaults to "i".}
 
+
 \item{yearly_ticks}{logical, should yearly ticks be shown. Defaults to TRUE.}
 
 \item{...}{All the other arguments to \code{init_tsplot_thene}}
+
 }
 \description{
 The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
