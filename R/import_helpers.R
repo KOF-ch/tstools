@@ -22,7 +22,7 @@ long_to_ts <- function(data) {
   data_dt <- as.data.table(data)
   
   # Strip series consisting only of NAs
-  empty_series <- data_dt[, .(is_empty = all(is.na(value))), by = series]
+  empty_series <- data_dt[, list(is_empty = all(is.na(value))), by = series]
   
   if(empty_series[, any(is_empty)]) {
     warning(sprintf("Some series contained only NAs and were stripped:\n%s",
@@ -55,7 +55,7 @@ long_to_ts <- function(data) {
   tslist
 }
 
-utils::globalVariables(c("date_zoo", "series", "ts_object", "value", "frq"))
+utils::globalVariables(c("date_zoo", "series", "ts_object", "value", "frq", "is_empty"))
 
 #' Transform a wide format data.frame into a tslist
 #' 

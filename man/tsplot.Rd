@@ -25,7 +25,7 @@ tsplot(..., tsr = NULL, ci = NULL, left_as_bar = FALSE,
 
 \item{group_bar_chart}{logical should a bar chart be grouped instead of stacked?}
 
-\item{relative_bar_chart}{logical Should time series be normalized such that bars range from 0 to 1?}
+\item{relative_bar_chart}{logical Should time series be normalized such that bars range from 0 to 1? Defaults to FALSE. That way every sub bar (time series) is related to the global max. Hence do not expect every single bar to reach 1. This works for stacked and grouped charts and does not change anything but the scale of the chart.}
 
 \item{plot_title}{character title to be added to the plot}
 
@@ -53,7 +53,11 @@ tsplot(..., tsr = NULL, ci = NULL, left_as_bar = FALSE,
 
 \item{auto_legend}{logical should legends be printed automatically, defaults to TRUE.}
 
-\item{fill_up_start}{logical should the start year be filled up?}
+\item{output_format}{character Should the plot be drawn on screen or written to a file? Possible values are "plot" for screen output and "pdf". Default "plot"}
+
+\item{filename}{character Path to the file to be written if \code{output_format} is "pdf". Default "tsplot.pdf"}
+
+\item{close_graphics_device}{logical Should the graphics device of the output file be closed after \code{tsplot}? Set this to FALSE to be able to make modifications to the plot after \code{tsplot} finishes. Default TRUE}
 }
 \description{
 Conveniently plot time series.

@@ -7,12 +7,11 @@
 #' @param ci list of confidence intervals for time series
 #' @param left_as_bar logical should the series that relate to the left bar be drawn as (stacked) bar charts?
 #' @param group_bar_chart logical should a bar chart be grouped instead of stacked?
-#' @param relative_bar_chart logical Should time series be normalized such that bars range from 0 to 1?
+#' @param relative_bar_chart logical Should time series be normalized such that bars range from 0 to 1? Defaults to FALSE. That way every sub bar (time series) is related to the global max. Hence do not expect every single bar to reach 1. This works for stacked and grouped charts and does not change anything but the scale of the chart. 
 #' @param plot_title character title to be added to the plot
 #' @param plot_subtitle character subtitle to be added to the plot 
 #' @param plot_subtitle_r character second subtitle to be added at the top right
 #' @param find_ticks_function function to compute ticks.
-#' @param fill_up_start logical should the start year be filled up? 
 #' @param overall_xlim integer overall x-axis limits, defaults to NULL. 
 #' @param overall_ylim integer overall y-axis limits, defaults to NULL.
 #' @param manual_date_ticks character vector of manual date ticks.
@@ -22,6 +21,9 @@
 #' @param theme list of default plot output parameters. Defaults to NULL, which leads to \code{\link{init_tsplot_theme}} being called. Please see the vignette for details about tweaking themes.
 #' @param quiet logical suppress output, defaults to TRUE.
 #' @param auto_legend logical should legends be printed automatically, defaults to TRUE.
+#' @param output_format character Should the plot be drawn on screen or written to a file? Possible values are "plot" for screen output and "pdf". Default "plot"
+#' @param filename character Path to the file to be written if \code{output_format} is "pdf". Default "tsplot.pdf"
+#' @param close_graphics_device logical Should the graphics device of the output file be closed after \code{tsplot}? Set this to FALSE to be able to make modifications to the plot after \code{tsplot} finishes. Default TRUE
 #'
 #' @details 
 #' The ci parameter is a 3-level list of the form
@@ -39,6 +41,7 @@
 #' See \code{vignette("tstools")} for details.
 #'
 #' @importFrom graphics rect axis box title mtext strheight
+#' @importFrom grDevices dev.off pdf
 #'
 #' @export
 tsplot <- function(...,
@@ -349,32 +352,44 @@ tsplot.list <- function(...,
   if(is.na(margins[1])) {
     if(theme$auto_bottom_margin || auto_legend) {
       
-      n_ci_l <- `if`(any(names(tsl) %in% names(ci)), sum(sapply(ci[names(tsl)], length)), 0)
-      n_ci_r <- `if`(any(names(tsr) %in% names(ci)), sum(sapply(ci[names(tsr)], length)), 0)
+      length_l <- length(tsl)
+      length_r <- length(tsr)
+      
+      names_l <- names(tsl)
+      names_r <- names(tsr)
+      
+      n_ci_l <- `if`(any(names_l %in% names(ci)), sum(sapply(ci[names_l], length)), 0)
+      n_ci_r <- `if`(any(names_r %in% names(ci)), sum(sapply(ci[names_r], length)), 0)
+      
+      n_newline_l <- max(lengths(regmatches(names_l, gregexpr("\n", names_l))))
+      n_newline_r <- `if`(is.null(tsr), 0, max(lengths(regmatches(names_r, gregexpr("\n", names_r)))))
       
       n_legends_l_r <- c(
-        length(tsl) + n_ci_l + (left_as_bar && theme$sum_as_line), 
-        length(tsr) + n_ci_r
-      ) 
+        # Add length_x*n_legend_x since the height of all legend entries is determined by the tallest one
+        length_l + n_ci_l + (left_as_bar && theme$sum_as_line) + length_l*n_newline_l, 
+        length_r + n_ci_r + length_r*n_newline_r
+      )
       
+      bigger_legend <- 1
       if(theme$legend_all_left) {
         n_legends <- sum(n_legends_l_r)
       } else {
-        n_legends <- max(n_legends_l_r)  
+        n_legends <- max(n_legends_l_r)
+        bigger_legend <- which.max(n_legends_l_r)
       }
       
       n_legend_lines <- ceiling(n_legends/theme$legend_col)
+      n_legend_entries <- `if`(bigger_legend == 1, length_l, length_r)
       
       # strheight only really considers the number of newlines in the text to be measured
       legend_height_in_in <- strheight(
         paste(rep("\n", n_legend_lines - 1), collapse = ""),
         units = "inches",
-        cex = theme$legend_font_size)
+        cex = theme$legend_font_size) + 
+        # space between legends
+        (n_legend_entries - 1)*theme$legend_font_size*(theme$legend_intersp_y - 1)*par("cin")[2]
       
       single_line_height_in_in <- strheight("", units = "inches", cex = par("cex"))
-      
-      # TODO: theme$legend_intersp_y
-      # Also: a single multiline legend changes the height of ALL of them (in add_legends>legend)
       
       # Add the height of a single line to account for the x ticks (more or less)
       margins[1] <- 100*(single_line_height_in_in + legend_height_in_in)/dev.size()[2] + theme$legend_margin_top + theme$legend_margin_bottom
@@ -670,7 +685,7 @@ tsplot.list <- function(...,
          yaxs = theme$yaxs
     )
     
-    ci_left <- ci[names(tsl)]
+    ci_left <- ci[names(ci) %in% names(tsl)]
     draw_ts_ci(ci_left, theme)
   }
   
@@ -686,7 +701,7 @@ tsplot.list <- function(...,
          xaxs = theme$xaxs
     )
     
-    ci_right <- ci[names(tsr)]
+    ci_right <- ci[names(ci) %in% names(tsr)]
     draw_ts_ci(ci_right, tt_r)
   }
   
