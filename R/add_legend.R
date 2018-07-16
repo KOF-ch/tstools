@@ -97,7 +97,7 @@ add_legend <- function(tsln,
     )
   }
   
-  col_r[is_ci_l] <- ci_legend_colors_r #namedColor2Hex(theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)], theme$ci_alpha)[cumsum(!is_ci_r)[is_ci_r]]
+  col_r[is_ci_r] <- ci_legend_colors_r #namedColor2Hex(theme$ci_colors[ifelse(left_as_bar, 1:lr, (ll+1):lb)], theme$ci_alpha)[cumsum(!is_ci_r)[is_ci_r]]
   lty_r <- rep(0, n_tot_r)
   lty_r[!is_ci_r] <- theme$lty[`if`(left_as_bar, 1:lr, (ll+1):lb)]
   lwd_r <- rep(0, n_tot_r)
