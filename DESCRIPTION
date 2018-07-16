@@ -15,7 +15,6 @@ Imports:
     graphics,
     jsonlite,
     data.table,
-    yaml
 Suggests:
     knitr,
     rmarkdown,
