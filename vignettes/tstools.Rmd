@@ -336,7 +336,7 @@ tsplot(tsb1,tsb2,tsb3,
 ### Adjust the highlight window
 
 ```{r,fig.width = 7,fig.height=6}
-nt <- init_tsplot_theme(highlight_window <- T)
+nt <- init_tsplot_theme(highlight_window = T)
 nt$highlight_window_start <- c(2017,1)
 nt$highlight_window_end <- c(2018,1)
 tsplot(tsb1,tsb2,
