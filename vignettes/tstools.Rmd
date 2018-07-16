@@ -190,12 +190,10 @@ basis. The following draws a line on top of the bars that represents the sum.
 
 ```{r,fig.width = 7,fig.height=6}
 tsl <- list(tsb1,tsb2,tsb3)
-tt <- init_tsplot_theme()
-tt$sum_as_line <- T
 tsplot(tsl,left_as_bar = T,
        manual_value_ticks_l = seq(-40,100, by = 20),
        auto_legend = F,
-       theme = tt)
+       theme = init_tsplot_theme(sum_as_line = T))
 ```
 
 ## Stacked bar charts with different start and end dates
