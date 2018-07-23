@@ -761,7 +761,18 @@ tsplot.list <- function(...,
   # add legend
   if(auto_legend){
     ci_names <- lapply(names(ci), function(x) {
-      paste0(names(ci[[x]]), "% ci for ", x)
+      y <- gsub("%series%", x, theme$ci_legend_label)
+      if(grepl("%ci_value%", y)) {
+        parts <- strsplit(y, "%ci_value%")[[1]]
+        # in case %ci_value% is at the very end (see ?split)
+        if(length(parts) == 1) {
+          parts <- c(parts, "")
+        }
+        y <- paste0(parts[1], names(ci[[x]]), parts[2])
+      } else {
+        y <- rep(y, length(ci[[x]]))
+      }
+      y
     })
     names(ci_names) <- names(ci)
     
