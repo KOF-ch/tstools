@@ -6,6 +6,8 @@
 #' @param path character full path to dataset.
 #' @param key_columns character vector specifying all columns that should be
 #' part of the key. 
+#' @param filter function A function that is applied to the raw data.data table after it is read. Useful for
+#' filtering out undesired data.
 #' @details 
 #' The order of dimensions in key_columns determines their order in the key
 #' The resulting ts_key will be of the form <swissdata-set-name>.<instance of key_columns[1]>...
@@ -15,12 +17,15 @@
 #' tsplot(tslist[1])
 #' @importFrom data.table fread
 #' @export
-read_swissdata <- function(path, key_columns) {
+read_swissdata <- function(path, key_columns, filter = NULL) {
   dataset <- gsub("\\.csv","",basename(path))
   raw <- fread(path)
   raw[, series := do.call(paste,
                           c(dataset,.SD,sep=".")),
       .SDcols = key_columns]
+  if(!is.null(filter)) {
+    raw <- filter(raw)
+  }
   long_to_ts(raw[, list(series, date, value)])
 }
 
