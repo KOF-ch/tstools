@@ -15,12 +15,15 @@
 #' tsplot(tslist[1])
 #' @importFrom data.table fread
 #' @export
-read_swissdata <- function(path, key_columns) {
+read_swissdata <- function(path, key_columns, filter = NULL) {
   dataset <- gsub("\\.csv","",basename(path))
   raw <- fread(path)
   raw[, series := do.call(paste,
                           c(dataset,.SD,sep=".")),
       .SDcols = key_columns]
+  if(!is.null(filter)) {
+    raw <- filter(raw)
+  }
   long_to_ts(raw[, list(series, date, value)])
 }
 
