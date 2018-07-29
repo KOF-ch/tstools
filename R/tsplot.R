@@ -261,6 +261,18 @@ tsplot.list <- function(...,
     tsr <- list(tsr)
   }
   
+  class_l <- sapply(tsl, "class")
+  non_ts_l <- class_l != "ts"
+  if(any(non_ts_l)) {
+    warning(
+      sprintf("Ignoring non-ts objects in list: %s\nCheck if those belong in the theme!",
+              paste(names(class_l[non_ts_l]), collapse = ", ")
+      )
+    )
+    tsl <- tsl[!non_ts_l]
+  }
+  
+  
   if(any(sapply(tsl, length) == 1) || (!is.null(tsr) && any(sapply(tsr, length) == 1))) {
     stop("Time series of length 1 are not supported!")
   }
