@@ -25,6 +25,7 @@ add_legend <- function(tsln,
   theme$bar_fill_colors <- rep(theme$bar_fill_color, ceiling(ll/length(theme$bar_fill_color)))
   theme$lty <- rep(theme$lty, ceiling(lb/length(theme$lty)))
   theme$lwd <- rep(theme$lwd, ceiling(lb/length(theme$lwd)))
+  theme$point_symbol <- rep(theme$point_symbol, ceiling(lb/length(theme$point_symbol)))
   
   # Helper to insert ci legends at the correct positions
   splice_ci_names <- function(ts_names) {
@@ -85,7 +86,7 @@ add_legend <- function(tsln,
   legend_r <- splice_ci_names(tsrn)
   n_tot_r <- length(legend_r)
   is_ci_r <- !(legend_r %in% tsrn)
-  pch_r <- rep(NA, n_tot_r)
+  pch_r <- ifelse(theme$show_points, theme$point_symbol[(ll+1):lb], NA)
   pch_r[is_ci_r] <- 15
   col_r <- rep(NA, n_tot_r)
   col_r[!is_ci_r] <- theme$line_colors[`if`(left_as_bar, 1:lr, (ll+1):lb)]
