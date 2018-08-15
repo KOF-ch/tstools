@@ -443,7 +443,7 @@ tsplot.list <- function(...,
     tsl_r[2] <- max(0, tsl_r[2])
   } else {
     # Determine range of tsl plus any potential confidence bands
-    tsl_r <- range(as.numeric(unlist(c(tsl, ci[names(tsl)]))),na.rm = T)
+    tsl_r <- range(as.numeric(unlist(c(tsl, ci[names(tsl)]))), na.rm = TRUE)
   }
   
   if(!is.null(theme$y_range_min_size)) {
@@ -458,7 +458,7 @@ tsplot.list <- function(...,
   
   if(!is.null(tsr)) {
     tsr <- sanitizeTsr(tsr)
-    tsr_r <- range(unlist(c(tsr, ci[names(tsr)])))
+    tsr_r <- range(unlist(c(tsr, ci[names(tsr)])), na.rm = TRUE)
     
     if(!is.null(theme$y_range_min_size)) {
       tsr_r_size <- diff(tsr_r)
@@ -557,9 +557,20 @@ tsplot.list <- function(...,
     # Technically we could save ourselves all that correcting if manual ticks are not null.
     # This is just a convenient place to check.
     
-    left_sign_ok = sign(left_ticks[1]) == sign(left_y$y_ticks[1]) && sign(max(left_ticks)) == sign(max(left_y$y_ticks))
+    left_sign_ok = (
+      sign(left_ticks[1]) == sign(left_y$y_ticks[1]) || sign(left_ticks[1]) == 0
+    ) && (
+      sign(max(left_ticks)) == sign(max(left_y$y_ticks)) || sign(max(left_ticks)) == 0
+    )
     
-    right_sign_ok = is.null(tsr) || (sign(right_ticks[1]) == sign(right_y$y_ticks[1]) && sign(max(right_ticks)) == sign(max(right_y$y_ticks)))
+    right_sign_ok = 
+      is.null(tsr) || (
+        (
+          sign(right_ticks[1]) == sign(right_y$y_ticks[1]) || sign(right_ticks[1]) == 0
+        ) && (
+          sign(max(right_ticks)) == sign(max(right_y$y_ticks)) || sign(max(right_ticks)) == 0
+        )
+      )
     
     if(is.null(manual_value_ticks_l) && (!theme$range_must_not_cross_zero || left_sign_ok)) {
       left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
