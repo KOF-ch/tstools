@@ -443,7 +443,7 @@ tsplot.list <- function(...,
     tsl_r[2] <- max(0, tsl_r[2])
   } else {
     # Determine range of tsl plus any potential confidence bands
-    tsl_r <- range(as.numeric(unlist(c(tsl, ci[names(tsl)]))),na.rm = T)
+    tsl_r <- range(as.numeric(unlist(c(tsl, ci[names(tsl)]))), na.rm = TRUE)
   }
   
   if(!is.null(theme$y_range_min_size)) {
@@ -458,7 +458,7 @@ tsplot.list <- function(...,
   
   if(!is.null(tsr)) {
     tsr <- sanitizeTsr(tsr)
-    tsr_r <- range(unlist(c(tsr, ci[names(tsr)])))
+    tsr_r <- range(unlist(c(tsr, ci[names(tsr)])), na.rm = TRUE)
     
     if(!is.null(theme$y_range_min_size)) {
       tsr_r_size <- diff(tsr_r)
