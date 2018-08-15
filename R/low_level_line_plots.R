@@ -1,16 +1,4 @@
-draw_ts_lines <- function(x, theme = NULL,
-                        ...){
-  UseMethod("draw_ts_lines")
-} 
-
-
-draw_ts_lines.ts <- function(x, theme = NULL,
-                           ...){
-  
-}
-
-
-draw_ts_lines.list <- function(x, theme = NULL){
+draw_ts_lines <- function(x, theme = NULL){
   nts <- length(x)
   op <- rep(theme$show_points, ceiling(nts/length(theme$show_points)))
   ops <- rep(theme$point_symbol, ceiling(nts/length(theme$point_symbol)))
