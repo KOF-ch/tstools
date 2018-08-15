@@ -50,6 +50,7 @@ tsplot <- function(...,
                    left_as_bar = FALSE,                    
                    group_bar_chart = FALSE,
                    relative_bar_chart = FALSE,
+                   left_as_band = FALSE,
                    plot_title = NULL,
                    plot_subtitle = NULL,              
                    plot_subtitle_r = NULL,
@@ -76,6 +77,7 @@ tsplot.ts <- function(...,
                       left_as_bar = FALSE,                
                       group_bar_chart = FALSE,
                       relative_bar_chart = FALSE,
+                      left_as_band = FALSE,
                       plot_title = NULL,
                       plot_subtitle = NULL,
                       plot_subtitle_r = NULL,
@@ -100,6 +102,7 @@ tsplot.ts <- function(...,
          left_as_bar = left_as_bar,
          group_bar_chart = group_bar_chart,
          relative_bar_chart = relative_bar_chart,
+         left_as_band = left_as_band,
          plot_title = plot_title,
          plot_subtitle = plot_subtitle,
          plot_subtitle_r = plot_subtitle_r,
@@ -125,6 +128,7 @@ tsplot.mts <- function(...,
                        left_as_bar = FALSE,
                        group_bar_chart = FALSE,
                        relative_bar_chart = FALSE,
+                       left_as_band = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -159,6 +163,7 @@ create a ts out of a row of a data.frame? Converting to single ts.")
            left_as_bar = left_as_bar,
            group_bar_chart = group_bar_chart,
            relative_bar_chart = relative_bar_chart,
+           left_as_band = left_as_band,
            plot_title = plot_title,
            plot_subtitle = plot_subtitle,
            plot_subtitle_r = plot_subtitle_r,
@@ -185,6 +190,7 @@ tsplot.zoo <- function(...,
                        left_as_bar = FALSE,
                        group_bar_chart = FALSE,
                        relative_bar_chart = FALSE,
+                       left_as_band = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -211,6 +217,7 @@ tsplot.xts <- function(...,
                        left_as_bar = FALSE,
                        group_bar_chart = FALSE,
                        relative_bar_chart = FALSE,
+                       left_as_band = FALSE,
                        plot_title = NULL,
                        plot_subtitle = NULL,
                        plot_subtitle_r = NULL,
@@ -237,6 +244,7 @@ tsplot.list <- function(...,
                         left_as_bar = FALSE,
                         group_bar_chart = FALSE,
                         relative_bar_chart = FALSE,
+                        left_as_band = FALSE,
                         plot_title = NULL,
                         plot_subtitle = NULL,
                         plot_subtitle_r = NULL,
@@ -418,7 +426,7 @@ tsplot.list <- function(...,
   cnames <- names(tsl)
   # if(!is.null(tsr)) cnames <- names(tsr) 
   
-  if(left_as_bar) {
+  if(left_as_bar || left_as_band) {
     # Combine ts
     tsmat <- do.call("cbind", tsl)
     
@@ -426,7 +434,7 @@ tsplot.list <- function(...,
       # Set all NAs to 0 so range() works properly
       tsmat[is.na(tsmat)] <- 0
       ranges <- apply(tsmat, 1, function(r) {
-        if(group_bar_chart) {
+        if(group_bar_chart && !left_as_band) {
           range(r)
         } else {
           range(c(sum(r[r < 0]), sum(r[r >= 0])))
@@ -740,7 +748,7 @@ tsplot.list <- function(...,
     
   } else {
     # draw lineplot
-    draw_ts_lines(tsl,theme=theme)
+    draw_ts_lines(tsl, theme=theme, bandplot = left_as_band)
   }
   
   # RIGHT PLOT #######################
