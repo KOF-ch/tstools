@@ -15,7 +15,9 @@
 #' @param bar_fill_color character vector of hex colors for 6 time series. 
 #' @param ci_alpha Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands
 #' @param ci_colors Named colors or hex values Colors of the confidence interval bands
-#' @param ci_legend_label character A formatting template for how the ci bands should be labelled. May contain the placeholders \code{%ci_value%} (will be replaced with the percentage) and \code{%series%} (will be replaced with the series name) exactly once. Defaults to \code{"%ci_value%% ci for %series%"}
+#' @param ci_legend_label character A formatting template for how the ci bands should be labelled. May contain the 
+#' placeholders. '%ci_value%' will be replaced with the ci label. '%series%' (will be replaced with the series name)
+#' exactly once. Defaults to '%ci_value% ci for %series%'
 #' @param default_bottom_margin numeric The bottom margin to use when margins[1] is NA but neither auto_legend nor auto_bottom_margin are true. Default 3
 #' @param fill_up_start logical shoule the start of the year also be filled? Has no effect if fill_year_with_nas == FALSE. Default FALSE
 #' @param fill_year_with_nas logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,

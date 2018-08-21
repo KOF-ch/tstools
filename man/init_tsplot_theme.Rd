@@ -77,6 +77,10 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 
 \item{ci_colors}{Named colors or hex values Colors of the confidence interval bands}
 
+\item{ci_legend_label}{character A formatting template for how the ci bands should be labelled. May contain the 
+placeholders. '%ci_value%' will be replaced with the ci label. '%series%' (will be replaced with the series name)
+exactly once. Defaults to '%ci_value% ci for %series%'}
+
 \item{default_bottom_margin}{numeric The bottom margin to use when margins[1] is NA but neither auto_legend nor auto_bottom_margin are true. Default 3}
 
 \item{fill_up_start}{logical shoule the start of the year also be filled? Has no effect if fill_year_with_nas == FALSE. Default FALSE}
