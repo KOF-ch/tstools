@@ -526,6 +526,7 @@ tsplot.list <- function(...,
       left_ticks <- c(left_ticks, left_ub + left_d)
       if(!is.null(tsr)) {
         right_ticks <- c(right_ticks, right_ub + right_d)
+        right_ub <- right_ub + right_d
       }
     }
     
@@ -535,6 +536,7 @@ tsplot.list <- function(...,
       left_ticks <- c(left_lb - left_d, left_ticks)
       if(!is.null(tsr)) {
         right_ticks <- c(right_lb - right_d, right_ticks)
+        right_lb <- right_lb - right_d
       }
     }
     
