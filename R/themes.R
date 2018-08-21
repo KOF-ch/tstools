@@ -54,6 +54,7 @@
 #' @param show_left_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param show_points boolean Whether to draw the symbol specified by point_symbol at the data points. Multiple values can be supplied to enable/disable showing points for each individual series Default FALSE
 #' @param show_right_y_axis logical: should left y axis be shown, defaults to TRUE.
+#' @param show_x_axis locigal: should x axis be shown, defaults to TRUE
 #' @param show_y_grids logical should y_grids by shown at all, defaults to TRUE.
 #' @param subtitle_adj numeric same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
@@ -159,6 +160,7 @@ init_tsplot_theme <- function(
   show_left_y_axis = TRUE,
   show_points = FALSE,
   show_right_y_axis = TRUE,
+  show_x_axis = TRUE,
   show_y_grids = TRUE,
   subtitle_adj = 0,
   subtitle_adj_r = .9,

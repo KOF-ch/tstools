@@ -633,36 +633,38 @@ tsplot.list <- function(...,
   }
   
   # Global X-Axis ###################
-  if(theme$yearly_ticks){
-    if(theme$label_pos == "start" || theme$x_tick_dt != 1 || !is.null(manual_ticks_x)){
-      axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
-           lwd = theme$lwd_x_axis,
-           lwd.ticks = theme$lwd_yearly_ticks,
-           tcl = theme$tcl_yearly_tick,
-           padj = 0)    
-    } else{
-      axis(1,global_x$yearly_tick_pos,labels = F,
-           lwd = theme$lwd_x_axis,
-           lwd.ticks = theme$lwd_yearly_ticks,
-           tcl = theme$tcl_yearly_tick)
+  if(theme$show_x_axis) {
+    if(theme$yearly_ticks){
+      if(theme$label_pos == "start" || theme$x_tick_dt != 1 || !is.null(manual_ticks_x)){
+        axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
+             lwd = theme$lwd_x_axis,
+             lwd.ticks = theme$lwd_yearly_ticks,
+             tcl = theme$tcl_yearly_tick,
+             padj = 0)    
+      } else{
+        axis(1,global_x$yearly_tick_pos,labels = F,
+             lwd = theme$lwd_x_axis,
+             lwd.ticks = theme$lwd_yearly_ticks,
+             tcl = theme$tcl_yearly_tick)
+      }
     }
-  }
-  
-  if(theme$quarterly_ticks && theme$x_tick_dt == 1 && is.null(manual_ticks_x)){
-    overlap <- global_x$quarterly_tick_pos %in% global_x$yearly_tick_pos
-    q_ticks <- global_x$quarterly_tick_pos[!overlap]
-    q_labels <- global_x$year_labels_middle_q[!overlap]
-    if(theme$label_pos == "mid"){
-      axis(1, q_ticks,labels = q_labels,
-           lwd = theme$lwd_x_axis,
-           lwd.ticks = theme$lwd_quarterly_ticks,
-           tcl = theme$tcl_quarterly_ticks,
-           padj = 0)    
-    } else{
-      axis(1, q_ticks, labels = F,
-           lwd = theme$lwd_x_axis,
-           lwd.ticks = theme$lwd_quarterly_ticks,
-           tcl = theme$tcl_quarterly_ticks)
+    
+    if(theme$quarterly_ticks && theme$x_tick_dt == 1 && is.null(manual_ticks_x)){
+      overlap <- global_x$quarterly_tick_pos %in% global_x$yearly_tick_pos
+      q_ticks <- global_x$quarterly_tick_pos[!overlap]
+      q_labels <- global_x$year_labels_middle_q[!overlap]
+      if(theme$label_pos == "mid"){
+        axis(1, q_ticks,labels = q_labels,
+             lwd = theme$lwd_x_axis,
+             lwd.ticks = theme$lwd_quarterly_ticks,
+             tcl = theme$tcl_quarterly_ticks,
+             padj = 0)    
+      } else{
+        axis(1, q_ticks, labels = F,
+             lwd = theme$lwd_x_axis,
+             lwd.ticks = theme$lwd_quarterly_ticks,
+             tcl = theme$tcl_quarterly_ticks)
+      }
     }
   }
   

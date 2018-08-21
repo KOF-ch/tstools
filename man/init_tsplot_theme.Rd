@@ -27,11 +27,12 @@ init_tsplot_theme(auto_bottom_margin = FALSE, bar_border = "#000000",
   preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
   quarterly_ticks = TRUE, range_must_not_cross_zero = TRUE,
   show_left_y_axis = TRUE, show_points = FALSE, show_right_y_axis = TRUE,
-  show_y_grids = TRUE, subtitle_adj = 0, subtitle_adj_r = 0.9,
-  subtitle_cex = 1, subtitle_margin = 2, subtitle_outer = FALSE,
-  subtitle_transform = "toupper", sum_as_line = FALSE, sum_legend = "sum",
-  sum_line_color = c(ETH_8_100 = "#007a92"), sum_line_lty = 1,
-  sum_line_lwd = 3, tcl_quarterly_ticks = -0.4, tcl_y_ticks = -0.75,
+  show_x_axis = TRUE, show_y_grids = TRUE, subtitle_adj = 0,
+  subtitle_adj_r = 0.9, subtitle_cex = 1, subtitle_margin = 2,
+  subtitle_outer = FALSE, subtitle_transform = "toupper",
+  sum_as_line = FALSE, sum_legend = "sum", sum_line_color = c(ETH_8_100 =
+  "#007a92"), sum_line_lty = 1, sum_line_lwd = 3,
+  tcl_quarterly_ticks = -0.4, tcl_y_ticks = -0.75,
   tcl_yearly_ticks = -0.75, title_adj = 0, title_cex.main = 1,
   title_margin = 8, title_outer = FALSE, title_transform = NA,
   total_bar_margin_pct = 0.2, use_box = FALSE, x_tick_dt = 1,
@@ -152,6 +153,8 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 \item{show_points}{boolean Whether to draw the symbol specified by point_symbol at the data points. Multiple values can be supplied to enable/disable showing points for each individual series Default FALSE}
 
 \item{show_right_y_axis}{logical: should left y axis be shown, defaults to TRUE.}
+
+\item{show_x_axis}{locigal: should x axis be shown, defaults to TRUE}
 
 \item{show_y_grids}{logical should y_grids by shown at all, defaults to TRUE.}
 
