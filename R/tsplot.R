@@ -373,13 +373,23 @@ tsplot.list <- function(...,
       n_ci_l <- `if`(any(names_l %in% names(ci)), sum(sapply(ci[names_l], length)), 0)
       n_ci_r <- `if`(any(names_r %in% names(ci)), sum(sapply(ci[names_r], length)), 0)
       
+      n_newline_ci <- lengths(regmatches(theme$ci_legend_label, gregexpr("\n", theme$ci_legend_label)))
+      
       n_newline_l <- max(lengths(regmatches(names_l, gregexpr("\n", names_l))))
       n_newline_r <- `if`(is.null(tsr), 0, max(lengths(regmatches(names_r, gregexpr("\n", names_r)))))
       
+      if(n_ci_l > 0) {
+        n_newline_l <- max(n_newline_ci, n_newline_l)
+      }
+      
+      if(n_ci_r > 0) {
+        n_newline_r <- max(n_newline_ci, n_newline_r)
+      }
+      
       n_legends_l_r <- c(
         # Add length_x*n_legend_x since the height of all legend entries is determined by the tallest one
-        length_l + n_ci_l + (left_as_bar && theme$sum_as_line) + length_l*n_newline_l, 
-        length_r + n_ci_r + length_r*n_newline_r
+        length_l + n_ci_l + (left_as_bar && theme$sum_as_line) + (length_l + n_ci_l)*n_newline_l, 
+        length_r + n_ci_r + (length_r + n_ci_r)*n_newline_r
       )
       
       bigger_legend <- 1
@@ -391,7 +401,7 @@ tsplot.list <- function(...,
       }
       
       n_legend_lines <- ceiling(n_legends/theme$legend_col)
-      n_legend_entries <- `if`(bigger_legend == 1, length_l, length_r)
+      n_legend_entries <- `if`(bigger_legend == 1, length_l + n_ci_l, length_r + n_ci_r)
       
       # strheight only really considers the number of newlines in the text to be measured
       legend_height_in_in <- strheight(
@@ -788,7 +798,18 @@ tsplot.list <- function(...,
   # add legend
   if(auto_legend){
     ci_names <- lapply(names(ci), function(x) {
-      paste0(names(ci[[x]]), "% ci for ", x)
+      y <- gsub("%series%", x, theme$ci_legend_label)
+      if(grepl("%ci_value%", y)) {
+        parts <- strsplit(y, "%ci_value%")[[1]]
+        # in case %ci_value% is at the very end (see ?split)
+        if(length(parts) == 1) {
+          parts <- c(parts, "")
+        }
+        y <- paste0(parts[1], names(ci[[x]]), parts[2])
+      } else {
+        y <- rep(y, length(ci[[x]]))
+      }
+      y
     })
     names(ci_names) <- names(ci)
     
