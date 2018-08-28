@@ -132,6 +132,7 @@ add_legend <- function(tsln,
          pt.cex = theme$legend_box_size,
          x.intersp = theme$legend_intersp_x,
          y.intersp = theme$legend_intersp_y,
+         text.width = theme$legend_text.width,
          seg.len = theme$legend_seg.len)
   
   # Repeat the above steps (minus sum line) for the right series (if any)

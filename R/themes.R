@@ -33,6 +33,7 @@
 #' @param legend_margin_bottom numeric Distance between bottom of legend and bottom of graphic in \% of device height, default 5
 #' @param legend_margin_top numeric Distance between bottom of plot and top of legends \% of device height, defaults to 12
 #' @param legend_seg.len numeric Length of the line segments in the legend. Default 2
+#' @param legend_text.width numeric Width of all legend entries in user coordinates. Defaults to NULL making legend autocompute the value so all legends fit
 #' @param line_colors character vector of hex colors for 6 lines. 
 #' @param line_to_middle logical try to put a line into the middle of the plot. defaults to TRUE.
 #' @param lty integer vector line type defaults to 1. 
@@ -133,6 +134,7 @@ init_tsplot_theme <- function(
   legend_margin_bottom = 5,
   legend_margin_top = 12,
   legend_seg.len = 2,
+  legend_text.width = NULL,
   line_colors = c("ETH_8_100" = "#a9af66",
                   "ETH_4_100" = "#72791c",
                   "ETH_8_20" = "#cce5eb",
