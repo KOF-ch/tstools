@@ -8,6 +8,8 @@
 #' part of the key. 
 #' @param filter function A function that is applied to the raw data.data table after it is read. Useful for
 #' filtering out undesired data.
+#' @param aggregates list A list of dimensions over which to aggregate data. The names of this list determing
+#' which function is used to calculate the aggregate (e.g. sum, mean etc.). Defaults to sum.
 #' @details 
 #' The order of dimensions in key_columns determines their order in the key
 #' The resulting ts_key will be of the form <swissdata-set-name>.<instance of key_columns[1]>...
@@ -17,15 +19,31 @@
 #' tsplot(tslist[1])
 #' @importFrom data.table fread
 #' @export
-read_swissdata <- function(path, key_columns, filter = NULL) {
+read_swissdata <- function(path, key_columns, filter = NULL, aggregates = NULL) {
   dataset <- gsub("\\.csv","",basename(path))
   raw <- fread(path)
+  
+  
+  if(!is.null(aggregates)) {
+    raw_names <- names(raw)
+    dims <- setdiff(raw_names, c("date", "value"))
+    totals <- lapply(seq_along(aggregates), function(i) {
+      aggregate_fcn <- names(aggregates[i])
+      aggregate_fcn <- ifelse(is.null(aggregate_fcn), "sum", aggregate_fcn)
+      aggdim <- aggregates[[i]]
+      raw[, .(value = aggregate_fcn(value)), by = c(setdiff(dims, aggdim), "date")][, get("aggdim") := "total"][, ..raw_names]
+    })
+    totals <- rbindlist(totals)
+    raw <- rbindlist(list(raw, totals))
+  }
+  
   raw[, series := do.call(paste,
                           c(dataset,.SD,sep=".")),
       .SDcols = key_columns]
   if(!is.null(filter)) {
     raw <- filter(raw)
   }
+  
   long_to_ts(raw[, list(series, date, value)])
 }
 
