@@ -1,19 +1,16 @@
-draw_ts_lines <- function(x, theme = NULL,
-                        ...){
-  UseMethod("draw_ts_lines")
-} 
-
-
-draw_ts_lines.ts <- function(x, theme = NULL,
-                           ...){
-  
-}
-
-
-draw_ts_lines.list <- function(x, theme = NULL){
+draw_ts_lines <- function(x, theme = NULL, bandplot = FALSE){
   nts <- length(x)
   op <- rep(theme$show_points, ceiling(nts/length(theme$show_points)))
   ops <- rep(theme$point_symbol, ceiling(nts/length(theme$point_symbol)))
+  
+  # "harmonize" all ts, range wise
+  if(bandplot) {
+    x_mat <- do.call(ts.union, x)
+    x_mat[is.na(x_mat)] <- 0
+    x <- as.list(x_mat)
+  }
+  
+  band_low <- rep(0, length(x[[1]]))
   
   for (i in 1:nts) {
     xx <- as.numeric(time(x[[i]]))
@@ -30,13 +27,19 @@ draw_ts_lines.list <- function(x, theme = NULL){
       yy <- yy[!yy_na]
     }
     
-    lines(xx,yy,
-          col = theme$line_colors[i],
-          lwd = theme$lwd[i],
-          lty = theme$lty[i],
-          type = ifelse(theme$show_points[i], "o", "l"),
-          pch = theme$point_symbol[i]
-    )
+    if(!bandplot) {
+      lines(xx,yy,
+            col = theme$line_colors[i],
+            lwd = theme$lwd[i],
+            lty = theme$lty[i],
+            type = ifelse(theme$show_points[i], "o", "l"),
+            pch = theme$point_symbol[i]
+      )
+    } else {
+      band_high <- band_low + yy
+      polygon(c(xx, rev(xx)), c(band_low, rev(band_high)), border = NA, col = theme$line_colors[i])
+      band_low <- band_high
+    }
   }
   
 }
