@@ -15,6 +15,9 @@
 #' @param bar_fill_color character vector of hex colors for 6 time series. 
 #' @param ci_alpha Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands
 #' @param ci_colors Named colors or hex values Colors of the confidence interval bands
+#' @param ci_legend_label character A formatting template for how the ci bands should be labelled. May contain the 
+#' placeholders. '\%ci_value\%' will be replaced with the ci label. '\%series\%' (will be replaced with the series name)
+#' exactly once. Defaults to '\%ci_value\% ci for \%series\%'
 #' @param default_bottom_margin numeric The bottom margin to use when margins[1] is NA but neither auto_legend nor auto_bottom_margin are true. Default 3
 #' @param fill_up_start logical shoule the start of the year also be filled? Has no effect if fill_year_with_nas == FALSE. Default FALSE
 #' @param fill_year_with_nas logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,
@@ -54,6 +57,7 @@
 #' @param show_left_y_axis logical: should left y axis be shown, defaults to TRUE.
 #' @param show_points boolean Whether to draw the symbol specified by point_symbol at the data points. Multiple values can be supplied to enable/disable showing points for each individual series Default FALSE
 #' @param show_right_y_axis logical: should left y axis be shown, defaults to TRUE.
+#' @param show_x_axis locigal: should x axis be shown, defaults to TRUE
 #' @param show_y_grids logical should y_grids by shown at all, defaults to TRUE.
 #' @param subtitle_adj numeric same as base \code{\link{plot}} parameter, defaults to 0.
 #' @param subtitle_adj_r numeric same as base \code{\link{plot}} parameter, defaults to .9
@@ -114,6 +118,7 @@ init_tsplot_theme <- function(
                      ETH5_30 = "#e6b3d3"),
   ci_alpha = "44",
   ci_colors = line_colors,
+  ci_legend_label = "%ci_value%% ci for %series%",
   default_bottom_margin = 15,
   fill_up_start = FALSE,
   fill_year_with_nas = TRUE,
@@ -159,6 +164,7 @@ init_tsplot_theme <- function(
   show_left_y_axis = TRUE,
   show_points = FALSE,
   show_right_y_axis = TRUE,
+  show_x_axis = TRUE,
   show_y_grids = TRUE,
   subtitle_adj = 0,
   subtitle_adj_r = .9,
@@ -176,7 +182,7 @@ init_tsplot_theme <- function(
   tcl_yearly_ticks = -0.75,
   title_adj = 0,
   title_cex.main = 1,
-  title_margin = 8,
+  title_margin = 5,
   title_outer = FALSE,
   title_transform = NA,
   total_bar_margin_pct = .2,
@@ -223,7 +229,7 @@ init_tsplot_print_theme <- function(
   lwd_y_ticks = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   legend_intersp_y = scale_theme_param_for_print(1, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   legend_box_size = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
-  legend_margin_top = 6,
+  legend_margin_top = 8,
   legend_margin_bottom = 3,
   legend_seg.len = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   pointsize = scale_theme_param_for_print(12, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
