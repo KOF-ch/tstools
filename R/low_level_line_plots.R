@@ -3,6 +3,13 @@ draw_ts_lines <- function(x, theme = NULL, bandplot = FALSE){
   op <- rep(theme$show_points, ceiling(nts/length(theme$show_points)))
   ops <- rep(theme$point_symbol, ceiling(nts/length(theme$point_symbol)))
   
+  # "harmonize" all ts, range wise
+  if(bandplot) {
+    x_mat <- do.call(ts.union, x)
+    x_mat[is.na(x_mat)] <- 0
+    x <- as.list(x_mat)
+  }
+  
   band_low <- rep(0, length(x[[1]]))
   
   for (i in 1:nts) {
