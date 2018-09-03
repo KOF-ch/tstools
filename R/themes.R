@@ -16,8 +16,8 @@
 #' @param ci_alpha Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands
 #' @param ci_colors Named colors or hex values Colors of the confidence interval bands
 #' @param ci_legend_label character A formatting template for how the ci bands should be labelled. May contain the 
-#' placeholders. '%ci_value%' will be replaced with the ci label. '%series%' (will be replaced with the series name)
-#' exactly once. Defaults to '%ci_value% ci for %series%'
+#' placeholders. '\%ci_value\%' will be replaced with the ci label. '\%series\%' (will be replaced with the series name)
+#' exactly once. Defaults to '\%ci_value\% ci for \%series\%'
 #' @param default_bottom_margin numeric The bottom margin to use when margins[1] is NA but neither auto_legend nor auto_bottom_margin are true. Default 3
 #' @param fill_up_start logical shoule the start of the year also be filled? Has no effect if fill_year_with_nas == FALSE. Default FALSE
 #' @param fill_year_with_nas logical should year be filled up with missing in order to plot the entire year on the axis. Defaults to TRUE,
@@ -182,7 +182,7 @@ init_tsplot_theme <- function(
   tcl_yearly_ticks = -0.75,
   title_adj = 0,
   title_cex.main = 1,
-  title_margin = 8,
+  title_margin = 5,
   title_outer = FALSE,
   title_transform = NA,
   total_bar_margin_pct = .2,
@@ -229,7 +229,7 @@ init_tsplot_print_theme <- function(
   lwd_y_ticks = scale_theme_param_for_print(1.5, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   legend_intersp_y = scale_theme_param_for_print(1, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   legend_box_size = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
-  legend_margin_top = 6,
+  legend_margin_top = 8,
   legend_margin_bottom = 3,
   legend_seg.len = scale_theme_param_for_print(2, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
   pointsize = scale_theme_param_for_print(12, `if`(output_wide, c(10+2/3, 6), c(8, 6))),
