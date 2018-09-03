@@ -35,7 +35,7 @@ init_tsplot_theme(auto_bottom_margin = FALSE, bar_border = "#000000",
   "#007a92"), sum_line_lty = 1, sum_line_lwd = 3,
   tcl_quarterly_ticks = -0.4, tcl_y_ticks = -0.75,
   tcl_yearly_ticks = -0.75, title_adj = 0, title_cex.main = 1,
-  title_margin = 8, title_outer = FALSE, title_transform = NA,
+  title_margin = 5, title_outer = FALSE, title_transform = NA,
   total_bar_margin_pct = 0.2, use_box = FALSE, x_tick_dt = 1,
   xaxs = "i", y_grid_color = "#CCCCCC", y_grid_count = c(5, 6, 8, 10),
   y_grid_count_strict = FALSE, y_las = 2, y_range_min_size = NULL,
@@ -58,7 +58,7 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
   (output_wide) c(10 + 2/3, 6) else c(8, 6)),
   legend_intersp_y = scale_theme_param_for_print(1, if (output_wide) c(10 +
   2/3, 6) else c(8, 6)), legend_box_size = scale_theme_param_for_print(2, if
-  (output_wide) c(10 + 2/3, 6) else c(8, 6)), legend_margin_top = 6,
+  (output_wide) c(10 + 2/3, 6) else c(8, 6)), legend_margin_top = 8,
   legend_margin_bottom = 3, legend_seg.len = scale_theme_param_for_print(2,
   if (output_wide) c(10 + 2/3, 6) else c(8, 6)),
   pointsize = scale_theme_param_for_print(12, if (output_wide) c(10 + 2/3, 6)
@@ -78,8 +78,8 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 \item{ci_colors}{Named colors or hex values Colors of the confidence interval bands}
 
 \item{ci_legend_label}{character A formatting template for how the ci bands should be labelled. May contain the 
-placeholders. '%ci_value%' will be replaced with the ci label. '%series%' (will be replaced with the series name)
-exactly once. Defaults to '%ci_value% ci for %series%'}
+placeholders. '\%ci_value\%' will be replaced with the ci label. '\%series\%' (will be replaced with the series name)
+exactly once. Defaults to '\%ci_value\% ci for \%series\%'}
 
 \item{default_bottom_margin}{numeric The bottom margin to use when margins[1] is NA but neither auto_legend nor auto_bottom_margin are true. Default 3}
 
