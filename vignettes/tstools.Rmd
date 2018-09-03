@@ -228,6 +228,20 @@ tsplot(tsb1, tsb2, tsb3,
 ```
 
 
+## Stacked Area Charts
+
+Stacked area charts are another way of stacking time series. 
+They might be more illustrative than stacked bar charts, but are subject to 
+certain limitations: plots always start at zero and all series need to be 
+either positive or negative. 
+
+```{r}
+set.seed(123)
+tslist <- generate_random_ts(4, starts = 1987:1990,
+                             ranges_min = 1,
+                             ranges_max = 3)
+tsplot(tslist, left_as_band = TRUE)
+```
 
 
 
