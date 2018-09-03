@@ -6,7 +6,8 @@
 add_legend <- function(tsln,
                       tsrn = NULL,
                       ci_names,
-                      left_as_bar = F,
+                      left_as_bar = FALSE,
+                      left_as_band = FALSE,
                       theme = init_tsplot_theme()){
   # Grab the number of legends
   ll <- length(tsln)
@@ -39,7 +40,7 @@ add_legend <- function(tsln,
   # Initialize legend pch, col, lty and lwd with the theme parameters
   # where there are ts and ci band params where there are those
   is_ci_l <- !(legend_l %in% tsln)
-  pch_l <- rep(ifelse(left_as_bar, 15, NA), n_tot_l)
+  pch_l <- rep(ifelse(left_as_bar || left_as_band, 15, NA), n_tot_l)
   pch_l[is_ci_l] <- 15
   col_l <- rep(NA, n_tot_l)
   col_l[!is_ci_l] <- theme$line_colors[1:ll]
@@ -74,6 +75,8 @@ add_legend <- function(tsln,
       col_l <- c(col_l, theme$sum_line_color)
       pch_l <- c(pch_l, NA)
     }
+  } else if(left_as_band) {
+    lty_l[!is_ci_l] <- 0
   }
   
   

@@ -786,7 +786,8 @@ tsplot.list <- function(...,
     names(ci_names) <- names(ci)
     
     add_legend(names(tsl), names(tsr), ci_names,
-               theme = theme, left_as_bar = left_as_bar)
+               theme = theme, left_as_bar = left_as_bar,
+               left_as_band = left_as_band)
   }
   
   # add title and subtitle
