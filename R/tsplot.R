@@ -280,6 +280,14 @@ tsplot.list <- function(...,
     tsl <- tsl[!non_ts_l]
   }
   
+  # Sanity check for band plots
+  if(left_as_band) {
+    all_signs <- sign(unlist(tsl))
+    signs_consistent <- (any(all_signs < 0) & all(all_signs <= 0)) | (any(all_signs > 0) & all(all_signs >= 0))
+    if(!signs_consistent) {
+      warning("Found both positive and negative contributions in tsl!\nAre you sure a band plot is what you want?")
+    }
+  }
   
   if(any(sapply(tsl, length) == 1) || (!is.null(tsr) && any(sapply(tsr, length) == 1))) {
     stop("Time series of length 1 are not supported!")
