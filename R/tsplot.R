@@ -280,6 +280,26 @@ tsplot.list <- function(...,
     tsl <- tsl[!non_ts_l]
   }
   
+  tsl_lengths <- sapply(tsl, length)
+  if(any(tsl_lengths) == 1) {
+    warning("tsl contains series of length 1! Omitting those.")
+    tsl <- tsl[tsl_lengths > 1]
+    if(length(tsl) == 0) {
+      stop("No series with length greater 1 left, stopping!")
+    }
+  } 
+  
+  if(!is.null(tsr)) {
+    tsr_lengths <- sapply(tsr, length)
+    if(any(tsr_lengths == 1)) {
+      warning("tsr contains series of length 1! omitting those.")
+      tsr <- tsr[tsr_lengths > 1]
+      if(length(tsr) == 0) {
+        tsr <- NULL
+      }
+    }
+  }
+  
   # Sanity check for band plots
   if(left_as_band) {
     all_signs <- sign(unlist(tsl))
