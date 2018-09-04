@@ -281,7 +281,7 @@ tsplot.list <- function(...,
   }
   
   tsl_lengths <- sapply(tsl, length)
-  if(any(tsl_lengths) == 1) {
+  if(any(tsl_lengths == 1)) {
     warning("tsl contains series of length 1! Omitting those.")
     tsl <- tsl[tsl_lengths > 1]
     if(length(tsl) == 0) {
