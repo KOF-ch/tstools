@@ -178,8 +178,12 @@ which implies that a bar is centered above the category tick for that period.
 ```{r,fig.width = 7,fig.height=6}
 tsplot(tsb1, tsb2, tsb3,
        left_as_bar = T,
-       auto_legend = F)
+       auto_legend = F,
+       theme = init_tsplot_theme(bar_gap = 10))
 ```
+
+Notice that the gap size of the gap between the bars can be adjusted using the **bar_gap** theme parameter.
+
 
 ## Sum as line in stacked bar charts
 
@@ -235,7 +239,7 @@ They might be more illustrative than stacked bar charts, but are subject to
 certain limitations: plots always start at zero and all series need to be 
 either positive or negative. 
 
-```{r}
+```{r,fig.width = 7,fig.height=6}
 set.seed(123)
 tslist <- generate_random_ts(4, starts = 1987:1990,
                              ranges_min = 1,

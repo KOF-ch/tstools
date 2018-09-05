@@ -13,8 +13,8 @@
 #' @param bar_border character hex colors for the border around bars in bar charts. 
 #' @param bar_border_lwd numeric The line width of the borders of bars in barplots. Default 1
 #' @param bar_fill_color character vector of hex colors for 6 time series. 
-#' @param bar_gap numeric The width of the gap between bars, in % of space alloted to the bar.
-#' @param bara_group_gap numeric The width of the gap between groups of bars if group_bar_chart == TRUE
+#' @param bar_gap numeric The width of the gap between bars, in \% of space alloted to the bar.
+#' @param bar_group_gap numeric The width of the gap between groups of bars if group_bar_chart is TRUE.
 #' @param ci_alpha Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands
 #' @param ci_colors Named colors or hex values Colors of the confidence interval bands
 #' @param ci_legend_label character A formatting template for how the ci bands should be labelled. May contain the 
@@ -118,7 +118,7 @@ init_tsplot_theme <- function(
                      ETH5 = "#91056a",
                      ETH5_60 = "#cc67a7",
                      ETH5_30 = "#e6b3d3"),
-  bar_gap = 20,
+  bar_gap = 15,
   bar_group_gap = 10,
   ci_alpha = "44",
   ci_colors = line_colors,
