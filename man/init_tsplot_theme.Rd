@@ -8,7 +8,7 @@
 init_tsplot_theme(auto_bottom_margin = FALSE, bar_border = "#000000",
   bar_border_lwd = 1, bar_fill_color = c(ETH8 = "#007A92", ETH8_60 =
   "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60
-  = "#cc67a7", ETH5_30 = "#e6b3d3"), ci_alpha = "44",
+  = "#cc67a7", ETH5_30 = "#e6b3d3"), bar_gap = 1, ci_alpha = "44",
   ci_colors = line_colors,
   ci_legend_label = "\%ci_value\%\% ci for \%series\%",
   default_bottom_margin = 15, fill_up_start = FALSE,
@@ -72,6 +72,8 @@ init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
 \item{bar_border_lwd}{numeric The line width of the borders of bars in barplots. Default 1}
 
 \item{bar_fill_color}{character vector of hex colors for 6 time series.}
+
+\item{bar_gap}{numeric The width of the gap between bars, in % of space alloted to the bar.}
 
 \item{ci_alpha}{Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands}
 

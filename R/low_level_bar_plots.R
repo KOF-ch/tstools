@@ -9,27 +9,22 @@ draw_ts_bars.ts <- function(x, group_bar_chart = FALSE,
                           theme = NULL){
   ts_time <- time(x)
   frq <- frequency(x)
+  
+  # Bars are 1/frq wide, bar_gap is in % of alloted width
+  offset <- theme$bar_gap/(frq*200)
+  
   neg_0 <- x
   pos_0 <- x
   neg_0[x < 0] <- 0
   pos_0[!x < 0] <- 0
   
-  
-  rect(ts_time,0,
-       ts_time+1/frq,
+  rect(ts_time + offset,
+       pos_0,
+       ts_time + 1/frq - offset,
        neg_0,
        border = theme$bar_border,
        lwd = theme$bar_border_lwd,
        col = theme$bar_fill_color[1])
-  
-  rect(ts_time,pos_0,
-            ts_time+1/frq,
-            0,
-            border = theme$bar_border,
-            lwd = theme$bar_border_lwd,
-            col = theme$bar_fill_color[1])
-  
-  
 }
 
 
