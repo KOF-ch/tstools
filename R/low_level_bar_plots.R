@@ -41,8 +41,6 @@ draw_ts_bars <- function(x, group_bar_chart = FALSE, theme = NULL){
          lwd = theme$bar_border_lwd,
          col = theme$bar_fill_color[1:n_ts])  
   } else {
-    individual_offset_value <- theme$bar_gap/(n_ts*frq*200)
-    
     inter_group_offset_value <- theme$bar_group_gap/(frq*200)
     
     x_pos_raw <- t(c(ts_time) + rep(1, length(ts_time)) %*% t(seq(0, 1/frq, 1/(n_ts*frq))))
@@ -54,12 +52,24 @@ draw_ts_bars <- function(x, group_bar_chart = FALSE, theme = NULL){
       seq(x[1], x[n_ts+1], length.out = n_ts+1)
     })
     
-    inter_bar_offset <- t(rep(individual_offset_value, length(ts_time)) %*% t(c(1, rep(1, n_ts - 1), 1)))
+    x_left <- apply(x_pos_final, 2, function(x) {
+      grp <- x[n_ts+1] - x[1]
+      mar <- grp*theme$bar_gap/100
+      bar <- (grp - (n_ts - 1)*mar)/n_ts
+      seq(x[1], x[n_ts+1], by = bar + mar)
+    })
+    
+    x_right <- apply(x_pos_final, 2, function(x) {
+      grp <- x[n_ts+1] - x[1]
+      mar <- grp*theme$bar_gap/100
+      bar <- (grp - (n_ts - 1)*mar)/n_ts
+      seq(x[1] + bar, x[n_ts+1], by = bar + mar)
+    })
     
     rect(
-      x_pos_final[1:n_ts, ] + inter_bar_offset[1:n_ts,],
+      x_left,
       negatives,
-      x_pos_final[(1:n_ts)+1,] - inter_bar_offset[(1:n_ts)+1, ],
+      x_right,
       positives,
       border = theme$bar_border,
       lwd = theme$bar_border_lwd,
