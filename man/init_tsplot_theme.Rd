@@ -8,8 +8,8 @@
 init_tsplot_theme(auto_bottom_margin = FALSE, bar_border = "#000000",
   bar_border_lwd = 1, bar_fill_color = c(ETH8 = "#007A92", ETH8_60 =
   "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60
-  = "#cc67a7", ETH5_30 = "#e6b3d3"), bar_gap = 1, ci_alpha = "44",
-  ci_colors = line_colors,
+  = "#cc67a7", ETH5_30 = "#e6b3d3"), bar_gap = 20, bar_group_gap = 10,
+  ci_alpha = "44", ci_colors = line_colors,
   ci_legend_label = "\%ci_value\%\% ci for \%series\%",
   default_bottom_margin = 15, fill_up_start = FALSE,
   fill_year_with_nas = TRUE, highlight_color = "#e9e9e9",
@@ -230,6 +230,8 @@ exactly once. Defaults to '\%ci_value\% ci for \%series\%'}
 \item{yearly_ticks}{logical, should yearly ticks be shown. Defaults to TRUE.}
 
 \item{...}{All the other arguments to \code{init_tsplot_thene}}
+
+\item{bara_group_gap}{numeric The width of the gap between groups of bars if group_bar_chart == TRUE}
 }
 \description{
 The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
