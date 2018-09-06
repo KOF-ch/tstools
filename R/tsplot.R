@@ -553,7 +553,7 @@ tsplot.list <- function(...,
     right_ticks <- 1
   }
   
-  if(!theme$y_grid_count_strict) {
+  if(!theme$y_grid_count_strict && is.null(manual_value_ticks_l) && is.null(manual_value_ticks_r)) {
     left_diff <- diff(left_ticks)
     left_d <- left_diff[1]
     left_ub <- left_ticks[length(left_ticks)]
@@ -620,12 +620,13 @@ tsplot.list <- function(...,
         )
       )
     
-    if(is.null(manual_value_ticks_l) && (!theme$range_must_not_cross_zero || left_sign_ok)) {
+    # Only touch ticks if both sides are ok
+    if(!theme$range_must_not_cross_zero || (left_sign_ok && right_sign_ok)) {
       left_y <- list(y_range = range(left_ticks), y_ticks = left_ticks)
-    }
-    
-    if(is.null(manual_value_ticks_r) && !is.null(tsr) && (!theme$range_must_not_cross_zero || right_sign_ok)) {
-      right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
+      
+      if(!is.null(tsr)) {
+        right_y <- list(y_range = range(right_ticks), y_ticks = right_ticks)
+      }
     }
   }
   
