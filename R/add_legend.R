@@ -88,7 +88,9 @@ add_legend <- function(tsln,
   legend_r <- splice_ci_names(tsrn)
   n_tot_r <- length(legend_r)
   is_ci_r <- !(legend_r %in% tsrn)
-  pch_r <- ifelse(theme$show_points, theme$point_symbol[(ll+1):lb], NA)
+  pch_r <- ifelse(theme$show_points, 
+                  `if`(left_as_bar || left_as_band, theme$point_symbol[1:lr], theme$point_symbol[(ll+1):lb]),
+                  NA)
   pch_r[is_ci_r] <- 15
   col_r <- rep(NA, n_tot_r)
   col_r[!is_ci_r] <- theme$line_colors[`if`(left_as_bar, 1:lr, (ll+1):lb)]
