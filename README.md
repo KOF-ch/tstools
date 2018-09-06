@@ -7,3 +7,20 @@
 
 # tstools
 A time series toolbox for official statistics
+
+
+## CRAN Release Preliminary Release Schedule
+
+Dear tstools User, 
+
+we decided to give the project more stability by deploying less frequently to KOF servers and CRAN. 
+We plan to compose sets of issues for each release and test the new set of feature thoroughly before deploying.
+
+0.3.8: September 10, 2018
+0.3.9: December 6, 2018
+
+We do release you'll have to wait for new features a bit longer, but we're confident this the right step as the project gains more users and is more active than ever.
+
+matt
+
+P.S.: If you prefer 'bleeding edge' you can still go with our github master branch. 
