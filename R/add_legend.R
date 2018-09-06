@@ -41,7 +41,9 @@ add_legend <- function(tsln,
   # Initialize legend pch, col, lty and lwd with the theme parameters
   # where there are ts and ci band params where there are those
   is_ci_l <- !(legend_l %in% tsln)
-  pch_l <- rep(ifelse(left_as_bar || left_as_band, 15, NA), n_tot_l)
+  pch_l <- `if`(left_as_bar || left_as_band,
+                rep(15, n_tot_l), 
+                ifelse(theme$show_points, theme$point_symbol, NA)) # TODO: in case of T, F, T, do we want 1, NA, 3 or 1, NA, 2??
   pch_l[is_ci_l] <- 15
   col_l <- rep(NA, n_tot_l)
   col_l[!is_ci_l] <- theme$line_colors[1:ll]
@@ -133,7 +135,7 @@ add_legend <- function(tsln,
          lty = lty_l,
          lwd = lwd_l,
          pch = pch_l,
-         pt.cex = theme$legend_box_size,
+         pt.cex = `if`(left_as_bar || left_as_band, theme$legend_box_size, 1),
          x.intersp = theme$legend_intersp_x,
          y.intersp = theme$legend_intersp_y,
          seg.len = theme$legend_seg.len)
@@ -151,7 +153,7 @@ add_legend <- function(tsln,
            lty = lty_r,
            lwd = lwd_r,
            pch = pch_r,
-           pt.cex = theme$legend_box_size,
+           pt.cex = 1,
            x.intersp = theme$legend_intersp_x,
            y.intersp = theme$legend_intersp_y,
            seg.len = theme$legend_seg.len)
