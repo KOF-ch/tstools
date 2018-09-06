@@ -827,6 +827,17 @@ tsplot.list <- function(...,
     }
   }
   
+  par(new = TRUE)
+  plot(NULL,
+       xlim = global_x$x_range,
+       ylim = left_y$y_range,
+       axes = F,
+       xlab = "",
+       ylab = "",
+       xaxs = theme$xaxs,
+       yaxs = theme$yaxs
+  )
+  
   if(theme$use_box) {
     box(lwd = theme$lwd_box)
   }
