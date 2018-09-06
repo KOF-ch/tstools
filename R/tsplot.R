@@ -722,7 +722,7 @@ tsplot.list <- function(...,
   # Split theme into left/right
   tt_r <- theme
   # Make sure we do not reuse line specs for the right axis (if left is not bars)
-  if(!left_as_bar) {
+  if(!(left_as_bar || left_as_band) ) {
     total_le <- length(tsl) + length(tsr)
     start_r <- (total_le - (length(tsr)-1)):total_le
     
