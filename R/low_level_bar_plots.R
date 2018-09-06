@@ -56,7 +56,7 @@ draw_ts_bars <- function(x, group_bar_chart = FALSE, theme = NULL){
       grp <- x[n_ts+1] - x[1]
       mar <- grp*theme$bar_gap/100
       bar <- (grp - (n_ts - 1)*mar)/n_ts
-      seq(x[1], x[n_ts+1], by = bar + mar)
+      seq(x[1], x[n_ts+1] - bar, by = bar + mar)
     })
     
     x_right <- apply(x_pos_final, 2, function(x) {
