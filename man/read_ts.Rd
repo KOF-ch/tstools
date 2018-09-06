@@ -4,7 +4,8 @@
 \alias{read_ts}
 \title{Import time series data from a file.}
 \usage{
-read_ts(file, format = c("csv", "xlsx", "json", "zip"), sep = ",")
+read_ts(file, format = c("csv", "xlsx", "json", "zip"), sep = ",",
+  skip = 0)
 }
 \arguments{
 \item{file}{Path to the file to be read}
@@ -13,6 +14,8 @@ read_ts(file, format = c("csv", "xlsx", "json", "zip"), sep = ",")
 from the file extension.}
 
 \item{sep}{character seperator for csv files. defaults to ','.}
+
+\item{skip}{numeric See \code{\link{data.table::fread}}}
 }
 \value{
 A named list of ts objects

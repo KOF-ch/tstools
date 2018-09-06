@@ -6,6 +6,7 @@
 #' @param format Which file format is the data stored in? If no format is supplied, read_ts will attempt to guess
 #' from the file extension.
 #' @param sep character seperator for csv files. defaults to ','.
+#' @param skip numeric See \code{\link{data.table::fread}}
 #' @return A named list of ts objects
 #' 
 #' @importFrom data.table fread
@@ -14,7 +15,8 @@
 read_ts <- function(file,
                              format = c("csv", "xlsx",
                                         "json", "zip"),
-                             sep = ",") {
+                             sep = ",",
+                             skip = 0) {
   if(length(format) == 1) {
     format <- match.arg(format)  
   } else {
@@ -45,15 +47,15 @@ read_ts <- function(file,
   }
   
   switch(format, 
-         "csv" = read_ts.csv(file, sep),
+         "csv" = read_ts.csv(file, sep, skip = skip),
          "xlsx" = read_ts.xlsx(file),
          "json" = read_ts.json(file)
   )
 }
 
 # Could export these, but no real need.
-read_ts.csv <- function(file, sep = ",") {
-  csv <- fread(file, sep = sep, stringsAsFactors = FALSE, colClasses = "numeric")
+read_ts.csv <- function(file, sep = ",", skip) {
+  csv <- fread(file, sep = sep, stringsAsFactors = FALSE, colClasses = "numeric", skip = skip)
   
   if(length(csv) == 3 && length(setdiff(names(csv), c("date", "value", "series"))) == 0) {
     long_to_ts(csv)
