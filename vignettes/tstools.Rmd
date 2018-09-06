@@ -480,6 +480,22 @@ tsplot(KOF[1],auto_legend = F)
 <!-- text(2016.5,-35,"1.3%") -->
 
 <!-- ``` -->
+# Export your chart to .pdf
+
+Saving your **tstools** chart to a .pdf document is as easy and convenient as
+
+```{r,eval=FALSE}
+tsplot(KOF[1],
+       output_format = "pdf",
+       theme = init_tsplot_print_theme(output_wide = T))
+```
+
+Notice the optional print theme and *output_wide* parameter: You can export
+4:3 (default) format .pdf files as well as 16:9 (wide) using the convenience
+*output_format* theme parameter. 
+
+
+
 
 
 # Export lists of time series
