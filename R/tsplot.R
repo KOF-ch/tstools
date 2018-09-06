@@ -680,42 +680,6 @@ tsplot.list <- function(...,
     
   }
   
-  # Global X-Axis ###################
-  if(theme$show_x_axis) {
-    if(theme$yearly_ticks){
-      if(theme$label_pos == "start" || theme$x_tick_dt != 1 || !is.null(manual_ticks_x)){
-        axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
-             lwd = theme$lwd_x_axis,
-             lwd.ticks = theme$lwd_yearly_ticks,
-             tcl = theme$tcl_yearly_tick,
-             padj = 0)    
-      } else{
-        axis(1,global_x$yearly_tick_pos,labels = F,
-             lwd = theme$lwd_x_axis,
-             lwd.ticks = theme$lwd_yearly_ticks,
-             tcl = theme$tcl_yearly_tick)
-      }
-    }
-    
-    if(theme$quarterly_ticks && theme$x_tick_dt == 1 && is.null(manual_ticks_x)){
-      overlap <- global_x$quarterly_tick_pos %in% global_x$yearly_tick_pos
-      q_ticks <- global_x$quarterly_tick_pos[!overlap]
-      q_labels <- global_x$year_labels_middle_q[!overlap]
-      if(theme$label_pos == "mid"){
-        axis(1, q_ticks,labels = q_labels,
-             lwd = theme$lwd_x_axis,
-             lwd.ticks = theme$lwd_quarterly_ticks,
-             tcl = theme$tcl_quarterly_ticks,
-             padj = 0)    
-      } else{
-        axis(1, q_ticks, labels = F,
-             lwd = theme$lwd_x_axis,
-             lwd.ticks = theme$lwd_quarterly_ticks,
-             tcl = theme$tcl_quarterly_ticks)
-      }
-    }
-  }
-  
   if(theme$show_y_grids){
     addYGrids(left_y$y_ticks, global_x$x_range, theme = theme)
   }
@@ -733,14 +697,6 @@ tsplot.list <- function(...,
     tt_r$point_symbol <- tt_r$point_symbol[start_r]
     tt_r$NA_continue_line <- tt_r$NA_continue_line[start_r]
     tt_r$ci_colors <- tt_r$ci_colors[start_r]
-  }
-
-  
-  # LEFT Y-AXIS
-  if(theme$show_left_y_axis){
-    axis(2,left_y$y_ticks,las = theme$y_las,
-         lwd = theme$lwd_y_axis,
-         lwd.ticks = theme$lwd_y_ticks, tcl = theme$tcl_y_ticks)
   }
   
   # Draw all confidence bands here (so they don't overlap lines later)
@@ -827,6 +783,82 @@ tsplot.list <- function(...,
     }
   }
   
+  # DRAW AXES
+  par(new = TRUE)
+  plot(NULL,
+       xlim = global_x$x_range,
+       ylim = left_y$y_range,
+       axes = F,
+       xlab = "",
+       ylab = "",
+       xaxs = theme$xaxs,
+       yaxs = theme$yaxs
+  )
+  
+  # Global X-Axis ###################
+  if(theme$show_x_axis) {
+    if(theme$yearly_ticks){
+      if(theme$label_pos == "start" || theme$x_tick_dt != 1 || !is.null(manual_ticks_x)){
+        axis(1,global_x$yearly_tick_pos,labels = global_x$yearly_tick_pos,
+             lwd = theme$lwd_x_axis,
+             lwd.ticks = theme$lwd_yearly_ticks,
+             tcl = theme$tcl_yearly_tick,
+             padj = 0)    
+      } else{
+        axis(1,global_x$yearly_tick_pos,labels = F,
+             lwd = theme$lwd_x_axis,
+             lwd.ticks = theme$lwd_yearly_ticks,
+             tcl = theme$tcl_yearly_tick)
+      }
+    }
+    
+    if(theme$quarterly_ticks && theme$x_tick_dt == 1 && is.null(manual_ticks_x)){
+      overlap <- global_x$quarterly_tick_pos %in% global_x$yearly_tick_pos
+      q_ticks <- global_x$quarterly_tick_pos[!overlap]
+      q_labels <- global_x$year_labels_middle_q[!overlap]
+      if(theme$label_pos == "mid"){
+        axis(1, q_ticks,labels = q_labels,
+             lwd = theme$lwd_x_axis,
+             lwd.ticks = theme$lwd_quarterly_ticks,
+             tcl = theme$tcl_quarterly_ticks,
+             padj = 0)    
+      } else{
+        axis(1, q_ticks, labels = F,
+             lwd = theme$lwd_x_axis,
+             lwd.ticks = theme$lwd_quarterly_ticks,
+             tcl = theme$tcl_quarterly_ticks)
+      }
+    }
+  }
+  
+  # LEFT Y-AXIS
+  if(theme$show_left_y_axis){
+    axis(2,left_y$y_ticks,las = theme$y_las,
+         lwd = theme$lwd_y_axis,
+         lwd.ticks = theme$lwd_y_ticks, tcl = theme$tcl_y_ticks)
+  }
+  
+  if(!is.null(tsr)){
+    par(new = T)
+    plot(NULL,
+         xlim = global_x$x_range,
+         ylim = right_y$y_range,
+         axes = F,
+         xlab = "",
+         ylab = "",
+         yaxs = theme$yaxs,
+         xaxs = theme$xaxs
+    )
+    
+    # RIGHT Y-Axis
+    if(theme$show_right_y_axis){
+      axis(4,right_y$y_ticks,las = theme$y_las,
+           lwd = theme$lwd_y_axis,
+           lwd.ticks = theme$lwd_y_ticks, tcl = theme$tcl_y_ticks)
+    }
+  }
+  
+  # RESET USER COORDINATES TO LEFT SIDE
   par(new = TRUE)
   plot(NULL,
        xlim = global_x$x_range,
