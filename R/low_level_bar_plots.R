@@ -68,9 +68,9 @@ draw_ts_bars <- function(x, group_bar_chart = FALSE, theme = NULL){
     
     rect(
       x_left,
-      negatives,
+      t(negatives),
       x_right,
-      positives,
+      t(positives),
       border = theme$bar_border,
       lwd = theme$bar_border_lwd,
       col = theme$bar_fill_color[1:n_ts]

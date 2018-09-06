@@ -119,7 +119,7 @@ init_tsplot_theme <- function(
                      ETH5_60 = "#cc67a7",
                      ETH5_30 = "#e6b3d3"),
   bar_gap = 15,
-  bar_group_gap = 10,
+  bar_group_gap = 30,
   ci_alpha = "44",
   ci_colors = line_colors,
   ci_legend_label = "%ci_value%% ci for %series%",
