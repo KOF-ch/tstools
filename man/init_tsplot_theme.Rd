@@ -8,7 +8,7 @@
 init_tsplot_theme(auto_bottom_margin = FALSE, bar_border = "#000000",
   bar_border_lwd = 1, bar_fill_color = c(ETH8 = "#007A92", ETH8_60 =
   "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60
-  = "#cc67a7", ETH5_30 = "#e6b3d3"), bar_gap = 15, bar_group_gap = 10,
+  = "#cc67a7", ETH5_30 = "#e6b3d3"), bar_gap = 15, bar_group_gap = 30,
   ci_alpha = "44", ci_colors = line_colors,
   ci_legend_label = "\%ci_value\%\% ci for \%series\%",
   default_bottom_margin = 15, fill_up_start = FALSE,
@@ -36,11 +36,11 @@ init_tsplot_theme(auto_bottom_margin = FALSE, bar_border = "#000000",
   tcl_quarterly_ticks = -0.4, tcl_y_ticks = -0.75,
   tcl_yearly_ticks = -0.75, title_adj = 0, title_cex.main = 1,
   title_margin = 5, title_outer = FALSE, title_transform = NA,
-  total_bar_margin_pct = 0.2, use_box = FALSE, x_tick_dt = 1,
-  xaxs = "i", y_grid_color = "#CCCCCC", y_grid_count = c(5, 6, 8, 10),
-  y_grid_count_strict = FALSE, y_las = 2, y_range_min_size = NULL,
-  y_tick_force_integers = FALSE, y_tick_margin = 0.15, yaxs = "i",
-  yearly_ticks = TRUE)
+  total_bar_margin_pct = 0.2, use_bar_gap_in_groups = FALSE,
+  use_box = FALSE, x_tick_dt = 1, xaxs = "i", y_grid_color = "#CCCCCC",
+  y_grid_count = c(5, 6, 8, 10), y_grid_count_strict = FALSE, y_las = 2,
+  y_range_min_size = NULL, y_tick_force_integers = FALSE,
+  y_tick_margin = 0.15, yaxs = "i", yearly_ticks = TRUE)
 
 init_tsplot_print_theme(output_wide = FALSE, margins = c(NA, 10/if
   (output_wide) 1 + 1/3 else 1, 10, 7/if (output_wide) 1 + 1/3 else 1),
@@ -206,6 +206,8 @@ exactly once. Defaults to '\%ci_value\% ci for \%series\%'}
 \item{title_transform}{function to transform the title, defaults to NA.}
 
 \item{total_bar_margin_pct}{numeric defintion as in base plot, defaults to "i", defaults to .2,}
+
+\item{use_bar_gap_in_groups}{logical Should there be gaps of size bar_gap between the bars in a group if group_bar_chart = TRUE? Default FALSE}
 
 \item{use_box}{logical use a box around the plot.}
 
