@@ -7,7 +7,7 @@
 compute_decimal_time(v, f)
 }
 \arguments{
-\item{v}{integer vector denoting a period in time}
+\item{v}{integer vector denoting a point in time}
 
 \item{f}{frequency}
 }

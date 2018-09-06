@@ -3,7 +3,7 @@
 #' Standard ts object use a vector of length two to store a period. E.g. 2010,1 means first quarter of 2010, 
 #' if the series was quarterly and first month if the series was monthly etc. 
 #' 
-#' @param v integer vector denoting a period in time
+#' @param v integer vector denoting a point in time
 #' @param f frequency
 #' @export
 compute_decimal_time <- function(v,f){
@@ -11,6 +11,19 @@ compute_decimal_time <- function(v,f){
   (v[2]-1)*multi + v[1]
 }
 
+#' Compute the Period Vector representation of a Decimal Time value
+#' 
+#' The period value will be rounded down to the nearest integer.
+#' This function is not vectorized so only a single value can be
+#' converted at a time.
+#' 
+#' @param dtime numeric decimal time value denoting a point in time
+#' @param frq integer frequency
+get_date_vector <- function(dtime, frq){
+  y <- floor(dtime)
+  p <- dtime - y
+  c(y, floor(frq * p + 1 + 1/(4*frq)))
+}
 
 # function is called by tsplot, do not need to export
 # it but let's write a minimal comment on what it does.
