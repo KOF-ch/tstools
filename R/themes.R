@@ -81,6 +81,7 @@
 #' @param title_outer logical, currently undocumented. Defaults to TRUE. 
 #' @param title_transform function to transform the title, defaults to NA.
 #' @param total_bar_margin_pct numeric defintion as in base plot, defaults to "i", defaults to .2,
+#' @param use_bar_gap_in_groups logical Should there be gaps of size bar_gap between the bars in a group if group_bar_chart = TRUE? Default FALSE
 #' @param use_box logical use a box around the plot.
 #' @param x_tick_dt numeric The distance between ticks on the x axis in years. The first tick will always be at the start of the plotted time series. Defaults to 1.
 #' @param xaxs character axis defintion as in base plot, defaults to "i".
@@ -190,6 +191,7 @@ init_tsplot_theme <- function(
   title_outer = FALSE,
   title_transform = NA,
   total_bar_margin_pct = .2,
+  use_bar_gap_in_groups = FALSE,
   use_box = FALSE,
   x_tick_dt = 1,
   xaxs = "i",
