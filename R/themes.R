@@ -10,9 +10,10 @@
 #' while the second and fourth series have the second color.
 #' The list contains the following elements:
 #' @param auto_bottom_margin logical Should the bottom margin be automatically calculated? This will be overridden if margins[1] is not NA. Default FALSE 
+#' @param band_fill_color character vector of hex colors for the bands if left_as_band == TRUE. 
 #' @param bar_border character hex colors for the border around bars in bar charts. 
 #' @param bar_border_lwd numeric The line width of the borders of bars in barplots. Default 1
-#' @param bar_fill_color character vector of hex colors for 6 time series. 
+#' @param bar_fill_color character vector of hex colors for the bars if left_as_bar == TRUE
 #' @param bar_gap numeric The width of the gap between bars, in \% of space alloted to the bar.
 #' @param bar_group_gap numeric The width of the gap between groups of bars if group_bar_chart is TRUE.
 #' @param ci_alpha Numeric 0-255, numeric 0-1 or hey 00-FF, transparency of the confidence interval bands
@@ -110,6 +111,13 @@
 #' @export
 init_tsplot_theme <- function(
   auto_bottom_margin = FALSE,
+  band_fill_color = c(ETH8 = "#007A92",
+                       ETH8_60 = "#66b0c2",
+                       ETH8_30 = "#b3d7e0",
+                       ETH8_20 = "#cce5eb",
+                       ETH5 = "#91056a",
+                       ETH5_60 = "#cc67a7",
+                       ETH5_30 = "#e6b3d3"),
   bar_border = "#000000",
   bar_border_lwd = 1,
   bar_fill_color = c(ETH8 = "#007A92",

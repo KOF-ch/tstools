@@ -37,7 +37,7 @@ draw_ts_lines <- function(x, theme = NULL, bandplot = FALSE){
       )
     } else {
       band_high <- band_low + yy
-      polygon(c(xx, rev(xx)), c(band_low, rev(band_high)), border = NA, col = theme$line_colors[i])
+      polygon(c(xx, rev(xx)), c(band_low, rev(band_high)), border = NA, col = theme$band_fill_color[i])
       band_low <- band_high
     }
   }
