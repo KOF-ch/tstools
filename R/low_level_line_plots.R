@@ -1,3 +1,4 @@
+#'@importFrom stats ts.union
 draw_ts_lines <- function(x, theme = NULL, bandplot = FALSE){
   nts <- length(x)
   op <- rep(theme$show_points, ceiling(nts/length(theme$show_points)))

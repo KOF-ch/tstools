@@ -6,7 +6,7 @@
 #' @param format Which file format is the data stored in? If no format is supplied, read_ts will attempt to guess
 #' from the file extension.
 #' @param sep character seperator for csv files. defaults to ','.
-#' @param skip numeric See \code{\link{data.table::fread}}
+#' @param skip numeric See data.table's fread.
 #' @return A named list of ts objects
 #' 
 #' @importFrom data.table fread
