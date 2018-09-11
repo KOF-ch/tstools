@@ -15,7 +15,7 @@ from the file extension.}
 
 \item{sep}{character seperator for csv files. defaults to ','.}
 
-\item{skip}{numeric See \code{\link{data.table::fread}}}
+\item{skip}{numeric See data.table's fread.}
 }
 \value{
 A named list of ts objects
