@@ -31,7 +31,7 @@ read_swissdata <- function(path, key_columns, filter = NULL, aggregates = NULL) 
       agg <- aggregates[[i]]
       aggregate_fcn <- agg$fcn
       aggregate_fcn <- ifelse(is.null(aggregate_fcn), "sum", aggregate_fcn)
-      aggdim <- agg[[i]]$dimensions
+      aggdim <- agg$dimensions
       raw[, .(value = do.call(aggregate_fcn, list(value))), by = c(setdiff(dims, aggdim), "date")][, get("aggdim") := "total"][, ..raw_names]
     })
     totals <- rbindlist(totals)
