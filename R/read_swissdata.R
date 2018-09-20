@@ -28,7 +28,7 @@ read_swissdata <- function(path, key_columns, filter = NULL, aggregates = NULL) 
     raw_names <- names(raw)
     dims <- setdiff(raw_names, c("date", "value"))
     totals <- lapply(seq_along(aggregates), function(i) {
-      agg <- aggregats[[i]]
+      agg <- aggregates[[i]]
       aggregate_fcn <- agg$fcn
       aggregate_fcn <- ifelse(is.null(aggregate_fcn), "sum", aggregate_fcn)
       aggdim <- agg[[i]]$dimensions
