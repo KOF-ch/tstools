@@ -23,14 +23,15 @@ read_swissdata <- function(path, key_columns, filter = NULL, aggregates = NULL) 
   dataset <- gsub("\\.csv","",basename(path))
   raw <- fread(path)
   
-  
+  # TODO!!! Document change in aggregates param
   if(!is.null(aggregates)) {
     raw_names <- names(raw)
     dims <- setdiff(raw_names, c("date", "value"))
     totals <- lapply(seq_along(aggregates), function(i) {
-      aggregate_fcn <- names(aggregates[i])
+      agg <- aggregats[[i]]
+      aggregate_fcn <- agg$fcn
       aggregate_fcn <- ifelse(is.null(aggregate_fcn), "sum", aggregate_fcn)
-      aggdim <- aggregates[[i]]
+      aggdim <- agg[[i]]$dimensions
       raw[, .(value = do.call(aggregate_fcn, list(value))), by = c(setdiff(dims, aggdim), "date")][, get("aggdim") := "total"][, ..raw_names]
     })
     totals <- rbindlist(totals)
