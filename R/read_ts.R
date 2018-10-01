@@ -16,7 +16,8 @@ read_ts <- function(file,
                              format = c("csv", "xlsx",
                                         "json", "zip"),
                              sep = ",",
-                             skip = 0) {
+                             skip = 0,
+                             column_names = c("date", "value", "series")) {
   if(length(format) == 1) {
     format <- match.arg(format)  
   } else {
@@ -47,17 +48,17 @@ read_ts <- function(file,
   }
   
   switch(format, 
-         "csv" = read_ts.csv(file, sep, skip = skip),
-         "xlsx" = read_ts.xlsx(file),
+         "csv" = read_ts.csv(file, sep, skip = skip, column_names = column_names),
+         "xlsx" = read_ts.xlsx(file, column_names = column_names),
          "json" = read_ts.json(file)
   )
 }
 
 # Could export these, but no real need.
-read_ts.csv <- function(file, sep = ",", skip) {
+read_ts.csv <- function(file, sep = ",", skip, column_names = c("date", "value", "series")) {
   csv <- fread(file, sep = sep, stringsAsFactors = FALSE, colClasses = "numeric", skip = skip)
   
-  if(length(csv) == 3 && length(setdiff(names(csv), c("date", "value", "series"))) == 0) {
+  if(length(csv) == 3 && length(setdiff(names(csv), column_names)) == 0) {
     long_to_ts(csv)
   } else {
     wide_to_ts(csv)
@@ -65,14 +66,14 @@ read_ts.csv <- function(file, sep = ",", skip) {
 }
 
 
-read_ts.xlsx <- function(file) {
+read_ts.xlsx <- function(file, column_names = c("date", "value", "series")) {
   xlsx_available <- requireNamespace("openxlsx")
   
   if(!xlsx_available) return(warning("openxlsx not available. Install openxlsx or export to csv."))    
   
   xlsx <- openxlsx::read.xlsx(file)
   
-  if(length(xlsx) == 3 && length(setdiff(names(xlsx), c("date", "value", "series"))) == 0) {
+  if(length(xlsx) == 3 && length(setdiff(names(xlsx), column_names)) == 0) {
     long_to_ts(xlsx)
   } else {
     wide_to_ts(xlsx)
