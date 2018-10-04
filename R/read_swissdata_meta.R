@@ -16,6 +16,8 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
     path <- paste0(path, ".yaml")
   }
   
+  set_name <- gsub("(.+)(.yaml)", "\\1", basename(path))
+  
   meta <- yaml::read_yaml(path)
   
   dimnames_idx <- match("dimnames", names(meta$labels))
@@ -33,19 +35,55 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
     expand.grid(keychunks, stringsAsFactors = FALSE, KEEP.OUT.ATTRS = FALSE), # To understand, run expand.grid(list(1:2, 1:5))
     sep = "."
   ))
+  keys <- paste(set_name, keys, sep = ".")
   
   # Now this is some serious R-Fu
   labels <- expand.grid(lapply(meta_labels, sapply, `[[`, locale), stringsAsFactors = FALSE, KEEP.OUT.ATTRS = FALSE)
   
+  # Work some dark magic to get units into it?
+  
   # Is this smert? dimnames could be any old crazy strings
   names(labels) <- meta_dimnames
   
+  out <- as.data.table(labels)
+  
+  per_set_dims <- yaml::yaml.load(
+    "
+        title:
+          de: Datensatz
+          fr: Datensatz
+          it: Datensatz
+          en: Dataset
+        source:
+          de: Quelle
+          fr: Source
+          it: La sourca (not correct)
+          en: Source
+        details:
+          de: Details
+          fr: Details
+          it: Details
+          en: Details
+        utc.updated:
+          de: Aktualisierungszeitpunkt
+          fr: Aktualisierungszeitpunkt
+          it: Aktualisierungszeitpunkt
+          en: Aktualisierungszeitpunkt
+    "
+  )
+  per_set_dims <- sapply(per_set_dims, `[[`, locale)
+  
+  n_dims <- n_dims + length(per_set_dims)
+  
+  meta$source <- paste0(meta$source.name[[locale]], " (", meta$source.url, ")")
+  
+  out[, (per_set_dims) := lapply(meta[names(per_set_dims)], function(x){if(is.list(x)) x[[locale]] else x})]
+  
   if(as_list) {
-    lapply(split(labels, keys), as.list)
+    lapply(split(out, keys), as.list)
   } else {
-    out <- as.data.table(labels)
     out[, ts_key := keys]
-    setcolorder(out, c(n_dims + 1, 1:n_dims))
+    setcolorder(out, c(n_dims + 1, 1:(n_dims)))
     out
   }
 }
