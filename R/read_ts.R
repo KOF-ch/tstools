@@ -7,6 +7,10 @@
 #' from the file extension.
 #' @param sep character seperator for csv files. defaults to ','.
 #' @param skip numeric See data.table's fread.
+#' @param keep_last_freq_only in case there is a frequency change in a time series, 
+#' should only the part of the series be returned that has the same frequency as 
+#' the last observation. This is useful when data start out crappy and then stabilize 
+# after a while. Defaults to FALSE. Hence only the last part of the series is returned.
 #' @return A named list of ts objects
 #' 
 #' @importFrom data.table fread
@@ -17,7 +21,8 @@ read_ts <- function(file,
                                         "json", "zip"),
                              sep = ",",
                              skip = 0,
-                             column_names = c("date", "value", "series")) {
+                             column_names = c("date", "value", "series"),
+                             keep_last_freq_only = FALSE) {
   if(length(format) == 1) {
     format <- match.arg(format)  
   } else {
@@ -55,18 +60,20 @@ read_ts <- function(file,
 }
 
 # Could export these, but no real need.
-read_ts.csv <- function(file, sep = ",", skip, column_names = c("date", "value", "series")) {
+read_ts.csv <- function(file, sep = ",", skip, column_names = c("date", "value", "series"),
+                        keep_last_freq_only = FALSE) {
   csv <- fread(file, sep = sep, stringsAsFactors = FALSE, colClasses = "numeric", skip = skip)
   
   if(length(csv) == 3 && length(setdiff(names(csv), column_names)) == 0) {
-    long_to_ts(csv)
+    long_to_ts(csv, keep_last_freq_only = keep_last_freq_only)
   } else {
     wide_to_ts(csv)
   }
 }
 
 
-read_ts.xlsx <- function(file, column_names = c("date", "value", "series")) {
+read_ts.xlsx <- function(file, column_names = c("date", "value", "series"),
+                         keep_last_freq_only = FALSE) {
   xlsx_available <- requireNamespace("openxlsx")
   
   if(!xlsx_available) return(warning("openxlsx not available. Install openxlsx or export to csv."))    
@@ -74,7 +81,7 @@ read_ts.xlsx <- function(file, column_names = c("date", "value", "series")) {
   xlsx <- openxlsx::read.xlsx(file)
   
   if(length(xlsx) == 3 && length(setdiff(names(xlsx), column_names)) == 0) {
-    long_to_ts(xlsx)
+    long_to_ts(xlsx, keep_last_freq_only = keep_last_freq_only)
   } else {
     wide_to_ts(xlsx)
   }
