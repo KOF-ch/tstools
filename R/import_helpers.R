@@ -37,7 +37,7 @@ long_to_ts <- function(data) {
   
   dt_of_lists <- data_dt[, {
     dT <- diff(date_zoo)
-    if(any(diff(dT) > 1e-6)) {
+    if(any(abs(diff(dT)) > 1e-6)) {
       if(frq[1] == 4) {
         list(ts_object = list(xts(value, order.by = as.yearqtr(date_zoo))))
       } else {
