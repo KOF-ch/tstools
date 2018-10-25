@@ -5,7 +5,7 @@
 #' 
 #' @param path character full path to dataset.
 #' @param key_columns character vector specifying all columns that should be
-#' part of the key. 
+#' part of the key. Defaults to the dim.order specified by swissdata.
 #' @param filter function A function that is applied to the raw data.data table after it is read. Useful for
 #' filtering out undesired data.
 #' @param aggregates list A list of dimensions over which to aggregate data. The names of this list determing
@@ -23,10 +23,16 @@
 #' tsplot(tslist[1])
 #' @importFrom data.table fread
 #' @export
-read_swissdata <- function(path, key_columns, filter = NULL,
+read_swissdata <- function(path, key_columns = NULL, filter = NULL,
                            aggregates = NULL,
                            keep_last_freq_only = FALSE) {
   dataset <- gsub("\\.csv","",basename(path))
+  
+  if(is.null(key_columns)) {
+    meta <- yaml::read_yaml(gsub("csv$", "yaml", path))
+    key_columns <- meta$dim.order
+  }
+  
   raw <- fread(path)
   
   # TODO!!! Document change in aggregates param
