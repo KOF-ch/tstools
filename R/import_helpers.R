@@ -15,10 +15,14 @@ json_to_ts <- function(json_data) {
 #' 
 #' The data.frame must have three columns "date", "value" and "series" (identifying the time series)
 #' @param data data.frame The data.frame to be transformed 
+#' @param keep_last_freq_only in case there is a frequency change in a time series, 
+#' should only the part of the series be returned that has the same frequency as 
+#' the last observation. This is useful when data start out crappy and then stabilize 
+# after a while. Defaults to FALSE. Hence only the last part of the series is returned.
 #' @importFrom data.table dcast
 #' @importFrom zoo na.trim
 #' @export
-long_to_ts <- function(data) {
+long_to_ts <- function(data, keep_last_freq_only = FALSE) {
   data_dt <- as.data.table(data)
   
   # Strip series consisting only of NAs
@@ -38,13 +42,28 @@ long_to_ts <- function(data) {
   dt_of_lists <- data_dt[, {
     dT <- diff(date_zoo)
     if(any(abs(diff(dT)) > 1e-6)) {
-      if(frq[1] == 4) {
-        list(ts_object = list(xts(value, order.by = as.yearqtr(date_zoo))))
-      } else {
-        list(ts_object = list(xts(value, order.by = as.yearmon(date_zoo))))
+      if(keep_last_freq_only){
+        # find last frequency shift in order to keep only 
+        # the data which has the same frequency as the end of the series
+        # this is useful when data start out crappy and then stabilize 
+        # after a while.
+        l <- length(dT)
+        use_only <- (max(which(dT != dT[l]))+1):(l+1)
+        list(ts_object = list(ts(value[use_only],
+                                 start = .SD[use_only[1], date_zoo],
+                                 end = .SD[.N, date_zoo], deltat = dT[use_only[1]])))
+        
+      } else{
+        if(frq[1] == 4) {
+          list(ts_object = list(xts(value, order.by = as.yearqtr(date_zoo))))
+        } else {
+          list(ts_object = list(xts(value, order.by = as.yearmon(date_zoo))))
+        }  
       }
+      
     } else {
-      list(ts_object = list(ts(value, start = .SD[1, date_zoo], end = .SD[.N, date_zoo], deltat = dT[1])))
+      list(ts_object = list(ts(value, start = .SD[1, date_zoo],
+                               end = .SD[.N, date_zoo], deltat = dT[1])))
     }
   }, by = series]
   
@@ -62,14 +81,20 @@ utils::globalVariables(c("date_zoo", "series", "ts_object", "value", "frq", "is_
 #' The time series in the data.frame may be stored either rowwise or columnswise.
 #' The identifying column must be called date (for columnwise) or series (for rowwise)
 #' @param data data.frame The data.frame to be transformed
+#' @param keep_last_freq_only in case there is a frequency change in a time series, 
+#' should only the part of the series be returned that has the same frequency as 
+#' the last observation. This is useful when data start out crappy and then stabilize 
+# after a while. Defaults to FALSE. Hence only the last part of the series is returned.
 #' @importFrom xts xts
 #' @importFrom zoo as.yearqtr as.yearmon
 #' @export
-wide_to_ts <- function(data) {
+wide_to_ts <- function(data, keep_last_freq_only = FALSE) {
   if(!("date" %in% names(data))) {
     # Data was written in transposed format
-    long_to_ts(melt(data, id.vars = "series", variable.name = "date")) 
+    long_to_ts(melt(data, id.vars = "series", variable.name = "date"),
+               keep_last_freq_only = keep_last_freq_only) 
   } else {
-    long_to_ts(melt(data, id.vars = "date", variable.name = "series"))
+    long_to_ts(melt(data, id.vars = "date", variable.name = "series"),
+               keep_last_freq_only = keep_last_freq_only)
   }
 }
