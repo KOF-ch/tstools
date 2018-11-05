@@ -10,7 +10,9 @@
 #' @param keep_last_freq_only in case there is a frequency change in a time series, 
 #' should only the part of the series be returned that has the same frequency as 
 #' the last observation. This is useful when data start out crappy and then stabilize 
-# after a while. Defaults to FALSE. Hence only the last part of the series is returned.
+#' after a while. Defaults to FALSE. Hence only the last part of the series is returned.
+#' @param force_xts If set to true, the time series will be returned as xts objects regargless of
+#' regularity. Setting this to TRUE means keep_last_freq_only is ignored.
 #' @return A named list of ts objects
 #' 
 #' @importFrom data.table fread
@@ -22,7 +24,8 @@ read_ts <- function(file,
                              sep = ",",
                              skip = 0,
                              column_names = c("date", "value", "series"),
-                             keep_last_freq_only = FALSE) {
+                             keep_last_freq_only = FALSE,
+                             force_xts = FALSE) {
   if(length(format) == 1) {
     format <- match.arg(format)  
   } else {
@@ -53,27 +56,29 @@ read_ts <- function(file,
   }
   
   switch(format, 
-         "csv" = read_ts.csv(file, sep, skip = skip, column_names = column_names),
-         "xlsx" = read_ts.xlsx(file, column_names = column_names),
+         "csv" = read_ts.csv(file, sep, skip = skip, column_names = column_names, keep_last_freq_only = keep_last_freq_only, force_xts = force_xts),
+         "xlsx" = read_ts.xlsx(file, column_names = column_names, keep_last_freq_only = keep_last_freq_only, force_xts = force_xts),
          "json" = read_ts.json(file)
   )
 }
 
 # Could export these, but no real need.
 read_ts.csv <- function(file, sep = ",", skip, column_names = c("date", "value", "series"),
-                        keep_last_freq_only = FALSE) {
+                        keep_last_freq_only = FALSE,
+                        force_xts = FALSE) {
   csv <- fread(file, sep = sep, stringsAsFactors = FALSE, colClasses = "numeric", skip = skip)
   
   if(length(csv) == 3 && length(setdiff(names(csv), column_names)) == 0) {
-    long_to_ts(csv, keep_last_freq_only = keep_last_freq_only)
+    long_to_ts(csv, keep_last_freq_only = keep_last_freq_only, force_xts = force_xts)
   } else {
-    wide_to_ts(csv)
+    wide_to_ts(csv, keep_last_freq_only = keep_last_freq_only, force_xts = force_xts)
   }
 }
 
 
 read_ts.xlsx <- function(file, column_names = c("date", "value", "series"),
-                         keep_last_freq_only = FALSE) {
+                         keep_last_freq_only = FALSE,
+                         force_xts = FALSE) {
   xlsx_available <- requireNamespace("openxlsx")
   
   if(!xlsx_available) return(warning("openxlsx not available. Install openxlsx or export to csv."))    
@@ -81,9 +86,9 @@ read_ts.xlsx <- function(file, column_names = c("date", "value", "series"),
   xlsx <- openxlsx::read.xlsx(file)
   
   if(length(xlsx) == 3 && length(setdiff(names(xlsx), column_names)) == 0) {
-    long_to_ts(xlsx, keep_last_freq_only = keep_last_freq_only)
+    long_to_ts(xlsx, keep_last_freq_only = keep_last_freq_only, force_xts = force_xts)
   } else {
-    wide_to_ts(xlsx)
+    wide_to_ts(xlsx, keep_last_freq_only = keep_last_freq_only, force_xts = force_xts)
   }
 }
 

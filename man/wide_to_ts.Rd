@@ -4,10 +4,14 @@
 \alias{wide_to_ts}
 \title{Transform a wide format data.frame into a tslist}
 \usage{
-wide_to_ts(data)
+wide_to_ts(data, keep_last_freq_only = FALSE, force_xts = FALSE)
 }
 \arguments{
 \item{data}{data.frame The data.frame to be transformed}
+
+\item{keep_last_freq_only}{in case there is a frequency change in a time series, 
+should only the part of the series be returned that has the same frequency as 
+the last observation. This is useful when data start out crappy and then stabilize}
 }
 \description{
 The time series in the data.frame may be stored either rowwise or columnswise.
