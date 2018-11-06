@@ -4,10 +4,14 @@
 \alias{long_to_ts}
 \title{Transform a long format data.frame of time series to a tslist}
 \usage{
-long_to_ts(data)
+long_to_ts(data, keep_last_freq_only = FALSE)
 }
 \arguments{
 \item{data}{data.frame The data.frame to be transformed}
+
+\item{keep_last_freq_only}{in case there is a frequency change in a time series, 
+should only the part of the series be returned that has the same frequency as 
+the last observation. This is useful when data start out crappy and then stabilize}
 }
 \description{
 The data.frame must have three columns "date", "value" and "series" (identifying the time series)
