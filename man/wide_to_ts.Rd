@@ -4,7 +4,7 @@
 \alias{wide_to_ts}
 \title{Transform a wide format data.frame into a tslist}
 \usage{
-wide_to_ts(data, keep_last_freq_only = FALSE)
+wide_to_ts(data, keep_last_freq_only = FALSE, force_xts = FALSE)
 }
 \arguments{
 \item{data}{data.frame The data.frame to be transformed}

@@ -10,8 +10,8 @@ tsplot(..., tsr = NULL, ci = NULL, left_as_bar = FALSE,
   plot_subtitle_r = NULL, find_ticks_function = "findTicks",
   overall_xlim = NULL, overall_ylim = NULL, manual_date_ticks = NULL,
   manual_value_ticks_l = NULL, manual_value_ticks_r = NULL,
-  manual_ticks_x = NULL, theme = NULL, quiet = TRUE, auto_legend = TRUE,
-  output_format = "plot", filename = "tsplot",
+  manual_ticks_x = NULL, theme = NULL, quiet = TRUE,
+  auto_legend = TRUE, output_format = "plot", filename = "tsplot",
   close_graphics_device = TRUE)
 }
 \arguments{

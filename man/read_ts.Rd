@@ -6,7 +6,7 @@
 \usage{
 read_ts(file, format = c("csv", "xlsx", "json", "zip"), sep = ",",
   skip = 0, column_names = c("date", "value", "series"),
-  keep_last_freq_only = FALSE)
+  keep_last_freq_only = FALSE, force_xts = FALSE)
 }
 \arguments{
 \item{file}{Path to the file to be read}
@@ -20,7 +20,11 @@ from the file extension.}
 
 \item{keep_last_freq_only}{in case there is a frequency change in a time series, 
 should only the part of the series be returned that has the same frequency as 
-the last observation. This is useful when data start out crappy and then stabilize}
+the last observation. This is useful when data start out crappy and then stabilize 
+after a while. Defaults to FALSE. Hence only the last part of the series is returned.}
+
+\item{force_xts}{If set to true, the time series will be returned as xts objects regargless of
+regularity. Setting this to TRUE means keep_last_freq_only is ignored.}
 }
 \value{
 A named list of ts objects

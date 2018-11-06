@@ -22,7 +22,7 @@ json_to_ts <- function(json_data) {
 #' @importFrom data.table dcast
 #' @importFrom zoo na.trim
 #' @export
-long_to_ts <- function(data, keep_last_freq_only = FALSE) {
+long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE) {
   data_dt <- as.data.table(data)
   
   # Strip series consisting only of NAs
@@ -41,8 +41,8 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE) {
   
   dt_of_lists <- data_dt[, {
     dT <- diff(date_zoo)
-    if(any(abs(diff(dT)) > 1e-6)) {
-      if(keep_last_freq_only){
+    if(any(abs(diff(dT)) > 1e-6) || force_xts) {
+      if(keep_last_freq_only && !force_xts){
         # find last frequency shift in order to keep only 
         # the data which has the same frequency as the end of the series
         # this is useful when data start out crappy and then stabilize 
@@ -54,11 +54,14 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE) {
                                  end = .SD[.N, date_zoo], deltat = dT[use_only[1]])))
         
       } else{
-        if(frq[1] == 4) {
+        if(dT[1] == 0) {
+          # Daily series
+          list(ts_object = list(xts(value, order.by = as.Date(date))))
+        } else if(frq[1] == 4) {
           list(ts_object = list(xts(value, order.by = as.yearqtr(date_zoo))))
         } else {
           list(ts_object = list(xts(value, order.by = as.yearmon(date_zoo))))
-        }  
+        }
       }
       
     } else {
@@ -88,13 +91,15 @@ utils::globalVariables(c("date_zoo", "series", "ts_object", "value", "frq", "is_
 #' @importFrom xts xts
 #' @importFrom zoo as.yearqtr as.yearmon
 #' @export
-wide_to_ts <- function(data, keep_last_freq_only = FALSE) {
+wide_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE) {
   if(!("date" %in% names(data))) {
     # Data was written in transposed format
     long_to_ts(melt(data, id.vars = "series", variable.name = "date"),
-               keep_last_freq_only = keep_last_freq_only) 
+               keep_last_freq_only = keep_last_freq_only,
+               force_xts = force_xts) 
   } else {
     long_to_ts(melt(data, id.vars = "date", variable.name = "series"),
-               keep_last_freq_only = keep_last_freq_only)
+               keep_last_freq_only = keep_last_freq_only,
+               force_xts = force_xts)
   }
 }
