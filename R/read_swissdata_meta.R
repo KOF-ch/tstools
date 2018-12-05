@@ -43,7 +43,7 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   # Work some dark magic to get units into it?
   
   # Is this smert? dimnames could be any old crazy strings
-  names(labels) <- meta_dimnames
+  names(labels) <- meta_dimnames[names(labels)]
   
   out <- as.data.table(labels)
   
