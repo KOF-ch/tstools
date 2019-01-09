@@ -40,7 +40,8 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE) {
   data_dt[is.na(date_zoo), `:=`(date_zoo = as.numeric(as.yearqtr(date)), frq = 4)]
   
   dt_of_lists <- data_dt[, {
-    dT <- diff(date_zoo)
+    if(.N == 1) NULL else {
+        dT <- diff(date_zoo)
     if(any(abs(diff(dT)) > 1e-6) || force_xts) {
       if(keep_last_freq_only && !force_xts){
         # find last frequency shift in order to keep only 
@@ -68,14 +69,19 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE) {
       list(ts_object = list(ts(value, start = .SD[1, date_zoo],
                                end = .SD[.N, date_zoo], deltat = dT[1])))
     }
-  }, by = series]
+  }}, by = series]
+  
+  dropped <- setdiff(data_dt$series,dt_of_lists$series)
+  if(length(dropped) > 0) message("dropped: \n",paste(dropped, collapse = " \n"),
+                                  "\n\nFrequency cannot be detected in time series of length 1!")
   
   tslist <- dt_of_lists[, ts_object]
   tslist <- lapply(tslist, na.trim)
   names(tslist) <- dt_of_lists[, series]
-  
   tslist
 }
+
+
 
 utils::globalVariables(c("date_zoo", "series", "ts_object", "value", "frq", "is_empty"))
 
