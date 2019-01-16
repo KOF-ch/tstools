@@ -23,6 +23,11 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   dimnames_idx <- match("dimnames", names(meta$labels))
   meta_labels <- meta$labels[-dimnames_idx]
   meta_dimnames <- sapply(meta$labels$dimnames, `[[`, locale)
+  
+  # Override column names for which no name is provided
+  # (these are likely NULL and won't show up in the output anyway)
+  missing_dimnames <- sapply(meta_dimnames, function(x){ is.null(x) || nchar(x) == 0 || x == "---" || is.list(x)})
+  meta_dimnames[missing_dimnames] <- names(meta_dimnames)[missing_dimnames]
   n_dims <- length(meta_dimnames)
   
   # Enforce dim.order
@@ -46,6 +51,12 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   names(labels) <- meta_dimnames
   
   out <- as.data.table(labels)
+  
+  if(!is.null(meta$source.url)) {
+    meta$source <- paste0(meta$source.name[[locale]], " (", meta$source.url, ")")
+  } else {
+    meta$source <- meta$source.name[[locale]]
+  }
   
   per_set_dims <- yaml::yaml.load(
     "
@@ -73,15 +84,17 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   )
   per_set_dims <- sapply(per_set_dims, `[[`, locale)
   
-  n_dims <- n_dims + length(per_set_dims)
+  # Keep only those that appear in the data (e.g. details is optional)
+  per_set_dims <- per_set_dims[intersect(names(per_set_dims), names(meta))]
   
-  meta$source <- paste0(meta$source.name[[locale]], " (", meta$source.url, ")")
+  n_dims <- n_dims + length(per_set_dims)
   
   out[, (per_set_dims) := lapply(meta[names(per_set_dims)], function(x){if(is.list(x)) x[[locale]] else x})]
   
   if(as_list) {
     lapply(split(out, keys), as.list)
   } else {
+    n_dims <- ncol(out)
     out[, ts_key := keys]
     setcolorder(out, c(n_dims + 1, 1:(n_dims)))
     out
