@@ -50,6 +50,14 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   # Is this smert? dimnames could be any old crazy strings
   names(labels) <- meta_dimnames
   
+  # prettify NULL columns
+  null_cols <- sapply(labels, function(x){sum(sapply(x, is.null)) == length(x)})
+  if(any(null_cols)) {
+    null_col_names <- names(null_cols)[null_cols]
+    labels[null_col_names] <- NA_character_
+  }
+  
+  
   out <- as.data.table(labels)
   
   if(!is.null(meta$source.url)) {
@@ -79,7 +87,7 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
           de: Aktualisierungszeitpunkt
           fr: Aktualisierungszeitpunkt
           it: Aktualisierungszeitpunkt
-          en: Aktualisierungszeitpunkt
+          en: Last update
     "
   )
   per_set_dims <- sapply(per_set_dims, `[[`, locale)
