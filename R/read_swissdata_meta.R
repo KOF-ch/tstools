@@ -33,7 +33,7 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   # Enforce dim.order
   meta_dimorder <- meta$dim.order
   meta_labels <- meta_labels[match(names(meta_labels), meta_dimorder)]
-  meta_dimnames <- meta_dimnames[match(names(meta_dimnames), meta_dimorder)]
+  meta_dimnames <- meta_dimnames[match(meta_dimorder, names(meta_dimnames))]
   
   keychunks <- lapply(meta_labels, names)
   keys <- do.call(paste, c(
