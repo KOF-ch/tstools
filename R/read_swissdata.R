@@ -33,7 +33,10 @@ read_swissdata <- function(path, key_columns = NULL, filter = NULL,
     key_columns <- meta$dim.order
   }
   
-  raw <- fread(path)
+  # Read all columns as character to preserve things like
+  # 00, 012 etc. in dims
+  raw <- fread(path, colClasses = "character")
+  raw[, value := as.numeric(value)]
   
   # TODO!!! Document change in aggregates param
   if(!is.null(aggregates)) {
