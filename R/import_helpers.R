@@ -76,7 +76,9 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE) {
                                   "\n\nFrequency cannot be detected in time series of length 1!")
   
   tslist <- dt_of_lists[, ts_object]
-  tslist <- lapply(tslist, na.trim)
+  tslist <- lapply(tslist, function(x) {
+    strip_ts_of_leading_nas(strip_ts_of_trailing_nas(x))
+  })
   names(tslist) <- dt_of_lists[, series]
   tslist
 }
