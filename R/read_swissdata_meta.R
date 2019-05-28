@@ -12,13 +12,28 @@
 #' @export
 #'
 read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
-  if(!grepl(".yaml$", path)) {
-    path <- paste0(path, ".yaml")
+  if(grepl("yaml$", path)) {
+    if(file.exists(path)) {
+      set_name <- gsub(".yaml$", "", basename(path))
+      meta <- yaml::read_yaml(path)  
+    } else {
+      stop(sprintf("Could not find file %s!", path))
+    }
+  } else if(grepl("json$", path)) {
+    if(file.exists(path)) {
+      set_name <- gsub(".json$", "", basename(path))
+      meta <- jsonlite::fromJSON(path)
+    } else {
+      stop(sprintf("Could not find file %s!", path))
+    }
+  } else {
+    set_name <- basename(path)
+    meta <- .read_swissdata_meta_unknown_format(path)
   }
-  
-  set_name <- gsub("(.+)(.yaml)", "\\1", basename(path))
-  
-  meta <- yaml::read_yaml(path)
+
+  if(length(meta) == 0) {
+    stop("No metadata found!")
+  }
   
   dimnames_idx <- match("dimnames", names(meta$labels))
   meta_labels <- meta$labels[-dimnames_idx]
@@ -107,4 +122,25 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
     setcolorder(out, c(n_dims + 1, 1:(n_dims)))
     out
   }
+}
+
+# Read a meta file without extension -> unknown format
+# Tries to determine format (yaml, json) and return the metadata
+# path must point to the file without extension e.g. swissdata_wd/set_id/set_id
+#' @return Meta list if file could be located, empty list otherwise
+.read_swissdata_meta_unknown_format <- function(path) {
+  set_id <- basename(path)
+  meta_formats <- c("yaml", "json")
+  existing_meta_files <- file.exists(file.path(dirname(path), sprintf("%s.%s", set_id, meta_formats)))
+  names(existing_meta_files) <- meta_formats
+  
+  if(existing_meta_files["yaml"]) {
+    meta <- yaml::read_yaml(paste0(path, ".yaml"))
+  } else if(existing_meta_files["json"]) {
+    meta <- jsonlite::fromJSON(paste0(path, ".json"))
+  } else {
+    meta <- list()
+  }
+  
+  meta
 }
