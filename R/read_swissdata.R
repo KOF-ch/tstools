@@ -29,7 +29,15 @@ read_swissdata <- function(path, key_columns = NULL, filter = NULL,
   dataset <- gsub("\\.csv","",basename(path))
   
   if(is.null(key_columns)) {
-    meta <- yaml::read_yaml(gsub("csv$", "yaml", path))
+    set_id <- gsub(".csv$", "", basename(path))
+    
+    meta <- .read_swissdata_meta_unknown_format(gsub(".csv", "", path))
+    
+    if(length(meta) == 0) {
+      # Alternatively: Take them as they come in the csv?
+      stop("Neither JSON nor YAML metadata found and key_columns not specified. Cannot proceed!")
+    }
+    
     key_columns <- meta$dim.order
   }
   
