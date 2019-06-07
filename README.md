@@ -4,6 +4,7 @@
 
 <!-- [![CRAN](http://cranlogs.r-pkg.org/badges/grand-total/tstools)]() -->
 
+[![Build Status](https://travis-ci.org/mbannert/tstools.svg?branch=master)](https://travis-ci.org/mbannert/tstools)
 
 # tstools
 A time series toolbox for official statistics
