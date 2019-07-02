@@ -42,8 +42,13 @@ strip_ts_of_trailing_nas <- function(s){
   } else{
     ntf <- apply(s,1,function(x) all(is.na(x)))
   }
+  
+  if(!any(ntf)) {
+    return(s)
+  }
+    
   na_pos <- which(ntf)
-  sqntl <- length(ntf)-na_pos
+  sqntl <- length(ntf) - na_pos
   if(rev(sqntl)[1] != 0){
     return(s)
   } else {
