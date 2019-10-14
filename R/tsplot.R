@@ -685,6 +685,11 @@ tsplot.list <- function(...,
   if(theme$show_y_grids){
     addYGrids(left_y$y_ticks, global_x$x_range, theme = theme)
   }
+  
+  if(!is.na(theme$highlight_y_values)) {
+    addYHighlights(global_x$x_range, theme)
+  }
+  
   # Split theme into left/right
   tt_r <- theme
   # Make sure we do not reuse line specs for the right axis (if left is not bars)

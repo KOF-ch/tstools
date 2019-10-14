@@ -18,19 +18,21 @@ init_tsplot_theme(auto_bottom_margin = FALSE, band_fill_color = c(ETH8
   fill_year_with_nas = TRUE, highlight_color = "#e9e9e9",
   highlight_window = FALSE, highlight_window_end = NA,
   highlight_window_freq = 4, highlight_window_start = NA,
-  label_pos = "mid", legend_all_left = FALSE, legend_box_size = 2,
-  legend_col = 1, legend_font_size = 1, legend_intersp_x = 1,
-  legend_intersp_y = 1, legend_margin_bottom = 5,
-  legend_margin_top = 12, legend_seg.len = 2,
-  line_colors = c(ETH_8_100 = "#a9af66", ETH_4_100 = "#72791c", ETH_8_20
-  = "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2", ETH_5_100 =
-  "#91056a", ETH_4_60 = "#007a92"), line_to_middle = TRUE, lty = 1,
-  lwd = c(2, 3, 1, 4, 2, 4), lwd_box = 1.5, lwd_quarterly_ticks = 1,
-  lwd_x_axis = 1.5, lwd_y_axis = 1.5, lwd_y_ticks = 1.5,
-  lwd_yearly_ticks = 1.5, margins = c(NA, 7, 12, 7),
-  NA_continue_line = FALSE, output_wide = FALSE, point_symbol = 1:18,
-  pointsize = 12, preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1,
-  0.5), quarterly_ticks = TRUE, range_must_not_cross_zero = TRUE,
+  highlight_y_values = NA, highlight_y_lwd = 2,
+  highlight_y_color = "#000000", label_pos = "mid",
+  legend_all_left = FALSE, legend_box_size = 2, legend_col = 1,
+  legend_font_size = 1, legend_intersp_x = 1, legend_intersp_y = 1,
+  legend_margin_bottom = 5, legend_margin_top = 12,
+  legend_seg.len = 2, line_colors = c(ETH_8_100 = "#a9af66", ETH_4_100
+  = "#72791c", ETH_8_20 = "#cce5eb", ETH_5_60 = "#cc67a7", ETH_8_60 =
+  "#66b0c2", ETH_5_100 = "#91056a", ETH_4_60 = "#007a92"),
+  line_to_middle = TRUE, lty = 1, lwd = c(2, 3, 1, 4, 2, 4),
+  lwd_box = 1.5, lwd_quarterly_ticks = 1, lwd_x_axis = 1.5,
+  lwd_y_axis = 1.5, lwd_y_ticks = 1.5, lwd_yearly_ticks = 1.5,
+  margins = c(NA, 7, 12, 7), NA_continue_line = FALSE,
+  output_wide = FALSE, point_symbol = 1:18, pointsize = 12,
+  preferred_y_gap_sizes = c(25, 20, 15, 10, 5, 2.5, 1, 0.5),
+  quarterly_ticks = TRUE, range_must_not_cross_zero = TRUE,
   show_left_y_axis = TRUE, show_points = FALSE,
   show_right_y_axis = TRUE, show_x_axis = TRUE, show_y_grids = TRUE,
   subtitle_adj = 0, subtitle_adj_r = 0.9, subtitle_cex = 1,
@@ -110,6 +112,12 @@ exactly once. Defaults to '\%ci_value\% ci for \%series\%'}
 \item{highlight_window_freq}{integer frequency of the higlight window defintion, defaults to 4.}
 
 \item{highlight_window_start}{integer vector highlight window start position, defaults to NA.}
+
+\item{highlight_y_values}{numeric Vector of y values to highlight with a bold line}
+
+\item{highlight_y_lwd}{integer Line width of the lines to highlight y values}
+
+\item{highlight_y_color}{character Color of the lines to highlight y values}
 
 \item{label_pos}{character, denotes where the x-axis label is at. defaults to "mid", alternative value: "start".}
 
