@@ -114,6 +114,18 @@ addYGrids <- function(tick_positions, xlim, theme){
   } 
 }
 
+#' @importFrom graphics lines
+addYHighlights <- function(xlim, theme) {
+  for(hl in theme$highlight_y_values) {
+    lines(
+      x = xlim,
+      y = c(hl, hl),
+      col = theme$highlight_y_color,
+      lwd = theme$highlight_y_lwd,
+      xpd = TRUE)
+  }
+}
+
 
 findGapSize <- function(r,tick_count){
   d <- diff(r)

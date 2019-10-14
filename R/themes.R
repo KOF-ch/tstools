@@ -29,6 +29,9 @@
 #' @param highlight_window_end integer vector highlight window start position, defaults to NA.,
 #' @param highlight_window_freq integer frequency of the higlight window defintion, defaults to 4. 
 #' @param highlight_window_start integer vector highlight window start position, defaults to NA.
+#' @param highlight_y_values numeric Vector of y values to highlight with a bold line
+#' @param highlight_y_lwd integer Line width of the lines to highlight y values
+#' @param highlight_y_color character Color of the lines to highlight y values
 #' @param label_pos character, denotes where the x-axis label is at. defaults to "mid", alternative value: "start".
 #' @param legend_all_left logical Should all legend entries be drawn on the left side of the plot? Default FALSE
 #' @param legend_box_size numeric The size of the squares denoting bar colors in the legend. Default 2
@@ -140,6 +143,9 @@ init_tsplot_theme <- function(
   highlight_window_end = NA,
   highlight_window_freq = 4,
   highlight_window_start = NA,
+  highlight_y_values = NA,
+  highlight_y_lwd = 2,
+  highlight_y_color = "#000000",
   label_pos = "mid",
   legend_all_left = FALSE,
   legend_box_size = 2,
