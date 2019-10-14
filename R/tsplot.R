@@ -686,7 +686,7 @@ tsplot.list <- function(...,
     addYGrids(left_y$y_ticks, global_x$x_range, theme = theme)
   }
   
-  if(!is.na(theme$highlight_y_values)) {
+  if(!all(is.na(theme$highlight_y_values))) {
     addYHighlights(global_x$x_range, theme)
   }
   
