@@ -40,7 +40,7 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE,
   # this helps to read in yearly data, otherwise the fact that date is 
   # a character would break zoo's as.yearmon below.
   # not an optimal solution but a good fix to read in yearly data w/o complaints.
-  if(all(grepl("[0-9]{4}", data_dt$date))){
+  if(all(grepl("^[0-9]{4}\\s*$", data_dt$date))){
   	data_dt[, date := as.numeric(date)]
   }
   
