@@ -10,7 +10,6 @@
 #' @param locale Locale in which to read the data (supported are "de", "fr", "it" and "en")
 #' @param as_list Should the output be converted to a list?
 #' @export
-#'
 read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   if(grepl("yaml$", path)) {
     if(file.exists(path)) {
@@ -124,9 +123,11 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   }
 }
 
-# Read a meta file without extension -> unknown format
-# Tries to determine format (yaml, json) and return the metadata
-# path must point to the file without extension e.g. swissdata_wd/set_id/set_id
+#' Read Meta Data File w/o File Extension
+#'
+#' Read a meta file without extension -> unknown format 
+#' Tries to determine format (yaml, json) and return the metadata
+#' path must point to the file without extension e.g. swissdata_wd/set_id/set_id  
 #' @return Meta list if file could be located, empty list otherwise
 .read_swissdata_meta_unknown_format <- function(path) {
   set_id <- basename(path)

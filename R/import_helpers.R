@@ -37,6 +37,12 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE,
   }
   
   data_dt <- data_dt[!(series %in% empty_series[is_empty == TRUE, series])]
+  # this helps to read in yearly data, otherwise the fact that date is 
+  # a character would break zoo's as.yearmon below.
+  # not an optimal solution but a good fix to read in yearly data w/o complaints.
+  if(all(grepl("[0-9]{4}", data_dt$date))){
+  	data_dt[, date := as.numeric(date)]
+  }
   
   data_dt[, `:=`(date_zoo = as.numeric(as.yearmon(date)), frq = 12), by = series]
   
