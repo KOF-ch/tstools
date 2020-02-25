@@ -282,7 +282,7 @@ tsplot.list <- function(...,
   }
   
   tsl_lengths <- sapply(tsl, length)
-  if(any(tsl_lengths == 1)) {
+  if(any(tsl_lengths == 1) && !left_as_bar) {
     warning("tsl contains series of length 1! Omitting those.")
     tsl <- tsl[tsl_lengths > 1]
     if(length(tsl) == 0) {
@@ -308,10 +308,6 @@ tsplot.list <- function(...,
     if(!signs_consistent) {
       warning("Found both positive and negative contributions in tsl!\nAre you sure a band plot is what you want?")
     }
-  }
-  
-  if(any(sapply(tsl, length) == 1) || (!is.null(tsr) && any(sapply(tsr, length) == 1))) {
-    stop("Time series of length 1 are not supported!")
   }
   
   if(is.null(theme)) {
