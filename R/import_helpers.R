@@ -64,7 +64,7 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE,
                                  end = .SD[.N, date_zoo], deltat = dT[use_only[1]])))
         
       } else{
-        if(dT[1] == 0) {
+        if(any(dT == 0)) {
           # Daily series
           list(ts_object = list(xts(value, order.by = as.Date(date))))
         } else if(frq[1] == 4) {
