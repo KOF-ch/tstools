@@ -497,6 +497,10 @@ tsplot.list <- function(...,
       half_min_range_size <- 0.5*theme$y_range_min_size
       tsl_r <- c(tsl_r_mid - half_min_range_size, tsl_r_mid + half_min_range_size)
     }
+  } else if (tsl_r[1] == tsl_r[2]) {
+    level <- tsl_r[1]
+    offset <- level %% 10
+    tsl_r <- c(level - 10 - offset, level + 10 - offset)
   }
   
   if(!is.null(tsr)) {
@@ -510,6 +514,10 @@ tsplot.list <- function(...,
         half_min_range_size <- 0.5*theme$y_range_min_size
         tsr_r <- c(tsr_r_mid - half_min_range_size, tsr_r_mid + half_min_range_size)
       }
+    } else if(tsr_r[1] == tsr_r[2]) {
+      level <- tsr_r[1]
+      offset <- level %% 10
+      tsr_r <- c(level - 10 - offset, level + 10 - offset)
     }
   }
   
