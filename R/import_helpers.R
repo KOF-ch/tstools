@@ -44,6 +44,10 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE,
   	data_dt[, date := as.numeric(date)]
   }
   
+  if(nrow(data_dt) == 0) {
+    return(list())
+  }
+  
   data_dt[, `:=`(date_zoo = as.numeric(as.yearmon(date)), frq = 12), by = series]
   
   data_dt[is.na(date_zoo), `:=`(date_zoo = as.numeric(as.yearqtr(date)), frq = 4)]
