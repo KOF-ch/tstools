@@ -59,6 +59,16 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   # Now this is some serious R-Fu
   labels <- expand.grid(lapply(meta_labels, sapply, `[[`, locale), stringsAsFactors = FALSE, KEEP.OUT.ATTRS = FALSE)
   
+  if(all(sapply(labels, sapply, is.null) == TRUE)) {
+    if(as_list) {
+      out <- lapply(keys, function(x) { NULL })
+      names(out) <- keys
+      return(out)
+    } else {
+      return(data.table(ts_key = keys))
+    }
+  }
+  
   # Work some dark magic to get units into it?
   
   # Is this smert? dimnames could be any old crazy strings
