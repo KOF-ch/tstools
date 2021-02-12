@@ -69,14 +69,21 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE,
           list(ts_object = list(xts(value, order.by = as.Date(date))))
         } else if(frq[1] == 4) {
           list(ts_object = list(xts(value, order.by = as.yearqtr(date_zoo))))
+        # TODO: This case also (wrongly) catches series of length 1
         } else {
           list(ts_object = list(xts(value, order.by = as.yearmon(date_zoo))))
         }
       }
       
     } else {
-      list(ts_object = list(ts(value, start = .SD[1, date_zoo],
-                               end = .SD[.N, date_zoo], deltat = dT[1])))
+      if(length(dT) > 0) {
+        list(ts_object = list(ts(value, start = .SD[1, date_zoo],
+                                 end = .SD[.N, date_zoo], deltat = dT[1])))
+      } else {
+        # "series" of length 1 need special treatment as frequency cannot be determined
+        list(ts_object = list(ts(value, start = .SD[1, date_zoo],
+                                 end = .SD[.N, date_zoo], deltat = 1)))
+      }
     }
   }}, by = series]
   
