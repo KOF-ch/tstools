@@ -4,12 +4,24 @@
 \alias{generate_random_ts}
 \title{Generate a list of random time series}
 \usage{
-generate_random_ts(n = 1, lengths = 36, starts = 1988,
-  frequencies = 12, ranges_min = -1, ranges_max = 1, shifts = 0,
-  ts_names = sprintf("ts\%d", 1:n), seed = 30042018,
-  random_NAs = FALSE, random_NA_proportions = 0.1,
-  normally_distributed = FALSE, normal_means = 0, normal_sds = 1,
-  frequency_shifts = FALSE, frequency_shift_after = 0.5)
+generate_random_ts(
+  n = 1,
+  lengths = 36,
+  starts = 1988,
+  frequencies = 12,
+  ranges_min = -1,
+  ranges_max = 1,
+  shifts = 0,
+  ts_names = sprintf("ts\%d", 1:n),
+  seed = 30042018,
+  random_NAs = FALSE,
+  random_NA_proportions = 0.1,
+  normally_distributed = FALSE,
+  normal_means = 0,
+  normal_sds = 1,
+  frequency_shifts = FALSE,
+  frequency_shift_after = 0.5
+)
 }
 \arguments{
 \item{n}{The number of ts objects to generate}

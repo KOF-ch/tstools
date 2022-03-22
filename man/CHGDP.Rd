@@ -4,7 +4,8 @@
 \name{CHGDP}
 \alias{CHGDP}
 \title{CH GDP Growth Contributions}
-\format{List list of six time series of class ts, 
+\format{
+List list of six time series of class ts, 
 containing contributions to Swiss GDP growth
 \describe{
   \item{manufacturing}{Growth contribution of manufacturing.}
@@ -13,7 +14,8 @@ containing contributions to Swiss GDP growth
   \item{hotels}{Growth contribution of hotels.}
   \item{fin_insur}{Growth contribution of financial services and insurances.}
   \item{other}{Growth contribution of other sectors.}
-}}
+}
+}
 \source{
 \url{https://www.seco.admin.ch/seco/en/home/wirtschaftslage---wirtschaftspolitik/Wirtschaftslage/bip-quartalsschaetzungen-/daten.html}
 }

@@ -9,12 +9,15 @@
 #' @param path Path to the yaml file to be read
 #' @param locale Locale in which to read the data (supported are "de", "fr", "it" and "en")
 #' @param as_list Should the output be converted to a list?
+#' @importFrom yaml read_yaml yaml.load
 #' @export
 read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
+  # avoid them CRAN NOTEs on data.table 
+  ts_key <- NULL
   if(grepl("yaml$", path)) {
     if(file.exists(path)) {
       set_name <- gsub(".yaml$", "", basename(path))
-      meta <- yaml::read_yaml(path)  
+      meta <- read_yaml(path)  
     } else {
       stop(sprintf("Could not find file %s!", path))
     }
@@ -80,7 +83,7 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
     meta$source <- meta$source.name[[locale]]
   }
   
-  per_set_dims <- yaml::yaml.load(
+  per_set_dims <- yaml.load(
     "
         title:
           de: Datensatz
@@ -128,6 +131,9 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
 #' Read a meta file without extension -> unknown format 
 #' Tries to determine format (yaml, json) and return the metadata
 #' path must point to the file without extension e.g. swissdata_wd/set_id/set_id  
+#' @param path character file path.
+#' @importFrom yaml read_yaml
+#' @importFrom jsonlite fromJSON
 #' @return Meta list if file could be located, empty list otherwise
 .read_swissdata_meta_unknown_format <- function(path) {
   set_id <- basename(path)
@@ -136,9 +142,9 @@ read_swissdata_meta <- function(path, locale = "de", as_list = FALSE) {
   names(existing_meta_files) <- meta_formats
   
   if(existing_meta_files["yaml"]) {
-    meta <- yaml::read_yaml(paste0(path, ".yaml"))
+    meta <- read_yaml(paste0(path, ".yaml"))
   } else if(existing_meta_files["json"]) {
-    meta <- jsonlite::fromJSON(paste0(path, ".json"))
+    meta <- fromJSON(paste0(path, ".json"))
   } else {
     meta <- list()
   }

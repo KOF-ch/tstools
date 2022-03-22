@@ -4,15 +4,31 @@
 \alias{tsplot}
 \title{Plot Time Series}
 \usage{
-tsplot(..., tsr = NULL, ci = NULL, left_as_bar = FALSE,
-  group_bar_chart = FALSE, relative_bar_chart = FALSE,
-  left_as_band = FALSE, plot_title = NULL, plot_subtitle = NULL,
-  plot_subtitle_r = NULL, find_ticks_function = "findTicks",
-  overall_xlim = NULL, overall_ylim = NULL, manual_date_ticks = NULL,
-  manual_value_ticks_l = NULL, manual_value_ticks_r = NULL,
-  manual_ticks_x = NULL, theme = NULL, quiet = TRUE,
-  auto_legend = TRUE, output_format = "plot", filename = "tsplot",
-  close_graphics_device = TRUE)
+tsplot(
+  ...,
+  tsr = NULL,
+  ci = NULL,
+  left_as_bar = FALSE,
+  group_bar_chart = FALSE,
+  relative_bar_chart = FALSE,
+  left_as_band = FALSE,
+  plot_title = NULL,
+  plot_subtitle = NULL,
+  plot_subtitle_r = NULL,
+  find_ticks_function = "findTicks",
+  overall_xlim = NULL,
+  overall_ylim = NULL,
+  manual_date_ticks = NULL,
+  manual_value_ticks_l = NULL,
+  manual_value_ticks_r = NULL,
+  manual_ticks_x = NULL,
+  theme = NULL,
+  quiet = TRUE,
+  auto_legend = TRUE,
+  output_format = "plot",
+  filename = "tsplot",
+  close_graphics_device = TRUE
+)
 }
 \arguments{
 \item{...}{multiple objects of class ts or a list of time series. All objects passed through the ... parameter relate to the standard left y-axis.}

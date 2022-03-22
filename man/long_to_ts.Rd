@@ -4,8 +4,12 @@
 \alias{long_to_ts}
 \title{Transform a long format data.frame of time series to a tslist}
 \usage{
-long_to_ts(data, keep_last_freq_only = FALSE, force_xts = FALSE,
-  strip_nas = TRUE)
+long_to_ts(
+  data,
+  keep_last_freq_only = FALSE,
+  force_xts = FALSE,
+  strip_nas = TRUE
+)
 }
 \arguments{
 \item{data}{data.frame The data.frame to be transformed}

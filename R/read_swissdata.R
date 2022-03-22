@@ -26,6 +26,9 @@
 read_swissdata <- function(path, key_columns = NULL, filter = NULL,
                            aggregates = NULL,
                            keep_last_freq_only = FALSE) {
+  
+  ..raw_names <- NULL
+  . <- NULL
   dataset <- gsub("\\.csv","",basename(path))
   
   if(is.null(key_columns)) {
@@ -55,7 +58,8 @@ read_swissdata <- function(path, key_columns = NULL, filter = NULL,
       aggregate_fcn <- agg$fcn
       aggregate_fcn <- ifelse(is.null(aggregate_fcn), "sum", aggregate_fcn)
       aggdim <- agg$dimensions
-      raw[, .(value = do.call(aggregate_fcn, list(value))), by = c(setdiff(dims, aggdim), "date")][, get("aggdim") := "total"][, ..raw_names]
+      raw[, .(value = do.call(aggregate_fcn, list(value))),
+          by = c(setdiff(dims, aggdim), "date")][, get("aggdim") := "total"][, ..raw_names]
     })
     totals <- rbindlist(totals)
     raw <- rbindlist(list(raw, totals))

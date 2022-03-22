@@ -4,8 +4,15 @@
 \alias{df_to_reg_ts}
 \title{Turn data.frame to Regular Monthly or Quarterly Time Series}
 \usage{
-df_to_reg_ts(dframe, var_cols, year_col = "year", period_col = "month",
-  freq = 12, return_ts = T, by = NULL)
+df_to_reg_ts(
+  dframe,
+  var_cols,
+  year_col = "year",
+  period_col = "month",
+  freq = 12,
+  return_ts = T,
+  by = NULL
+)
 }
 \arguments{
 \item{dframe}{data.frame input}

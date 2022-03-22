@@ -7,6 +7,7 @@
 #' from the file extension.
 #' @param sep character seperator for csv files. defaults to ','.
 #' @param skip numeric See data.table's fread.
+#' @param column_names character vector denoting column names, defaults to c("date","value","series).
 #' @param keep_last_freq_only in case there is a frequency change in a time series, 
 #' should only the part of the series be returned that has the same frequency as 
 #' the last observation. This is useful when data start out crappy and then stabilize 

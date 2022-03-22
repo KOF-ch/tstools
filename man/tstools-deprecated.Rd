@@ -14,7 +14,6 @@
 \alias{stripLeadingNAsFromTs}
 \alias{stripTrailingNAsFromTs}
 \alias{writeTimeSeries}
-\alias{tstools-deprecated-package}
 \title{Deprecated function(s) in tstools}
 \arguments{
 \item{...}{Parameters to be passed to the modern version of the function}

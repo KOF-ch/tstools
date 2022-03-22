@@ -4,9 +4,15 @@
 \alias{read_ts}
 \title{Import time series data from a file.}
 \usage{
-read_ts(file, format = c("csv", "xlsx", "json", "zip"), sep = ",",
-  skip = 0, column_names = c("date", "value", "series"),
-  keep_last_freq_only = FALSE, force_xts = FALSE)
+read_ts(
+  file,
+  format = c("csv", "xlsx", "json", "zip"),
+  sep = ",",
+  skip = 0,
+  column_names = c("date", "value", "series"),
+  keep_last_freq_only = FALSE,
+  force_xts = FALSE
+)
 }
 \arguments{
 \item{file}{Path to the file to be read}
@@ -17,6 +23,8 @@ from the file extension.}
 \item{sep}{character seperator for csv files. defaults to ','.}
 
 \item{skip}{numeric See data.table's fread.}
+
+\item{column_names}{character vector denoting column names, defaults to c("date","value","series).}
 
 \item{keep_last_freq_only}{in case there is a frequency change in a time series, 
 should only the part of the series be returned that has the same frequency as 

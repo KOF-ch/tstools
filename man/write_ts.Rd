@@ -4,9 +4,16 @@
 \alias{write_ts}
 \title{Export a list of time series to a file.}
 \usage{
-write_ts(tl, fname = NULL, format = "csv", date_format = NULL,
-  timestamp_to_fn = FALSE, round_digits = NULL,
-  rdata_varname = "tslist", ...)
+write_ts(
+  tl,
+  fname = NULL,
+  format = "csv",
+  date_format = NULL,
+  timestamp_to_fn = FALSE,
+  round_digits = NULL,
+  rdata_varname = "tslist",
+  ...
+)
 }
 \arguments{
 \item{tl}{list of time series}
