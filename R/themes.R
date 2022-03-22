@@ -99,7 +99,7 @@
 #' @param yaxs character axis defintion as in base plot, defaults to "i".
 #' @param yearly_ticks logical, should yearly ticks be shown. Defaults to TRUE.
 #' @examples 
-#' # create a list
+#' \dontrun{# create a list
 #' data(KOF)
 #' tt <- init_tsplot_theme()
 #' # adjust a single element
@@ -108,7 +108,7 @@
 #' tsplot(KOF$kofbarometer,theme = tt)
 #' # for more theme examples check the vignette
 #' vignette("tstools")
-#' 
+#' }
 #' 
 #' @author Matthias Bannert
 #' @export
