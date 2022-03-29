@@ -46,7 +46,14 @@
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
 </form>
 
-      <ul class="navbar-nav"></ul>
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/mbannert/tstools/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 
     
@@ -63,7 +70,7 @@
             
             <h4 data-toc-skip class="date">2022-03-29</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/mbannert/tstools/blob/HEAD/vignettes/tstools.Rmd" class="external-link"><code>vignettes/tstools.Rmd</code></a></small>
       <div class="d-none name"><code>tstools.Rmd</code></div>
     </div>
 
@@ -106,7 +113,7 @@
 </h3>
 <p>… let’s set up some data for our reproducible examples first. Let’s do this separately so we can really focus on the <strong>tstools</strong> specific code in our discussion of the examples. Don’t get confused, plotting is really easy, creating random data or reading in data in order to make the examples reproducible is what costs us some extra lines of code here.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tstools</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/mbannert/tstools" class="external-link">tstools</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">KOF</span><span class="op">)</span>
 <span class="va">short</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/window.html" class="external-link">window</a></span><span class="op">(</span><span class="va">KOF</span><span class="op">$</span><span class="va">kofbarometer</span>,
                 start<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2007</span>,<span class="fl">1</span><span class="op">)</span>,
