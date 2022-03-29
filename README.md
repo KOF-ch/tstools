@@ -5,12 +5,11 @@
 
 <!-- badges: start -->
 
-[![CRAN](https://img.shields.io/cran/v/tstools.svg?style=flat-square)]()
-
-[![CRAN](https://img.shields.io/cran/l/tstools.svg?style=flat-square)]()
-
-[![CRAN](http://cranlogs.r-pkg.org/badges/grand-total/tstools)]()
-
+[![CRAN
+status](https://www.r-pkg.org/badges/version/tstools)](https://CRAN.R-project.org/package=tstools)
+[![R-CMD-check](https://github.com/mbannert/tstools/workflows/R-CMD-check/badge.svg)](https://github.com/mbannert/tstools/actions)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 <!-- badges: end -->
 
 Plot official statistics’ time series conveniently: automatic legends,
