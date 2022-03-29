@@ -17,7 +17,7 @@ containing contributions to Swiss GDP growth
 }
 }
 \source{
-\url{https://www.seco.admin.ch/seco/en/home/wirtschaftslage---wirtschaftspolitik/Wirtschaftslage/bip-quartalsschaetzungen-/daten.html}
+\url{https://seco.admin.ch/seco/en/home/wirtschaftslage---wirtschaftspolitik/Wirtschaftslage/bip-quartalsschaetzungen-/daten.html}
 }
 \usage{
 CHGDP

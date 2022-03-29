@@ -18,7 +18,7 @@ A list of two time series of class ts
 }
 }
 \source{
-\url{https://www.kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-economic-barometer.html}
+\url{https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-economic-barometer.html}
 }
 \usage{
 KOF

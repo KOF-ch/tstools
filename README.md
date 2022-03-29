@@ -24,6 +24,8 @@ defaults. In addition to charts, ‘tstools’ provides a super fast,
 import long format, wide format and transposed wide format data to
 various file types.
 
+-\> [pkgdown documentation](https://mbannert.github.io/tstools/) \<-
+
 ## Installation
 
 You can install the development version of tstools from
