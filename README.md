@@ -1,27 +1,60 @@
-[![CRAN](https://img.shields.io/cran/v/tstools.svg?style=flat-square)]()	
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# {tstools} – a Time Series Toolbox for Official Statistics
+
+<!-- badges: start -->
+
+[![CRAN](https://img.shields.io/cran/v/tstools.svg?style=flat-square)]()
 
 [![CRAN](https://img.shields.io/cran/l/tstools.svg?style=flat-square)]()
 
-<!-- [![CRAN](http://cranlogs.r-pkg.org/badges/grand-total/tstools)]() -->
+[![CRAN](http://cranlogs.r-pkg.org/badges/grand-total/tstools)]()
 
-[![Build Status](https://travis-ci.org/mbannert/tstools.svg?branch=master)](https://travis-ci.org/mbannert/tstools)
+<!-- badges: end -->
 
-# tstools
-A time series toolbox for official statistics
+Plot official statistics’ time series conveniently: automatic legends,
+highlight windows, stacked bar chars with positive and negative
+contributions, sum-as-line option, two y-axes with automatic horizontal
+grids that fit both axes and other popular chart types. ‘tstools’ comes
+with a plethora of defaults to let you plot without setting an abundance
+of parameters first, but gives you the flexibility to tweak the
+defaults. In addition to charts, ‘tstools’ provides a super fast,
+‘data.table’ backed time series I/O that allows the user to export /
+import long format, wide format and transposed wide format data to
+various file types.
 
+## Installation
 
-## CRAN Release Preliminary Release Schedule
+You can install the development version of tstools from
+[GitHub](https://github.com/) with:
 
-Dear tstools User, 
+``` r
+# install.packages("remotes")
+remotes::install_github("mbannert/tstools")
+```
 
-we decided to give the project more stability by deploying less frequently to KOF servers and CRAN. 
-We plan to compose sets of issues for each release and test the new set of feature thoroughly before deploying.
+## Example Use: Time Series Charts with Legends by Default
 
-- 0.3.8: September 11, 2018
-- 0.3.9: June 25, 2019
+{tstools} lets you draw time series line charts that come with a legend
+out-of-the-box. Simply feed the `tsplot()` function with a list of time
+series.
 
-We do admit you'll have to wait for new features a bit longer, but we're confident this the right step as the project gains more users and is more active than ever.
+``` r
+library(tstools)
+#> Loading required package: zoo
+#> 
+#> Attaching package: 'zoo'
+#> The following objects are masked from 'package:base':
+#> 
+#>     as.Date, as.Date.numeric
+## basic example code
+tsl <- list(
+  AirPassengers = AirPassengers,
+  JohnsonJohnson = JohnsonJohnson
+)
 
-matt
+tsplot(tsl)
+```
 
-P.S.: If you prefer 'bleeding edge' you can still go with our github master branch. 
+<img src="man/figures/README-example-1.png" width="100%" />
