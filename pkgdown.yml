@@ -1,7 +1,7 @@
-pandoc: 2.7.3
+pandoc: 2.17.1.1
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   tstools: tstools.html
-last_built: 2022-03-29T10:16Z
+last_built: 2022-03-29T10:59Z
 
