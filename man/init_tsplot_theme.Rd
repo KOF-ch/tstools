@@ -326,7 +326,7 @@ while the second and fourth series have the second color.
 The list contains the following elements:
 }
 \examples{
-# create a list
+\dontrun{# create a list
 data(KOF)
 tt <- init_tsplot_theme()
 # adjust a single element
@@ -335,7 +335,7 @@ tt$highlight_window <- TRUE
 tsplot(KOF$kofbarometer,theme = tt)
 # for more theme examples check the vignette
 vignette("tstools")
-
+}
 
 }
 \author{
