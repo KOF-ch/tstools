@@ -42,12 +42,6 @@ series.
 
 ``` r
 library(tstools)
-#> Loading required package: zoo
-#> 
-#> Attaching package: 'zoo'
-#> The following objects are masked from 'package:base':
-#> 
-#>     as.Date, as.Date.numeric
 ## basic example code
 tsl <- list(
   AirPassengers = AirPassengers,
@@ -58,3 +52,13 @@ tsplot(tsl)
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
+
+and use easily use 2 y-axis. (I know some argue those double axes are
+fundamentally flawed, but my peers didn’t care and asked for it.)
+
+``` r
+tsplot(tsl$AirPassengers,
+       tsr = tsl$JohnsonJohnson)
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
