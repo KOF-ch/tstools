@@ -23,6 +23,8 @@ Suggests:
     reshape2,
     openxlsx
 VignetteBuilder: knitr
+BugReports: https://github.com/mbannert/tstools/issues
+URL: https://github.com/mbannert/tstools
 Date: 2022-03-29
 License: GPL-2
 LazyData: true
