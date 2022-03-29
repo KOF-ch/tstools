@@ -10,6 +10,10 @@ status](https://www.r-pkg.org/badges/version/tstools)](https://CRAN.R-project.or
 [![R-CMD-check](https://github.com/mbannert/tstools/workflows/R-CMD-check/badge.svg)](https://github.com/mbannert/tstools/actions)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+
+[![CRAN
+Downloads](https://cranlogs.r-pkg.org/badges/tstools)](https://cran.rstudio.com/web/packages/tstools/index.html)
+
 <!-- badges: end -->
 
 Plot official statistics’ time series conveniently: automatic legends,
