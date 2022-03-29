@@ -13,6 +13,6 @@
 #'   \item{baro_hi_95}{Auto Arima 95 percent CI upper bound of the KOF Barometer forecast}
 #'   ...
 #' }
-#' @source \url{https://www.kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-economic-barometer.html}
+#' @source \url{https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-economic-barometer.html}
 #' 
 "KOF"

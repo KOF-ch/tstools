@@ -13,6 +13,6 @@
 #'   \item{fin_insur}{Growth contribution of financial services and insurances.}
 #'   \item{other}{Growth contribution of other sectors.}
 #' }
-#' @source \url{https://www.seco.admin.ch/seco/en/home/wirtschaftslage---wirtschaftspolitik/Wirtschaftslage/bip-quartalsschaetzungen-/daten.html}
+#' @source \url{https://seco.admin.ch/seco/en/home/wirtschaftslage---wirtschaftspolitik/Wirtschaftslage/bip-quartalsschaetzungen-/daten.html}
 #' 
 "CHGDP"
