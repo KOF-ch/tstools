@@ -57,8 +57,8 @@ and use easily use 2 y-axis. (I know some argue those double axes are
 fundamentally flawed, but my peers didn’t care and asked for it.)
 
 ``` r
-tsplot(tsl$AirPassengers,
-       tsr = tsl$JohnsonJohnson)
+tsplot("Air Passengers" = tsl$AirPassengers,
+       tsr =  list("Johnson & Johnson" = tsl$JohnsonJohnson))
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
