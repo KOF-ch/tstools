@@ -1,11 +1,12 @@
 Package: tstools
 Type: Package
-Version: 0.4.1
+Version: 0.4.2
 Title: A Time Series Toolbox for Official Statistics
 Description: Plot official statistics' time series conveniently: automatic legends, highlight windows, stacked bar chars with positive and negative contributions, sum-as-line option, two y-axes with automatic horizontal grids that fit both axes and other popular chart types. 'tstools' comes with a plethora of defaults to let you plot without setting an abundance of parameters first, but gives you the flexibility to tweak the defaults. In addition to charts, 'tstools' provides a super fast, 'data.table' backed time series I/O that allows the user to export / import long format, wide format and transposed wide format data to various file types. 
 Authors@R: c(
     person("Matthias", "Bannert", , "bannert@kof.ethz.ch", c("aut", "cre")),
-    person("Severin", "Thoeni", , "thoenis@kof.ethz.ch", "aut"))
+    person("Severin", "Thoeni", , "thoenis@kof.ethz.ch", "aut"),
+    person("Stéphane", "Bisinger", , "bisinger@kof.ethz.ch", c("aut", "cre")))
 Depends:
     R (>= 3.0.0),
     zoo (>= 1.7-12),
@@ -23,13 +24,10 @@ Suggests:
     reshape2,
     openxlsx
 VignetteBuilder: knitr
-BugReports: https://github.com/mbannert/tstools/issues
-URL: https://github.com/mbannert/tstools
+BugReports: https://github.com/KOF-ch/tstools/issues
+URL: https://github.com/KOF-ch/tstools
 Date: 2022-03-29
 License: GPL-2
 LazyData: true
-Maintainer: Matthias Bannert <bannert@kof.ethz.ch>
 NeedsCompilation: no
-Author: Matthias Bannert [aut, cre],
-  Severin Thoeni [aut]
 RoxygenNote: 7.1.2
