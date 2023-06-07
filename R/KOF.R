@@ -4,7 +4,7 @@
 #'
 #' @format A list of two time series of class ts
 #' \describe{
-#'   \item{kofbarometer}{KOF Barometer Indicator}'   
+#'   \item{kofbarometer}{KOF Barometer Indicator}'
 #'   \item{reference}{Reference series to KOF Barometer, change in Swiss GDP compared to previous month}
 #'   \item{baro_point_fc}{Auto Arima point forecast of the KOF Barometer}
 #'   \item{baro_lo_80}{Auto Arima 80 percent CI lower bound of the KOF Barometer forecast}
@@ -14,5 +14,5 @@
 #'   ...
 #' }
 #' @source \url{https://kof.ethz.ch/en/forecasts-and-indicators/indicators/kof-economic-barometer.html}
-#' 
+#'
 "KOF"

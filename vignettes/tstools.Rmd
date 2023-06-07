@@ -48,40 +48,41 @@ Let's do this separately so we can really focus on the **tstools** specific code
 library(tstools)
 data(KOF)
 short <- window(KOF$kofbarometer,
-                start=c(2007,1),
-                end=c(2014,1))
+  start = c(2007, 1),
+  end = c(2014, 1)
+)
 
 # list of time series
-ts1 <- ts(runif(40,-10,40),start=c(1995,1),freq=4)
-ts2 <- ts(runif(80,0,50),start=c(2000,1),freq=12)
+ts1 <- ts(runif(40, -10, 40), start = c(1995, 1), freq = 4)
+ts2 <- ts(runif(80, 0, 50), start = c(2000, 1), freq = 12)
 
 tslist <- list()
 tslist$ts1 <- ts1
 tslist$ts2 <- ts2
 
-# data for stacked bar charts... 
+# data for stacked bar charts...
 tsb1 <- ts(runif(30, -30, 20), start = c(2010, 1), frequency = 4)
 tsb2 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
 tsb3 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
 
 
-min_series <- ts(runif(10,-10,40),start=c(1995,1),freq=4)
-min_series_2 <- ts(runif(25,-20,40),start=c(1995,1),freq=12)
+min_series <- ts(runif(10, -10, 40), start = c(1995, 1), freq = 4)
+min_series_2 <- ts(runif(25, -20, 40), start = c(1995, 1), freq = 12)
 
-min_series_3 <- ts(runif(25,-20,40),start=c(1995,1),freq=4)
-
-
-
-min_li <- list(series1 = min_series,
-               series2 = min_series_2,
-               series3 = min_series_3)
-
-
-missings <- ts(c(1,2,10,3,5,6,NA,NA,3,2,5,3,1,1),
-               start=c(1995,1),freq=4)
+min_series_3 <- ts(runif(25, -20, 40), start = c(1995, 1), freq = 4)
 
 
 
+min_li <- list(
+  series1 = min_series,
+  series2 = min_series_2,
+  series3 = min_series_3
+)
+
+
+missings <- ts(c(1, 2, 10, 3, 5, 6, NA, NA, 3, 2, 5, 3, 1, 1),
+  start = c(1995, 1), freq = 4
+)
 ```
 
 
@@ -97,20 +98,22 @@ tsplot(short)
 The function *tsplot* can handle multiple time series objects or lists at once. You can either throw multiple comma separated time series objects at *tsplot* 
 
 ```{r,fig.width = 7,fig.height=6}
-tsplot(ts1,ts2,auto_legend=F)
+tsplot(ts1, ts2, auto_legend = F)
 ```
 
 or a list of time series...
 
 ```{r,fig.width = 7,fig.height=6}
-tsplot(tslist,auto_legend=F)
+tsplot(tslist, auto_legend = F)
 ```
 
 Even though *tsplot* supports *mts* and single time series, we clearly recommend to pass lists of time series to *tsplot* for the best and most tested experience. Lists are a convenient way to add legends to time series charts as *tsplot* automatically uses names of list elements in its legend. You may also define your lists adhoc within the *tsplot* call like so:
 
 ```{r,fig.width = 7,fig.height=6}
-tsplot(list("Time Series 1" = ts1,
-            "Time Series 2" = ts2))
+tsplot(list(
+  "Time Series 1" = ts1,
+  "Time Series 2" = ts2
+))
 ```
 
 ## Auto-scale grids are there to help you, how to configure them!
@@ -129,7 +132,8 @@ parameter implies now that 70 percent of the outer most grid needs to stay clean
 
 ```{r}
 tsplot(short,
-       theme = init_tsplot_theme(y_tick_margin = .7))
+  theme = init_tsplot_theme(y_tick_margin = .7)
+)
 ```
 
 ## Manual value ticks
@@ -137,9 +141,9 @@ Often you just want to have a fixed scale, e.g., for an index that ranges from 0
 In case you use 2 y-axes make sure both manual value tick vectors are of the same length. 
 
 ```{r}
-tsplot(KOF['kofbarometer'],
-       manual_value_ticks_l = seq(60,120,by=20))
-
+tsplot(KOF["kofbarometer"],
+  manual_value_ticks_l = seq(60, 120, by = 20)
+)
 ```
 
 
@@ -156,14 +160,18 @@ ci <- list(
   "KOF Barometer" = list(
     "80" = list(
       lb = KOF$baro_lo_80,
-      ub = KOF$baro_hi_80),
+      ub = KOF$baro_hi_80
+    ),
     "95" = list(
       lb = KOF$baro_lo_95,
       ub = KOF$baro_hi_95
-    )))
+    )
+  )
+)
 
 tsplot(list("KOF Barometer" = KOF$baro_point_fc),
-       ci = ci)
+  ci = ci
+)
 ```
 
 The KOF data example dataset contains an *auto.arima* point forecast of the KOF Barometer as well as upper and lower bound at the 80% and 95% confidence level. Notice that *tsplot* does **not** do any forecasting or estimation of confidence bands, it simply takes some time series as upper and lower bounds and assigns them to a particular series. Thus it's agnostic of the estimation method. 
@@ -177,9 +185,10 @@ which implies that a bar is centered above the category tick for that period.
 
 ```{r,fig.width = 7,fig.height=6}
 tsplot(tsb1, tsb2, tsb3,
-       left_as_bar = T,
-       auto_legend = F,
-       theme = init_tsplot_theme(bar_gap = 10))
+  left_as_bar = T,
+  auto_legend = F,
+  theme = init_tsplot_theme(bar_gap = 10)
+)
 ```
 
 Notice that the gap size of the gap between the bars can be adjusted using the **bar_gap** theme parameter.
@@ -193,11 +202,13 @@ helpful to be able to add the sum of the components to plot on a per period
 basis. The following draws a line on top of the bars that represents the sum.  
 
 ```{r,fig.width = 7,fig.height=6}
-tsl <- list(tsb1,tsb2,tsb3)
-tsplot(tsl,left_as_bar = T,
-       manual_value_ticks_l = seq(-40,100, by = 20),
-       auto_legend = F,
-       theme = init_tsplot_theme(sum_as_line = T))
+tsl <- list(tsb1, tsb2, tsb3)
+tsplot(tsl,
+  left_as_bar = T,
+  manual_value_ticks_l = seq(-40, 100, by = 20),
+  auto_legend = F,
+  theme = init_tsplot_theme(sum_as_line = T)
+)
 ```
 
 ## Stacked bar charts with different start and end dates
@@ -206,13 +217,14 @@ It is even possible, to produce stacked bar charts from time series
 of different start and end dates.
 
 ```{r,fig.width = 7,fig.height=6}
-tsb1 <- ts(runif(30,-30,20),start=c(2010,1),frequency = 4)
-tsb2 <- ts(runif(30,0,50),start=c(2010,1),frequency = 4)
-tsb3 <- ts(runif(30,0,50),start=c(2010,1),frequency = 4)
-tsb4 <- ts(runif(30,-40,10),start=c(2005,1),frequency = 4)
+tsb1 <- ts(runif(30, -30, 20), start = c(2010, 1), frequency = 4)
+tsb2 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
+tsb3 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
+tsb4 <- ts(runif(30, -40, 10), start = c(2005, 1), frequency = 4)
 tsplot(tsb1, tsb2, tsb3, tsb4,
-       left_as_bar = T,
-       auto_legend = F)
+  left_as_bar = T,
+  auto_legend = F
+)
 ```
 ### Grouped bar charts
 
@@ -222,13 +234,14 @@ them. In **tstools** stacking is the default but it can easily be tweaked using
 the *group_bar_chart parameter.
 
 ```{r,fig.width = 7,fig.height=6}
-tsb1 <- ts(runif(20,-30,20),start=c(2010,1),frequency = 12)
-tsb2 <- ts(runif(20,0,50),start=c(2010,1),frequency = 12)
-tsb3 <- ts(runif(20,0,50),start=c(2010,1),frequency = 12)
+tsb1 <- ts(runif(20, -30, 20), start = c(2010, 1), frequency = 12)
+tsb2 <- ts(runif(20, 0, 50), start = c(2010, 1), frequency = 12)
+tsb3 <- ts(runif(20, 0, 50), start = c(2010, 1), frequency = 12)
 tsplot(tsb1, tsb2, tsb3,
-       left_as_bar = T,
-       group_bar_chart = T,
-       auto_legend = F)
+  left_as_bar = T,
+  group_bar_chart = T,
+  auto_legend = F
+)
 ```
 
 
@@ -241,9 +254,11 @@ either positive or negative.
 
 ```{r,fig.width = 7,fig.height=6}
 set.seed(123)
-tslist <- generate_random_ts(4, starts = 1987:1990,
-                             ranges_min = 1,
-                             ranges_max = 3)
+tslist <- generate_random_ts(4,
+  starts = 1987:1990,
+  ranges_min = 1,
+  ranges_max = 3
+)
 tsplot(tslist, left_as_band = TRUE)
 ```
 
@@ -261,7 +276,8 @@ an object of class ts or a list of time series.
 ```{r,fig.width = 7,fig.height=6}
 data(KOF)
 tsplot(KOF$kofbarometer,
-       tsr = KOF$reference,auto_legend=F)
+  tsr = KOF$reference, auto_legend = F
+)
 ```
 
 
@@ -273,16 +289,15 @@ and choose *left_as_bar = T*. Note that the line chart is automatically moved
 to the middle of the quarterly bar. 
 
 ```{r,fig.width = 7,fig.height=6}
-tsb1 <- ts(runif(30,-30,20),start=c(2010,1),frequency = 4)
-tsb2 <- ts(runif(30,0,30),start=c(2010,1),frequency = 4)
-tsb3 <- ts(runif(30,0,30),start=c(2010,1),frequency = 4)
-tsr1 <- ts(runif(30,-4,6),start=c(2010,1),frequency = 4)
+tsb1 <- ts(runif(30, -30, 20), start = c(2010, 1), frequency = 4)
+tsb2 <- ts(runif(30, 0, 30), start = c(2010, 1), frequency = 4)
+tsb3 <- ts(runif(30, 0, 30), start = c(2010, 1), frequency = 4)
+tsr1 <- ts(runif(30, -4, 6), start = c(2010, 1), frequency = 4)
 tsplot(tsb1, tsb2, tsb3,
-       tsr=tsr1,
-       left_as_bar = T,
-       auto_legend=F)
-
-
+  tsr = tsr1,
+  left_as_bar = T,
+  auto_legend = F
+)
 ```
 
 ## Y-Grids: automatic vs. manual
@@ -325,17 +340,20 @@ parameter directly in function call.
 
 ```{r,fig.width = 7,fig.height=6}
 tsplot(tsb1, tsb2, tsb3,
-       left_as_bar = T,
-       theme = init_tsplot_theme(highlight_window = T))
+  left_as_bar = T,
+  theme = init_tsplot_theme(highlight_window = T)
+)
 ```
 
 ### Add a Box Around Your Plot
 
 ```{r,fig.width = 7,fig.height=6}
 tt <- init_tsplot_theme(use_box = T)
-tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
-       left_as_bar = T,
-       theme = tt)
+tsplot(tsb1, tsb2, tsb3,
+  tsr = tsr1,
+  left_as_bar = T,
+  theme = tt
+)
 ```
 
 
@@ -344,20 +362,21 @@ tsplot(tsb1,tsb2,tsb3,tsr=tsr1,
 Note how you can simply change existing themes
 
 ```{r,fig.width = 7,fig.height=6}
-tt$lty <- c(3,2,1)
-tsplot(tsb1,tsb2,tsb3,
-       theme = tt)
+tt$lty <- c(3, 2, 1)
+tsplot(tsb1, tsb2, tsb3,
+  theme = tt
+)
 ```
 
 ### Adjust the highlight window
 
 ```{r,fig.width = 7,fig.height=6}
 nt <- init_tsplot_theme(highlight_window = T)
-nt$highlight_window_start <- c(2017,1)
-nt$highlight_window_end <- c(2018,1)
-tsplot(tsb1,tsb2,
-       theme = nt)
-
+nt$highlight_window_start <- c(2017, 1)
+nt$highlight_window_end <- c(2018, 1)
+tsplot(tsb1, tsb2,
+  theme = nt
+)
 ```
 
 ### Handling missings (NA Handling)
@@ -365,8 +384,11 @@ tsplot(tsb1,tsb2,
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
 tsplot(missings,
-       theme = init_tsplot_theme(NA_continue_line = T,
-                                 show_points = T))
+  theme = init_tsplot_theme(
+    NA_continue_line = T,
+    show_points = T
+  )
+)
 ```
 
 
@@ -374,7 +396,6 @@ tsplot(missings,
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
 tsplot(ts2)
-
 ```
 
 
@@ -383,8 +404,8 @@ tsplot(ts2)
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
 tsplot(ts2,
-       theme = init_tsplot_theme(fill_year_with_nas = F))
-
+  theme = init_tsplot_theme(fill_year_with_nas = F)
+)
 ```
 
 
@@ -393,8 +414,10 @@ tsplot(ts2,
 ## Assign Names to Single Objects
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
-tsplot("An arbitrary ts object" = ts1,
-       "another ts object" = ts2)
+tsplot(
+  "An arbitrary ts object" = ts1,
+  "another ts object" = ts2
+)
 ```
 
 
@@ -417,39 +440,39 @@ tsplot(tslist)
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
 tsplot(min_li,
-       theme = init_tsplot_theme(legend_col = 2))
+  theme = init_tsplot_theme(legend_col = 2)
+)
 ```
 
 
 ## Legends Left and Right Y-Axis
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
-tsplot(KOF['kofbarometer'],
-       tsr = KOF['reference'])
-
+tsplot(KOF["kofbarometer"],
+  tsr = KOF["reference"]
+)
 ```
 
 
 ## Force all Legends to the Left
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
-tsplot(KOF['kofbarometer'],
-tsr = list('reference (right scale)' = KOF$reference),
-theme = init_tsplot_theme(legend_all_left = TRUE))
-
+tsplot(KOF["kofbarometer"],
+  tsr = list("reference (right scale)" = KOF$reference),
+  theme = init_tsplot_theme(legend_all_left = TRUE)
+)
 ```
 
 ## Line Breaks in Legends
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
 tsplot("Some like\n loooong legends\n with so many words" = ts1)
-
 ```
 
 ## Remember: auto_legend = FALSE
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
-tsplot(KOF[1],auto_legend = F)
+tsplot(KOF[1], auto_legend = F)
 ```
 
 
@@ -486,8 +509,9 @@ Saving your **tstools** chart to a .pdf document is as easy and convenient as
 
 ```{r,eval=FALSE}
 tsplot(KOF[1],
-       output_format = "pdf",
-       theme = init_tsplot_print_theme(output_wide = T))
+  output_format = "pdf",
+  theme = init_tsplot_print_theme(output_wide = T)
+)
 ```
 
 Notice the optional print theme and *output_wide* parameter: You can export 4:3 (default) format .pdf files as well as 16:9 (wide) using the convenience *output_format* theme parameter. Notice also that you do not necessarily have to use the print theme. What is important is not to wrap the call in `pdf()` and `dev.off()` calls
@@ -512,14 +536,15 @@ Besides the default .csv, .json, .xlsx, and .RData are available.
 
 ```{r,eval=FALSE}
 data(KOF)
-write_ts(KOF,file.path(tempdir(),"test_export"),"csv")
+write_ts(KOF, file.path(tempdir(), "test_export"), "csv")
 ```
 
 ```{r,eval=FALSE}
-write_ts(KOF,file.path(tempdir(),"test_export_wide_trans"),
-         "csv",
-         wide = T,
-         transpose = T)
+write_ts(KOF, file.path(tempdir(), "test_export_wide_trans"),
+  "csv",
+  wide = T,
+  transpose = T
+)
 ```
 
 *transpose = T* moves the time to the header (x-axis) and places all variables in rows 
@@ -537,8 +562,10 @@ No, **tsplot** is base R based. You can simply add enhancements to the plot usin
 You're probably using 2 Y-axes. The default for two Y-axes is the have a left aligned and a right aligned axis. This allows you to leave out additions like '(left scale)', '(right scale)'. However, you can simply force all legends left. 
 
 ```{r,eval=F,echo=T}
-init_tsplot_theme(legend_all_left = T,
-                  legend_col = 1)
+init_tsplot_theme(
+  legend_all_left = T,
+  legend_col = 1
+)
 ```
 
 ## 3. How can I change of my lines, bars and areas?
@@ -547,9 +574,11 @@ We have multiple pre-defined vectors for different chart types.
 All of them are easy to adjust. Also
 
 ```{r,eval=F,echo=T}
-init_tsplot_theme(band_fill_color = c("#FF0000","#00FF00"),
-                  line_colors = c("#FF0000","#00FF00"),
-                  bar_fill_color = c("#FF0000","#00FF00"))
+init_tsplot_theme(
+  band_fill_color = c("#FF0000", "#00FF00"),
+  line_colors = c("#FF0000", "#00FF00"),
+  bar_fill_color = c("#FF0000", "#00FF00")
+)
 ```
 
 

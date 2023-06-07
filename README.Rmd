@@ -56,8 +56,10 @@ tsplot(tsl)
 and use easily use 2 y-axis. (I know some argue those double axes are fundamentally flawed, but my peers didn't care and asked for it.)
 
 ```{r}
-tsplot("Air Passengers" = tsl$AirPassengers,
-       tsr =  list("Johnson & Johnson" = tsl$JohnsonJohnson))
+tsplot(
+  "Air Passengers" = tsl$AirPassengers,
+  tsr = list("Johnson & Johnson" = tsl$JohnsonJohnson)
+)
 ```
 
 

@@ -1,5 +1,5 @@
 #' Deprecated function(s) in tstools
-#' 
+#'
 #' These functions are provided for compatibility with older version of
 #' the tstools package.  They may eventually be completely
 #' removed.
@@ -26,46 +26,46 @@
 #'
 NULL
 computeDecimalTime <- function(...) {
-  .Deprecated("compute_decimal_time", package="tstools")
+  .Deprecated("compute_decimal_time", package = "tstools")
   compute_decimal_time(...)
 }
 concatTs <- function(...) {
-  .Deprecated("concat_ts", package="tstools")
+  .Deprecated("concat_ts", package = "tstools")
   concat_ts(...)
 }
 fillupYearWitnNAs <- function(...) {
-  .Deprecated("fill_year_with_nas", package="tstools")
+  .Deprecated("fill_year_with_nas", package = "tstools")
   fill_year_with_nas(...)
 }
 importTimeSeries <- function(...) {
-  .Deprecated("read_ts", package="tstools")
+  .Deprecated("read_ts", package = "tstools")
   read_ts(...)
 }
 initDefaultTheme <- function(...) {
-  .Deprecated("init_tsplot_theme", package="tstools")
+  .Deprecated("init_tsplot_theme", package = "tstools")
   init_tsplot_theme(...)
 }
 overlapSortedLists <- function(...) {
-  .Deprecated("overlap_sorted_ts_lists", package="tstools")
+  .Deprecated("overlap_sorted_ts_lists", package = "tstools")
   overlap_sorted_ts_lists(...)
 }
 overlapTslByName <- function(...) {
-  .Deprecated("oberlap_ts_list_by_name", package="tstools")
+  .Deprecated("oberlap_ts_list_by_name", package = "tstools")
   overlap_ts_lists_by_name(...)
 }
 resolveOverlap <- function(...) {
-  .Deprecated("resolve_ts_overlap", package="tstools")
+  .Deprecated("resolve_ts_overlap", package = "tstools")
   resolve_ts_overlap(...)
 }
 stripLeadingNAsFromTs <- function(...) {
-  .Deprecated("strip_ts_of_leading_nas", package="tstools")
+  .Deprecated("strip_ts_of_leading_nas", package = "tstools")
   strip_ts_of_leading_nas(...)
 }
 stripTrailingNAsFromTs <- function(...) {
-  .Deprecated("strip_ts_of_leading_nas", package="tstools")
+  .Deprecated("strip_ts_of_leading_nas", package = "tstools")
   strip_ts_of_trailing_nas(...)
 }
 writeTimeSeries <- function(...) {
-  .Deprecated("write_ts", package="tstools")
+  .Deprecated("write_ts", package = "tstools")
   write_ts(...)
 }

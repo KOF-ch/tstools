@@ -1,5 +1,5 @@
 #' Generate a list of random time series
-#' 
+#'
 #' Useful for development or generating easily reproducible examples
 #'
 #' @param n The number of ts objects to generate
@@ -19,22 +19,22 @@
 #' @param frequency_shifts Introduce frequency shifts (from 4 to 12) in the ts
 #' @param frequency_shift_after After what fraction of the ts to shift frequencies
 #'
-#' @details 
+#' @details
 #' Except for n and ts_names, all parameters accept either a single value or a vector of values. If a single value is
 #' supplied, that value is used for all time series being generated. If a vector is supplied, its values
 #' will be used for the corresponding series (e.g. starts[1] is used for the first series, starts[2] for
 #' the second and so on). Vectors are recycled if n is larger than their length.
-#' 
+#'
 #' If a ts_names vector is supplied, it must have length n and must not contain duplicates.
 #'
 #' @return A list of ts objects
-#' 
+#'
 #' @importFrom stats rnorm runif
 #' @export
 #'
 #' @examples
 #' generate_random_ts()
-#' 
+#'
 #' generate_random_ts(n = 3, ranges_min = c(-10, 0, 10), ranges_max = 20, starts = 2011)
 generate_random_ts <- function(n = 1,
                                lengths = 36,
@@ -52,63 +52,62 @@ generate_random_ts <- function(n = 1,
                                normal_sds = 1,
                                frequency_shifts = FALSE,
                                frequency_shift_after = 0.5) {
-  
-  if(any(frequency_shifts & frequencies != 12)) {
+  if (any(frequency_shifts & frequencies != 12)) {
     # may also determine locaton of error for bettar feedback
     stop("Frequency shift only supported if frequency is 12!")
   }
-  
-  if(length(ts_names) < n) {
+
+  if (length(ts_names) < n) {
     stop("Too few ts_names supplied!")
   }
-  
-  if(any(duplicated(ts_names))) {
+
+  if (any(duplicated(ts_names))) {
     stop("Duplicate ts_names detected!")
   }
-  
+
   set.seed(seed)
-  
+
   out <- list()
-  
+
   recycle <- function(values, index) {
     index <- index - 1
     values[(index %% length(values)) + 1]
   }
-  
-  for(i in 1:n) {
+
+  for (i in 1:n) {
     n_x <- recycle(lengths, i)
-    
-    if(recycle(normally_distributed, i)) {
+
+    if (recycle(normally_distributed, i)) {
       x <- rnorm(n_x, recycle(normal_means, i), recycle(normal_sds, i)) + recycle(shifts, i)
     } else {
       x <- runif(n_x, recycle(ranges_min, i), recycle(ranges_max, i)) + recycle(shifts, i)
     }
-    
-    if(recycle(random_NAs, i)) {
-      n_na <- ceiling(recycle(random_NA_proportions, i)*n_x)
+
+    if (recycle(random_NAs, i)) {
+      n_na <- ceiling(recycle(random_NA_proportions, i) * n_x)
       pos_na <- sample(1:n_x, n_na)
       x[pos_na] <- NA
     }
-    
-    if(recycle(frequency_shifts, i)) {
-      breakpoint <- ceiling(recycle(frequency_shift_after, i)*n_x)
-      
-      if(breakpoint > 0) {
+
+    if (recycle(frequency_shifts, i)) {
+      breakpoint <- ceiling(recycle(frequency_shift_after, i) * n_x)
+
+      if (breakpoint > 0) {
         before_shift <- x[1:breakpoint]
-        after_shift <- x[(breakpoint+1):n_x]
-        
+        after_shift <- x[(breakpoint + 1):n_x]
+
         before_shift[!c(TRUE, FALSE, FALSE)] <- NA
-        
+
         x <- c(before_shift, after_shift)
       }
     }
-    
+
     s <- ts(x, start = recycle(starts, i), frequency = recycle(frequencies, i))
-    
+
     nm <- recycle(ts_names, i)
-    
+
     out[[nm]] <- s
   }
-  
+
   out
 }
