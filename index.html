@@ -85,14 +85,14 @@
 
 <p><a href="https://r-pkg.org/pkg/tstools" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/tstools?color=blue" alt="CRAN RStudio mirror downloads"></a> <!-- badges: end --></p>
 <p>Plot official statistics’ time series conveniently: automatic legends, highlight windows, stacked bar chars with positive and negative contributions, sum-as-line option, two y-axes with automatic horizontal grids that fit both axes and other popular chart types. ‘tstools’ comes with a plethora of defaults to let you plot without setting an abundance of parameters first, but gives you the flexibility to tweak the defaults. In addition to charts, ‘tstools’ provides a super fast, ‘data.table’ backed time series I/O that allows the user to export / import long format, wide format and transposed wide format data to various file types.</p>
-<p>-&gt; <a href="https://mbannert.github.io/tstools/" class="external-link">pkgdown documentation</a> &lt;-</p>
+<p>-&gt; <a href="https://kof-ch.github.io/tstools/" class="external-link">pkgdown documentation</a> &lt;-</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of tstools from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes")</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"mbannert/tstools"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"kof-ch/tstools"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="example-use-time-series-charts-with-legends-by-default">Example Use: Time Series Charts with Legends by Default<a class="anchor" aria-label="anchor" href="#example-use-time-series-charts-with-legends-by-default"></a>
@@ -110,8 +110,10 @@
 <p><img src="reference/figures/README-example-1.png" width="100%"></p>
 <p>and use easily use 2 y-axis. (I know some argue those double axes are fundamentally flawed, but my peers didn’t care and asked for it.)</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="st">"Air Passengers"</span> <span class="op">=</span> <span class="va">tsl</span><span class="op">$</span><span class="va">AirPassengers</span>,</span>
-<span>       tsr <span class="op">=</span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Johnson &amp; Johnson"</span> <span class="op">=</span> <span class="va">tsl</span><span class="op">$</span><span class="va">JohnsonJohnson</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/tsplot.html">tsplot</a></span><span class="op">(</span></span>
+<span>  <span class="st">"Air Passengers"</span> <span class="op">=</span> <span class="va">tsl</span><span class="op">$</span><span class="va">AirPassengers</span>,</span>
+<span>  tsr <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Johnson &amp; Johnson"</span> <span class="op">=</span> <span class="va">tsl</span><span class="op">$</span><span class="va">JohnsonJohnson</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
 </div>
 </div>
@@ -152,7 +154,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://CRAN.R-project.org/package=tstools" class="external-link"><img src="https://www.r-pkg.org/badges/version/tstools" alt="CRAN status"></a></li>
-<li><a href="https://github.com/mbannert/tstools/actions" class="external-link"><img src="https://github.com/mbannert/tstools/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/kof-ch/tstools/actions" class="external-link"><img src="https://github.com/kof-ch/tstools/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
 </ul>
 </div>
