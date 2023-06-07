@@ -7,7 +7,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/tstools)](https://CRAN.R-project.org/package=tstools)
-[![R-CMD-check](https://github.com/mbannert/tstools/workflows/R-CMD-check/badge.svg)](https://github.com/mbannert/tstools/actions)
+[![R-CMD-check](https://github.com/kof-ch/tstools/workflows/R-CMD-check/badge.svg)](https://github.com/kof-ch/tstools/actions)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
@@ -26,7 +26,7 @@ defaults. In addition to charts, ‘tstools’ provides a super fast,
 import long format, wide format and transposed wide format data to
 various file types.
 
--\> [pkgdown documentation](https://mbannert.github.io/tstools/) \<-
+\-\> [pkgdown documentation](https://kof-ch.github.io/tstools/) \<-
 
 ## Installation
 
@@ -35,7 +35,7 @@ You can install the development version of tstools from
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("mbannert/tstools")
+remotes::install_github("kof-ch/tstools")
 ```
 
 ## Example Use: Time Series Charts with Legends by Default
@@ -61,8 +61,10 @@ and use easily use 2 y-axis. (I know some argue those double axes are
 fundamentally flawed, but my peers didn’t care and asked for it.)
 
 ``` r
-tsplot("Air Passengers" = tsl$AirPassengers,
-       tsr =  list("Johnson & Johnson" = tsl$JohnsonJohnson))
+tsplot(
+  "Air Passengers" = tsl$AirPassengers,
+  tsr = list("Johnson & Johnson" = tsl$JohnsonJohnson)
+)
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
