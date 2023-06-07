@@ -1,14 +1,28 @@
-0.4.2: Load XLSX files as data.table instead of data.frame
-0.4.1: Bringing tstools back to CRAN, maintenance release.
-0.3.6.1: regularize series using NAs, better plot support for NAs, smaller bugfixes
-0.3.6: major co-ordination fixes, auto legends fixes. enjoy!
-0.3.5.1: CRAN release
-0.3.4.2: Improvement of tick handling, more automatic determination
-0.3.4: introduced data.table dependency
-0.3.3: speedup writeTimeSeries by optionally using data.table's rbindlist
-0.3.2: optional data.table read csv for speedup
-0.3.1: minor add ons, problems in versions fixed
-0.3: function to create regular time series from data.frames
-0.2.7.9.1: minor change to unit test to avoid re-import warning with other packages that load openxlsx.
-0.2.7.9: added function to turn quarterly to monthly series (interpolate).
-0.2.7.8: added function to start after last internal NA.
+Changes in version 0.4.2
+ * Load XLSX files as data.table instead of data.frame
+Changes in version 0.4.1
+ * Bringing tstools back to CRAN, maintenance release.
+Changes in version 0.3.6.1
+ * regularize series using NAs, better plot support for NAs, smaller bugfixes
+Changes in version 0.3.6
+ * major co-ordination fixes, auto legends fixes. enjoy!
+Changes in version 0.3.5.1
+ * CRAN release
+Changes in version 0.3.4.2
+ * Improvement of tick handling, more automatic determination
+Changes in version 0.3.4
+ * introduced data.table dependency
+Changes in version 0.3.3
+ * speedup writeTimeSeries by optionally using data.table's rbindlist
+Changes in version 0.3.2
+ * optional data.table read csv for speedup
+Changes in version 0.3.1
+ * minor add ons, problems in versions fixed
+Changes in version 0.3
+ * function to create regular time series from data.frames
+Changes in version 0.2.7.9.1
+ * minor change to unit test to avoid re-import warning with other packages that load openxlsx.
+Changes in version 0.2.7.9
+ * added function to turn quarterly to monthly series (interpolate).
+Changes in version 0.2.7.8
+ * added function to start after last internal NA.
