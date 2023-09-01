@@ -6,7 +6,6 @@
 #' @rdname tstools-deprecated
 #' @name tstools-deprecated
 #' @param ... Parameters to be passed to the modern version of the function
-#' @docType package
 #' @export  computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries initDefaultTheme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
 #' @aliases computeDecimalTime concatTs fillupYearWitnNAs importTimeSeries initDefaultTheme overlapSortedLists overlapTslByName resolveOverlap stripLeadingNAsFromTs stripTrailingNAsFromTs writeTimeSeries
 #' @section Details:

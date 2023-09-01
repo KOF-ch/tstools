@@ -13,7 +13,7 @@
 Meta list if file could be located, empty list otherwise
 }
 \description{
-Read a meta file without extension -> unknown format 
+Read a meta file without extension -> unknown format
 Tries to determine format (yaml, json) and return the metadata
 path must point to the file without extension e.g. swissdata_wd/set_id/set_id
 }

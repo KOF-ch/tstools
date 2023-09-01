@@ -16,15 +16,19 @@ create_cross_sec_overview(list_of_rows, col_labels, tsl, selected_period)
 \item{selected_period}{numeric date as in defining ts objects.}
 }
 \description{
-Create a data.table that shows the i-th obsersvation of 
+Create a data.table that shows the i-th obsersvation of
 several time series.
 }
 \examples{
-tsl <- generate_random_ts(10,lengths = 20)
-list_of_rows <- list("group 1" = c("ts1","ts2","ts3","ts4"),
-"group 2" = c("ts5","ts6","ts7","ts10"))
+tsl <- generate_random_ts(10, lengths = 20)
+list_of_rows <- list(
+  "group 1" = c("ts1", "ts2", "ts3", "ts4"),
+  "group 2" = c("ts5", "ts6", "ts7", "ts10")
+)
 # These are no real +,=,- values just random data.
-create_cross_sec_overview(list_of_rows,
-                         c("+","=","-","random"),
-                         tsl,c(1988,12))
+create_cross_sec_overview(
+  list_of_rows,
+  c("+", "=", "-", "random"),
+  tsl, c(1988, 12)
+)
 }

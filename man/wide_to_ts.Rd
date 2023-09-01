@@ -9,9 +9,9 @@ wide_to_ts(data, keep_last_freq_only = FALSE, force_xts = FALSE)
 \arguments{
 \item{data}{data.frame The data.frame to be transformed}
 
-\item{keep_last_freq_only}{in case there is a frequency change in a time series, 
-should only the part of the series be returned that has the same frequency as 
-the last observation. This is useful when data start out crappy and then stabilize 
+\item{keep_last_freq_only}{in case there is a frequency change in a time series,
+should only the part of the series be returned that has the same frequency as
+the last observation. This is useful when data start out crappy and then stabilize
 after a while. Defaults to FALSE. Hence only the last part of the series is returned.}
 
 \item{force_xts}{boolean force xts format? Defaults to FALSE.}

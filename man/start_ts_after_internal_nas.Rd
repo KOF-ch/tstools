@@ -10,17 +10,17 @@ start_ts_after_internal_nas(series)
 \item{series}{on object of class ts}
 }
 \description{
-Internal NAs can cause trouble for time series operations such as 
+Internal NAs can cause trouble for time series operations such as
 X-13-ARIMA SEATS seasonal adjustment. Often, internal NAs only occur at
-at the beginning of a time series. Thus an easy solution to the problem 
-is to discard the initial part of the data which contains the NA values. 
-This way only a small part of the information is lost as opposed to 
+at the beginning of a time series. Thus an easy solution to the problem
+is to discard the initial part of the data which contains the NA values.
+This way only a small part of the information is lost as opposed to
 not being able to seasonally adjust an entire series.
 }
 \examples{
 ts1 <- 1:30
-ts1[c(3,6)] <- NA
-ts1 <- ts(ts1,start=c(2000,1),frequency = 4)
+ts1[c(3, 6)] <- NA
+ts1 <- ts(ts1, start = c(2000, 1), frequency = 4)
 start_ts_after_internal_nas(ts1)
 }
 \seealso{

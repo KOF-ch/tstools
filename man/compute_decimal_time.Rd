@@ -12,6 +12,6 @@ compute_decimal_time(v, f)
 \item{f}{frequency}
 }
 \description{
-Standard ts object use a vector of length two to store a period. E.g. 2010,1 means first quarter of 2010, 
+Standard ts object use a vector of length two to store a period. E.g. 2010,1 means first quarter of 2010,
 if the series was quarterly and first month if the series was monthly etc.
 }

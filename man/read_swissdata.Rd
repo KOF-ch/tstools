@@ -24,12 +24,12 @@ filtering out undesired data.}
 \item{aggregates}{list A list of dimensions over which to aggregate data. The names of this list determing
 which function is used to calculate the aggregate (e.g. sum, mean etc.). Defaults to sum.}
 
-\item{keep_last_freq_only}{in case there is a frequency change in a time series, 
-should only the part of the series be returned that has the same frequency as 
+\item{keep_last_freq_only}{in case there is a frequency change in a time series,
+should only the part of the series be returned that has the same frequency as
 the last observation. This is useful when data start out crappy and then stabilize}
 }
 \description{
-Read data from swissdata compliant .csv files and 
+Read data from swissdata compliant .csv files and
 turn them into a list of time series.
 }
 \details{
@@ -37,7 +37,7 @@ The order of dimensions in key_columns determines their order in the key
 The resulting ts_key will be of the form <swissdata-set-name>.<instance of key_columns[1]>...
 }
 \examples{
-ds_location <- system.file("example_data/ch.seco.css.csv",package = "tstools")
-tslist <- read_swissdata(ds_location,"idx_type")
+ds_location <- system.file("example_data/ch.seco.css.csv", package = "tstools")
+tslist <- read_swissdata(ds_location, "idx_type")
 tsplot(tslist[1])
 }

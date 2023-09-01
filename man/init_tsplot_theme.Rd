@@ -7,12 +7,12 @@
 \usage{
 init_tsplot_theme(
   auto_bottom_margin = FALSE,
-  band_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 = "#b3d7e0",
-    ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30 = "#e6b3d3"),
+  band_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20
+    = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30 = "#e6b3d3"),
   bar_border = "#000000",
   bar_border_lwd = 1,
-  bar_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 = "#b3d7e0",
-    ETH8_20 = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30 = "#e6b3d3"),
+  bar_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20
+    = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30 = "#e6b3d3"),
   bar_gap = 15,
   bar_group_gap = 30,
   ci_alpha = "44",
@@ -101,26 +101,26 @@ init_tsplot_theme(
 
 init_tsplot_print_theme(
   output_wide = FALSE,
-  margins = c(NA, 10/if (output_wide) 1 + 1/3 else 1, 10, 7/if (output_wide) 1 + 1/3
-    else 1),
-  lwd = scale_theme_param_for_print(c(2, 3, 1, 4, 2, 4), if (output_wide) c(10 + 2/3,
-    6) else c(8, 6)),
-  sum_line_lwd = scale_theme_param_for_print(3, if (output_wide) c(10 + 2/3, 6) else
-    c(8, 6)),
+  margins = c(NA, 10/if (output_wide) 1 + 1/3 else 1, 10, 7/if (output_wide) 1 + 1/3 else
+    1),
+  lwd = scale_theme_param_for_print(c(2, 3, 1, 4, 2, 4), if (output_wide) c(10 + 2/3, 6)
+    else c(8, 6)),
+  sum_line_lwd = scale_theme_param_for_print(3, if (output_wide) c(10 + 2/3, 6) else c(8,
+    6)),
   lwd_box = scale_theme_param_for_print(1.5, if (output_wide) c(10 + 2/3, 6) else c(8,
     6)),
-  lwd_x_axis = scale_theme_param_for_print(1.5, if (output_wide) c(10 + 2/3, 6) else
-    c(8, 6)),
+  lwd_x_axis = scale_theme_param_for_print(1.5, if (output_wide) c(10 + 2/3, 6) else c(8,
+    6)),
   lwd_yearly_ticks = scale_theme_param_for_print(1.5, if (output_wide) c(10 + 2/3, 6)
     else c(8, 6)),
   lwd_quarterly_ticks = scale_theme_param_for_print(1, if (output_wide) c(10 + 2/3, 6)
     else c(8, 6)),
-  lwd_y_axis = scale_theme_param_for_print(1.5, if (output_wide) c(10 + 2/3, 6) else
-    c(8, 6)),
+  lwd_y_axis = scale_theme_param_for_print(1.5, if (output_wide) c(10 + 2/3, 6) else c(8,
+    6)),
   lwd_y_ticks = scale_theme_param_for_print(1.5, if (output_wide) c(10 + 2/3, 6) else
     c(8, 6)),
-  legend_intersp_y = scale_theme_param_for_print(1, if (output_wide) c(10 + 2/3, 6)
-    else c(8, 6)),
+  legend_intersp_y = scale_theme_param_for_print(1, if (output_wide) c(10 + 2/3, 6) else
+    c(8, 6)),
   legend_box_size = scale_theme_param_for_print(2, if (output_wide) c(10 + 2/3, 6) else
     c(8, 6)),
   legend_margin_top = 8,
@@ -151,7 +151,7 @@ init_tsplot_print_theme(
 
 \item{ci_colors}{Named colors or hex values Colors of the confidence interval bands}
 
-\item{ci_legend_label}{character A formatting template for how the ci bands should be labelled. May contain the 
+\item{ci_legend_label}{character A formatting template for how the ci bands should be labelled. May contain the
 placeholders. '\%ci_value\%' will be replaced with the ci label. '\%series\%' (will be replaced with the series name)
 exactly once. Defaults to '\%ci_value\% ci for \%series\%'}
 
@@ -312,7 +312,7 @@ exactly once. Defaults to '\%ci_value\% ci for \%series\%'}
 \item{...}{All the other arguments to \code{init_tsplot_thene}}
 }
 \description{
-The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them. 
+The \code{\link{tsplot}} methods provide a theme argument which is used to pass on a plethora of useful defaults. These defaults are essentially stored in a list. Sometimes the user may want to tweak some of these defaults while keeping most of them.
 Hence the init_tsplot_theme function create a fresh list object containing default values for lot of different layout parameters etc. By replacing single elements of the list and passing the entire list to the plot function, single aspects can be tweaked while keeping most defaults. Init defaultTheme does not need any parameters.
 
 This function provides sensible defaults for margins, font size, line width etc. scaled to
@@ -326,13 +326,14 @@ while the second and fourth series have the second color.
 The list contains the following elements:
 }
 \examples{
-\dontrun{# create a list
+\dontrun{
+# create a list
 data(KOF)
 tt <- init_tsplot_theme()
 # adjust a single element
 tt$highlight_window <- TRUE
 # pass the list to tsplot
-tsplot(KOF$kofbarometer,theme = tt)
+tsplot(KOF$kofbarometer, theme = tt)
 # for more theme examples check the vignette
 vignette("tstools")
 }

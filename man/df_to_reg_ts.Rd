@@ -19,32 +19,32 @@ df_to_reg_ts(
 
 \item{var_cols}{columns that contain variables as opposed to date index.}
 
-\item{year_col}{integer, logical or character vector indicating the year 
+\item{year_col}{integer, logical or character vector indicating the year
 position within the data.frame.}
 
-\item{period_col}{integer, logical or character vector indicating the period 
+\item{period_col}{integer, logical or character vector indicating the period
 position within the data.frame.}
 
 \item{freq}{integer indicating the frequency of new time series.}
 
-\item{return_ts}{logical should a (list of) time series be returned? Defaults to TRUE. 
+\item{return_ts}{logical should a (list of) time series be returned? Defaults to TRUE.
 FALSE returns data.frame.}
 
 \item{by}{character overwrite automatically detected (from freq) by parameter.
 e.g. '1 day'. Defaults to NULL.}
 }
 \description{
-Turn a data.frame with date columns to a regular time series object 
+Turn a data.frame with date columns to a regular time series object
 if possible. Design to work with quarterly and monthly data.
 }
 \examples{
 start_m <- as.Date("2017-01-01")
-df_missing <- data.frame( 
- date = seq(start_m, by='2 months', length=6),
- value = 1:6,
-another_value = letters[1:6],
-yet_another_col = letters[6:1]
+df_missing <- data.frame(
+  date = seq(start_m, by = "2 months", length = 6),
+  value = 1:6,
+  another_value = letters[1:6],
+  yet_another_col = letters[6:1]
 )
-df_to_reg_ts(df_missing,c("value","another_value"))
-df_to_reg_ts(df_missing, c("value","another_value"), return_ts = FALSE)
+df_to_reg_ts(df_missing, c("value", "another_value"))
+df_to_reg_ts(df_missing, c("value", "another_value"), return_ts = FALSE)
 }

@@ -26,9 +26,9 @@ from the file extension.}
 
 \item{column_names}{character vector denoting column names, defaults to c("date","value","series).}
 
-\item{keep_last_freq_only}{in case there is a frequency change in a time series, 
-should only the part of the series be returned that has the same frequency as 
-the last observation. This is useful when data start out crappy and then stabilize 
+\item{keep_last_freq_only}{in case there is a frequency change in a time series,
+should only the part of the series be returned that has the same frequency as
+the last observation. This is useful when data start out crappy and then stabilize
 after a while. Defaults to FALSE. Hence only the last part of the series is returned.}
 
 \item{force_xts}{If set to true, the time series will be returned as xts objects regargless of

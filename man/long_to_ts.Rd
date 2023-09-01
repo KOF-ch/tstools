@@ -14,8 +14,8 @@ long_to_ts(
 \arguments{
 \item{data}{data.frame The data.frame to be transformed}
 
-\item{keep_last_freq_only}{in case there is a frequency change in a time series, 
-should only the part of the series be returned that has the same frequency as 
+\item{keep_last_freq_only}{in case there is a frequency change in a time series,
+should only the part of the series be returned that has the same frequency as
 the last observation. This is useful when data start out crappy and then stabilize}
 
 \item{force_xts}{logical}

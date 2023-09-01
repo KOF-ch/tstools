@@ -33,7 +33,7 @@ create_dummy_ts(
 \item{frequency}{integer frequency of the regular time series, defaults to 4 (quarterly).}
 }
 \description{
-Generate time series with a default value that is changed within a certain subperiod. 
+Generate time series with a default value that is changed within a certain subperiod.
 The function allows for additional convenience when specifying single period dummies and dummies that go from a certain point in time to the end of the series.
 }
 \author{

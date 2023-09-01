@@ -5,7 +5,7 @@
 \alias{CHGDP}
 \title{CH GDP Growth Contributions}
 \format{
-List list of six time series of class ts, 
+List list of six time series of class ts,
 containing contributions to Swiss GDP growth
 \describe{
   \item{manufacturing}{Growth contribution of manufacturing.}

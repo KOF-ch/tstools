@@ -14,10 +14,12 @@ Adds missing values to turn an irregular time series into a regular one. This fu
 }
 \examples{
 ts1 <- rnorm(5)
-dv <- c(seq(as.Date("2010-01-01"), length = 3, by="3 years"),
-seq(as.Date("2018-01-01"), length = 2, by="2 years"))
+dv <- c(
+  seq(as.Date("2010-01-01"), length = 3, by = "3 years"),
+  seq(as.Date("2018-01-01"), length = 2, by = "2 years")
+)
 library(zoo)
-xx <- zoo(ts1,dv)
+xx <- zoo(ts1, dv)
 regularize(xx)
 
 dv2 <- c(seq(as.Date("2010-01-01"), length = 20, by = "1 months"))
