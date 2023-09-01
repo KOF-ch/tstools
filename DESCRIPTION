@@ -1,7 +1,7 @@
 Type: Package
 Package: tstools
 Title: A Time Series Toolbox for Official Statistics
-Version: 0.4.2
+Version: 0.4.3
 Authors@R: c(
     person("Matthias", "Bannert", , "bannert@kof.ethz.ch", role = "aut"),
     person("Severin", "Thoeni", , "thoenis@kof.ethz.ch", role = "aut"),
