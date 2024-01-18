@@ -98,13 +98,13 @@ tsplot(short)
 The function *tsplot* can handle multiple time series objects or lists at once. You can either throw multiple comma separated time series objects at *tsplot* 
 
 ```{r,fig.width = 7,fig.height=6}
-tsplot(ts1, ts2, auto_legend = F)
+tsplot(ts1, ts2, auto_legend = FALSE)
 ```
 
 or a list of time series...
 
 ```{r,fig.width = 7,fig.height=6}
-tsplot(tslist, auto_legend = F)
+tsplot(tslist, auto_legend = FALSE)
 ```
 
 Even though *tsplot* supports *mts* and single time series, we clearly recommend to pass lists of time series to *tsplot* for the best and most tested experience. Lists are a convenient way to add legends to time series charts as *tsplot* automatically uses names of list elements in its legend. You may also define your lists adhoc within the *tsplot* call like so:
@@ -185,8 +185,8 @@ which implies that a bar is centered above the category tick for that period.
 
 ```{r,fig.width = 7,fig.height=6}
 tsplot(tsb1, tsb2, tsb3,
-  left_as_bar = T,
-  auto_legend = F,
+  left_as_bar = TRUE,
+  auto_legend = FALSE,
   theme = init_tsplot_theme(bar_gap = 10)
 )
 ```
@@ -204,10 +204,10 @@ basis. The following draws a line on top of the bars that represents the sum.
 ```{r,fig.width = 7,fig.height=6}
 tsl <- list(tsb1, tsb2, tsb3)
 tsplot(tsl,
-  left_as_bar = T,
+  left_as_bar = TRUE,
   manual_value_ticks_l = seq(-40, 100, by = 20),
-  auto_legend = F,
-  theme = init_tsplot_theme(sum_as_line = T)
+  auto_legend = FALSE,
+  theme = init_tsplot_theme(sum_as_line = TRUE)
 )
 ```
 
@@ -222,8 +222,8 @@ tsb2 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
 tsb3 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
 tsb4 <- ts(runif(30, -40, 10), start = c(2005, 1), frequency = 4)
 tsplot(tsb1, tsb2, tsb3, tsb4,
-  left_as_bar = T,
-  auto_legend = F
+  left_as_bar = TRUE,
+  auto_legend = FALSE
 )
 ```
 ### Grouped bar charts
@@ -238,9 +238,9 @@ tsb1 <- ts(runif(20, -30, 20), start = c(2010, 1), frequency = 12)
 tsb2 <- ts(runif(20, 0, 50), start = c(2010, 1), frequency = 12)
 tsb3 <- ts(runif(20, 0, 50), start = c(2010, 1), frequency = 12)
 tsplot(tsb1, tsb2, tsb3,
-  left_as_bar = T,
-  group_bar_chart = T,
-  auto_legend = F
+  left_as_bar = TRUE,
+  group_bar_chart = TRUE,
+  auto_legend = FALSE
 )
 ```
 
@@ -276,7 +276,7 @@ an object of class ts or a list of time series.
 ```{r,fig.width = 7,fig.height=6}
 data(KOF)
 tsplot(KOF$kofbarometer,
-  tsr = KOF$reference, auto_legend = F
+  tsr = KOF$reference, auto_legend = FALSE
 )
 ```
 
@@ -285,7 +285,7 @@ tsplot(KOF$kofbarometer,
 Sometimes you want a bar chart on one axis and an line chart on the other. 
 Guess what, *tstools* also has a convenient way of creating these. Simply 
 provide a list of time series to both the ... argument and the tsr argument
-and choose *left_as_bar = T*. Note that the line chart is automatically moved
+and choose *left_as_bar = TRUE*. Note that the line chart is automatically moved
 to the middle of the quarterly bar. 
 
 ```{r,fig.width = 7,fig.height=6}
@@ -295,8 +295,8 @@ tsb3 <- ts(runif(30, 0, 30), start = c(2010, 1), frequency = 4)
 tsr1 <- ts(runif(30, -4, 6), start = c(2010, 1), frequency = 4)
 tsplot(tsb1, tsb2, tsb3,
   tsr = tsr1,
-  left_as_bar = T,
-  auto_legend = F
+  left_as_bar = TRUE,
+  auto_legend = FALSE
 )
 ```
 
@@ -340,18 +340,18 @@ parameter directly in function call.
 
 ```{r,fig.width = 7,fig.height=6}
 tsplot(tsb1, tsb2, tsb3,
-  left_as_bar = T,
-  theme = init_tsplot_theme(highlight_window = T)
+  left_as_bar = TRUE,
+  theme = init_tsplot_theme(highlight_window = TRUE)
 )
 ```
 
 ### Add a Box Around Your Plot
 
 ```{r,fig.width = 7,fig.height=6}
-tt <- init_tsplot_theme(use_box = T)
+tt <- init_tsplot_theme(use_box = TRUE)
 tsplot(tsb1, tsb2, tsb3,
   tsr = tsr1,
-  left_as_bar = T,
+  left_as_bar = TRUE,
   theme = tt
 )
 ```
@@ -371,7 +371,7 @@ tsplot(tsb1, tsb2, tsb3,
 ### Adjust the highlight window
 
 ```{r,fig.width = 7,fig.height=6}
-nt <- init_tsplot_theme(highlight_window = T)
+nt <- init_tsplot_theme(highlight_window = TRUE)
 nt$highlight_window_start <- c(2017, 1)
 nt$highlight_window_end <- c(2018, 1)
 tsplot(tsb1, tsb2,
@@ -385,8 +385,8 @@ tsplot(tsb1, tsb2,
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
 tsplot(missings,
   theme = init_tsplot_theme(
-    NA_continue_line = T,
-    show_points = T
+    NA_continue_line = TRUE,
+    show_points = TRUE
   )
 )
 ```
@@ -404,7 +404,7 @@ tsplot(ts2)
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
 tsplot(ts2,
-  theme = init_tsplot_theme(fill_year_with_nas = F)
+  theme = init_tsplot_theme(fill_year_with_nas = FALSE)
 )
 ```
 
@@ -472,7 +472,7 @@ tsplot("Some like\n loooong legends\n with so many words" = ts1)
 ## Remember: auto_legend = FALSE
 
 ```{r,fig.width = 7,fig.height=6,echo=TRUE}
-tsplot(KOF[1], auto_legend = F)
+tsplot(KOF[1], auto_legend = FALSE)
 ```
 
 
@@ -488,7 +488,7 @@ tsplot(KOF[1], auto_legend = F)
 <!-- tsplot(tsb1,tsb2,tsb3,tsr=tsr1, -->
 <!--        manual_value_ticks_l = seq(-40,80,by=20), -->
 <!--        manual_value_ticks_r = seq(-4,8, by=2), -->
-<!--        left_as_bar = T,auto_legend=F) -->
+<!--        left_as_bar = TRUE,auto_legend=FALSE) -->
 <!-- abline(h=6,col="red") -->
 
 <!-- ``` -->
@@ -498,7 +498,7 @@ tsplot(KOF[1], auto_legend = F)
 <!-- ```{r,fig.width = 7,fig.height=6} -->
 <!-- tsplot(tsb1,tsb2,tsb3, -->
 <!--        manual_value_ticks_l = seq(-40,80,by=20), -->
-<!--        left_as_bar = T,auto_legend=F) -->
+<!--        left_as_bar = TRUE,auto_legend=FALSE) -->
 <!-- text(2017.5,-35,"2.3%") -->
 <!-- text(2016.5,-35,"1.3%") -->
 
@@ -510,7 +510,7 @@ Saving your **tstools** chart to a .pdf document is as easy and convenient as
 ```{r,eval=FALSE}
 tsplot(KOF[1],
   output_format = "pdf",
-  theme = init_tsplot_print_theme(output_wide = T)
+  theme = init_tsplot_print_theme(output_wide = TRUE)
 )
 ```
 
@@ -542,12 +542,12 @@ write_ts(KOF, file.path(tempdir(), "test_export"), "csv")
 ```{r,eval=FALSE}
 write_ts(KOF, file.path(tempdir(), "test_export_wide_trans"),
   "csv",
-  wide = T,
-  transpose = T
+  wide = TRUE,
+  transpose = TRUE
 )
 ```
 
-*transpose = T* moves the time to the header (x-axis) and places all variables in rows 
+*transpose = TRUE* moves the time to the header (x-axis) and places all variables in rows 
 below each other. Transposing data is a good solution if you have a larger amount
 of variables and at max about 200-300 periods. 
 
@@ -561,9 +561,9 @@ No, **tsplot** is base R based. You can simply add enhancements to the plot usin
 
 You're probably using 2 Y-axes. The default for two Y-axes is the have a left aligned and a right aligned axis. This allows you to leave out additions like '(left scale)', '(right scale)'. However, you can simply force all legends left. 
 
-```{r,eval=F,echo=T}
+```{r,eval=FALSE,echo=TRUE}
 init_tsplot_theme(
-  legend_all_left = T,
+  legend_all_left = TRUE,
   legend_col = 1
 )
 ```
@@ -573,18 +573,10 @@ init_tsplot_theme(
 We have multiple pre-defined vectors for different chart types. 
 All of them are easy to adjust. Also
 
-```{r,eval=F,echo=T}
+```{r,eval=FALSE,echo=TRUE}
 init_tsplot_theme(
   band_fill_color = c("#FF0000", "#00FF00"),
   line_colors = c("#FF0000", "#00FF00"),
   bar_fill_color = c("#FF0000", "#00FF00")
 )
 ```
-
-
-
-
-
-
-
-
