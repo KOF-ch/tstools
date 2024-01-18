@@ -7,12 +7,16 @@
 \usage{
 init_tsplot_theme(
   auto_bottom_margin = FALSE,
-  band_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20
-    = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30 = "#e6b3d3"),
+  band_fill_color = c(ETH_Petrol = colors$ETH_Petrol$`100`, ETH_Petrol_60 =
+    colors$ETH_Petrol$`60`, ETH_Petrol_40 = colors$ETH_Petrol$`40`, ETH_Petrol_20 =
+    colors$ETH_Petrol$`20`, ETH_Purple = colors$ETH_Purple$`100`, ETH_Purple_60 =
+    colors$ETH_Purple$`60`, ETH_Purple_40 = colors$ETH_Purple$`40`),
   bar_border = "#000000",
   bar_border_lwd = 1,
-  bar_fill_color = c(ETH8 = "#007A92", ETH8_60 = "#66b0c2", ETH8_30 = "#b3d7e0", ETH8_20
-    = "#cce5eb", ETH5 = "#91056a", ETH5_60 = "#cc67a7", ETH5_30 = "#e6b3d3"),
+  bar_fill_color = c(ETH_Petrol = colors$ETH_Petrol$`100`, ETH_Petrol_60 =
+    colors$ETH_Petrol$`60`, ETH_Petrol_40 = colors$ETH_Petrol$`40`, ETH_Petrol_20 =
+    colors$ETH_Petrol$`20`, ETH_Purple = colors$ETH_Purple$`100`, ETH_Purple_60 =
+    colors$ETH_Purple$`60`, ETH_Purple_40 = colors$ETH_Purple$`40`),
   bar_gap = 15,
   bar_group_gap = 30,
   ci_alpha = "44",
@@ -21,7 +25,7 @@ init_tsplot_theme(
   default_bottom_margin = 15,
   fill_up_start = FALSE,
   fill_year_with_nas = TRUE,
-  highlight_color = "#e9e9e9",
+  highlight_color = colors$ETH_Grey$`20`,
   highlight_window = FALSE,
   highlight_window_end = NA,
   highlight_window_freq = 4,
@@ -39,9 +43,10 @@ init_tsplot_theme(
   legend_margin_bottom = 5,
   legend_margin_top = 12,
   legend_seg.len = 2,
-  line_colors = c(ETH_8_100 = "#a9af66", ETH_4_100 = "#72791c", ETH_8_20 = "#cce5eb",
-    ETH_5_60 = "#cc67a7", ETH_8_60 = "#66b0c2", ETH_5_100 = "#91056a", ETH_4_60 =
-    "#007a92"),
+  line_colors = c(ETH_Green_60 = colors$ETH_Green$`60`, ETH_Green_100 =
+    colors$ETH_Green$`100`, ETH_Petrol_20 = colors$ETH_Petrol$`20`, ETH_Purple_60 =
+    colors$ETH_Purple$`60`, ETH_Petrol_60 = colors$ETH_Petrol$`60`, ETH_Purple_100 =
+    colors$ETH_Purple$`100`, ETH_Petrol_100 = colors$ETH_Petrol$`100`),
   line_to_middle = TRUE,
   lty = 1,
   lwd = c(2, 3, 1, 4, 2, 4),
@@ -72,7 +77,7 @@ init_tsplot_theme(
   subtitle_transform = "toupper",
   sum_as_line = FALSE,
   sum_legend = "sum",
-  sum_line_color = c(ETH_8_100 = "#007a92"),
+  sum_line_color = c(ETH_Petrol_100 = colors$ETH_Petrol$`100`),
   sum_line_lty = 1,
   sum_line_lwd = 3,
   tcl_quarterly_ticks = -0.4,
@@ -88,7 +93,7 @@ init_tsplot_theme(
   use_box = FALSE,
   x_tick_dt = 1,
   xaxs = "i",
-  y_grid_color = "#CCCCCC",
+  y_grid_color = colors$ETH_Grey$`40`,
   y_grid_count = c(5, 6, 8, 10),
   y_grid_count_strict = FALSE,
   y_las = 2,
