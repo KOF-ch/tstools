@@ -8,8 +8,8 @@
 <meta name="description" content="tstools">
 <title>tstools • tstools</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="tstools">
 <meta property="og:description" content="tstools">
@@ -71,7 +71,7 @@ Official Statistics</h3>
                         <h4 data-toc-skip class="author">Matthias
 Bannert</h4>
             
-            <h4 data-toc-skip class="date">2023-09-01</h4>
+            <h4 data-toc-skip class="date">2024-01-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/KOF-ch/tstools/blob/HEAD/vignettes/tstools.Rmd" class="external-link"><code>vignettes/tstools.Rmd</code></a></small>
       <div class="d-none name"><code>tstools.Rmd</code></div>
@@ -214,11 +214,11 @@ chart. The object <em>short</em> is of class ts.</p>
 or lists at once. You can either throw multiple comma separated time
 series objects at <em>tsplot</em></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">ts1</span>, <span class="va">ts2</span>, auto_legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">ts1</span>, <span class="va">ts2</span>, auto_legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 <p>or a list of time series…</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tslist</span>, auto_legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tslist</span>, auto_legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-4-1.png" width="672"></p>
 <p>Even though <em>tsplot</em> supports <em>mts</em> and single time
 series, we clearly recommend to pass lists of time series to
@@ -316,8 +316,8 @@ quarter. Note that stacked bar charts imply that all involved series
 have the same frequency.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tsb1</span>, <span class="va">tsb2</span>, <span class="va">tsb3</span>,</span>
-<span>  left_as_bar <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  auto_legend <span class="op">=</span> <span class="cn">F</span>,</span>
+<span>  left_as_bar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  auto_legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>bar_gap <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
@@ -335,10 +335,10 @@ sum.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tsl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tsb1</span>, <span class="va">tsb2</span>, <span class="va">tsb3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tsl</span>,</span>
-<span>  left_as_bar <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  left_as_bar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  manual_value_ticks_l <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">40</span>, <span class="fl">100</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span>,</span>
-<span>  auto_legend <span class="op">=</span> <span class="cn">F</span>,</span>
-<span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>sum_as_line <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span>  auto_legend <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>sum_as_line <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 </div>
@@ -353,8 +353,8 @@ of different start and end dates.</p>
 <span><span class="va">tsb3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html" class="external-link">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">30</span>, <span class="fl">0</span>, <span class="fl">50</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="va">tsb4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html" class="external-link">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">30</span>, <span class="op">-</span><span class="fl">40</span>, <span class="fl">10</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2005</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tsb1</span>, <span class="va">tsb2</span>, <span class="va">tsb3</span>, <span class="va">tsb4</span>,</span>
-<span>  left_as_bar <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  auto_legend <span class="op">=</span> <span class="cn">F</span></span>
+<span>  left_as_bar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  auto_legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-11-1.png" width="672">
 ### Grouped bar charts</p>
@@ -367,9 +367,9 @@ it can easily be tweaked using the *group_bar_chart parameter.</p>
 <span><span class="va">tsb2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html" class="external-link">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">0</span>, <span class="fl">50</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
 <span><span class="va">tsb3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html" class="external-link">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">0</span>, <span class="fl">50</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tsb1</span>, <span class="va">tsb2</span>, <span class="va">tsb3</span>,</span>
-<span>  left_as_bar <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  group_bar_chart <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  auto_legend <span class="op">=</span> <span class="cn">F</span></span>
+<span>  left_as_bar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  group_bar_chart <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  auto_legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-12-1.png" width="672"></p>
 </div>
@@ -404,7 +404,7 @@ series.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">KOF</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">KOF</span><span class="op">$</span><span class="va">kofbarometer</span>,</span>
-<span>  tsr <span class="op">=</span> <span class="va">KOF</span><span class="op">$</span><span class="va">reference</span>, auto_legend <span class="op">=</span> <span class="cn">F</span></span>
+<span>  tsr <span class="op">=</span> <span class="va">KOF</span><span class="op">$</span><span class="va">reference</span>, auto_legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-14-1.png" width="672"></p>
 </div>
@@ -414,8 +414,8 @@ series.</p>
 <p>Sometimes you want a bar chart on one axis and an line chart on the
 other. Guess what, <em>tstools</em> also has a convenient way of
 creating these. Simply provide a list of time series to both the …
-argument and the tsr argument and choose <em>left_as_bar = T</em>. Note
-that the line chart is automatically moved to the middle of the
+argument and the tsr argument and choose <em>left_as_bar = TRUE</em>.
+Note that the line chart is automatically moved to the middle of the
 quarterly bar.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">tsb1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html" class="external-link">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">30</span>, <span class="op">-</span><span class="fl">30</span>, <span class="fl">20</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
@@ -424,8 +424,8 @@ quarterly bar.</p>
 <span><span class="va">tsr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html" class="external-link">ts</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">30</span>, <span class="op">-</span><span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span>, start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2010</span>, <span class="fl">1</span><span class="op">)</span>, frequency <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tsb1</span>, <span class="va">tsb2</span>, <span class="va">tsb3</span>,</span>
 <span>  tsr <span class="op">=</span> <span class="va">tsr1</span>,</span>
-<span>  left_as_bar <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  auto_legend <span class="op">=</span> <span class="cn">F</span></span>
+<span>  left_as_bar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  auto_legend <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 </div>
@@ -529,8 +529,8 @@ thing about it is: R Studio’s auto auggest helps you find the parameter.
 another plot, specify the parameter directly in function call.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tsb1</span>, <span class="va">tsb2</span>, <span class="va">tsb3</span>,</span>
-<span>  left_as_bar <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>highlight_window <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span>  left_as_bar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>highlight_window <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
 </div>
@@ -538,10 +538,10 @@ another plot, specify the parameter directly in function call.</p>
 <h4 id="add-a-box-around-your-plot">Add a Box Around Your Plot<a class="anchor" aria-label="anchor" href="#add-a-box-around-your-plot"></a>
 </h4>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>use_box <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">tt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>use_box <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tsb1</span>, <span class="va">tsb2</span>, <span class="va">tsb3</span>,</span>
 <span>  tsr <span class="op">=</span> <span class="va">tsr1</span>,</span>
-<span>  left_as_bar <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  left_as_bar <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  theme <span class="op">=</span> <span class="va">tt</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-18-1.png" width="672"></p>
@@ -561,7 +561,7 @@ another plot, specify the parameter directly in function call.</p>
 <h4 id="adjust-the-highlight-window">Adjust the highlight window<a class="anchor" aria-label="anchor" href="#adjust-the-highlight-window"></a>
 </h4>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">nt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>highlight_window <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">nt</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>highlight_window <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">nt</span><span class="op">$</span><span class="va">highlight_window_start</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2017</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">nt</span><span class="op">$</span><span class="va">highlight_window_end</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2018</span>, <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">tsb1</span>, <span class="va">tsb2</span>,</span>
@@ -575,8 +575,8 @@ another plot, specify the parameter directly in function call.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">missings</span>,</span>
 <span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span></span>
-<span>    NA_continue_line <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>    show_points <span class="op">=</span> <span class="cn">T</span></span>
+<span>    NA_continue_line <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>    show_points <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-21-1.png" width="672"></p>
@@ -594,7 +594,7 @@ another plot, specify the parameter directly in function call.</p>
 </h3>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">ts2</span>,</span>
-<span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>fill_year_with_nas <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span>
+<span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span>fill_year_with_nas <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-23-1.png" width="672"></p>
 <div class="section level4">
@@ -665,7 +665,7 @@ another plot, specify the parameter directly in function call.</p>
 <h3 id="remember-auto_legend-false">Remember: auto_legend = FALSE<a class="anchor" aria-label="anchor" href="#remember-auto_legend-false"></a>
 </h3>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">KOF</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, auto_legend <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">KOF</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, auto_legend <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="tstools_files/figure-html/unnamed-chunk-31-1.png" width="672"></p>
 <!-- ## Customizing the plots created by tstools -->
 <!-- Plots generated by *tsplot* are simply a bunch of layers of base R plots. So anything -->
@@ -676,14 +676,14 @@ another plot, specify the parameter directly in function call.</p>
 <!-- tsplot(tsb1,tsb2,tsb3,tsr=tsr1, -->
 <!--        manual_value_ticks_l = seq(-40,80,by=20), -->
 <!--        manual_value_ticks_r = seq(-4,8, by=2), -->
-<!--        left_as_bar = T,auto_legend=F) -->
+<!--        left_as_bar = TRUE,auto_legend=FALSE) -->
 <!-- abline(h=6,col="red") -->
 <!-- ``` -->
 <!-- ### Add some text to a plot -->
 <!-- ```{r,fig.width = 7,fig.height=6} -->
 <!-- tsplot(tsb1,tsb2,tsb3, -->
 <!--        manual_value_ticks_l = seq(-40,80,by=20), -->
-<!--        left_as_bar = T,auto_legend=F) -->
+<!--        left_as_bar = TRUE,auto_legend=FALSE) -->
 <!-- text(2017.5,-35,"2.3%") -->
 <!-- text(2016.5,-35,"1.3%") -->
 <!-- ``` -->
@@ -697,7 +697,7 @@ easy and convenient as</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/tsplot.html">tsplot</a></span><span class="op">(</span><span class="va">KOF</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
 <span>  output_format <span class="op">=</span> <span class="st">"pdf"</span>,</span>
-<span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_print_theme</a></span><span class="op">(</span>output_wide <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span>  theme <span class="op">=</span> <span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_print_theme</a></span><span class="op">(</span>output_wide <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Notice the optional print theme and <em>output_wide</em> parameter:
 You can export 4:3 (default) format .pdf files as well as 16:9 (wide)
@@ -729,10 +729,10 @@ format.<a class="anchor" aria-label="anchor" href="#csv-long-format-default-wide
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/write_ts.html">write_ts</a></span><span class="op">(</span><span class="va">KOF</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"test_export_wide_trans"</span><span class="op">)</span>,</span>
 <span>  <span class="st">"csv"</span>,</span>
-<span>  wide <span class="op">=</span> <span class="cn">T</span>,</span>
-<span>  transpose <span class="op">=</span> <span class="cn">T</span></span>
+<span>  wide <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  transpose <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><em>transpose = T</em> moves the time to the header (x-axis) and
+<p><em>transpose = TRUE</em> moves the time to the header (x-axis) and
 places all variables in rows below each other. Transposing data is a
 good solution if you have a larger amount of variables and at max about
 200-300 periods.</p>
@@ -760,7 +760,7 @@ out additions like ‘(left scale)’, ‘(right scale)’. However, you can
 simply force all legends left.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/init_tsplot_theme.html">init_tsplot_theme</a></span><span class="op">(</span></span>
-<span>  legend_all_left <span class="op">=</span> <span class="cn">T</span>,</span>
+<span>  legend_all_left <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  legend_col <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </div>
