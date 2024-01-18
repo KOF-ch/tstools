@@ -120,7 +120,7 @@ init_tsplot_theme <- function(
     band_fill_color = c(
       ETH_Petrol = colors$ETH_Petrol$`100`,
       ETH_Petrol_60 = colors$ETH_Petrol$`60`,
-      ETH_Petrol_40 =  colors$ETH_Petrol$`40`,
+      ETH_Petrol_40 = colors$ETH_Petrol$`40`,
       ETH_Petrol_20 = colors$ETH_Petrol$`20`,
       ETH_Purple = colors$ETH_Purple$`100`,
       ETH_Purple_60 = colors$ETH_Purple$`60`,
@@ -131,7 +131,7 @@ init_tsplot_theme <- function(
     bar_fill_color = c(
       ETH_Petrol = colors$ETH_Petrol$`100`,
       ETH_Petrol_60 = colors$ETH_Petrol$`60`,
-      ETH_Petrol_40 =  colors$ETH_Petrol$`40`,
+      ETH_Petrol_40 = colors$ETH_Petrol$`40`,
       ETH_Petrol_20 = colors$ETH_Petrol$`20`,
       ETH_Purple = colors$ETH_Purple$`100`,
       ETH_Purple_60 = colors$ETH_Purple$`60`,
