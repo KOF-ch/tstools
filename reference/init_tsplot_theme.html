@@ -62,12 +62,16 @@ the dimensions of the output file.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">init_tsplot_theme</span><span class="op">(</span></span>
 <span>  auto_bottom_margin <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  band_fill_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ETH8 <span class="op">=</span> <span class="st">"#007A92"</span>, ETH8_60 <span class="op">=</span> <span class="st">"#66b0c2"</span>, ETH8_30 <span class="op">=</span> <span class="st">"#b3d7e0"</span>, ETH8_20</span>
-<span>    <span class="op">=</span> <span class="st">"#cce5eb"</span>, ETH5 <span class="op">=</span> <span class="st">"#91056a"</span>, ETH5_60 <span class="op">=</span> <span class="st">"#cc67a7"</span>, ETH5_30 <span class="op">=</span> <span class="st">"#e6b3d3"</span><span class="op">)</span>,</span>
+<span>  band_fill_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ETH_Petrol <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`100`</span>, ETH_Petrol_60 <span class="op">=</span></span>
+<span>    <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`60`</span>, ETH_Petrol_40 <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`40`</span>, ETH_Petrol_20 <span class="op">=</span></span>
+<span>    <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`20`</span>, ETH_Purple <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Purple</span><span class="op">$</span><span class="va">`100`</span>, ETH_Purple_60 <span class="op">=</span></span>
+<span>    <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Purple</span><span class="op">$</span><span class="va">`60`</span>, ETH_Purple_40 <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Purple</span><span class="op">$</span><span class="va">`40`</span><span class="op">)</span>,</span>
 <span>  bar_border <span class="op">=</span> <span class="st">"#000000"</span>,</span>
 <span>  bar_border_lwd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  bar_fill_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ETH8 <span class="op">=</span> <span class="st">"#007A92"</span>, ETH8_60 <span class="op">=</span> <span class="st">"#66b0c2"</span>, ETH8_30 <span class="op">=</span> <span class="st">"#b3d7e0"</span>, ETH8_20</span>
-<span>    <span class="op">=</span> <span class="st">"#cce5eb"</span>, ETH5 <span class="op">=</span> <span class="st">"#91056a"</span>, ETH5_60 <span class="op">=</span> <span class="st">"#cc67a7"</span>, ETH5_30 <span class="op">=</span> <span class="st">"#e6b3d3"</span><span class="op">)</span>,</span>
+<span>  bar_fill_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ETH_Petrol <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`100`</span>, ETH_Petrol_60 <span class="op">=</span></span>
+<span>    <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`60`</span>, ETH_Petrol_40 <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`40`</span>, ETH_Petrol_20 <span class="op">=</span></span>
+<span>    <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`20`</span>, ETH_Purple <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Purple</span><span class="op">$</span><span class="va">`100`</span>, ETH_Purple_60 <span class="op">=</span></span>
+<span>    <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Purple</span><span class="op">$</span><span class="va">`60`</span>, ETH_Purple_40 <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Purple</span><span class="op">$</span><span class="va">`40`</span><span class="op">)</span>,</span>
 <span>  bar_gap <span class="op">=</span> <span class="fl">15</span>,</span>
 <span>  bar_group_gap <span class="op">=</span> <span class="fl">30</span>,</span>
 <span>  ci_alpha <span class="op">=</span> <span class="st">"44"</span>,</span>
@@ -76,7 +80,7 @@ the dimensions of the output file.</p>
 <span>  default_bottom_margin <span class="op">=</span> <span class="fl">15</span>,</span>
 <span>  fill_up_start <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  fill_year_with_nas <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  highlight_color <span class="op">=</span> <span class="st">"#e9e9e9"</span>,</span>
+<span>  highlight_color <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Grey</span><span class="op">$</span><span class="va">`20`</span>,</span>
 <span>  highlight_window <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  highlight_window_end <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  highlight_window_freq <span class="op">=</span> <span class="fl">4</span>,</span>
@@ -94,9 +98,10 @@ the dimensions of the output file.</p>
 <span>  legend_margin_bottom <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  legend_margin_top <span class="op">=</span> <span class="fl">12</span>,</span>
 <span>  legend_seg.len <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  line_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ETH_8_100 <span class="op">=</span> <span class="st">"#a9af66"</span>, ETH_4_100 <span class="op">=</span> <span class="st">"#72791c"</span>, ETH_8_20 <span class="op">=</span> <span class="st">"#cce5eb"</span>,</span>
-<span>    ETH_5_60 <span class="op">=</span> <span class="st">"#cc67a7"</span>, ETH_8_60 <span class="op">=</span> <span class="st">"#66b0c2"</span>, ETH_5_100 <span class="op">=</span> <span class="st">"#91056a"</span>, ETH_4_60 <span class="op">=</span></span>
-<span>    <span class="st">"#007a92"</span><span class="op">)</span>,</span>
+<span>  line_colors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ETH_Green_60 <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Green</span><span class="op">$</span><span class="va">`60`</span>, ETH_Green_100 <span class="op">=</span></span>
+<span>    <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Green</span><span class="op">$</span><span class="va">`100`</span>, ETH_Petrol_20 <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`20`</span>, ETH_Purple_60 <span class="op">=</span></span>
+<span>    <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Purple</span><span class="op">$</span><span class="va">`60`</span>, ETH_Petrol_60 <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`60`</span>, ETH_Purple_100 <span class="op">=</span></span>
+<span>    <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Purple</span><span class="op">$</span><span class="va">`100`</span>, ETH_Petrol_100 <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`100`</span><span class="op">)</span>,</span>
 <span>  line_to_middle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  lty <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  lwd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>,</span>
@@ -127,7 +132,7 @@ the dimensions of the output file.</p>
 <span>  subtitle_transform <span class="op">=</span> <span class="st">"toupper"</span>,</span>
 <span>  sum_as_line <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  sum_legend <span class="op">=</span> <span class="st">"sum"</span>,</span>
-<span>  sum_line_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ETH_8_100 <span class="op">=</span> <span class="st">"#007a92"</span><span class="op">)</span>,</span>
+<span>  sum_line_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>ETH_Petrol_100 <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Petrol</span><span class="op">$</span><span class="va">`100`</span><span class="op">)</span>,</span>
 <span>  sum_line_lty <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  sum_line_lwd <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  tcl_quarterly_ticks <span class="op">=</span> <span class="op">-</span><span class="fl">0.4</span>,</span>
@@ -143,7 +148,7 @@ the dimensions of the output file.</p>
 <span>  use_box <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  x_tick_dt <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  xaxs <span class="op">=</span> <span class="st">"i"</span>,</span>
-<span>  y_grid_color <span class="op">=</span> <span class="st">"#CCCCCC"</span>,</span>
+<span>  y_grid_color <span class="op">=</span> <span class="va">colors</span><span class="op">$</span><span class="va">ETH_Grey</span><span class="op">$</span><span class="va">`40`</span>,</span>
 <span>  y_grid_count <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">8</span>, <span class="fl">10</span><span class="op">)</span>,</span>
 <span>  y_grid_count_strict <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  y_las <span class="op">=</span> <span class="fl">2</span>,</span>
