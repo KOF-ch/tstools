@@ -114,26 +114,34 @@ utils::globalVariables(c("date_zoo", "series", "ts_object", "value", "frq", "is_
 
 #' Transform a wide format data.frame into a tslist
 #'
-#' The time series in the data.frame may be stored either rowwise or columnswise.
-#' The identifying column must be called date (for columnwise) or series (for rowwise)
+#' The time series in the data.frame may be stored either rowwise or
+#' columnswise.
+#' The identifying column must be called date (for columnwise) or series
+#' (for rowwise)
 #' @param data data.frame The data.frame to be transformed
-#' @param keep_last_freq_only in case there is a frequency change in a time series,
-#' should only the part of the series be returned that has the same frequency as
-#' the last observation. This is useful when data start out crappy and then stabilize
-#' after a while. Defaults to FALSE. Hence only the last part of the series is returned.
+#' @param keep_last_freq_only in case there is a frequency change in a time
+#' series, should only the part of the series be returned that has the same
+#' frequency as the last observation.
+#' This is useful when data start out crappy and then stabilize after a while.
+#' Defaults to FALSE. Hence only the last part of the series is returned.
 #' @param force_xts boolean force xts format? Defaults to FALSE.
 #' @importFrom xts xts
 #' @importFrom zoo as.yearqtr as.yearmon
 #' @export
 wide_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE) {
+  # Convert to data.table
+  data.table::setDT(data)
+
   if (!("date" %in% names(data))) {
     # Data was written in transposed format
-    long_to_ts(melt(data, id.vars = "series", variable.name = "date"),
+    long_to_ts(
+      data.table::melt(data, id.vars = "series", variable.name = "date"),
       keep_last_freq_only = keep_last_freq_only,
       force_xts = force_xts
     )
   } else {
-    long_to_ts(melt(data, id.vars = "date", variable.name = "series"),
+    long_to_ts(
+      data.table::melt(data, id.vars = "date", variable.name = "series"),
       keep_last_freq_only = keep_last_freq_only,
       force_xts = force_xts
     )
