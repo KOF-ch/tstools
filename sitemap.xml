@@ -1,114 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>/articles/tstools.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/CHGDP.html</loc>
-  </url>
-  <url>
-    <loc>/reference/KOF.html</loc>
-  </url>
-  <url>
-    <loc>/reference/color_blind.html</loc>
-  </url>
-  <url>
-    <loc>/reference/compute_decimal_time.html</loc>
-  </url>
-  <url>
-    <loc>/reference/concat_ts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_cross_sec_overview.html</loc>
-  </url>
-  <url>
-    <loc>/reference/create_dummy_ts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/df_to_reg_ts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/dot-read_swissdata_meta_unknown_format.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fill_year_with_nas.html</loc>
-  </url>
-  <url>
-    <loc>/reference/generate_random_ts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/getCiLegendColors.html</loc>
-  </url>
-  <url>
-    <loc>/reference/get_date_vector.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/init_tsplot_theme.html</loc>
-  </url>
-  <url>
-    <loc>/reference/long_to_ts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/m_to_q.html</loc>
-  </url>
-  <url>
-    <loc>/reference/overlap_sorted_ts_lists.html</loc>
-  </url>
-  <url>
-    <loc>/reference/overlap_ts_lists_by_name.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_swissdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_swissdata_meta.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read_ts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/regularize.html</loc>
-  </url>
-  <url>
-    <loc>/reference/resolve_ts_overlap.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set_month_to_NA.html</loc>
-  </url>
-  <url>
-    <loc>/reference/start_ts_after_internal_nas.html</loc>
-  </url>
-  <url>
-    <loc>/reference/strip_nas.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tsplot.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tsqm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tstools-deprecated.html</loc>
-  </url>
-  <url>
-    <loc>/reference/wide_to_ts.html</loc>
-  </url>
-  <url>
-    <loc>/reference/write_ts.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/articles/index.html</loc></url>
+<url><loc>/articles/tstools.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/reference/CHGDP.html</loc></url>
+<url><loc>/reference/KOF.html</loc></url>
+<url><loc>/reference/color_blind.html</loc></url>
+<url><loc>/reference/compute_decimal_time.html</loc></url>
+<url><loc>/reference/concat_ts.html</loc></url>
+<url><loc>/reference/create_cross_sec_overview.html</loc></url>
+<url><loc>/reference/create_dummy_ts.html</loc></url>
+<url><loc>/reference/df_to_reg_ts.html</loc></url>
+<url><loc>/reference/dot-read_swissdata_meta_unknown_format.html</loc></url>
+<url><loc>/reference/fill_year_with_nas.html</loc></url>
+<url><loc>/reference/generate_random_ts.html</loc></url>
+<url><loc>/reference/getCiLegendColors.html</loc></url>
+<url><loc>/reference/get_date_vector.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/init_tsplot_theme.html</loc></url>
+<url><loc>/reference/long_to_ts.html</loc></url>
+<url><loc>/reference/m_to_q.html</loc></url>
+<url><loc>/reference/overlap_sorted_ts_lists.html</loc></url>
+<url><loc>/reference/overlap_ts_lists_by_name.html</loc></url>
+<url><loc>/reference/read_swissdata.html</loc></url>
+<url><loc>/reference/read_swissdata_meta.html</loc></url>
+<url><loc>/reference/read_ts.html</loc></url>
+<url><loc>/reference/regularize.html</loc></url>
+<url><loc>/reference/resolve_ts_overlap.html</loc></url>
+<url><loc>/reference/set_month_to_NA.html</loc></url>
+<url><loc>/reference/start_ts_after_internal_nas.html</loc></url>
+<url><loc>/reference/strip_nas.html</loc></url>
+<url><loc>/reference/tsplot.html</loc></url>
+<url><loc>/reference/tsqm.html</loc></url>
+<url><loc>/reference/tstools-deprecated.html</loc></url>
+<url><loc>/reference/wide_to_ts.html</loc></url>
+<url><loc>/reference/write_ts.html</loc></url>
 </urlset>
+
