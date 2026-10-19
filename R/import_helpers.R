@@ -109,7 +109,6 @@ long_to_ts <- function(data, keep_last_freq_only = FALSE, force_xts = FALSE,
 }
 
 
-
 utils::globalVariables(c("date_zoo", "series", "ts_object", "value", "frq", "is_empty"))
 
 #' Transform a wide format data.frame into a tslist

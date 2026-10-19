@@ -3,3 +3,5 @@
 .Rhistory
 inst/doc
 docs
+*.pdf
+.DS_Store

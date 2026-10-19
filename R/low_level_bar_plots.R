@@ -79,3 +79,43 @@ draw_ts_bars <- function(x, group_bar_chart = FALSE, theme = NULL) {
     )
   }
 }
+
+#' @importFrom ggplot2 aes geom_col position_dodge2 position_stack
+draw_tsggplot_bars <- function(p, x, group_bar_chart = FALSE, theme = NULL, use_date_scale = FALSE) {
+  n_ts <- length(x)
+  series <- names(x)
+
+  x[is.na(x)] <- 0
+
+  data <- do.call(rbind, lapply(1:n_ts, function(i) {
+    data.frame(
+      time = getNumericTimeIndex(x[[i]], use_date_scale = use_date_scale),
+      value = as.numeric(x[[i]]),
+      series = factor(series[i], levels = series)
+    )
+  }))
+
+  if (group_bar_chart && n_ts > 1) {
+    position <- position_dodge2(padding = theme$bar_gap, preserve = "single")
+  } else {
+    position <- position_stack()
+  }
+  # fill colors/legend are applied once by the caller's own
+  # scale_fill_manual() (tsggplot.list()), which would otherwise replace
+  # this one anyway and print a "Scale for fill is already present" message
+  p <- p +
+    geom_col(
+      data = data,
+      aes(
+        x = time,
+        y = value,
+        fill = series
+      ),
+      position = position,
+      just = 0,
+      colour = theme$bar_border_color,
+      linewidth = theme$bar_border_linewidth
+    )
+
+  p
+}

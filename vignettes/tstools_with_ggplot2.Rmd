@@ -1,0 +1,591 @@
+---
+title: "tsggplot"
+subtitle: "Time series visualization with ggplot2"
+author: "Merlin Scherer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Time Series Visualization with tsggplot}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\usepackage[utf8]{inputenc}
+---
+# tsggplot vs. tsplot
+`tstools` already provides `tsplot()`, which produces base R plots with the same convenient defaults (colors, legends, dual y-axes, highlight windows, fan charts, and more). `tsggplot()` gives you the same defaults but returns a real `ggplot` object, so you can extend it with any ggplot2 layer, scale, or theme. It also has an interactive sibling, `tsggplotly()`, which turns a `tsggplot()` plot into an interactive Plotly widget with hover tooltips and zooming. Use `tsplot()` for quick base R output, and `tsggplot()`/`tsggplotly()` when you want a ggplot2 object to extend or an interactive chart.
+
+# Graphs
+
+## Before we get started...
+
+... let's set up some data for our reproducible examples first.
+Let's do this separately so we can really focus on the **tstools** specific code in our discussion of the examples. Don't get confused, plotting is really easy, creating random data or reading in data in order to make the examples reproducible is what costs us some extra lines of code here. 
+
+```{r,echo=TRUE,message=FALSE,warning=FALSE}
+library(tstools)
+data(KOF)
+short <- window(KOF$kofbarometer,
+  start = c(2007, 1),
+  end = c(2014, 1)
+)
+
+# list of time series
+ts1 <- ts(runif(40, -10, 40), start = c(1995, 1), freq = 4)
+ts2 <- ts(runif(80, 0, 50), start = c(2000, 1), freq = 12)
+
+tslist <- list()
+tslist$ts1 <- ts1
+tslist$ts2 <- ts2
+
+# data for stacked bar charts...
+tsb1 <- ts(runif(30, -30, 20), start = c(2010, 1), frequency = 4)
+tsb2 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
+tsb3 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
+tsl <- list(tsb1, tsb2, tsb3)
+
+min_series <- ts(runif(10, -10, 40), start = c(1995, 1), freq = 4)
+min_series_2 <- ts(runif(25, -20, 40), start = c(1995, 1), freq = 12)
+min_series_3 <- ts(runif(25, -20, 40), start = c(1995, 1), freq = 4)
+min_li <- list(
+  series1 = min_series,
+  series2 = min_series_2,
+  series3 = min_series_3
+)
+
+missings <- ts(c(1, 2, 10, 3, 5, 6, NA, NA, 3, 2, 5, 3, 1, 1),
+  start = c(1995, 1), freq = 4
+)
+```
+
+
+
+## Single time series: line chart
+The most basic example of a time series plot is a time series line chart. The object *short* is of class ts. 
+
+```{r,fig.width = 7,fig.height=6,message=FALSE}
+tsggplot(short)
+```
+
+## Multiple time series (same y-axis) in one line chart
+The function *tsggplot* can handle multiple time series objects or lists at once. You can either throw multiple comma separated time series objects at *tsggplot* 
+
+```{r,fig.width = 7,fig.height=6}
+tsggplot(ts1, ts2, auto_legend = FALSE)
+```
+
+or a list of time series...
+
+```{r,fig.width = 7,fig.height=6}
+tsggplot(tslist, auto_legend = FALSE)
+```
+
+Even though *tsggplot* supports *mts* and single time series, we clearly recommend to pass lists of time series to *tsggplot* for the best and most tested experience. Lists are a convenient way to add legends to time series charts as *tsggplot* automatically uses names of list elements in its legend. You may also define your lists adhoc within the *tsggplot* call like so:
+
+```{r,fig.width = 7,fig.height=6}
+tsggplot(list(
+  "Time Series 1" = ts1,
+  "Time Series 2" = ts2
+))
+```
+
+## Auto-scale grids are there to help you, how to configure them!
+
+The following example tweaks this 15 percent margin to an exaggerated 70 percent,
+in order to show that an extra grid up top is added because the *y_tick_margin*
+parameter implies now that 70 percent of the outer most grid needs to stay clean.
+ 
+```{r,fig.width = 7,fig.height=6}
+tsggplot(short,
+  theme = init_tsggplot_theme(y_tick_margin = .7)
+)
+```
+
+## Manual value ticks
+Often you just want to have a fixed scale, e.g., for an index that ranges from 0 to 100. Simply use the ``manual_value_ticks_l`` and ``manual_value_ticks_r`` arguments to specify manual ticks and grids.
+In case you use 2 y-axes make sure both manual value tick vectors are of the same length. 
+
+```{r,fig.width = 7,fig.height=6}
+tsggplot(KOF["kofbarometer"],
+  manual_value_ticks_l = seq(60, 120, by = 20)
+)
+```
+
+
+
+## Fan Charts: Plotting Confidence Intervals
+
+*tsggplot* can assign confidence intervals to every 
+time series line. Simply choose the line and confidence level and define an upper
+and lower bound *ts* object to draw shaded confidence bounds around a respective series. A confidence interval definition is basically a nested list. For the sake of clear code, it is recommended to define the CI list separately like so: 
+
+```{r,fig.width = 7,fig.height=6}
+# Define confidence intervals
+ci <- list(
+  "KOF Barometer" = list(
+    "80" = list(
+      lb = KOF$baro_lo_80,
+      ub = KOF$baro_hi_80
+    ),
+    "95" = list(
+      lb = KOF$baro_lo_95,
+      ub = KOF$baro_hi_95
+    )
+  )
+)
+
+tsggplot(list("KOF Barometer" = KOF$baro_point_fc),
+  ci = ci
+)
+```
+
+The KOF data example dataset contains an *auto.arima* point forecast of the KOF Barometer as well as upper and lower bound at the 80% and 95% confidence level. Notice that *tsggplot* does **not** do any forecasting or estimation of confidence bands, it simply takes some time series as upper and lower bounds and assigns them to a particular series. Thus it's agnostic of the estimation method. 
+
+## Stacked Bar Chart
+Sometimes we want to display time series as bar charts. Most plotting engines
+understand bar charts as something that has a categorical x-axis. So even if
+you have time on the x-axis, periods are treated as categories,
+which implies that a bar is centered above the category tick for that period. 
+*tstools* treats the x-axis for bar charts as continous and allows a quarterly series to truly represent an entire quarter. Note that stacked bar charts imply that all involved series have the same frequency.
+
+```{r,fig.width = 7,fig.height=6}
+tsggplot(tsb1, tsb2, tsb3,
+  left_as_bar = TRUE,
+  auto_legend = FALSE
+)
+```
+
+Notice that the gap size of the gap between the bars can be adjusted using the **bar_gap** theme parameter.
+
+
+## Sum as line in stacked bar charts
+
+One of the reasons for using bar charts with time series is
+to add up positive and negative contributions. In this case it is also
+helpful to be able to add the sum of the components to plot on a per period 
+basis. The following draws a line on top of the bars that represents the sum.  
+
+```{r,fig.width = 7,fig.height=6}
+tsggplot(tsl,
+  left_as_bar = TRUE,
+  manual_value_ticks_l = seq(-40, 80, by = 20),
+  auto_legend = FALSE,
+  theme = init_tsggplot_theme(sum_as_line = TRUE)
+)
+```
+
+## Stacked bar charts with different start and end dates
+
+It is even possible, to produce stacked bar charts from time series
+of different start and end dates.
+
+```{r,fig.width = 7,fig.height=6}
+tsb1 <- ts(runif(30, -30, 20), start = c(2010, 1), frequency = 4)
+tsb2 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
+tsb3 <- ts(runif(30, 0, 50), start = c(2010, 1), frequency = 4)
+tsb4 <- ts(runif(30, -40, 10), start = c(2005, 1), frequency = 4)
+tsggplot(tsb1, tsb2, tsb3, tsb4,
+  left_as_bar = TRUE,
+  auto_legend = FALSE
+)
+```
+
+## Grouped bar charts
+
+When different variables got the same scale, but cannot be aggregated
+we want to display time series bars next to each other instead of stacking
+them. In **tstools** stacking is the default but it can easily be tweaked using
+the *group_bar_chart parameter.
+
+```{r,fig.width = 7,fig.height=6}
+tsb1 <- ts(runif(20, -30, 20), start = c(2010, 1), frequency = 12)
+tsb2 <- ts(runif(20, 0, 50), start = c(2010, 1), frequency = 12)
+tsb3 <- ts(runif(20, 0, 50), start = c(2010, 1), frequency = 12)
+tsggplot(tsb1, tsb2, tsb3,
+  left_as_bar = TRUE,
+  group_bar_chart = TRUE,
+  auto_legend = FALSE
+)
+```
+
+
+## Stacked Area Charts
+
+Stacked area charts are another way of stacking time series. 
+They might be more illustrative than stacked bar charts, but are subject to 
+certain limitations: plots always start at zero and all series need to be 
+either positive or negative. 
+
+```{r,fig.width = 7,fig.height=6}
+set.seed(123)
+tslist <- generate_random_ts(4,
+  starts = 1987:1990,
+  ranges_min = 1,
+  ranges_max = 3
+)
+tsggplot(tslist, left_as_band = TRUE)
+```
+
+## Multiple Y-axes with different scales (line charts)
+
+In order to compare indicators it's convenient in some domains to plot
+two time series of completely different scale, e.g., a growth rate and
+an indicator indexed at 100, to each other. Whenever the absolute level 
+is not overly interesting but rather the lead-lag structure and the
+co-movement, 2 y-axes with different scales are popular. Hence *tsggplot*
+introduces a second argument, *tsr* (time series right), which takes either 
+an object of class ts or a list of time series.
+
+```{r,fig.width = 7,fig.height=6}
+tsggplot(KOF$kofbarometer,
+  tsr = KOF$reference, auto_legend = FALSE
+)
+```
+
+
+## Multiple Y-axes with different scales (bar and line charts)
+Sometimes you want a bar chart on one axis and an line chart on the other. 
+Guess what, *tstools* also has a convenient way of creating these. Simply 
+provide a list of time series to both the ... argument and the tsr argument
+and choose *left_as_bar = TRUE*. Note that the line chart is automatically moved
+to the middle of the quarterly bar. 
+
+```{r,fig.width = 7,fig.height=6}
+tsb1 <- ts(runif(30, -30, 20), start = c(2010, 1), frequency = 4)
+tsb2 <- ts(runif(30, 0, 30), start = c(2010, 1), frequency = 4)
+tsb3 <- ts(runif(30, 0, 30), start = c(2010, 1), frequency = 4)
+tsr1 <- ts(runif(30, -4, 6), start = c(2010, 1), frequency = 4)
+tsggplot(tsb1, tsb2, tsb3,
+  tsr = tsr1,
+  left_as_bar = TRUE,
+  auto_legend = FALSE
+)
+```
+
+## Y-Grids: automatic vs. manual
+*tstools* tries to guess a reasonable number of ticks (and horizontal grids).
+This can be tricky when several time series and multiple axes are involved. 
+*tstools'* standard procedure uses value ranges and a logarithm based algorithm to find the order of magnitude of a scale. Further *tstools* brute forces through a number of reasonable tick counts and chooses a suitable number of ticks. In case there is more than one y-axis the choice will be passed on to the other axis. 
+
+## Using another function
+However, there are countless possibilities and the number of ticks and grids may come down to a matter of personal taste. Hence, *tstools* provides not only the flexibility to set grids manually, you can even pass another algorithm implemented in you very own R function that gives back a vector of ticks. Simply pass a function to the ``find_ticks_function`` argument. Currently range, and potential tick count are fixed as arguments to these functions, but hopefully passing other sets of arguments will be possible soon.
+
+
+## Tweaking the defaults: Themes
+Font size, line color, bar color, grid color, show or not show grid, and a plethora of 
+other options would lead to a ton of parameters. If you had to specify all of those,
+it would be time consuming task to create a quick explorative plot. So *tstools*
+suggests many defaults to many parameters and stores these parameters in lists called
+themes. To tweak a default, simply initialize the default theme, tweak a single list element
+and pass the entire theme to  *tsggplot*. By doing so you can also define 
+properties of multiple plots just by passing the new theme to the *tsggplot* call. 
+
+```{r}
+def_theme <- init_tsggplot_theme()
+names(def_theme)
+```
+
+Please take a look at the help file (`?init_tsggplot_theme`) for a comprehensive
+list and documenatation of all theme parameters. The hand-picked examples below
+should give you an idea of how much you can do with themes and how to use 'em.
+
+
+### Highlight windows: mark a period 
+
+Let's assume the last 2 years of the time series are a forecast which should be 
+highlight by a shaded area behind the actual series. If you know in advance
+which default parameter -- in this case *highlight_window = FALSE* -- 
+you want to overwrite, I recommend to do so right in your calll to *init_tsggplot_theme*.
+The cool thing about it is: R Studio's auto auggest helps you find the parameter.
+**Pro tip**: If you do not plan to reuse your theme in another plot, specify the
+parameter directly in function call. 
+
+```{r,fig.width = 7,fig.height=6}
+tsggplot(tsb1, tsb2, tsb3,
+  left_as_bar = TRUE,
+  theme = init_tsggplot_theme(highlight_window = TRUE)
+)
+```
+
+### Adjust the highlight window
+
+Set `highlight_window_start`/`highlight_window_end` (`c(year, period)`
+pairs) to highlight a specific window instead of the default last 2 years.
+
+```{r,fig.width = 7,fig.height=6}
+nt <- init_tsggplot_theme(highlight_window = TRUE)
+nt$highlight_window_start <- c(2017, 1)
+nt$highlight_window_end <- c(2017, 4)
+tsggplot(tsb1, tsb2,
+  theme = nt
+)
+```
+
+### Add a Box Around Your Plot
+
+Any `ggplot2` theme element works, since `tsggplot`'s theme is a regular
+`ggplot2` theme underneath -- here, `panel.border`.
+
+```{r,fig.width = 7,fig.height=6}
+tt <- init_tsggplot_theme(
+  panel.border = ggplot2::element_rect(
+    colour = "black", fill = NA, linewidth = 2
+  )
+)
+tsggplot(tsb1, tsb2, tsb3,
+  tsr = tsr1,
+  left_as_bar = TRUE,
+  theme = tt
+)
+```
+
+### Change line types...
+
+Note how you can simply change existing themes
+
+```{r,fig.width = 7,fig.height=6}
+tt$linetype <- c(3, 2, 1)
+tsggplot(tsb1, tsb2, tsb3,
+  theme = tt
+)
+```
+
+### Missing values (NA handling)
+
+By default a gap in the series just breaks the line. `NA_continue_line`
+draws through gaps instead, and `show_points` marks each observation.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot(missings,
+  theme = init_tsggplot_theme(
+    NA_continue_line = TRUE,
+    show_points = TRUE
+  )
+)
+```
+
+
+### Fill up Year With NAs
+
+`fill_year_with_nas` defaults to `TRUE`, padding the axis out to the full
+calendar year even if the series doesn't span it yet.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot(ts2)
+```
+
+Turn it off to show only the actual data range instead.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot(ts2,
+  theme = init_tsggplot_theme(fill_year_with_nas = FALSE)
+)
+```
+
+
+## Legends
+
+`tsggplot` builds the legend automatically from whatever names your series
+already have.
+
+### Assign Names to Single Objects
+
+Name each series directly in the call to control its legend label.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot(
+  "An arbitrary ts object" = ts1,
+  "another ts object" = ts2
+)
+```
+
+### Legends Based on Names of List Elements
+
+A named list works the same way -- the legend uses the list's own names.
+
+```{r,echo=TRUE}
+names(tslist)
+```
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot(tslist)
+```
+
+### Legends: multiple columns
+
+Spread the legend across multiple columns with `legend_col`.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot(min_li,
+  theme = init_tsggplot_theme(legend_col = 2)
+)
+```
+
+
+### Legends for Left and Right Y-Axis Series
+
+When a `tsr` (right-axis) series is present, its legend entries are grouped
+separately from the left-axis series' legend entries -- both still sit below
+the plot, but as two distinct groups, so you can tell at a glance which
+series belongs to which axis without adding suffixes like "(right scale)".
+Pass `legend_all_left = TRUE` (a `init_tsggplot_theme()` parameter) to merge
+both groups back into a single legend instead.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot(KOF["kofbarometer"],
+  tsr = KOF["reference"]
+)
+```
+
+### Line Breaks in Legends
+
+A `\n` in a series name wraps its legend label onto multiple lines.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot("Some like\n loooong legends\n with so many words" = ts1)
+```
+
+### Remember: auto_legend = FALSE
+
+Pass `auto_legend = FALSE` to turn the legend off entirely.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot(KOF[1], auto_legend = FALSE)
+```
+
+# Working with xts and zoo objects
+
+In addition to `ts`/`mts` objects, `tsggplot` accepts `xts` and `zoo` objects
+directly, which is convenient for data that doesn't fit neatly into `ts`'s
+regular-period model -- daily, weekly, or even hourly observations.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE,message=FALSE}
+library(xts)
+library(zoo)
+
+kof_xts <- as.xts(KOF$kofbarometer)
+tsggplot(list("KOF Barometer" = kof_xts))
+```
+
+## Supported frequencies
+
+`tsggplot` supports `xts` series at daily, weekly, monthly, quarterly, yearly,
+and hourly frequency, each with an appropriate x-axis.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+weekly_idx <- seq(as.Date("2020-01-06"), as.Date("2023-01-01"), by = "week")
+weekly_xts <- xts(cumsum(rnorm(length(weekly_idx))), order.by = weekly_idx)
+tsggplot(list("Weekly series" = weekly_xts))
+```
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+yearly_idx <- as.Date(paste0(2000:2023, "-01-01"))
+yearly_xts <- xts(cumsum(rnorm(length(yearly_idx))), order.by = yearly_idx)
+tsggplot(list("Yearly series" = yearly_xts))
+```
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+hourly_idx <- seq(as.POSIXct("2023-01-01 00:00", tz = "UTC"),
+  as.POSIXct("2023-01-05 00:00", tz = "UTC"),
+  by = "hour"
+)
+hourly_xts <- xts(cumsum(rnorm(length(hourly_idx))), order.by = hourly_idx)
+# fill_year_with_nas defaults to TRUE and pads the axis to a full year;
+# turned off here since this example only spans a few days
+tsggplot(list("Hourly series" = hourly_xts),
+  theme = init_tsggplot_theme(fill_year_with_nas = FALSE)
+)
+```
+
+### Highlight windows on a date/datetime x-axis
+
+For daily/weekly/hourly xts series, pass a date string instead of the
+`c(year, period)` pair used above:
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+tsggplot(list("Hourly series" = hourly_xts),
+  theme = init_tsggplot_theme(
+    fill_year_with_nas = FALSE,
+    highlight_window = TRUE,
+    highlight_window_start = "2023-01-03",
+    highlight_window_end = "2023-01-04"
+  )
+)
+```
+
+## zoo objects
+
+A plain `zoo` object works the same way -- it's converted to `xts` internally
+and produces identical output.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE}
+kof_zoo <- as.zoo(KOF$kofbarometer)
+tsggplot(list("KOF Barometer" = kof_zoo))
+```
+
+Note that a multi-column `xts`/`zoo` object passed directly isn't split into
+one series per column (unlike `mts`) -- pass multiple series as a named list
+instead, as in the examples above.
+
+# Interactive plots with plotly
+
+Any `tsggplot` figure can be converted into an interactive `plotly` chart with
+`tsggplotly()`, including custom hover text and a real secondary axis when a
+`tsr` (right-axis) series is present. This needs the `plotly` package
+(`install.packages("plotly")`).
+
+```{r,include=FALSE}
+has_plotly <- requireNamespace("plotly", quietly = TRUE)
+```
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE,message=FALSE,eval=has_plotly}
+p <- tsggplot(list("KOF Barometer" = KOF$kofbarometer),
+  tsr = list("Reference indicator" = KOF$reference)
+)
+tsggplotly(p)
+```
+
+The series are named in the legend, not on the axes. To show the axis titles
+set through `labs` (`x`, `y`, `y_right`), pass `axis_titles = TRUE`.
+
+Pass `x_tick_mode = "auto"` to let Plotly pick its own tick positions
+dynamically as you zoom, instead of tstools' default fixed yearly ticks.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE,message=FALSE,eval=has_plotly}
+tsggplotly(p, x_tick_mode = "auto")
+```
+
+Bar charts (stacked, grouped, with `sum_as_line`, ...) convert the same way.
+
+```{r,fig.width = 7,fig.height=6,echo=TRUE,message=FALSE,eval=has_plotly}
+tsggplotly(tsggplot(tsb1, tsb2, tsb3, left_as_bar = TRUE))
+```
+
+# Export your chart to .pdf
+
+Saving your **tstools** chart to a .pdf document is as easy and convenient as
+
+```{r,eval=FALSE}
+tsggplot(KOF[1],
+  output_format = "pdf",
+  theme = init_tsggplot_theme(output_wide = TRUE)
+)
+```
+
+Notice the optional print theme and *output_wide* parameter: You can export 4:3 (default) format .pdf files as well as 16:9 (wide) using the convenience *output_format* theme parameter. Notice also that you do not necessarily have to use the print theme. What is important is not to wrap the call in `pdf()` and `dev.off()` calls
+when using the `output_format="pdf"` option. 
+
+# Frequently asked questions (FAQs)
+
+## 1. Can I combine **tsggplot** with regular **ggplot2** code?
+
+Yes, **tsggplot** is based on ggplot2. You can simply add enhancements to the plot by passing the figure to subsequent ggplot2 calls.
+
+## 2. How can I change the colors of my lines, bars and areas?
+
+We have multiple pre-defined vectors for different chart types, all easy to adjust:
+
+```{r,eval=FALSE,echo=TRUE}
+init_tsggplot_theme(
+  band_fill_color = c("#FF0000", "#00FF00"),
+  line_colors = c("#FF0000", "#00FF00"),
+  bar_fill_color = c("#FF0000", "#00FF00")
+)
+```

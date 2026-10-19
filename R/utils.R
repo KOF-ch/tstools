@@ -88,7 +88,225 @@ getGlobalXInfo <- function(tsl, tsr, fill_up, fill_up_start, dt, manual_ticks) {
 }
 
 
+#' Convert a ts/xts index to a numeric decimal-year time index
+#'
+#' Shared by \code{getGlobalXInfo_tsggplot} (for computing axis ticks/ranges)
+#' and the tsggplot draw functions (for plotting data), so that plotted data
+#' and axis ticks are always on the same numeric scale.
+#'
+#' When \code{use_date_scale} is TRUE (daily/weekly xts, plotted on a
+#' \code{scale_x_date} x-axis), the raw index is returned unchanged instead --
+#' \code{ggplot2}'s Date scale coerces it (e.g. truncating POSIXct to Date)
+#' the same way it always has for this case.
+#'
+#' @param x object of class ts or xts
+#' @param use_date_scale logical, is this plotted on a Date-based x-axis?
+#' @noRd
+getNumericTimeIndex <- function(x, use_date_scale = FALSE) {
+  if (use_date_scale) {
+    return(time(x))
+  }
+  if (inherits(x, "ts")) {
+    return(as.numeric(time(x)))
+  }
+  if (!inherits(x, "xts")) stop("Input must be 'ts' or 'xts'.")
 
+  idx <- zoo::index(x)
+  tcl <- attr(attr(x, "index"), "tclass")
+  if (is.null(tcl)) tcl <- class(idx)
+
+  if ("yearqtr" %in% tcl) {
+    return(as.numeric(zoo::as.yearqtr(idx)))
+  }
+  if ("yearmon" %in% tcl) {
+    return(as.numeric(zoo::as.yearmon(idx)))
+  }
+
+  days_in_year <- function(y) {
+    ifelse(((y %% 4 == 0) & (y %% 100 != 0)) | (y %% 400 == 0), 366, 365)
+  }
+
+  y <- as.numeric(format(idx, "%Y"))
+  d <- as.numeric(format(idx, "%j"))
+  # Intraday fraction: 0 for Date-classed indices (daily/weekly/yearly),
+  # so this stays backward compatible; only POSIXct indices (e.g. hourly)
+  # contribute a nonzero fraction, avoiding same-day observations
+  # collapsing onto a single x position.
+  frac_day <- (as.numeric(format(idx, "%H")) +
+    as.numeric(format(idx, "%M")) / 60 +
+    as.numeric(format(idx, "%S")) / 3600) / 24
+  y + (d - 1 + frac_day) / days_in_year(y)
+}
+
+#' Half-period shift used to center a line/ci band within its period
+#'
+#' \code{frequency()} is unreliable for xts objects (e.g. it can return a
+#' minuscule fraction based on second-level spacing), so for any xts input
+#' the shift is instead derived from the median spacing of the same index
+#' (\code{getNumericTimeIndex}) used to plot the data, keeping units
+#' consistent whichever axis it ends up on: decimal-year numbers on the
+#' numeric axis (\code{use_date_scale = FALSE}), or native Date/POSIXct
+#' arithmetic (days/seconds respectively) on the Date-based axis
+#' (\code{use_date_scale = TRUE}). \code{frequency()} remains the basis for
+#' the shift only for genuine \code{ts} objects, where it's always exact.
+#'
+#' @param x object of class ts or xts
+#' @param use_date_scale logical, is this plotted on a Date-based x-axis?
+#' @noRd
+getLineToMiddleShift <- function(x, use_date_scale = FALSE) {
+  if (inherits(x, "ts")) {
+    return((1 / frequency(x)) / 2)
+  }
+  xx <- getNumericTimeIndex(x, use_date_scale = use_date_scale)
+  if (length(xx) < 2) {
+    return(0)
+  }
+  stats::median(diff(as.numeric(xx))) / 2
+}
+
+getGlobalXInfo_tsggplot <- function(tsl, tsr, fill_up, fill_up_start, tick_dt, label_dt, manual_ticks, pad = NULL) {
+  global_x <- list()
+  x_pad <- 0
+
+  # Combine left and right series
+  if (!is.null(tsr)) {
+    all_ts <- c(tsl, tsr)
+  } else {
+    all_ts <- tsl
+  }
+
+  if (is.null(manual_ticks)) {
+    if (fill_up) {
+      all_ts <- lapply(all_ts, function(x) {
+        fill_year_with_nas(x, fill_up_start = fill_up_start)
+      })
+    }
+
+    # Compute combined range
+    all_time <- unlist(lapply(all_ts, getNumericTimeIndex))
+    global_x$x_range <- range(all_time)
+
+    # Align the start to the nearest quarter boundary at or before the data
+    global_x$x_range[1] <- trunc(global_x$x_range[1] * 4) / 4
+
+    # How far past the last data point to extend the visible axis, in
+    # years. A user-supplied pad (theme's axis_x_pad) applies as-is.
+    # fill_year_with_nas already extends the series to the end of its year
+    # (like tsplot), so it needs no further margin by default. Otherwise the
+    # margin scales to the series' own span, so a handful of days of data
+    # isn't dwarfed by a fixed multi-month margin, capped at a quarter once
+    # the series spans a quarter or more.
+    span <- diff(range(all_time))
+    x_pad <- if (!is.null(pad)) {
+      pad
+    } else if (fill_up) {
+      0
+    } else {
+      min(0.25, max(span * 0.25, 1 / 365))
+    }
+    global_x$x_range[2] <- global_x$x_range[2] + x_pad
+
+    # Tick positions and labels
+    global_x$yearly_tick_pos <- seq(
+      floor(global_x$x_range[1]),
+      global_x$x_range[2],
+      tick_dt
+    )
+
+    labels <- seq(
+      floor(global_x$x_range[1]),
+      global_x$x_range[2],
+      label_dt
+    )
+
+    global_x$year_labels_start <- ifelse(
+      global_x$yearly_tick_pos %in% labels,
+      global_x$yearly_tick_pos, ""
+    )
+  } else {
+    global_x$x_range <- range(manual_ticks)
+    global_x$yearly_tick_pos <- manual_ticks
+    global_x$year_labels_start <- manual_ticks
+  }
+
+  # Year bounds
+  global_x$min_year <- trunc(global_x$x_range[1])
+  global_x$max_year <- trunc(global_x$x_range[2])
+
+  # Quarterly ticks
+  if (tick_dt == 1) {
+    global_x$quarterly_tick_pos <- seq(
+      from = as.numeric(global_x$x_range[1]),
+      to = as.numeric(global_x$x_range[2]),
+      by = 0.25
+    )
+    global_x$year_labels_middle_q <- NULL
+  } else {
+    global_x$quarterly_tick_pos <- NULL
+    global_x$year_labels_middle_q <- NULL
+  }
+
+  global_x$dominant_freq <- {
+    scales <- sapply(all_ts, function(x) {
+      if (inherits(x, "xts")) xts::periodicity(x)$scale else "ts"
+    })
+    if ("hourly" %in% scales) {
+      "hourly"
+    } else if ("daily" %in% scales) {
+      "daily"
+    } else if ("weekly" %in% scales) {
+      "weekly"
+    } else if ("monthly" %in% scales) {
+      "monthly"
+    } else if ("quarterly" %in% scales) {
+      "quarterly"
+    } else if ("yearly" %in% scales) {
+      "annual"
+    } else if ("ts" %in% scales) {
+      "ts"
+    } else {
+      "annual"
+    }
+  }
+
+  if (global_x$dominant_freq %in% c("daily", "weekly") && !is.null(global_x$quarterly_tick_pos)) {
+    global_x$quarterly_tick_pos <- zoo::as.Date(zoo::as.yearqtr(global_x$quarterly_tick_pos))
+    global_x$yearly_tick_pos <- zoo::as.Date(zoo::as.yearqtr(global_x$yearly_tick_pos))
+    # zoo::index() may return POSIXct (not just Date) here, e.g. for xts
+    # built on POSIXct timestamps at daily resolution -- coerce to Date so
+    # the day-count padding below adds days, not seconds. Convert in the
+    # index's own time zone: as.Date() defaults to UTC, which shifts the
+    # range a day early ahead of UTC.
+    raw_index <- do.call(c, lapply(all_ts, zoo::index))
+    tz <- attr(raw_index, "tzone")
+    if (is.null(tz)) tz <- ""
+    date_range <- range(as.Date(raw_index, tz = tz))
+    # Same trailing margin as above, translated from years to days -- this
+    # branch otherwise recomputes x_range from the raw (possibly fill_up-
+    # padded) index and would lose it entirely.
+    global_x$x_range <- c(date_range[1], date_range[2] + round(x_pad * 365.25))
+    # The filled year ends on Dec 31, a day short of the closing year tick,
+    # which would otherwise fall off the axis
+    last_tick <- max(global_x$yearly_tick_pos)
+    if (fill_up && last_tick - global_x$x_range[2] == 1) {
+      global_x$x_range[2] <- last_tick
+    }
+  } else if (global_x$dominant_freq == "hourly" && !is.null(global_x$quarterly_tick_pos)) {
+    # Same idea as daily/weekly above, but keeping full POSIXct (not Date)
+    # precision throughout, since hourly data needs sub-day resolution --
+    # plotted on scale_x_datetime(), not scale_x_date().
+    raw_index <- do.call(c, lapply(all_ts, zoo::index))
+    tz <- attr(raw_index, "tzone")
+    if (is.null(tz)) tz <- ""
+    global_x$quarterly_tick_pos <- as.POSIXct(zoo::as.Date(zoo::as.yearqtr(global_x$quarterly_tick_pos)), tz = tz)
+    global_x$yearly_tick_pos <- as.POSIXct(zoo::as.Date(zoo::as.yearqtr(global_x$yearly_tick_pos)), tz = tz)
+    time_range <- range(as.POSIXct(raw_index, tz = tz))
+    # Same trailing margin as above, translated from years to seconds
+    global_x$x_range <- c(time_range[1], time_range[2] + x_pad * 365.25 * 86400)
+  }
+
+  global_x
+}
 
 # Make sure right axis object is of appropriate class.
 sanitizeTsr <- function(tsr) {
